@@ -462,7 +462,7 @@ def load_and_format_simplemc(num_questions_needed=None, split="test", skip_quest
     import json
     print(f"Attempting to load SimpleMC...")
     try:
-        filename = "./SimpleMC.jsonl"
+        filename = "./data/SimpleMC.jsonl"
         with open(filename, 'r') as f:
             dataset = [json.loads(line) for line in f]
         print("Dataset loaded successfully.")

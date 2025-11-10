@@ -535,6 +535,6 @@ def main(model_dataset_dict, temp):
 
 if __name__ == "__main__":
     model_dataset_dict = {
-        "llama-3.1-70b-instruct": ["PopMC"],
+        "llama-3.3-70b-instruct": ["SimpleMC"], 
         }
     main(model_dataset_dict, temp=1.0)

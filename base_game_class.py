@@ -240,8 +240,8 @@ class BaseGameClass:
                             'seed': 42,
                             'provider': {
                                 **({"only": ["Chutes"]} if 'v3.1' in self.subject_name else {"only": ["DeepInfra"]} if '-r1' in self.subject_name else {}),
-                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name else True,
-                                "allow_fallbacks": False,
+                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'llama' in self.subject_name else True,
+                                "allow_fallbacks": True if 'llama' in self.subject_name else False,
 #                                'quantizations': ['fp8'],
                             },
                         }} if self.provider == "OpenRouter" else {}
@@ -250,9 +250,20 @@ class BaseGameClass:
                     
                     #print(f"completion={completion}")
                     #exit()
+                    if not completion.choices or len(completion.choices) == 0:
+                        raise ValueError("No choices in response")
+                    if not hasattr(completion.choices[0], 'message') or completion.choices[0].message is None:
+                        raise ValueError("No message in response")
+                    if completion.choices[0].message.content is None:
+                        raise ValueError("Response content is None - provider may not support this request")
                     resp = completion.choices[0].message.content.strip()
                     if 'o3' in self.subject_name or 'gpt-5' in self.subject_name or self.subject_name=='deepseek-v3.1-base' or self.subject_name=='deepseek-r1' or no_logprobs(model_name): return resp, None
+                    # If logprobs were requested but not returned, return None for token_probs instead of raising error
+                    if not hasattr(completion.choices[0], 'logprobs') or completion.choices[0].logprobs is None:
+                        return resp, None
                     if len(options) == 1: #short answer, just average
+                        if not hasattr(completion.choices[0].logprobs, 'content') or completion.choices[0].logprobs.content is None:
+                            return resp, None
                         token_logprobs = completion.choices[0].logprobs.content    
                         top_probs = []
                         for token_logprob in token_logprobs:
@@ -265,6 +276,8 @@ class BaseGameClass:
                         token_probs = {resp: math.exp(sum(top_probs))}# / len(top_probs))}
                     else:
                         #entry = completion.choices[0].logprobs.content[0]
+                        if not hasattr(completion.choices[0].logprobs, 'content') or completion.choices[0].logprobs.content is None or len(completion.choices[0].logprobs.content) == 0:
+                            return resp, None
                         first_token = completion.choices[0].logprobs.content[0].token
                         if first_token.strip() == '':
                             # Skip to the actual answer token
