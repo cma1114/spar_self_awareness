@@ -24,4 +24,4 @@ build/
 .env.*
 
 # Scenario files
-tom/scenarios_llm_test*.json
+tom/scenarios_llm_test*.json.vscode/

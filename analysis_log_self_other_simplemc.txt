@@ -1,0 +1,542 @@
+
+################################################################
+PHASE-1 SELF/OTHER ANALYSIS RUN 2025-10-29T13:48:02
+################################################################
+Skipping claude-3-5-sonnet-20241022: missing one of baseline/1p/3p files.
+Skipping claude-opus-4-1-20250805: missing one of baseline/1p/3p files.
+Skipping claude-sonnet-4-20250514: missing one of baseline/1p/3p files.
+Skipping claude-sonnet-4-5-20250929: missing one of baseline/1p/3p files.
+Skipping claude-sonnet-4-5-20250929_think: missing one of baseline/1p/3p files.
+
+===== deepseek-chat =====
+Baseline file: compiled_results_smc/deepseek-chat_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/deepseek-chat_SimpleMC_500_1759871997_test_data.json
+3P (other) file: capabilities_3p_test_logs/deepseek-chat_SimpleMC_500_1759871131_test_data.json
+Raw counts: baseline=1, self(1p)=1, other(3p)=1
+Aligned questions: 1
+
+Correlation between Other's Prob and Self Prob: nan
+
+Correlation between p_i_capability and Self Prob: nan
+
+Correlation between p_i_capability and Other Prob: nan
+
+Correlation between capabilities_entropy and Self Prob: nan
+
+Correlation between capabilities_entropy and Other Prob: nan
+summary_dict = {"model": "deepseek-chat", "aligned_n": 1, "corr_other_self": NaN, "corr_cap_self": NaN, "corr_cap_other": NaN, "corr_ent_self": NaN, "corr_ent_other": NaN}
+Skipping deepseek-chat-v3.1: missing one of baseline/1p/3p files.
+Skipping deepseek-r1: missing one of baseline/1p/3p files.
+Skipping deepseek-v3.1-base: missing one of baseline/1p/3p files.
+Skipping gemini-2.5-flash_nothink: missing one of baseline/1p/3p files.
+Skipping gpt-4.1-2025-04-14: missing one of baseline/1p/3p files.
+Skipping gpt-4o-2024-08-06: missing one of baseline/1p/3p files.
+Skipping grok-3-latest: missing one of baseline/1p/3p files.
+Skipping hermes-4-70b: missing one of baseline/1p/3p files.
+Skipping kimi-k2: missing one of baseline/1p/3p files.
+Skipping kimi-k2-0905: missing one of baseline/1p/3p files.
+
+===== llama-3.1-405b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-405b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851943_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851676_test_data.json
+Raw counts: baseline=1, self(1p)=1, other(3p)=1
+Aligned questions: 1
+
+Correlation between Other's Prob and Self Prob: nan
+
+Correlation between p_i_capability and Self Prob: nan
+
+Correlation between p_i_capability and Other Prob: nan
+
+Correlation between capabilities_entropy and Self Prob: nan
+
+Correlation between capabilities_entropy and Other Prob: nan
+summary_dict = {"model": "llama-3.1-405b-instruct", "aligned_n": 1, "corr_other_self": NaN, "corr_cap_self": NaN, "corr_cap_other": NaN, "corr_ent_self": NaN, "corr_ent_other": NaN}
+
+===== llama-3.1-8b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-8b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327458_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327906_test_data.json
+Raw counts: baseline=1, self(1p)=1, other(3p)=1
+Aligned questions: 1
+
+Correlation between Other's Prob and Self Prob: nan
+
+Correlation between p_i_capability and Self Prob: nan
+
+Correlation between p_i_capability and Other Prob: nan
+
+Correlation between capabilities_entropy and Self Prob: nan
+
+Correlation between capabilities_entropy and Other Prob: nan
+summary_dict = {"model": "llama-3.1-8b-instruct", "aligned_n": 1, "corr_other_self": NaN, "corr_cap_self": NaN, "corr_cap_other": NaN, "corr_ent_self": NaN, "corr_ent_other": NaN}
+
+===== llama-3.3-70b-instruct =====
+Baseline file: compiled_results_smc/llama-3.3-70b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847749_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759848196_test_data.json
+Raw counts: baseline=1, self(1p)=1, other(3p)=1
+Aligned questions: 1
+
+Correlation between Other's Prob and Self Prob: nan
+
+Correlation between p_i_capability and Self Prob: nan
+
+Correlation between p_i_capability and Other Prob: nan
+
+Correlation between capabilities_entropy and Self Prob: nan
+
+Correlation between capabilities_entropy and Other Prob: nan
+summary_dict = {"model": "llama-3.3-70b-instruct", "aligned_n": 1, "corr_other_self": NaN, "corr_cap_self": NaN, "corr_cap_other": NaN, "corr_ent_self": NaN, "corr_ent_other": NaN}
+Skipping llama-4-maverick: missing one of baseline/1p/3p files.
+Skipping mistral-small-3.2-24b-instruct: missing one of baseline/1p/3p files.
+Skipping openai-gpt-5-chat: missing one of baseline/1p/3p files.
+Skipping qwen3-235b-a22b-2507: missing one of baseline/1p/3p files.
+
+
+################################################################
+PHASE-1 SELF/OTHER ANALYSIS RUN 2025-10-29T16:58:06
+################################################################
+
+Skipping claude-3-5-sonnet-20241022: missing one of baseline/1p/3p files.
+Skipping claude-opus-4-1-20250805: missing one of baseline/1p/3p files.
+Skipping claude-sonnet-4-20250514: missing one of baseline/1p/3p files.
+Skipping claude-sonnet-4-5-20250929: missing one of baseline/1p/3p files.
+Skipping claude-sonnet-4-5-20250929_think: missing one of baseline/1p/3p files.
+
+===== deepseek-chat =====
+Baseline file: compiled_results_smc/deepseek-chat_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/deepseek-chat_SimpleMC_500_1759871997_test_data.json
+3P (other) file: capabilities_3p_test_logs/deepseek-chat_SimpleMC_500_1759871131_test_data.json
+Raw counts: baseline=0, self(1p)=0, other(3p)=0
+Aligned questions: 0
+
+Correlation between Other's Prob and Self Prob: nan
+
+Correlation between p_i_capability and Self Prob: nan
+
+Correlation between p_i_capability and Other Prob: nan
+
+Correlation between capabilities_entropy and Self Prob: nan
+
+Correlation between capabilities_entropy and Other Prob: nan
+
+summary_dict = {'model': 'deepseek-chat', 'aligned_n': 0, 'corr_other_self': 'NaN', 'corr_cap_self': 'NaN', 'corr_cap_other': 'NaN', 'corr_ent_self': 'NaN', 'corr_ent_other': 'NaN'}
+Skipping deepseek-chat-v3.1: missing one of baseline/1p/3p files.
+Skipping deepseek-r1: missing one of baseline/1p/3p files.
+Skipping deepseek-v3.1-base: missing one of baseline/1p/3p files.
+Skipping gemini-2.5-flash_nothink: missing one of baseline/1p/3p files.
+Skipping gpt-4.1-2025-04-14: missing one of baseline/1p/3p files.
+Skipping gpt-4o-2024-08-06: missing one of baseline/1p/3p files.
+Skipping grok-3-latest: missing one of baseline/1p/3p files.
+Skipping hermes-4-70b: missing one of baseline/1p/3p files.
+Skipping kimi-k2: missing one of baseline/1p/3p files.
+Skipping kimi-k2-0905: missing one of baseline/1p/3p files.
+
+===== llama-3.1-405b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-405b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851943_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851676_test_data.json
+Raw counts: baseline=0, self(1p)=0, other(3p)=0
+Aligned questions: 0
+
+Correlation between Other's Prob and Self Prob: nan
+
+Correlation between p_i_capability and Self Prob: nan
+
+Correlation between p_i_capability and Other Prob: nan
+
+Correlation between capabilities_entropy and Self Prob: nan
+
+Correlation between capabilities_entropy and Other Prob: nan
+
+summary_dict = {'model': 'llama-3.1-405b-instruct', 'aligned_n': 0, 'corr_other_self': 'NaN', 'corr_cap_self': 'NaN', 'corr_cap_other': 'NaN', 'corr_ent_self': 'NaN', 'corr_ent_other': 'NaN'}
+
+===== llama-3.1-8b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-8b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327458_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327906_test_data.json
+Raw counts: baseline=0, self(1p)=0, other(3p)=0
+Aligned questions: 0
+
+Correlation between Other's Prob and Self Prob: nan
+
+Correlation between p_i_capability and Self Prob: nan
+
+Correlation between p_i_capability and Other Prob: nan
+
+Correlation between capabilities_entropy and Self Prob: nan
+
+Correlation between capabilities_entropy and Other Prob: nan
+
+summary_dict = {'model': 'llama-3.1-8b-instruct', 'aligned_n': 0, 'corr_other_self': 'NaN', 'corr_cap_self': 'NaN', 'corr_cap_other': 'NaN', 'corr_ent_self': 'NaN', 'corr_ent_other': 'NaN'}
+
+===== llama-3.3-70b-instruct =====
+Baseline file: compiled_results_smc/llama-3.3-70b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847749_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759848196_test_data.json
+Raw counts: baseline=0, self(1p)=0, other(3p)=0
+Aligned questions: 0
+
+Correlation between Other's Prob and Self Prob: nan
+
+Correlation between p_i_capability and Self Prob: nan
+
+Correlation between p_i_capability and Other Prob: nan
+
+Correlation between capabilities_entropy and Self Prob: nan
+
+Correlation between capabilities_entropy and Other Prob: nan
+
+summary_dict = {'model': 'llama-3.3-70b-instruct', 'aligned_n': 0, 'corr_other_self': 'NaN', 'corr_cap_self': 'NaN', 'corr_cap_other': 'NaN', 'corr_ent_self': 'NaN', 'corr_ent_other': 'NaN'}
+Skipping llama-4-maverick: missing one of baseline/1p/3p files.
+Skipping mistral-small-3.2-24b-instruct: missing one of baseline/1p/3p files.
+Skipping openai-gpt-5-chat: missing one of baseline/1p/3p files.
+Skipping qwen3-235b-a22b-2507: missing one of baseline/1p/3p files.
+
+################################################################
+PHASE-1 SELF/OTHER ANALYSIS RUN 2025-10-29T18:01:16
+################################################################
+
+Skipping claude-3-5-sonnet-20241022: missing one of baseline/1p/3p files.
+Skipping claude-opus-4-1-20250805: missing one of baseline/1p/3p files.
+Skipping claude-sonnet-4-20250514: missing one of baseline/1p/3p files.
+Skipping claude-sonnet-4-5-20250929: missing one of baseline/1p/3p files.
+Skipping claude-sonnet-4-5-20250929_think: missing one of baseline/1p/3p files.
+
+===== deepseek-chat =====
+Baseline file: compiled_results_smc/deepseek-chat_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/deepseek-chat_SimpleMC_500_1759871997_test_data.json
+3P (other) file: capabilities_3p_test_logs/deepseek-chat_SimpleMC_500_1759871131_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+Correlation between Other's Prob and Self Prob: 0.595744296429
+Correlation between p_i_capability and Self Prob: 0.077722836098
+Correlation between p_i_capability and Other Prob: 0.064524059616
+Correlation between capabilities_entropy and Self Prob: -0.258259947814
+Correlation between capabilities_entropy and Other Prob: -0.126633363701
+summary_dict = {'model': 'deepseek-chat', 'aligned_n': 500, 'corr_other_self': 0.5957442964288477, 'corr_cap_self': 0.07772283609770829, 'corr_cap_other': 0.06452405961576646, 'corr_ent_self': -0.2582599478135342, 'corr_ent_other': -0.1266333637009711}
+Skipping deepseek-chat-v3.1: missing one of baseline/1p/3p files.
+Skipping deepseek-r1: missing one of baseline/1p/3p files.
+Skipping deepseek-v3.1-base: missing one of baseline/1p/3p files.
+Skipping gemini-2.5-flash_nothink: missing one of baseline/1p/3p files.
+Skipping gpt-4.1-2025-04-14: missing one of baseline/1p/3p files.
+Skipping gpt-4o-2024-08-06: missing one of baseline/1p/3p files.
+Skipping grok-3-latest: missing one of baseline/1p/3p files.
+Skipping hermes-4-70b: missing one of baseline/1p/3p files.
+Skipping kimi-k2: missing one of baseline/1p/3p files.
+Skipping kimi-k2-0905: missing one of baseline/1p/3p files.
+
+===== llama-3.1-405b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-405b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851943_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851676_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+Correlation between Other's Prob and Self Prob: 0.740405536911
+Correlation between p_i_capability and Self Prob: -0.018025615333
+Correlation between p_i_capability and Other Prob: -0.010908242851
+Correlation between capabilities_entropy and Self Prob: -0.154569995975
+Correlation between capabilities_entropy and Other Prob: -0.132935583918
+summary_dict = {'model': 'llama-3.1-405b-instruct', 'aligned_n': 500, 'corr_other_self': 0.7404055369110948, 'corr_cap_self': -0.0180256153334232, 'corr_cap_other': -0.010908242851356314, 'corr_ent_self': -0.15456999597484508, 'corr_ent_other': -0.13293558391832513}
+
+===== llama-3.1-8b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-8b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327458_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327906_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+Correlation between Other's Prob and Self Prob: 0.701012526016
+Correlation between p_i_capability and Self Prob: -0.049122909627
+Correlation between p_i_capability and Other Prob: -0.005959615847
+Correlation between capabilities_entropy and Self Prob: -0.153608893385
+Correlation between capabilities_entropy and Other Prob: -0.094031639549
+summary_dict = {'model': 'llama-3.1-8b-instruct', 'aligned_n': 500, 'corr_other_self': 0.7010125260164178, 'corr_cap_self': -0.04912290962675286, 'corr_cap_other': -0.005959615847142294, 'corr_ent_self': -0.1536088933854325, 'corr_ent_other': -0.09403163954879151}
+
+===== llama-3.3-70b-instruct =====
+Baseline file: compiled_results_smc/llama-3.3-70b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847749_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759848196_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+Correlation between Other's Prob and Self Prob: 0.574471618227
+Correlation between p_i_capability and Self Prob: 0.032659025258
+Correlation between p_i_capability and Other Prob: -0.023602777271
+Correlation between capabilities_entropy and Self Prob: -0.141067037305
+Correlation between capabilities_entropy and Other Prob: -0.022937906618
+summary_dict = {'model': 'llama-3.3-70b-instruct', 'aligned_n': 500, 'corr_other_self': 0.57447161822678, 'corr_cap_self': 0.032659025257526786, 'corr_cap_other': -0.02360277727051763, 'corr_ent_self': -0.14106703730457867, 'corr_ent_other': -0.022937906617787506}
+Skipping llama-4-maverick: missing one of baseline/1p/3p files.
+Skipping mistral-small-3.2-24b-instruct: missing one of baseline/1p/3p files.
+Skipping openai-gpt-5-chat: missing one of baseline/1p/3p files.
+Skipping qwen3-235b-a22b-2507: missing one of baseline/1p/3p files.
+
+################################################################
+PHASE-1 SELF/OTHER ANALYSIS RUN 2025-10-29T18:43:13
+################################################################
+
+Skipping claude-3-5-sonnet-20241022: missing one of 1p/3p files.
+
+Skipping claude-opus-4-1-20250805: missing one of 1p/3p files.
+
+Skipping claude-sonnet-4-20250514: missing one of 1p/3p files.
+
+Skipping claude-sonnet-4-5-20250929: missing one of 1p/3p files.
+
+Skipping claude-sonnet-4-5-20250929_think: missing one of 1p/3p files.
+
+
+===== deepseek-chat =====
+Baseline file: compiled_results_smc/deepseek-chat_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/deepseek-chat_SimpleMC_500_1759871997_test_data.json
+3P (other) file: capabilities_3p_test_logs/deepseek-chat_SimpleMC_500_1759871131_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+
+Correlation between Other's Prob and Self Prob: 0.595744296429
+
+Correlation between p_i_capability and Self Prob: 0.077722836098
+
+Correlation between p_i_capability and Other Prob: 0.064524059616
+
+Correlation between capabilities_entropy and Self Prob: 0.258218341933
+
+Correlation between capabilities_entropy and Other Prob: 0.126615616393
+
+summary_dict = {'model': 'deepseek-chat', 'aligned_n': 500, 'corr_other_self': 0.5957442964288472, 'corr_cap_self': 0.0777228360977079, 'corr_cap_other': 0.06452405961576604, 'corr_ent_self': 0.2582183419325281, 'corr_ent_other': 0.12661561639298036}
+
+
+Skipping deepseek-chat-v3.1: missing one of 1p/3p files.
+
+Skipping deepseek-r1: missing one of 1p/3p files.
+
+Skipping deepseek-v3.1-base: missing one of 1p/3p files.
+
+Skipping gemini-2.5-flash_nothink: missing one of 1p/3p files.
+
+Skipping gpt-4.1-2025-04-14: missing one of 1p/3p files.
+
+Skipping gpt-4o-2024-08-06: missing one of 1p/3p files.
+
+Skipping grok-3-latest: missing one of 1p/3p files.
+
+Skipping hermes-4-70b: missing one of 1p/3p files.
+
+Skipping kimi-k2: missing one of 1p/3p files.
+
+Skipping kimi-k2-0905: missing one of 1p/3p files.
+
+
+===== llama-3.1-405b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-405b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851943_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851676_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+
+Correlation between Other's Prob and Self Prob: 0.740405536911
+
+Correlation between p_i_capability and Self Prob: -0.018025615333
+
+Correlation between p_i_capability and Other Prob: -0.010908242851
+
+Correlation between capabilities_entropy and Self Prob: 0.148391934081
+
+Correlation between capabilities_entropy and Other Prob: 0.129006507119
+
+summary_dict = {'model': 'llama-3.1-405b-instruct', 'aligned_n': 500, 'corr_other_self': 0.7404055369110953, 'corr_cap_self': -0.018025615333423273, 'corr_cap_other': -0.01090824285135631, 'corr_ent_self': 0.1483919340812133, 'corr_ent_other': 0.12900650711858963}
+
+
+
+===== llama-3.1-8b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-8b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327458_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327906_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+
+Correlation between Other's Prob and Self Prob: 0.701012526016
+
+Correlation between p_i_capability and Self Prob: -0.049122909627
+
+Correlation between p_i_capability and Other Prob: -0.005959615847
+
+Correlation between capabilities_entropy and Self Prob: 0.154978187334
+
+Correlation between capabilities_entropy and Other Prob: 0.095348890413
+
+summary_dict = {'model': 'llama-3.1-8b-instruct', 'aligned_n': 500, 'corr_other_self': 0.7010125260164176, 'corr_cap_self': -0.04912290962675291, 'corr_cap_other': -0.0059596158471422805, 'corr_ent_self': 0.15497818733431176, 'corr_ent_other': 0.09534889041308214}
+
+
+
+===== llama-3.3-70b-instruct =====
+Baseline file: compiled_results_smc/llama-3.3-70b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847749_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759848196_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+
+Correlation between Other's Prob and Self Prob: 0.574471618227
+
+Correlation between p_i_capability and Self Prob: 0.032659025258
+
+Correlation between p_i_capability and Other Prob: -0.023602777271
+
+Correlation between capabilities_entropy and Self Prob: 0.141756223133
+
+Correlation between capabilities_entropy and Other Prob: 0.023802154307
+
+summary_dict = {'model': 'llama-3.3-70b-instruct', 'aligned_n': 500, 'corr_other_self': 0.5744716182267794, 'corr_cap_self': 0.0326590252575268, 'corr_cap_other': -0.02360277727051764, 'corr_ent_self': 0.14175622313323796, 'corr_ent_other': 0.02380215430746267}
+
+
+Skipping llama-4-maverick: missing one of 1p/3p files.
+
+Skipping mistral-small-3.2-24b-instruct: missing one of 1p/3p files.
+
+Skipping openai-gpt-5-chat: missing one of 1p/3p files.
+
+Skipping qwen3-235b-a22b-2507: missing one of 1p/3p files.
+
+
+################################################################
+PHASE-1 SELF/OTHER ANALYSIS RUN 2025-10-29T21:09:41
+################################################################
+
+Skipping claude-3-5-sonnet-20241022: missing one of 1p/3p files.
+
+Skipping claude-opus-4-1-20250805: missing one of 1p/3p files.
+
+Skipping claude-sonnet-4-20250514: missing one of 1p/3p files.
+
+Skipping claude-sonnet-4-5-20250929: missing one of 1p/3p files.
+
+Skipping claude-sonnet-4-5-20250929_think: missing one of 1p/3p files.
+
+
+===== deepseek-chat =====
+Baseline file: compiled_results_smc/deepseek-chat_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/deepseek-chat_SimpleMC_500_1759871997_test_data.json
+3P (other) file: capabilities_3p_test_logs/deepseek-chat_SimpleMC_500_1759871131_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+Sample sizes per correlation: Other-Self=500, Cap-Self=500, Cap-Other=500, Ent-Self=500, Ent-Other=500
+
+Note: Entropy correlations use negative Self/Other probs,
+      so positive correlation = high entropy → low confidence (correct interpretation)
+
+Correlation between Other's Prob and Self Prob: 0.595744296429 (n=500)
+
+Correlation between p_i_capability and Self Prob: 0.077722836098 (n=500)
+
+Correlation between p_i_capability and Other Prob: 0.064524059616 (n=500)
+
+Correlation between capabilities_entropy and Self Prob: 0.258218341933 (n=500)
+
+Correlation between capabilities_entropy and Other Prob: 0.126615616393 (n=500)
+
+summary_dict = {'model': 'deepseek-chat', 'aligned_n': 500, 'n_other_self': 500, 'n_cap_self': 500, 'n_cap_other': 500, 'n_ent_self': 500, 'n_ent_other': 500, 'corr_other_self': 0.5957442964288477, 'corr_cap_self': 0.07772283609770839, 'corr_cap_other': 0.06452405961576652, 'corr_ent_self': 0.25821834193252824, 'corr_ent_other': 0.12661561639298055}
+
+
+Skipping deepseek-chat-v3.1: missing one of 1p/3p files.
+
+Skipping deepseek-r1: missing one of 1p/3p files.
+
+Skipping deepseek-v3.1-base: missing one of 1p/3p files.
+
+Skipping gemini-2.5-flash_nothink: missing one of 1p/3p files.
+
+Skipping gpt-4.1-2025-04-14: missing one of 1p/3p files.
+
+Skipping gpt-4o-2024-08-06: missing one of 1p/3p files.
+
+Skipping grok-3-latest: missing one of 1p/3p files.
+
+Skipping hermes-4-70b: missing one of 1p/3p files.
+
+Skipping kimi-k2: missing one of 1p/3p files.
+
+Skipping kimi-k2-0905: missing one of 1p/3p files.
+
+
+===== llama-3.1-405b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-405b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851943_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-405b-instruct_SimpleMC_500_1759851676_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+Sample sizes per correlation: Other-Self=500, Cap-Self=500, Cap-Other=500, Ent-Self=500, Ent-Other=500
+
+Note: Entropy correlations use negative Self/Other probs,
+      so positive correlation = high entropy → low confidence (correct interpretation)
+
+Correlation between Other's Prob and Self Prob: 0.740405536911 (n=500)
+
+Correlation between p_i_capability and Self Prob: -0.018025615333 (n=500)
+
+Correlation between p_i_capability and Other Prob: -0.010908242851 (n=500)
+
+Correlation between capabilities_entropy and Self Prob: 0.148391934081 (n=500)
+
+Correlation between capabilities_entropy and Other Prob: 0.129006507119 (n=500)
+
+summary_dict = {'model': 'llama-3.1-405b-instruct', 'aligned_n': 500, 'n_other_self': 500, 'n_cap_self': 500, 'n_cap_other': 500, 'n_ent_self': 500, 'n_ent_other': 500, 'corr_other_self': 0.7404055369110948, 'corr_cap_self': -0.018025615333423176, 'corr_cap_other': -0.010908242851356324, 'corr_ent_self': 0.14839193408121346, 'corr_ent_other': 0.1290065071185897}
+
+
+
+===== llama-3.1-8b-instruct =====
+Baseline file: compiled_results_smc/llama-3.1-8b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327458_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.1-8b-instruct_SimpleMC_500_1761327906_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+Sample sizes per correlation: Other-Self=500, Cap-Self=500, Cap-Other=500, Ent-Self=500, Ent-Other=500
+
+Note: Entropy correlations use negative Self/Other probs,
+      so positive correlation = high entropy → low confidence (correct interpretation)
+
+Correlation between Other's Prob and Self Prob: 0.701012526016 (n=500)
+
+Correlation between p_i_capability and Self Prob: -0.049122909627 (n=500)
+
+Correlation between p_i_capability and Other Prob: -0.005959615847 (n=500)
+
+Correlation between capabilities_entropy and Self Prob: 0.154978187334 (n=500)
+
+Correlation between capabilities_entropy and Other Prob: 0.095348890413 (n=500)
+
+summary_dict = {'model': 'llama-3.1-8b-instruct', 'aligned_n': 500, 'n_other_self': 500, 'n_cap_self': 500, 'n_cap_other': 500, 'n_ent_self': 500, 'n_ent_other': 500, 'corr_other_self': 0.7010125260164181, 'corr_cap_self': -0.04912290962675284, 'corr_cap_other': -0.00595961584714228, 'corr_ent_self': 0.15497818733431165, 'corr_ent_other': 0.09534889041308212}
+
+
+
+===== llama-3.3-70b-instruct =====
+Baseline file: compiled_results_smc/llama-3.3-70b-instruct_phase1_compiled.json
+1P (self) file: capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847749_test_data.json
+3P (other) file: capabilities_3p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759848196_test_data.json
+Raw counts: baseline=500, self(1p)=500, other(3p)=500
+Aligned questions: 500
+Sample sizes per correlation: Other-Self=500, Cap-Self=500, Cap-Other=500, Ent-Self=500, Ent-Other=500
+
+Note: Entropy correlations use negative Self/Other probs,
+      so positive correlation = high entropy → low confidence (correct interpretation)
+
+Correlation between Other's Prob and Self Prob: 0.574471618227 (n=500)
+
+Correlation between p_i_capability and Self Prob: 0.032659025258 (n=500)
+
+Correlation between p_i_capability and Other Prob: -0.023602777271 (n=500)
+
+Correlation between capabilities_entropy and Self Prob: 0.141756223133 (n=500)
+
+Correlation between capabilities_entropy and Other Prob: 0.023802154307 (n=500)
+
+summary_dict = {'model': 'llama-3.3-70b-instruct', 'aligned_n': 500, 'n_other_self': 500, 'n_cap_self': 500, 'n_cap_other': 500, 'n_ent_self': 500, 'n_ent_other': 500, 'corr_other_self': 0.5744716182267801, 'corr_cap_self': 0.03265902525752677, 'corr_cap_other': -0.02360277727051763, 'corr_ent_self': 0.14175622313323805, 'corr_ent_other': 0.02380215430746269}
+
+
+Skipping llama-4-maverick: missing one of 1p/3p files.
+
+Skipping mistral-small-3.2-24b-instruct: missing one of 1p/3p files.
+
+Skipping openai-gpt-5-chat: missing one of 1p/3p files.
+
+Skipping qwen3-235b-a22b-2507: missing one of 1p/3p files.
+

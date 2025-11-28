@@ -1,0 +1,1177 @@
+{
+  "subject_id": "deepseek-chat_SimpleMC_50",
+  "timestamp": 1760620829.999763,
+  "accuracy": 0.4,
+  "results": {
+    "sqa_test_964647b742862f081b42bd7e42ee414efa0176e7ed740764e336308a78c205bb": {
+      "question": {
+        "id": "sqa_test_964647b742862f081b42bd7e42ee414efa0176e7ed740764e336308a78c205bb",
+        "question": "How many times has the Pakistan People's Party emerged as the leading opposition party in Pakistan on a national level until 2022?",
+        "options": {
+          "A": "three",
+          "B": "two",
+          "C": "five",
+          "D": "four"
+        },
+        "correct_answer": "D",
+        "answer_type": "Number",
+        "topic": "Politics"
+      },
+      "subject_answer": "B",
+      "is_correct": false,
+      "probs": {
+        "B": 0.6121215887505327,
+        "A": 0.37127051104920583,
+        "D": 0.011211399312055875,
+        "C": 0.005295890044438817
+      }
+    },
+    "sqa_test_0a4c35e7735d618d992179a3425a852e4510f637973fb8fc6a8027f0658c22a9": {
+      "question": {
+        "id": "sqa_test_0a4c35e7735d618d992179a3425a852e4510f637973fb8fc6a8027f0658c22a9",
+        "question": "What day, month, and year was the album \"Beauty Marks\" by Ciara released on CD in Japan?",
+        "options": {
+          "A": "May 10, 2019",
+          "B": "June 5, 2019",
+          "C": "July 12, 2019",
+          "D": "April 3, 2019"
+        },
+        "correct_answer": "B",
+        "answer_type": "Date",
+        "topic": "Music"
+      },
+      "subject_answer": "A",
+      "is_correct": false,
+      "probs": {
+        "A": 0.9998004834623841,
+        "B": 0.00012338520875095172,
+        "D": 3.11966663088749e-05,
+        "C": 2.144113428810925e-05
+      }
+    },
+    "sqa_test_555641c671bbf0a5c55d1b9fc21aca8359ecd576a569237dd498a9a2815baa92": {
+      "question": {
+        "id": "sqa_test_555641c671bbf0a5c55d1b9fc21aca8359ecd576a569237dd498a9a2815baa92",
+        "question": "What is the name of the eighth track on the album \"These Two Windows\" by Alec Benjamin?",
+        "options": {
+          "A": "Denver",
+          "B": "Alamo",
+          "C": "Phoenix",
+          "D": "Austin"
+        },
+        "correct_answer": "B",
+        "answer_type": "Other",
+        "topic": "Music"
+      },
+      "subject_answer": "B",
+      "is_correct": true,
+      "probs": {
+        "B": 0.8186015624195645,
+        "C": 0.11078566605380981,
+        "A": 0.06719490311832076,
+        "D": 0.003345438033138317
+      }
+    },
+    "sqa_test_e5e3ab25a764dafced08ead12973aae78f4fca98de83e8405b4737cb73c30e34": {
+      "question": {
+        "id": "sqa_test_e5e3ab25a764dafced08ead12973aae78f4fca98de83e8405b4737cb73c30e34",
+        "question": "In which year did Edward Meyrick first describe Cydalima mysteris?",
+        "options": {
+          "A": "1892",
+          "B": "1886",
+          "C": "1879",
+          "D": "1903"
+        },
+        "correct_answer": "B",
+        "answer_type": "Date",
+        "topic": "Science and technology"
+      },
+      "subject_answer": "B",
+      "is_correct": true,
+      "probs": {
+        "B": 0.7702763915716822,
+        "C": 0.17187189460994406,
+        "D": 0.04924212225119803,
+        "A": 0.008556997767459593
+      }
+    },
+    "sqa_test_4c8871503a08daf8624e25b326e6598859fcf0d1ab02e658358ebff0542d9a0b": {
+      "question": {
+        "id": "sqa_test_4c8871503a08daf8624e25b326e6598859fcf0d1ab02e658358ebff0542d9a0b",
+        "question": "In what year did Haile Gebrselassie go undefeated in all of his road races?",
+        "options": {
+          "A": "2005",
+          "B": "2004",
+          "C": "2007",
+          "D": "2003"
+        },
+        "correct_answer": "A",
+        "answer_type": "Date",
+        "topic": "Sports"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.9485622092485276,
+        "A": 0.03677975180511619,
+        "B": 0.008206671910495076,
+        "D": 0.006391362510303668
+      }
+    },
+    "sqa_test_06c8bafadff1502c95177fbbb80130e70a36b0cdf7261e434cc7879d779c3b75": {
+      "question": {
+        "id": "sqa_test_06c8bafadff1502c95177fbbb80130e70a36b0cdf7261e434cc7879d779c3b75",
+        "question": "What was the name of the first schoolhouse in Newbliss, Ontario, built around 1830?",
+        "options": {
+          "A": "S.S. #4 Newbliss School",
+          "B": "S.S. #5 Newbliss School.",
+          "C": "S.S. #7 Newbliss School",
+          "D": "S.S. #3 Newbliss School"
+        },
+        "correct_answer": "B",
+        "answer_type": "Other",
+        "topic": "History"
+      },
+      "subject_answer": "A",
+      "is_correct": false,
+      "probs": {
+        "A": 0.9295734042067313,
+        "D": 0.03604347183246354,
+        "B": 0.02807068408773473,
+        "C": 0.006263416235972231
+      }
+    },
+    "sqa_test_051c3cddbf9d6e40c5d1403ee7809fda8ce4fbe6b69f6d90bc4f2728f9802bd5": {
+      "question": {
+        "id": "sqa_test_051c3cddbf9d6e40c5d1403ee7809fda8ce4fbe6b69f6d90bc4f2728f9802bd5",
+        "question": "In what year was Valery Matveevich Panov awarded the Lenin Prize?",
+        "options": {
+          "A": "1965",
+          "B": "1967",
+          "C": "1971",
+          "D": "1969"
+        },
+        "correct_answer": "D",
+        "answer_type": "Date",
+        "topic": "Art"
+      },
+      "subject_answer": "B",
+      "is_correct": false,
+      "probs": {
+        "B": 0.9670477125357856,
+        "D": 0.013794196108845061,
+        "A": 0.01074293073140906,
+        "C": 0.008366602866103237
+      }
+    },
+    "sqa_test_819e4e2ae832d3da5dcb0d49c9cd63a4f9f8898ac7d5832f87db72165d74ed8e": {
+      "question": {
+        "id": "sqa_test_819e4e2ae832d3da5dcb0d49c9cd63a4f9f8898ac7d5832f87db72165d74ed8e",
+        "question": "In which month and year did Apple add the ability for users to speak \"Hey Siri\" to enable the assistant without the requirement of physically handling the device?",
+        "options": {
+          "A": "October 2014",
+          "B": "March 2015",
+          "C": "September 2014.",
+          "D": "June 2015"
+        },
+        "correct_answer": "C",
+        "answer_type": "Date",
+        "topic": "Science and technology"
+      },
+      "subject_answer": "A",
+      "is_correct": false,
+      "probs": {
+        "A": 0.9973712112545171,
+        "C": 0.0019253795899192004,
+        "D": 0.0005516304882885566,
+        "B": 5.814142571029645e-05
+      }
+    },
+    "sqa_test_ed594c5e4f0f0a872bee222b47cc69eb17112e6ccd106227ab6ff2feb69dd254": {
+      "question": {
+        "id": "sqa_test_ed594c5e4f0f0a872bee222b47cc69eb17112e6ccd106227ab6ff2feb69dd254",
+        "question": "What month and year was Kristof's album \"The Talkshow\" released?",
+        "options": {
+          "A": "May 2020",
+          "B": "September 2019",
+          "C": "January 2021",
+          "D": "March 2020"
+        },
+        "correct_answer": "A",
+        "answer_type": "Date",
+        "topic": "Music"
+      },
+      "subject_answer": "B",
+      "is_correct": false,
+      "probs": {
+        "B": 0.7197881876533442,
+        "A": 0.20622276848598575,
+        "D": 0.04601451935853057,
+        "C": 0.02790921678288929
+      }
+    },
+    "sqa_test_bc669296baadc042f9ef348db5d0ff1c1ce42db143bde035bda2c98f32303524": {
+      "question": {
+        "id": "sqa_test_bc669296baadc042f9ef348db5d0ff1c1ce42db143bde035bda2c98f32303524",
+        "question": "What year was the municipality of Soatá, Boyacá, Colombia, founded?",
+        "options": {
+          "A": "1571",
+          "B": "1558",
+          "C": "1532",
+          "D": "1545"
+        },
+        "correct_answer": "D",
+        "answer_type": "Date",
+        "topic": "Geography"
+      },
+      "subject_answer": "B",
+      "is_correct": false,
+      "probs": {
+        "B": 0.8302817445346085,
+        "A": 0.14428132862277523,
+        "D": 0.02507233842990471,
+        "C": 0.0002785284544170847
+      }
+    },
+    "sqa_test_7ebf0694d04ab70a4ee0674fbbb697c101f3706e462a02fc135eb39bcd69896d": {
+      "question": {
+        "id": "sqa_test_7ebf0694d04ab70a4ee0674fbbb697c101f3706e462a02fc135eb39bcd69896d",
+        "question": "At which international show jumping event did Susie Hutchison and Samsung Woodstock get blocked mid-round by the ring crew?",
+        "options": {
+          "A": "Rolex Kentucky Three-Day Event",
+          "B": "Longines Global Champions Tour",
+          "C": "Volvo FEI World Cup Final",
+          "D": "CHIO Aachen World Equestrian Festival"
+        },
+        "correct_answer": "C",
+        "answer_type": "Date",
+        "topic": "Sports"
+      },
+      "subject_answer": "C",
+      "is_correct": true,
+      "probs": {
+        "C": 0.8337137046933836,
+        "D": 0.11283088036292474,
+        "B": 0.04150816121479462,
+        "A": 0.011892287296884754
+      }
+    },
+    "sqa_test_72cf4bc043e2e4a7ef2f1f6b0208afe7632debb41c1e71c6934011e5aa620ec3": {
+      "question": {
+        "id": "sqa_test_72cf4bc043e2e4a7ef2f1f6b0208afe7632debb41c1e71c6934011e5aa620ec3",
+        "question": "Who was the director responsible for the core web search algorithms from 2002 to 2005 at Google Inc.?",
+        "options": {
+          "A": "Sanjay Ghemawat",
+          "B": "Jeff Dean",
+          "C": "Peter Norvig",
+          "D": "Amit Singhal"
+        },
+        "correct_answer": "C",
+        "answer_type": "Person",
+        "topic": "Science and technology"
+      },
+      "subject_answer": "D",
+      "is_correct": false,
+      "probs": {
+        "D": 0.9997752218229847,
+        "C": 8.479914759703694e-05,
+        "B": 7.483498509619903e-05,
+        " D": 2.7530252497262914e-05
+      }
+    },
+    "sqa_test_d874e4c95171a45e7dac70c47dbf43f9d9d52e1ebbeb382a23d50ccdf88ff2e2": {
+      "question": {
+        "id": "sqa_test_d874e4c95171a45e7dac70c47dbf43f9d9d52e1ebbeb382a23d50ccdf88ff2e2",
+        "question": "Who inaugurated the Khyber Hotel in Gulmarg?",
+        "options": {
+          "A": "Omar Abdullah",
+          "B": "Ghulam Nabi Azad",
+          "C": "Farooq Abdullah",
+          "D": "Mehbooba Mufti"
+        },
+        "correct_answer": "A",
+        "answer_type": "Person",
+        "topic": "Politics"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.5400202443193729,
+        "B": 0.2550874860151033,
+        "A": 0.19866233386027848,
+        "D": 0.005999084097444413
+      }
+    },
+    "sqa_test_4baa01324136a9c5dbb5b616912aa4b4d7ec0cd0a8b8e2db0b26cd99755d182f": {
+      "question": {
+        "id": "sqa_test_4baa01324136a9c5dbb5b616912aa4b4d7ec0cd0a8b8e2db0b26cd99755d182f",
+        "question": "From which date, month, and year to which date, month, and year did the Indian politician Anant Geete serve as the Minister of Power in the Indian government?",
+        "options": {
+          "A": "August 26, 2002 – May 22, 2004",
+          "B": "March 15, 2001 – July 10, 2003",
+          "C": "November 2, 2003 – September 18, 2005",
+          "D": "June 12, 2004 – January 30, 2006"
+        },
+        "correct_answer": "A",
+        "answer_type": "Date",
+        "topic": "Politics"
+      },
+      "subject_answer": "A",
+      "is_correct": true,
+      "probs": {
+        "A": 0.9605073244001934,
+        "D": 0.03724290978774042,
+        "B": 0.0018542152958204213,
+        "C": 0.0002509407522415163
+      }
+    },
+    "sqa_test_3dd34561876ebf7e37841ffdc986cd3d87db3626558b39502994d7de071da475": {
+      "question": {
+        "id": "sqa_test_3dd34561876ebf7e37841ffdc986cd3d87db3626558b39502994d7de071da475",
+        "question": "What is Frida Kahlo's largest painting called in English?",
+        "options": {
+          "A": "Self-Portrait with Thorn Necklace and Hummingbird",
+          "B": "The Two Fridas.",
+          "C": "The Wounded Deer",
+          "D": "The Broken Column"
+        },
+        "correct_answer": "B",
+        "answer_type": "Other",
+        "topic": "Art"
+      },
+      "subject_answer": "B",
+      "is_correct": true,
+      "probs": {
+        "B": 0.9999147726207335,
+        " B": 4.006189691445019e-05,
+        "A": 2.4298768764860984e-05,
+        "b": 4.784711262888122e-06
+      }
+    },
+    "sqa_test_b5dde8abd319f86acfbdacffc8ad6560461c453ac63d45e29bc80624848f9e7d": {
+      "question": {
+        "id": "sqa_test_b5dde8abd319f86acfbdacffc8ad6560461c453ac63d45e29bc80624848f9e7d",
+        "question": "What was the name of the composer of the opening theme song for the radio program \"The American Album of Familiar Music\"?",
+        "options": {
+          "A": "George Wilbur Meyer",
+          "B": "Raymond Hubbell Scott",
+          "C": "Walter Gustave \"Gus\" Haenschen",
+          "D": "William Grant Still"
+        },
+        "correct_answer": "C",
+        "answer_type": "Person",
+        "topic": "Music"
+      },
+      "subject_answer": "A",
+      "is_correct": false,
+      "probs": {
+        "A": 0.9079015373998315,
+        "C": 0.07452509478233507,
+        "B": 0.016628800298473804,
+        "D": 0.0008278992173356716
+      }
+    },
+    "sqa_test_cf4a1dafc8fdc074fe175c2966c168eac9d25a00ff0cf7fd02b7cb7a1d783e9a": {
+      "question": {
+        "id": "sqa_test_cf4a1dafc8fdc074fe175c2966c168eac9d25a00ff0cf7fd02b7cb7a1d783e9a",
+        "question": "On what date, month, and year was the Indian politician Prabhunath Singh born?",
+        "options": {
+          "A": "15 March 1951",
+          "B": "20 November 1953",
+          "C": "23 September 1952",
+          "D": "8 December 1954"
+        },
+        "correct_answer": "B",
+        "answer_type": "Date",
+        "topic": "Politics"
+      },
+      "subject_answer": "A",
+      "is_correct": false,
+      "probs": {
+        "A": 0.6620314561464861,
+        "B": 0.18967518785830484,
+        "C": 0.11504381682281531,
+        "D": 0.03296060536884162
+      }
+    },
+    "sqa_test_6526110e8d3a228769cae71340edbc094c68d285a2a9628563474578db3cb995": {
+      "question": {
+        "id": "sqa_test_6526110e8d3a228769cae71340edbc094c68d285a2a9628563474578db3cb995",
+        "question": "What did Alison Garrs overdose on in the last episode of Season 2 of Happy Valley?",
+        "options": {
+          "A": "Temazepam",
+          "B": "Tramadol",
+          "C": "Alprazolam",
+          "D": "Diazepam"
+        },
+        "correct_answer": "D",
+        "answer_type": "Other",
+        "topic": "TV shows"
+      },
+      "subject_answer": "B",
+      "is_correct": false,
+      "probs": {
+        "B": 0.4896855246119189,
+        "A": 0.4896855246119189,
+        "C": 0.011516296971490115,
+        "D": 0.00896890109947935
+      }
+    },
+    "sqa_test_79e87b6074b7ed63d6d878113ed7ac35b658d24e2e8e9c364b5a2009a0b0a363": {
+      "question": {
+        "id": "sqa_test_79e87b6074b7ed63d6d878113ed7ac35b658d24e2e8e9c364b5a2009a0b0a363",
+        "question": "What year did Shokichi Iyanaga become Dean of the Faculty of Science at Tokyo University?",
+        "options": {
+          "A": "1968",
+          "B": "1962",
+          "C": "1971",
+          "D": "1965"
+        },
+        "correct_answer": "D",
+        "answer_type": "Date",
+        "topic": "History"
+      },
+      "subject_answer": "D",
+      "is_correct": true,
+      "probs": {
+        "D": 0.593519055824527,
+        "B": 0.2183434585813291,
+        "C": 0.17004605652165794,
+        "A": 0.017922720360630813
+      }
+    },
+    "sqa_test_3e384ddfeb267e45a04abb7823562a816bc5e757335efca51e532abe274084f7": {
+      "question": {
+        "id": "sqa_test_3e384ddfeb267e45a04abb7823562a816bc5e757335efca51e532abe274084f7",
+        "question": "At what school was Leo Strauss working when he died?",
+        "options": {
+          "A": "Johns Hopkins University",
+          "B": "St. John's College, Annapolis",
+          "C": "University of Chicago",
+          "D": "Princeton University"
+        },
+        "correct_answer": "B",
+        "answer_type": "Place",
+        "topic": "History"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.9996783576121202,
+        "B": 0.0002611746053638477,
+        "A": 2.42930225127149e-05,
+        " C": 1.6696333922416676e-05
+      }
+    },
+    "sqa_test_1928d080a752df8aa7eec8daf0b6135ae37cd391863318ff547e6efe65c96f8b": {
+      "question": {
+        "id": "sqa_test_1928d080a752df8aa7eec8daf0b6135ae37cd391863318ff547e6efe65c96f8b",
+        "question": "What are the names of the two scientists who received the Salem Prize after the year Akshay Venkatesh received his?",
+        "options": {
+          "A": "Peter Scholze and Maryna Viazovska",
+          "B": "Terence Tao and Ben Green",
+          "C": "Bo'az Klartag and Assaf Naor",
+          "D": "Alessio Figalli and Peter Kronheimer"
+        },
+        "correct_answer": "C",
+        "answer_type": "Person",
+        "topic": "Science and technology"
+      },
+      "subject_answer": "A",
+      "is_correct": false,
+      "probs": {
+        "A": 0.995812383021605,
+        "B": 0.002468371533805241,
+        "C": 0.0013212240733002044,
+        "D": 0.00033405791995191566
+      }
+    },
+    "sqa_test_dee670434dfef01be6b7f25427be4aebd7da707885ba46f9a1fb353d99c99e26": {
+      "question": {
+        "id": "sqa_test_dee670434dfef01be6b7f25427be4aebd7da707885ba46f9a1fb353d99c99e26",
+        "question": "In 2002, what zoo confirmed it had three female lynxes and was developing a plan for a captive breeding program?",
+        "options": {
+          "A": "Barcelona Zoo",
+          "B": "Valencia Bioparc",
+          "C": "Madrid Zoo",
+          "D": "Jerez Zoo"
+        },
+        "correct_answer": "D",
+        "answer_type": "Place",
+        "topic": "Geography"
+      },
+      "subject_answer": "D",
+      "is_correct": true,
+      "probs": {
+        "D": 0.9771530720290229,
+        "A": 0.013938341983407288,
+        "C": 0.008454031758496319,
+        "B": 0.00042090145714434923
+      }
+    },
+    "sqa_test_aa95e2751aa6b686f7254b0548f497b9a2f231eb68a4e2aa29e8dc3d1c936765": {
+      "question": {
+        "id": "sqa_test_aa95e2751aa6b686f7254b0548f497b9a2f231eb68a4e2aa29e8dc3d1c936765",
+        "question": "On what date did President Kagame receive an honorary degree in Ethiopia?",
+        "options": {
+          "A": "JULY 2, 2016",
+          "B": "JUNE 15, 2016",
+          "C": "JULY 28, 2016",
+          "D": "AUGUST 9, 2016"
+        },
+        "correct_answer": "A",
+        "answer_type": "Date",
+        "topic": "Politics"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.5604295515130396,
+        "A": 0.4364629735747115,
+        "B": 0.002940863681853023,
+        "D": 7.837136251065398e-05
+      }
+    },
+    "sqa_test_4a44c39217c49948e5d87ea0ea61189b6d89b01c0bed2d350990d1431be41300": {
+      "question": {
+        "id": "sqa_test_4a44c39217c49948e5d87ea0ea61189b6d89b01c0bed2d350990d1431be41300",
+        "question": "What is the name of the ship named after Habba Khatoon?",
+        "options": {
+          "A": "INS Habba Khatoon",
+          "B": "CGS Habba Khatoon",
+          "C": "HMS Habba Khatoon",
+          "D": "USS Habba Khatoon"
+        },
+        "correct_answer": "B",
+        "answer_type": "Other",
+        "topic": "Other"
+      },
+      "subject_answer": "B",
+      "is_correct": true,
+      "probs": {
+        "B": 0.9855713783002471,
+        "A": 0.014058423580719065,
+        "C": 0.00020053254672577512,
+        "D": 7.37718012261643e-05
+      }
+    },
+    "sqa_test_e371d4b291f8672c6c329d3e335eb4248fa8de28917be9c2504a8a6b1cb3a874": {
+      "question": {
+        "id": "sqa_test_e371d4b291f8672c6c329d3e335eb4248fa8de28917be9c2504a8a6b1cb3a874",
+        "question": "What were the day, month, and year when Pakistan International Airlines Fokker 27 was hijacked en route to Karachi from Sukkur?",
+        "options": {
+          "A": "15 March, 1978",
+          "B": "23 February, 1978",
+          "C": "8 December, 1977",
+          "D": "20 January, 1978"
+        },
+        "correct_answer": "D",
+        "answer_type": "Date",
+        "topic": "History"
+      },
+      "subject_answer": "A",
+      "is_correct": false,
+      "probs": {
+        "A": 0.5587976980538552,
+        "B": 0.26395732657623083,
+        "C": 0.1600982114242643,
+        "D": 0.016874227337858868
+      }
+    },
+    "sqa_test_9f39ae61ecf154463c66f2352eaaeb094936617e9665e6c00c977231e1df1400": {
+      "question": {
+        "id": "sqa_test_9f39ae61ecf154463c66f2352eaaeb094936617e9665e6c00c977231e1df1400",
+        "question": "After being expelled from BSP due to alleged anti-party activities, the Indian politician Kuldeep Singh Sengar joined the Samajwadi Party and won a seat from which constituency in 2007?",
+        "options": {
+          "A": "Bangermau",
+          "B": "Fatehpur Sikri",
+          "C": "Moradabad",
+          "D": "Shahjahanpur"
+        },
+        "correct_answer": "A",
+        "answer_type": "Place",
+        "topic": "Politics"
+      },
+      "subject_answer": "A",
+      "is_correct": true,
+      "probs": {
+        "A": 0.9977110685570849,
+        "D": 0.0013237433569974776,
+        "B": 0.0006252920862587169,
+        "C": 0.00020300261862354248
+      }
+    },
+    "sqa_test_8d99bbe4d40b67525511bacee7b521e735ec5d0079ccf8e721070182f257170c": {
+      "question": {
+        "id": "sqa_test_8d99bbe4d40b67525511bacee7b521e735ec5d0079ccf8e721070182f257170c",
+        "question": "At what university was Lois Griffiths appointed as an instructor in mathematics immediately following the award of her doctorate?",
+        "options": {
+          "A": "Columbia",
+          "B": "Northwestern.",
+          "C": "University of Chicago",
+          "D": "Stanford"
+        },
+        "correct_answer": "B",
+        "answer_type": "Place",
+        "topic": "Other"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.653995302911043,
+        "B": 0.3089255159516028,
+        "A": 0.03256050594715777,
+        "D": 0.004406586345297938
+      }
+    },
+    "sqa_test_44ecd04aca5481dbc5fda63f175229ef741f55cfa51992f27a6341fae6d9f98c": {
+      "question": {
+        "id": "sqa_test_44ecd04aca5481dbc5fda63f175229ef741f55cfa51992f27a6341fae6d9f98c",
+        "question": "Which power project in Jammu and Kashmir is located on the Suru River?",
+        "options": {
+          "A": "Kiru Hydroelectric Plant",
+          "B": "Pakal Dul Hydroelectric Plant",
+          "C": "Nimoo Bazgo Hydroelectric Plant",
+          "D": "Chutak Hydroelectric Plant"
+        },
+        "correct_answer": "D",
+        "answer_type": "Other",
+        "topic": "Geography"
+      },
+      "subject_answer": "D",
+      "is_correct": true,
+      "probs": {
+        "D": 0.99903462236861,
+        "C": 0.0003351387033154099,
+        "A": 0.0003351387033154099,
+        "B": 0.00026100628457957647
+      }
+    },
+    "sqa_test_58eacf324c51436324d5039e1b34f78a8cf6bed05288585d86eb28c20eccee24": {
+      "question": {
+        "id": "sqa_test_58eacf324c51436324d5039e1b34f78a8cf6bed05288585d86eb28c20eccee24",
+        "question": "Who won the Gerard P. Kuiper Prize in 2001?",
+        "options": {
+          "A": "David Morrison",
+          "B": "Bruce W. Hapke",
+          "C": "Dale P. Cruikshank",
+          "D": "Michael J. Belton"
+        },
+        "correct_answer": "B",
+        "answer_type": "Person",
+        "topic": "Science and technology"
+      },
+      "subject_answer": "B",
+      "is_correct": true,
+      "probs": {
+        "B": 0.6186331394967874,
+        "C": 0.3752199662190841,
+        "A": 0.005352226003510836,
+        "D": 0.0007243450221315025
+      }
+    },
+    "sqa_test_856c3c6e337a380d2bcc8e8bc407b8b3c33cb937fce3d874d2a953f969d8fc9c": {
+      "question": {
+        "id": "sqa_test_856c3c6e337a380d2bcc8e8bc407b8b3c33cb937fce3d874d2a953f969d8fc9c",
+        "question": "In inning 4 of Game 1 of the '07 World Series, who hit a double that scored two runs?",
+        "options": {
+          "A": "Kevin Youkilis",
+          "B": "Jason Varitek",
+          "C": "Mike Lowell",
+          "D": "Dustin Pedroia"
+        },
+        "correct_answer": "B",
+        "answer_type": "Person",
+        "topic": "Sports"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.9701516112433711,
+        "A": 0.02281577716512062,
+        "D": 0.005090888012764252,
+        "B": 0.0018728330372021077
+      }
+    },
+    "sqa_test_348f0a3da53b0a075cc1843093bb073815fd8230d2e69e5c2fbc4379b7cc0800": {
+      "question": {
+        "id": "sqa_test_348f0a3da53b0a075cc1843093bb073815fd8230d2e69e5c2fbc4379b7cc0800",
+        "question": "What is the forest cover area of Uttarakhand in square kilometers according to the interpretation of IRS Resourcesat-2 LISS III satellite data from 2017-2018?",
+        "options": {
+          "A": "24,756.18",
+          "B": "25,091.73",
+          "C": "24,303.04",
+          "D": "23,847.92"
+        },
+        "correct_answer": "C",
+        "answer_type": "Number",
+        "topic": "Geography"
+      },
+      "subject_answer": "C",
+      "is_correct": true,
+      "probs": {
+        "C": 0.8191478419718903,
+        "B": 0.11085959529430518,
+        "A": 0.06723974346933047,
+        "D": 0.002607168409428806
+      }
+    },
+    "sqa_test_6b071f5b1ba936495401930ca8e33d31184e439302e51157f3079211ba759d5d": {
+      "question": {
+        "id": "sqa_test_6b071f5b1ba936495401930ca8e33d31184e439302e51157f3079211ba759d5d",
+        "question": "Who won the 2016 Wisden-MCC (Melbourne Cricket Council) Cricket Photograph of the Year?",
+        "options": {
+          "A": "Saqib Majeed",
+          "B": "Pradeep Sharma",
+          "C": "James Wellington",
+          "D": "Rashid Ahmed"
+        },
+        "correct_answer": "A",
+        "answer_type": "Person",
+        "topic": "Sports"
+      },
+      "subject_answer": "A",
+      "is_correct": true,
+      "probs": {
+        "A": 0.617314975611576,
+        "C": 0.3744204705667768,
+        "B": 0.006857748496436162,
+        "D": 0.0011916979994170726
+      }
+    },
+    "sqa_test_a72a67ff8fd988ebc63fa9d4bd35938319dcf3436dbd9a0349969c6ff9f7d410": {
+      "question": {
+        "id": "sqa_test_a72a67ff8fd988ebc63fa9d4bd35938319dcf3436dbd9a0349969c6ff9f7d410",
+        "question": "What were the day, month, and year of the Terraria desktop patch that added sawmills to the game?",
+        "options": {
+          "A": "July 12th, 2011",
+          "B": "October 5th, 2011",
+          "C": "August 17th, 2011",
+          "D": "September 23rd, 2011"
+        },
+        "correct_answer": "C",
+        "answer_type": "Date",
+        "topic": "Video games"
+      },
+      "subject_answer": "A",
+      "is_correct": false,
+      "probs": {
+        "A": 0.5708795173072609,
+        "B": 0.2696643735476356,
+        "D": 0.09920397904455125,
+        "C": 0.060170254856009936
+      }
+    },
+    "sqa_test_aba388db004a8833183db9042963e592fa216869b59da56e8a75c151581a3063": {
+      "question": {
+        "id": "sqa_test_aba388db004a8833183db9042963e592fa216869b59da56e8a75c151581a3063",
+        "question": "Which senator introduced the Act Prohibiting Importation of Slaves into the Senate?",
+        "options": {
+          "A": "James Turner",
+          "B": "Stephen R. Bradley",
+          "C": "David Stone",
+          "D": "Samuel L. Mitchill"
+        },
+        "correct_answer": "A",
+        "answer_type": "Person",
+        "topic": "Politics"
+      },
+      "subject_answer": "B",
+      "is_correct": false,
+      "probs": {
+        "B": 0.9608143731784394,
+        "A": 0.03725481896902673,
+        "C": 0.0014445257490364044,
+        "D": 0.00041386355628698896
+      }
+    },
+    "sqa_test_bea1cd156a2af78974e4bc4418f2250bcd64b28ee6b81e6a9a6d699b7dbf0aca": {
+      "question": {
+        "id": "sqa_test_bea1cd156a2af78974e4bc4418f2250bcd64b28ee6b81e6a9a6d699b7dbf0aca",
+        "question": "In the research paper titled \"Detecting Driver Mental Fatigue Based on EEG Alpha Power Changes During Simulated Driving\" by Faramarz Gharagozlou et al., what is the name of the university where the overnight study took place?",
+        "options": {
+          "A": "Isfahan University of Technology",
+          "B": "Khaje Nasir Toosi University of Technology",
+          "C": "Amirkabir University of Technology",
+          "D": "Sharif University of Technology"
+        },
+        "correct_answer": "B",
+        "answer_type": "Place",
+        "topic": "Science and technology"
+      },
+      "subject_answer": "B",
+      "is_correct": true,
+      "probs": {
+        "B": 0.4656331672492908,
+        "C": 0.36263549689252544,
+        "D": 0.13340614394575057,
+        "A": 0.038221500171078546
+      }
+    },
+    "sqa_test_33467b90a04ad222ae543b4bf210b99341fa005a34f9f0a20e1d58478901b65e": {
+      "question": {
+        "id": "sqa_test_33467b90a04ad222ae543b4bf210b99341fa005a34f9f0a20e1d58478901b65e",
+        "question": "What position did Ghulam Ishaq Khan, former Governor of the State Bank of Pakistan, hold until 1955 at the Provincial Secretariat of the North-West Frontier Province (now Khyber Pakhtunkhwa)?",
+        "options": {
+          "A": "secretary of the irrigation department",
+          "B": "secretary of the public works department",
+          "C": "secretary of the finance department",
+          "D": "secretary of the agriculture department"
+        },
+        "correct_answer": "A",
+        "answer_type": "Other",
+        "topic": "Politics"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.9456148549650595,
+        "B": 0.03666546828107399,
+        "A": 0.01731953672726611,
+        "D": 0.00031721853167832216
+      }
+    },
+    "sqa_test_9dc8bbf691a84b956c81d92ce9542cebf8e6c30c908779bfe04535167233ba5d": {
+      "question": {
+        "id": "sqa_test_9dc8bbf691a84b956c81d92ce9542cebf8e6c30c908779bfe04535167233ba5d",
+        "question": "How many stolen vehicles were recovered in Nigeria by the Nigerian Police Force between 2002 and 2004, when Mustafa Adebayo Balogun was Nigeria's Inspector General of Police?",
+        "options": {
+          "A": "2,148",
+          "B": "1,892",
+          "C": "3,215",
+          "D": "2,764"
+        },
+        "correct_answer": "A",
+        "answer_type": "Number",
+        "topic": "Politics"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.5573737453236903,
+        "A": 0.3380642654576792,
+        "D": 0.058746753545099846,
+        "B": 0.04575201766382659
+      }
+    },
+    "sqa_test_b918ab0f7c3c3c58eba85c098c685e3de848114554a5bde8c5ef66d01dde7309": {
+      "question": {
+        "id": "sqa_test_b918ab0f7c3c3c58eba85c098c685e3de848114554a5bde8c5ef66d01dde7309",
+        "question": "What were the day, month, and year when Britannica released a Google Chrome extension, \"Britannica Insights,\" which shows snippets of information from Britannica Online whenever the user performs a Google search, in a box to the right of Google's results?",
+        "options": {
+          "A": "21 November 2017",
+          "B": "3 September 2018",
+          "C": "7 June 2018",
+          "D": "15 March 2019"
+        },
+        "correct_answer": "C",
+        "answer_type": "Date",
+        "topic": "Science and technology"
+      },
+      "subject_answer": "B",
+      "is_correct": false,
+      "probs": {
+        "B": 0.9393424508136659,
+        "C": 0.060050157847861295,
+        "A": 0.0005195355387320388,
+        "D": 3.321279581201382e-05
+      }
+    },
+    "sqa_test_b0bd2165cf927888c3da2ba086fefb21930d3e49f1a3965b1c0f812c06011cbe": {
+      "question": {
+        "id": "sqa_test_b0bd2165cf927888c3da2ba086fefb21930d3e49f1a3965b1c0f812c06011cbe",
+        "question": "How many years did Sidney Abbott attend Smith College?",
+        "options": {
+          "A": "3 years.",
+          "B": "5 years.",
+          "C": "4 years.",
+          "D": "2 years."
+        },
+        "correct_answer": "A",
+        "answer_type": "Number",
+        "topic": "Other"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.9376328253830071,
+        "A": 0.05994086067734374,
+        "B": 0.0018100571525375229,
+        "D": 0.0005185900567930971
+      }
+    },
+    "sqa_test_52c781f4bc7d1eaf7c545e21829becab64e404187cea246959f4248497e6bb4c": {
+      "question": {
+        "id": "sqa_test_52c781f4bc7d1eaf7c545e21829becab64e404187cea246959f4248497e6bb4c",
+        "question": "Who was the first female Deputy Speaker of the National Assembly of Pakistan?",
+        "options": {
+          "A": "Benazir Bhutto",
+          "B": "Hina Rabbani Khar",
+          "C": "Fatima Jinnah",
+          "D": "Ashraf Abbasi"
+        },
+        "correct_answer": "D",
+        "answer_type": "Person",
+        "topic": "Politics"
+      },
+      "subject_answer": "D",
+      "is_correct": true,
+      "probs": {
+        "D": 0.9996648958081323,
+        "A": 0.0002611711183299409,
+        "B": 2.7527233349930686e-05,
+        "C": 2.143823088871531e-05
+      }
+    },
+    "sqa_test_8bd82619803c27ef6739c38aff0a5db82dd93c57e27388b5df830ba7248f7a30": {
+      "question": {
+        "id": "sqa_test_8bd82619803c27ef6739c38aff0a5db82dd93c57e27388b5df830ba7248f7a30",
+        "question": "Who sketched the \"Taddei Tondo\" soon after it arrived in England and wrote this to Sir George Beaumont: \"Your important acquisition of the basso-relievo of Michael Angelo is still the chief talk of all our artists\"?",
+        "options": {
+          "A": "John Constable",
+          "B": "David Wilkie",
+          "C": "Thomas Lawrence",
+          "D": "William Blake"
+        },
+        "correct_answer": "B",
+        "answer_type": "Person",
+        "topic": "Art"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.705034239014438,
+        "B": 0.25936760958512156,
+        "A": 0.03510158472117038,
+        "D": 0.0003899434761240592
+      }
+    },
+    "sqa_test_104c0e5526f9e0135cf80fe8428f3d0a2bc32ad026a28a107e2ecd976346bc4e": {
+      "question": {
+        "id": "sqa_test_104c0e5526f9e0135cf80fe8428f3d0a2bc32ad026a28a107e2ecd976346bc4e",
+        "question": "What quote did Dr. Richard Trager say to Miles Upshur while opening the elevator door right before he died in the 2013 video game Outlast?",
+        "options": {
+          "A": "You can't hide from me forever",
+          "B": "I'm not giving up on you",
+          "C": "I'll see you in hell",
+          "D": "This is where your story ends"
+        },
+        "correct_answer": "B",
+        "answer_type": "Other",
+        "topic": "Video games"
+      },
+      "subject_answer": "D",
+      "is_correct": false,
+      "probs": {
+        "D": 0.9334814658227035,
+        "C": 0.05967547981078502,
+        "A": 0.0038149248812384662,
+        "B": 0.002971066484867104
+      }
+    },
+    "sqa_test_1268491ba4c601a4db258eb69259916033dba5ae9a15e9193170a4376525adf2": {
+      "question": {
+        "id": "sqa_test_1268491ba4c601a4db258eb69259916033dba5ae9a15e9193170a4376525adf2",
+        "question": "What were the day, month, and year when Dr. Walensky said the Centers for Disease Control and Prevention (CDC) would make drastic changes in the wake of mistakes during the COVID-19 pandemic and outlined an overhaul of how the Centers for Disease Control and Prevention would analyze and share data and how they would communicate information to the general public?",
+        "options": {
+          "A": "17 August 2022",
+          "B": "9 September 2022",
+          "C": "14 July 2022",
+          "D": "23 March 2022"
+        },
+        "correct_answer": "A",
+        "answer_type": "Date",
+        "topic": "Politics"
+      },
+      "subject_answer": "A",
+      "is_correct": true,
+      "probs": {
+        "A": 0.9998852146345244,
+        "B": 6.604894889381362e-05,
+        "**": 1.3005809172157039e-05,
+        " ": 5.421627879058653e-06
+      }
+    },
+    "sqa_test_10f76735391f41160a7cd48281a1fdb0e04af1e5a47e0e2ffc160abf48b35f10": {
+      "question": {
+        "id": "sqa_test_10f76735391f41160a7cd48281a1fdb0e04af1e5a47e0e2ffc160abf48b35f10",
+        "question": "According to the last population update in 2010, what is the population of the rural locality of Yepishata in the Klyapovskoye Rural Settlement of Russia?",
+        "options": {
+          "A": "45",
+          "B": "27",
+          "C": "19",
+          "D": "33"
+        },
+        "correct_answer": "D",
+        "answer_type": "Number",
+        "topic": "Geography"
+      },
+      "subject_answer": "B",
+      "is_correct": false,
+      "probs": {
+        "B": 0.4817814344358179,
+        "C": 0.4817814344358179,
+        "A": 0.03079925850836026,
+        "D": 0.005352108606347437
+      }
+    },
+    "sqa_test_5019f1a6a707d26cdec2cda4e9fbd7a4e7c807b9ff6b1cf87efb94d9b6d2f8d7": {
+      "question": {
+        "id": "sqa_test_5019f1a6a707d26cdec2cda4e9fbd7a4e7c807b9ff6b1cf87efb94d9b6d2f8d7",
+        "question": "Which of the three Olympic fencing weapons was the last one to transition to using electrical equipment?",
+        "options": {
+          "A": "Foil",
+          "B": "Rapier",
+          "C": "Épée",
+          "D": "Sabre"
+        },
+        "correct_answer": "D",
+        "answer_type": "Other",
+        "topic": "Sports"
+      },
+      "subject_answer": "A",
+      "is_correct": false,
+      "probs": {
+        "A": 0.534605564003705,
+        "C": 0.252529787344596,
+        "D": 0.19667039613282675,
+        "B": 0.016143691120402547
+      }
+    },
+    "sqa_test_2be7573710163c8e869a5760d9af3858cb67d503f68c42d09a7aa565a73e8e0b": {
+      "question": {
+        "id": "sqa_test_2be7573710163c8e869a5760d9af3858cb67d503f68c42d09a7aa565a73e8e0b",
+        "question": "In what month and year did Diana Vreeland resign from Harper's Bazaar?",
+        "options": {
+          "A": "November, 1961",
+          "B": "March, 1962.",
+          "C": "January, 1963",
+          "D": "September, 1962"
+        },
+        "correct_answer": "B",
+        "answer_type": "Date",
+        "topic": "Art"
+      },
+      "subject_answer": "B",
+      "is_correct": true,
+      "probs": {
+        "B": 0.9857023590777542,
+        "C": 0.006641609442041384,
+        "D": 0.005172490634316266,
+        "A": 0.0024433115700171594
+      }
+    },
+    "sqa_test_f266829f905b3f556eb572718e27f683a4c8444bdf7a683d9117ef9724adbb40": {
+      "question": {
+        "id": "sqa_test_f266829f905b3f556eb572718e27f683a4c8444bdf7a683d9117ef9724adbb40",
+        "question": "Name the father and mother of Mukul Chandra Dey, a Bengali artist.",
+        "options": {
+          "A": "Purnashashi Devi and Kula Chandra Dey",
+          "B": "Kamala Devi and Bhuvan Chandra Dey",
+          "C": "Radharani Devi and Gopal Chandra Dey",
+          "D": "Saraswati Devi and Nirmal Chandra Dey"
+        },
+        "correct_answer": "A",
+        "answer_type": "Other",
+        "topic": "Art"
+      },
+      "subject_answer": "A",
+      "is_correct": true,
+      "probs": {
+        "A": 0.9540453674612318,
+        "B": 0.03699235391006242,
+        "C": 0.008254107884286715,
+        "D": 0.000597925569672229
+      }
+    },
+    "sqa_test_814f2e4045a2a6b50a96350605d87d865bc379d4a1e45ba1864786a3634b8686": {
+      "question": {
+        "id": "sqa_test_814f2e4045a2a6b50a96350605d87d865bc379d4a1e45ba1864786a3634b8686",
+        "question": "On what date (day/month/year) was Makhdum Khusro Bakhtyar (Pakistani politician) inducted into the Federal Cabinet of Prime Minister Shaukat Aziz?",
+        "options": {
+          "A": "22 August 2004",
+          "B": "15 September 2004",
+          "C": "28 October 2004",
+          "D": "4 September 2004"
+        },
+        "correct_answer": "D",
+        "answer_type": "Date",
+        "topic": "Politics"
+      },
+      "subject_answer": "C",
+      "is_correct": false,
+      "probs": {
+        "C": 0.7847181485938899,
+        "A": 0.13636356514631712,
+        "D": 0.0644135871876406,
+        "B": 0.014372614024913096
+      }
+    },
+    "sqa_test_1f46dac76a56893995a4ff37054334d72f83330088032e6d94336dbddb389c9b": {
+      "question": {
+        "id": "sqa_test_1f46dac76a56893995a4ff37054334d72f83330088032e6d94336dbddb389c9b",
+        "question": "Which sculptor designed the Order of the Liberator General San Martín?",
+        "options": {
+          "A": "Roberto Francisco López Martínez",
+          "B": "Miguel Ángel Sánchez Fernández",
+          "C": "Carlos Eduardo Rovira Mendoza",
+          "D": "Ángel Eusebio Ibarra García"
+        },
+        "correct_answer": "D",
+        "answer_type": "Person",
+        "topic": "Art"
+      },
+      "subject_answer": "D",
+      "is_correct": true,
+      "probs": {
+        "D": 0.7706549146244893,
+        "A": 0.1339197555271223,
+        "B": 0.08122643766842007,
+        "C": 0.01411503502078614
+      }
+    },
+    "sqa_test_e9214053cd06f06441ccc7786b7fcc0106d38abbbbf72b13d22862eb34b0414e": {
+      "question": {
+        "id": "sqa_test_e9214053cd06f06441ccc7786b7fcc0106d38abbbbf72b13d22862eb34b0414e",
+        "question": "In which season of Happy Valley does Claire run into Neil?",
+        "options": {
+          "A": "Season 4",
+          "B": "Season 1",
+          "C": "Season 2",
+          "D": "Season 3"
+        },
+        "correct_answer": "C",
+        "answer_type": "Other",
+        "topic": "TV shows"
+      },
+      "subject_answer": "C",
+      "is_correct": true,
+      "probs": {
+        "C": 0.9321194445379605,
+        "B": 0.059588398482782474,
+        "D": 0.008064412786283509,
+        "A": 0.00018965681038576583
+      }
+    }
+  },
+  "run_parameters": {
+    "n_questions": 50,
+    "temperature": 0.0,
+    "resample_for_probs": false,
+    "is_human_player": false,
+    "nested": null,
+    "present_question_args": {
+      "include_question_num": false,
+      "include_total_questions": false
+    },
+    "seed": 42,
+    "setup_prompt": "I'm going to ask you a series of multiple-choice questions. For each one, select the answer you think is best. Respond only with the letter of your choice; do NOT output any other text.",
+    "get_llm_answer_static_args": {
+      "keep_appending": false,
+      "message_history": [],
+      "MAX_TOKENS": 1,
+      "temp": 0.0,
+      "accept_any": true
+    }
+  }
+}

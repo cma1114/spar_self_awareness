@@ -1,0 +1,11 @@
+Provider: Anthropic
+Using 500 provided questions
+
+Starting Capabilities Measurement for Subject: claude-sonnet-4-5-20250929_think_SimpleMC_500
+Configuration: Questions=500, is_human_player=False, temperature=1.0, resample_for_probs=False, nested=None
+
+========== Starting Capability Measuring ==========
+In model_call, provider=Anthropic, attempt=1
+Thread execution error: AttributeError: 'ThinkingBlock' object has no attribute 'text'
+Error in llm processing: 'ThinkingBlock' object has no attribute 'text'
+In model_call, provider=Anthropic, attempt=2

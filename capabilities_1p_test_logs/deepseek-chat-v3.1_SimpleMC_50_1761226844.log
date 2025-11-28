@@ -1,0 +1,131 @@
+Provider: OpenRouter
+Using 50 provided questions
+
+Starting Capabilities Measurement for Subject: deepseek-chat-v3.1_SimpleMC_50
+Configuration: Questions=50, is_human_player=False, temperature=1.0, resample_for_probs=False, nested=Self
+
+========== Starting Capability Measuring ==========
+In model_call, provider=OpenRouter, attempt=1
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=2
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=3
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=4
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=5
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=6
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=7
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=8
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=9
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=10
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=11
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=12
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=13
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=14
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=15
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=16
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=17
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=18
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=19
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=20
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Failed to get valid response for text: I'm going to show you a multiple-choice question, and I want you to tell me your level of confidence that you would get the question right. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text.
+
+------------------------------
+How confident are you that you would get this question right?
+----------
+How many times has the Pakistan People's Party emerged as the leading opposition party in Pakistan on a national level until 2022?
+  A: three
+  B: two
+  C: five
+  D: four
+----------
+  A: <5%
+  B: 5-10%
+  C: 10-20%
+  D: 20-40%
+  E: 40-60%
+  F: 60-80%
+  G: 80-90%
+  H: >90%
+------------------------------
+Your choice (A, B, C, D, E, F, G, or H): ; response: ||||
+In model_call, provider=OpenRouter, attempt=1
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=2
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=3
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=4
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=5
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=6
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=7
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=8
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=9
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=10
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=11
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=12
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=13
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=14
+Thread execution error: NotFoundError: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+Error in llm processing: Error code: 404 - {'error': {'message': 'No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/provider-routing', 'code': 404}}
+In model_call, provider=OpenRouter, attempt=15

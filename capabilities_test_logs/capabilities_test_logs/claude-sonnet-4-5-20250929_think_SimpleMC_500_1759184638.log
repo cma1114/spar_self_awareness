@@ -1,0 +1,254 @@
+Provider: Anthropic
+Using 500 provided questions
+
+Starting Capabilities Measurement for Subject: claude-sonnet-4-5-20250929_think_SimpleMC_500
+Configuration: Questions=500, is_human_player=False, temperature=0.0, resample_for_probs=False, nested=None
+
+========== Starting Capability Measuring ==========
+In model_call, provider=Anthropic, attempt=1
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWHB9xbnFGSFtrvpUh'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWHB9xbnFGSFtrvpUh'}
+In model_call, provider=Anthropic, attempt=2
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWHdCSsJwhpcQqVLUK'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWHdCSsJwhpcQqVLUK'}
+In model_call, provider=Anthropic, attempt=3
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWJ21bLofGdHjF54Rr'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWJ21bLofGdHjF54Rr'}
+In model_call, provider=Anthropic, attempt=4
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWJVHVMyH49j7JAGi1'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWJVHVMyH49j7JAGi1'}
+In model_call, provider=Anthropic, attempt=5
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWJqNb5BhMeU4oFELx'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWJqNb5BhMeU4oFELx'}
+In model_call, provider=Anthropic, attempt=6
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWKDwKYszh1LGhA1iE'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWKDwKYszh1LGhA1iE'}
+In model_call, provider=Anthropic, attempt=7
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWKZXUhnv9vmkJYJsL'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWKZXUhnv9vmkJYJsL'}
+In model_call, provider=Anthropic, attempt=8
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWKurrXDbs6ykPWr9c'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWKurrXDbs6ykPWr9c'}
+In model_call, provider=Anthropic, attempt=9
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWLPt1taSKqNHPNykh'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWLPt1taSKqNHPNykh'}
+In model_call, provider=Anthropic, attempt=10
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWLow4V2Z3ys8eD19n'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWLow4V2Z3ys8eD19n'}
+In model_call, provider=Anthropic, attempt=11
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWMDk5wmgqngnakAwV'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWMDk5wmgqngnakAwV'}
+In model_call, provider=Anthropic, attempt=12
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWMkFAEFosbB93fK6j'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWMkFAEFosbB93fK6j'}
+In model_call, provider=Anthropic, attempt=13
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWNvgUeDD75uBcqKQP'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWNvgUeDD75uBcqKQP'}
+In model_call, provider=Anthropic, attempt=14
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWPMUx3THGzW4Z1mMs'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWPMUx3THGzW4Z1mMs'}
+In model_call, provider=Anthropic, attempt=15
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWPywERQGG3baaaWU9'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWPywERQGG3baaaWU9'}
+In model_call, provider=Anthropic, attempt=16
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWQUwigAvaozBFRz8P'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWQUwigAvaozBFRz8P'}
+In model_call, provider=Anthropic, attempt=17
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWQnoG1ByPTxm6TRCf'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWQnoG1ByPTxm6TRCf'}
+In model_call, provider=Anthropic, attempt=18
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWR7twYjwzufnS5qbh'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWR7twYjwzufnS5qbh'}
+In model_call, provider=Anthropic, attempt=19
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWRYh6uoBKwk2FCWzZ'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWRYh6uoBKwk2FCWzZ'}
+In model_call, provider=Anthropic, attempt=20
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWRsYJD4mrU8uVKFzR'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWRsYJD4mrU8uVKFzR'}
+Failed to get valid response for text: I'm going to ask you a series of multiple-choice questions. For each one, select the answer you think is best. Respond only with the letter of your choice; do NOT output any other text.
+
+------------------------------
+Question:
+Who composed the music for the song "We Rollin" by Punjabi singer Shubh?
+----------
+  A: Gupz Sehra
+  B: Byg Byrd
+  C: Anabolic Beatz.
+  D: Ikky Productions
+------------------------------
+Your choice (A, B, C, or D): ; response: ||||
+In model_call, provider=Anthropic, attempt=1
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWSHLyE6y21uEcTHiq'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWSHLyE6y21uEcTHiq'}
+In model_call, provider=Anthropic, attempt=2
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWSidpS6K8v7RJXJxN'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWSidpS6K8v7RJXJxN'}
+In model_call, provider=Anthropic, attempt=3
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWT5U1fYA2vwMWfPFb'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWT5U1fYA2vwMWfPFb'}
+In model_call, provider=Anthropic, attempt=4
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWTPKZvczWZ33Lz5zq'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWTPKZvczWZ33Lz5zq'}
+In model_call, provider=Anthropic, attempt=5
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWTkeY22K8ugR7pWCu'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWTkeY22K8ugR7pWCu'}
+In model_call, provider=Anthropic, attempt=6
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWU6z4YxLaPepWMAzX'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWU6z4YxLaPepWMAzX'}
+In model_call, provider=Anthropic, attempt=7
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWUbzVhcZVA5LXiLfT'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWUbzVhcZVA5LXiLfT'}
+In model_call, provider=Anthropic, attempt=8
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWUurJUAzbxuzdixGM'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWUurJUAzbxuzdixGM'}
+In model_call, provider=Anthropic, attempt=9
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWVGgGu82wtQ14xReo'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWVGgGu82wtQ14xReo'}
+In model_call, provider=Anthropic, attempt=10
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWVe14Bfr51Y9SDHdf'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWVe14Bfr51Y9SDHdf'}
+In model_call, provider=Anthropic, attempt=11
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWWKRsRhtUiP3rXfBH'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWWKRsRhtUiP3rXfBH'}
+In model_call, provider=Anthropic, attempt=12
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWWjz5MmXDNjT8pysT'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWWjz5MmXDNjT8pysT'}
+In model_call, provider=Anthropic, attempt=13
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWX4aoAGniHNTez4vE'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWX4aoAGniHNTez4vE'}
+In model_call, provider=Anthropic, attempt=14
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWXvfpkNtVzBvYznYF'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWXvfpkNtVzBvYznYF'}
+In model_call, provider=Anthropic, attempt=15
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWYH1CEa1KCYpAXRKf'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWYH1CEa1KCYpAXRKf'}
+In model_call, provider=Anthropic, attempt=16
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWYjnLu2Rd2ohKGeev'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWYjnLu2Rd2ohKGeev'}
+In model_call, provider=Anthropic, attempt=17
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWZ9bEAGhPKsZ7xh9g'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWZ9bEAGhPKsZ7xh9g'}
+In model_call, provider=Anthropic, attempt=18
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWZXAc2nBsjHb48f8o'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWZXAc2nBsjHb48f8o'}
+In model_call, provider=Anthropic, attempt=19
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWZxhtmwcvXFXRYPJC'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWZxhtmwcvXFXRYPJC'}
+In model_call, provider=Anthropic, attempt=20
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWaSUxVGCbwjxNhfAv'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWaSUxVGCbwjxNhfAv'}
+Failed to get valid response for text: I'm going to ask you a series of multiple-choice questions. For each one, select the answer you think is best. Respond only with the letter of your choice; do NOT output any other text.
+
+------------------------------
+Question:
+What are the dimensions in centimeters of the painting "Moving House" by Vasnetsov?
+----------
+  A: 53.5 x 67.2 cm
+  B: 48.3 x 61.7 cm
+  C: 55.8 x 70.4 cm
+  D: 51.2 x 64.9 cm
+------------------------------
+Your choice (A, B, C, or D): ; response: ||||
+In model_call, provider=Anthropic, attempt=1
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWavFoDp53t2JhBSuq'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWavFoDp53t2JhBSuq'}
+In model_call, provider=Anthropic, attempt=2
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWbFLtrW1iYRYt5gVp'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWbFLtrW1iYRYt5gVp'}
+In model_call, provider=Anthropic, attempt=3
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWbbgfWCiyVKMsD31E'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWbbgfWCiyVKMsD31E'}
+In model_call, provider=Anthropic, attempt=4
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWbwX9zmMHSagFmXxA'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWbwX9zmMHSagFmXxA'}
+In model_call, provider=Anthropic, attempt=5
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWcG7wtHHWZCZg1uVR'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWcG7wtHHWZCZg1uVR'}
+In model_call, provider=Anthropic, attempt=6
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWcdwF58vpkTya7yQW'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWcdwF58vpkTya7yQW'}
+In model_call, provider=Anthropic, attempt=7
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWczX7ySKqhfHrRBSc'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWczX7ySKqhfHrRBSc'}
+In model_call, provider=Anthropic, attempt=8
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWdKcoN5PsMHAdiYBf'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWdKcoN5PsMHAdiYBf'}
+In model_call, provider=Anthropic, attempt=9
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWdeDSRC6E7ZKXLaCN'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWdeDSRC6E7ZKXLaCN'}
+In model_call, provider=Anthropic, attempt=10
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWeDSb42RXGqa3rs4W'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWeDSb42RXGqa3rs4W'}
+In model_call, provider=Anthropic, attempt=11
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWeeytL2vjJPD3Ykau'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWeeytL2vjJPD3Ykau'}
+In model_call, provider=Anthropic, attempt=12
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWezaSMhpxTVqGMGTr'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWezaSMhpxTVqGMGTr'}
+In model_call, provider=Anthropic, attempt=13
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWfN9fg2gzdPRNP7Zc'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWfN9fg2gzdPRNP7Zc'}
+In model_call, provider=Anthropic, attempt=14
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWfvt1cgpAyeztxF6J'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWfvt1cgpAyeztxF6J'}
+In model_call, provider=Anthropic, attempt=15
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWgGimNVFsjRJSYK28'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWgGimNVFsjRJSYK28'}
+In model_call, provider=Anthropic, attempt=16
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWgfmyZR43uh44itus'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWgfmyZR43uh44itus'}
+In model_call, provider=Anthropic, attempt=17
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWhTuPJoSX2d4PAP12'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWhTuPJoSX2d4PAP12'}
+In model_call, provider=Anthropic, attempt=18
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWhpVHbayCCze8Hs5n'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWhpVHbayCCze8Hs5n'}
+In model_call, provider=Anthropic, attempt=19
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWicc37C6ZqLobX6xH'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWicc37C6ZqLobX6xH'}
+In model_call, provider=Anthropic, attempt=20
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWiwx9VJtoTM2dbUVx'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWiwx9VJtoTM2dbUVx'}
+Failed to get valid response for text: I'm going to ask you a series of multiple-choice questions. For each one, select the answer you think is best. Respond only with the letter of your choice; do NOT output any other text.
+
+------------------------------
+Question:
+What was the name of the first schoolhouse in Newbliss, Ontario, built around 1830?
+----------
+  A: S.S. #4 Newbliss School
+  B: S.S. #5 Newbliss School.
+  C: S.S. #7 Newbliss School
+  D: S.S. #3 Newbliss School
+------------------------------
+Your choice (A, B, C, or D): ; response: ||||
+In model_call, provider=Anthropic, attempt=1
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWjPFDS9AG46kGfM6E'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWjPFDS9AG46kGfM6E'}
+In model_call, provider=Anthropic, attempt=2
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWjwEat9KXNkVLQjQX'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWjwEat9KXNkVLQjQX'}
+In model_call, provider=Anthropic, attempt=3
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWkMXzoK781Uf6Nghd'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWkMXzoK781Uf6Nghd'}
+In model_call, provider=Anthropic, attempt=4
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWkkbWdfCgYoN3NBwb'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWkkbWdfCgYoN3NBwb'}
+In model_call, provider=Anthropic, attempt=5
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWm6gefMo8cKRsioqD'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWm6gefMo8cKRsioqD'}
+In model_call, provider=Anthropic, attempt=6
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWmRXcTKL94ge9GN8Q'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWmRXcTKL94ge9GN8Q'}
+In model_call, provider=Anthropic, attempt=7
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWmnraAWcg3qyt3sJ4'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWmnraAWcg3qyt3sJ4'}
+In model_call, provider=Anthropic, attempt=8
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWnAgAvswdQiFQUwAs'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWnAgAvswdQiFQUwAs'}
+In model_call, provider=Anthropic, attempt=9
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWnfw8XW1ofgD57hCU'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWnfw8XW1ofgD57hCU'}
+In model_call, provider=Anthropic, attempt=10
+Thread execution error: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWo7E6Rxb4X2tctCuk'}
+Error in llm processing: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'thinking.enabled.budget_tokens: Field required'}, 'request_id': 'req_011CTdUWo7E6Rxb4X2tctCuk'}
+In model_call, provider=Anthropic, attempt=11
