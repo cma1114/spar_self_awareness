@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from peft import LoraConfig, get_peft_model
 
 # Imports from helper files
-from finetune_diagnostics import compute_metrics_for_wandb
+from finetune_diagnostics import compute_metrics_for_wandb, assess_mcq_accuracy
 from finetune_utils import (
     write_log,
     MCQDataset,
@@ -31,12 +31,69 @@ from finetune_utils import (
     validate_and_load_dataset,
     log_prompts_and_responses,
     validate_file_exists_and_not_empty,
+    compute_ABCD_entropy,
+    shuffle_options_and_update_correct_letter,
 )
 
 
 def collate_fn(batch):
     """Custom collate function that returns a list of dictionaries."""
     return batch
+
+
+def log_answer_distributions(log_file_path, step_type, step_number, 
+                             predicted_letter_counts, correct_letter_counts, 
+                             total_questions, accuracy=None, avg_entropy=None):
+    """
+    Log answer distribution information to a dedicated log file.
+    
+    Args:
+        log_file_path: Path to the answer distributions log file
+        step_type: "val" or "test"
+        step_number: Step number (for validation) or None (for test)
+        predicted_letter_counts: dict with counts for A, B, C, D
+        correct_letter_counts: dict with counts for A, B, C, D
+        total_questions: Total number of questions
+        accuracy: Optional accuracy value
+        avg_entropy: Optional average entropy value
+    """
+    timestamp = datetime.now(timezone.utc).isoformat()
+    
+    # Calculate percentages
+    predicted_percentages = {
+        letter: (count / total_questions * 100) if total_questions > 0 else 0.0
+        for letter, count in predicted_letter_counts.items()
+    }
+    correct_percentages = {
+        letter: (count / total_questions * 100) if total_questions > 0 else 0.0
+        for letter, count in correct_letter_counts.items()
+    }
+    
+    log_entry = {
+        "type": "answer_distribution",
+        "timestamp": timestamp,
+        "step_type": step_type,  # "val" or "test"
+        "step_number": step_number,  # None for test
+        "total_questions": total_questions,
+        "accuracy": accuracy,
+        "avg_entropy": avg_entropy,
+        "predicted_letter_distribution": {
+            letter: {
+                "count": predicted_letter_counts.get(letter, 0),
+                "percentage": predicted_percentages.get(letter, 0.0)
+            }
+            for letter in "ABCD"
+        },
+        "correct_letter_distribution": {
+            letter: {
+                "count": correct_letter_counts.get(letter, 0),
+                "percentage": correct_percentages.get(letter, 0.0)
+            }
+            for letter in "ABCD"
+        }
+    }
+    
+    write_log(log_file_path, log_entry)
 
 # ============================================================
 # Entropy → scalar confidence → soft labels
@@ -81,39 +138,6 @@ def compute_soft_labels(logits4, sigma=10.0):
     return weights / weights.sum()
 
 
-def compute_entropy(probs):
-    """
-    Compute entropy from probability distribution.
-
-    Args:
-        probs: tensor, list, or dict - probabilities for A, B, C, D
-               If dict, should have keys "A", "B", "C", "D"
-               If list/tensor, should be in order [A, B, C, D]
-
-    Returns:
-        scalar entropy value
-    """
-    # Handle dictionary format (keys: "A", "B", "C", "D")
-    if isinstance(probs, dict):
-        probs = [
-            probs.get("A", 0.0),
-            probs.get("B", 0.0),
-            probs.get("C", 0.0),
-            probs.get("D", 0.0)
-        ]
-
-    # Convert to tensor if needed
-    if not isinstance(probs, torch.Tensor):
-        probs = torch.tensor(probs, dtype=torch.float32)
-
-    # Ensure probabilities sum to 1
-    probs = probs / (probs.sum() + 1e-12)
-
-    # Compute entropy (natural logs)
-    entropy = -(probs * torch.log(probs + 1e-12)).sum()
-    return entropy
-
-
 def convert_entropy_to_soft_labels(entropy, sigma=10.0):
     """
     Convert entropy value to soft 8-bin confidence distribution.
@@ -145,7 +169,6 @@ def convert_entropy_to_soft_labels(entropy, sigma=10.0):
     weights = torch.exp(-distances / (2 * sigma * sigma)) * bin_widths
 
     return weights / weights.sum()
-
 
 
 # ------------------------------------------------------------------
@@ -187,6 +210,10 @@ def val_step(model, tokenizer, batch, sigma=10.0, device="cuda",
         )
         row["options"] = opts
         resolved_results.append(result_data)
+    
+    # 1.5. Shuffle options to prevent position bias
+    for row in batch:
+        shuffle_options_and_update_correct_letter(row)
     
     # 2. Build MCQ prompts
     answer_prompts = build_multiple_choice_question_prompts(batch)
@@ -231,7 +258,7 @@ def val_step(model, tokenizer, batch, sigma=10.0, device="cuda",
                         answer_logits4[i], sigma=sigma
                     ).to(device)
                 else:
-                    entropy = compute_entropy(teacher_probs)
+                    entropy = compute_ABCD_entropy(teacher_probs)
                     soft_target = convert_entropy_to_soft_labels(
                         entropy
                     ).to(device)
@@ -286,11 +313,15 @@ def val_step(model, tokenizer, batch, sigma=10.0, device="cuda",
                                  device=device, dtype=torch.float32)
     verbal_conf = (conf_probs * bin_midpoints).sum(dim=-1)
     
+    # 4. Get Pass 2 Confidence Entropy (entropy of confidence distribution)
+    conf_entropies = -(conf_probs * torch.log(conf_probs + 1e-12)).sum(dim=-1)
+    
     return {
         "loss": loss.detach(),
         "correct": is_correct,      # [B]
-        "entropy": entropies.detach(), # [B]
-        "verbal_conf": verbal_conf.detach() # [B]
+        "entropy": entropies.detach(), # [B] - MCQ answer entropy
+        "verbal_conf": verbal_conf.detach(), # [B] - Expected confidence value
+        "conf_entropy": conf_entropies.detach() # [B] - Entropy of confidence distribution
     }
 
 
@@ -333,6 +364,12 @@ def train_step(model, tokenizer, batch, sigma=10.0, device="cuda",
         )
         row["options"] = opts
         resolved_results.append(result_data)  # save for later target lookup
+
+    # ------------------------------------------------------------------
+    # 1.5. Shuffle options to prevent position bias
+    # ------------------------------------------------------------------
+    for row in batch:
+        shuffle_options_and_update_correct_letter(row)
 
     # ------------------------------------------------------------------
     # 2. Build MCQ prompts using the utility function
@@ -425,7 +462,7 @@ def train_step(model, tokenizer, batch, sigma=10.0, device="cuda",
                         answer_logits4[i], sigma=sigma
                     ).to(device)
                 else:
-                    entropy = compute_entropy(teacher_probs)
+                    entropy = compute_ABCD_entropy(teacher_probs)
                     soft_target = convert_entropy_to_soft_labels(
                         entropy
                     ).to(device)
@@ -486,6 +523,224 @@ def train_step(model, tokenizer, batch, sigma=10.0, device="cuda",
 
 
 # ============================================================
+# Validation and Test Evaluation Functions
+# ============================================================
+
+def run_evaluation(model, tokenizer, device, args, mcq_results_lookup, log_file_path, step,
+                   mcq_accuracy_log_file_path, answer_distributions_log_file_path,
+                   eval_type, val_dataloader=None, val_dataset=None, data_path=None,
+                   val_metrics_log_file_path=None, limit_val_batches=None):
+    """
+    Unified function to run evaluation on validation or test datasets.
+    
+    This function handles:
+    - Baseline validation (before training, step=-1)
+    - Regular validation during training (step=step)
+    - Final test evaluation (after training)
+    
+    Args:
+        model: Language model
+        tokenizer: Tokenizer
+        device: Device to run on
+        args: Training arguments
+        mcq_results_lookup: Lookup dict for recorded MCQ results
+        log_file_path: Path for question comparison logging
+        step: Step number (-1 for baseline, training step number, or final step for test)
+        mcq_accuracy_log_file_path: Path for MCQ accuracy assessment logging
+        answer_distributions_log_file_path: Path for answer distributions logging
+        eval_type: One of "baseline", "validation", or "test"
+        val_dataloader: DataLoader for validation data (required for baseline/validation)
+        val_dataset: Dataset for MCQ accuracy assessment (required for baseline/validation)
+        data_path: Path to dataset JSONL file (required for test, optional for others)
+        val_metrics_log_file_path: Path for validation metrics logging (only for validation)
+        limit_val_batches: Optional limit on number of batches to process (only for validation)
+        
+    Returns:
+        dict with evaluation metrics
+    """
+    if eval_type not in ["baseline", "validation", "test"]:
+        raise ValueError(f"eval_type must be one of 'baseline', 'validation', or 'test', got '{eval_type}'")
+    
+    # Determine prefix and step_type based on eval_type
+    if eval_type == "test":
+        prefix = "test"
+        step_type = "test"
+        step_number_for_dist = None
+        print_header = True
+    else:  # baseline or validation
+        prefix = "val"
+        step_type = "val"
+        step_number_for_dist = step
+        print_header = False
+    
+    # Load dataset if needed (for test evaluation)
+    dataloader = val_dataloader
+    dataset = val_dataset
+    
+    if eval_type == "test":
+        if data_path is None:
+            raise ValueError("data_path must be provided for test evaluation")
+        if print_header:
+            print("\n" + "="*80)
+            print("Running final test evaluation...")
+            print("="*80)
+        
+        dataset = validate_and_load_dataset(data_path, "test")
+        dataloader = DataLoader(
+            dataset, batch_size=args.batch_size, shuffle=False,
+            collate_fn=collate_fn
+        )
+        print(f"✓ Test dataset loaded: {len(dataset)} samples")
+        num_questions_for_mcq = min(500, len(dataset))
+    else:
+        if dataloader is None or dataset is None:
+            raise ValueError(f"val_dataloader and val_dataset must be provided for {eval_type} evaluation")
+        num_questions_for_mcq = 500
+    
+    # Print evaluation start message
+    eval_name = {
+        "baseline": "baseline validation",
+        "validation": "validation",
+        "test": "test evaluation"
+    }[eval_type]
+    
+    total_samples = len(dataset) if dataset else len(dataloader.dataset) if hasattr(dataloader, 'dataset') else "unknown"
+    print(f"\nStarting {eval_name} on {total_samples} questions...")
+    if limit_val_batches and eval_type != "test":
+        print(f"  (Limited to {limit_val_batches} batches)")
+    
+    model.eval()
+    losses = []
+    all_correct = []
+    all_entropies = []
+    all_verbal_conf = []
+    all_conf_entropies = []  # Confidence entropy
+    
+    batches_processed = 0
+    
+    with torch.no_grad():
+        for batch in dataloader:
+            out_metrics = val_step(
+                model, tokenizer, batch, device=device,
+                sigma=args.sigma, mcq_results_lookup=mcq_results_lookup,
+                log_file_path=log_file_path, args=args
+            )
+            
+            losses.append(out_metrics["loss"].item())
+            all_correct.extend(out_metrics["correct"].cpu().tolist())
+            all_entropies.extend(out_metrics["entropy"].cpu().tolist())
+            all_verbal_conf.extend(out_metrics["verbal_conf"].cpu().tolist())
+            all_conf_entropies.extend(out_metrics["conf_entropy"].cpu().tolist())
+            
+            batches_processed += 1
+            
+            # Limit validation batches if specified (only for baseline/validation)
+            if eval_type != "test" and limit_val_batches and batches_processed >= limit_val_batches:
+                break
+    
+    avg_loss = sum(losses) / len(losses) if losses else 0.0
+    
+    # Compute confidence entropy and variance metrics
+    conf_entropy_arr = np.array(all_conf_entropies)
+    avg_conf_entropy = float(np.mean(conf_entropy_arr)) if len(conf_entropy_arr) > 0 else 0.0
+    conf_entropy_variance = float(np.var(conf_entropy_arr)) if len(conf_entropy_arr) > 0 else 0.0
+    
+    # Compute metrics
+    metrics = compute_metrics_for_wandb(
+        all_correct, all_entropies, all_verbal_conf
+    )
+    # Rename keys based on prefix
+    wandb_metrics = {}
+    for key, value in metrics.items():
+        if key.startswith("val/"):
+            wandb_metrics[key.replace("val/", f"{prefix}/")] = value
+        else:
+            wandb_metrics[key] = value
+    wandb_metrics[f"{prefix}/loss"] = avg_loss
+    wandb_metrics[f"{prefix}/batches_processed"] = batches_processed
+    wandb_metrics[f"{prefix}/avg_conf_entropy"] = avg_conf_entropy
+    wandb_metrics[f"{prefix}/conf_entropy_variance"] = conf_entropy_variance
+    
+    # Assess MCQ accuracy
+    mcq_accuracy = None
+    mcq_entropy = None
+    if dataset:
+        print(f"Assessing MCQ accuracy on {num_questions_for_mcq} questions...")
+        mcq_results = assess_mcq_accuracy(
+            model, tokenizer, dataset, device=device,
+            validation_step=step, log_file_path=mcq_accuracy_log_file_path,
+            num_questions=num_questions_for_mcq
+        )
+        mcq_accuracy = mcq_results["accuracy"]
+        mcq_entropy = mcq_results["avg_entropy"]
+        wandb_metrics[f"{prefix}/accuracy"] = mcq_accuracy
+        wandb_metrics[f"{prefix}/answer_entropy"] = mcq_entropy
+        
+        # Log answer distributions
+        log_answer_distributions(
+            answer_distributions_log_file_path,
+            step_type=step_type,
+            step_number=step_number_for_dist,
+            predicted_letter_counts=mcq_results["predicted_letter_counts"],
+            correct_letter_counts=mcq_results["correct_letter_counts"],
+            total_questions=mcq_results["total_questions"],
+            accuracy=mcq_accuracy,
+            avg_entropy=mcq_entropy
+        )
+    
+    # Log to WandB
+    log_wandb_metrics(wandb_metrics, step=step)
+    
+    # Log to validation metrics file (only for regular validation, not baseline or test)
+    if eval_type == "validation" and step >= 0 and val_metrics_log_file_path:
+        timestamp = datetime.now(timezone.utc).isoformat()
+        log_entry = {
+            "type": "validation_metrics",
+            "timestamp": timestamp,
+            "step": step,
+            "metrics": {
+                "loss": avg_loss,
+                "accuracy": mcq_accuracy if mcq_accuracy is not None else None,
+                "answer_entropy": mcq_entropy if mcq_entropy is not None else None,
+                "avg_verbal_conf": wandb_metrics[f"{prefix}/avg_verbal_conf"],
+                "std_verbal_conf": wandb_metrics[f"{prefix}/std_verbal_conf"],
+                "alignment_corr": wandb_metrics[f"{prefix}/alignment_corr"],
+                "calibration_corr": wandb_metrics[f"{prefix}/calibration_corr"],
+                "avg_conf_entropy": avg_conf_entropy,
+                "conf_entropy_variance": conf_entropy_variance,
+                "batches_processed": batches_processed,
+            }
+        }
+        write_log(val_metrics_log_file_path, log_entry)
+    
+    # Print results
+    if eval_type == "baseline":
+        info_prefix = "Baseline"
+    elif eval_type == "test":
+        info_prefix = "Test"
+    else:  # validation
+        info_prefix = f"Step {step}"
+    
+    info = f"{info_prefix} | {'Val' if prefix == 'val' else 'Test'} Loss: {avg_loss:.4f} | "
+    if mcq_accuracy is not None:
+        info += f"MCQ Acc: {mcq_accuracy:.2%} | "
+    info += f"Align: {wandb_metrics.get(f'{prefix}/alignment_corr', 0.0):.3f}"
+    if eval_type != "test" and limit_val_batches:
+        info += f" (over {batches_processed} batches)"
+    print(info)
+    
+    if eval_type == "test":
+        print("="*80 + "\n")
+    
+    return {
+        "loss": avg_loss,
+        "accuracy": mcq_accuracy,
+        "entropy": mcq_entropy,
+        "wandb_metrics": wandb_metrics,
+    }
+
+
+# ============================================================
 # Main training
 # ============================================================
 
@@ -520,6 +775,47 @@ def train(args):
     if args.val_data_path:
         validate_file_exists_and_not_empty(args.val_data_path, "validation data file")
         print(f"✓ Validation data file exists and is not empty: {args.val_data_path}")
+    
+    # Validate test data file if provided
+    if args.test_data_path:
+        args.test_data_path = args.test_data_path.strip()
+        
+        # Try to find the file in common locations if it doesn't exist at the given path
+        if not os.path.exists(args.test_data_path):
+            print(f"Test data file not found at: {args.test_data_path}")
+            print(f"Current working directory: {os.getcwd()}")
+            print("Attempting to find file...")
+            # Try to find the file in common locations
+            basename = os.path.basename(args.test_data_path)
+            possible_paths = [
+                args.test_data_path,
+                os.path.join("data", basename),
+                os.path.join(os.getcwd(), args.test_data_path),
+            ]
+            found = False
+            for path in possible_paths:
+                if os.path.exists(path):
+                    print(f"Found file at: {path}")
+                    args.test_data_path = path
+                    found = True
+                    break
+            if not found:
+                error_msg = (
+                    f"Error: Could not find test data file. "
+                    f"Tried the following paths:\n"
+                    + "\n".join(f"  - {path}" for path in possible_paths)
+                    + f"\n\nOriginal path: {args.test_data_path}"
+                    + f"\nCurrent working directory: {os.getcwd()}"
+                )
+                print(error_msg)
+                raise FileNotFoundError(
+                    f"Test data file not found: {args.test_data_path}\n"
+                    f"Please provide a valid path to the test data file."
+                )
+        
+        # Validate file exists and is not empty
+        validate_file_exists_and_not_empty(args.test_data_path, "test data file")
+        print(f"✓ Test data file exists and is not empty: {args.test_data_path}")
     
     # Validate MCQ results file if provided
     if args.mcq_results_data:
@@ -681,6 +977,19 @@ def train(args):
     )
     if val_dataloader:
         print(f"Validation metrics log will be written to: {val_metrics_log_file_path}")
+    
+    # Set up MCQ accuracy assessment logging file
+    mcq_accuracy_log_file_path = _get_log_file_path(
+        log_dir, args.model_name, "mcq_accuracy_assessment"
+    )
+    if val_dataset:
+        print(f"MCQ accuracy assessment log will be written to: {mcq_accuracy_log_file_path}")
+    
+    # Set up answer distributions logging file
+    answer_distributions_log_file_path = os.path.join(
+        log_dir, f"answer_distributions_{datetime.now(timezone.utc).strftime('%Y-%m-%d-%H-%M-%S')}.jsonl"
+    )
+    print(f"Answer distributions log will be written to: {answer_distributions_log_file_path}")
 
     # Log dataset info
     log_wandb_config({
@@ -699,6 +1008,28 @@ def train(args):
         "optimizer": "AdamW",
         "learning_rate": args.learning_rate
     })
+
+    # ============================================================
+    # BASELINE VALIDATION (before any training)
+    # ============================================================
+    if val_dataloader:
+        print("\n" + "="*80)
+        print("Running baseline validation (before training)...")
+        print("="*80)
+        
+        run_evaluation(
+            model, tokenizer, device, args, mcq_results_lookup, log_file_path, step=-1,
+            mcq_accuracy_log_file_path=mcq_accuracy_log_file_path,
+            answer_distributions_log_file_path=answer_distributions_log_file_path,
+            eval_type="baseline",
+            val_dataloader=val_dataloader,
+            val_dataset=val_dataset,
+            val_metrics_log_file_path=None,  # Don't log baseline to val_metrics file
+            limit_val_batches=args.limit_val_batches
+        )
+        
+        print("="*80 + "\n")
+        model.train()
 
     step = 0
     while step < args.max_steps:
@@ -730,76 +1061,16 @@ def train(args):
 
             # Run validation
             if val_dataloader and (step + 1) % args.val_interval == 0:
-                model.eval()
-                val_losses = []
-                
-                # --- NEW: Metric Containers ---
-                all_correct = []
-                all_entropies = []
-                all_verbal_conf = []
-                
-                val_batches_processed = 0
-                
-                with torch.no_grad():
-                    for val_batch in val_dataloader:
-                        # Step returns dict now
-                        out_metrics = val_step(
-                            model, tokenizer, val_batch, device=device,
-                            sigma=args.sigma, mcq_results_lookup=mcq_results_lookup,
-                            log_file_path=log_file_path, args=args
-                        )
-                        
-                        val_losses.append(out_metrics["loss"].item())
-                        
-                        # Accumulate raw data
-                        all_correct.extend(out_metrics["correct"].cpu().tolist())
-                        all_entropies.extend(out_metrics["entropy"].cpu().tolist())
-                        all_verbal_conf.extend(out_metrics["verbal_conf"].cpu().tolist())
-                        
-                        val_batches_processed += 1
-                        
-                        # Limit validation batches if specified
-                        if args.limit_val_batches and val_batches_processed >= args.limit_val_batches:
-                            break
-                
-                avg_val_loss = sum(val_losses) / len(val_losses) if val_losses else 0.0
-                
-                # --- NEW: CALL THE EXTERNAL DIAGNOSTICS FUNCTION ---
-                wandb_metrics = compute_metrics_for_wandb(
-                    all_correct, all_entropies, all_verbal_conf
+                run_evaluation(
+                    model, tokenizer, device, args, mcq_results_lookup, log_file_path, step=step,
+                    mcq_accuracy_log_file_path=mcq_accuracy_log_file_path,
+                    answer_distributions_log_file_path=answer_distributions_log_file_path,
+                    eval_type="validation",
+                    val_dataloader=val_dataloader,
+                    val_dataset=val_dataset,
+                    val_metrics_log_file_path=val_metrics_log_file_path,
+                    limit_val_batches=args.limit_val_batches
                 )
-                
-                # Add loss to the dict
-                wandb_metrics["val/loss"] = avg_val_loss
-                wandb_metrics["val/batches_processed"] = val_batches_processed
-                
-                # Log to WandB
-                log_wandb_metrics(wandb_metrics, step=step)
-                
-                # Log to file
-                timestamp = datetime.now(timezone.utc).isoformat()
-                log_entry = {
-                    "type": "validation_metrics",
-                    "timestamp": timestamp,
-                    "step": step,
-                    "metrics": {
-                        "loss": avg_val_loss,
-                        "accuracy": wandb_metrics["val/accuracy"],
-                        "avg_verbal_conf": wandb_metrics["val/avg_verbal_conf"],
-                        "std_verbal_conf": wandb_metrics["val/std_verbal_conf"],
-                        "alignment_corr": wandb_metrics["val/alignment_corr"],
-                        "calibration_corr": wandb_metrics["val/calibration_corr"],
-                        "batches_processed": val_batches_processed,
-                    }
-                }
-                write_log(val_metrics_log_file_path, log_entry)
-                
-                val_info = f"Step {step} | Val Loss: {avg_val_loss:.4f} | "
-                val_info += f"Acc: {wandb_metrics['val/accuracy']:.2%} | "
-                val_info += f"Align: {wandb_metrics['val/alignment_corr']:.3f}"
-                if args.limit_val_batches:
-                    val_info += f" (over {val_batches_processed} batches)"
-                print(val_info)
                 model.train()
 
             # Save checkpoint to HuggingFace Hub
@@ -824,6 +1095,18 @@ def train(args):
         hf_private=args.hf_checkpoint_private,
         save_wandb_artifact=args.save_wandb_artifact
     )
+
+    # ============================================================
+    # FINAL TEST EVALUATION (after training)
+    # ============================================================
+    if args.test_data_path:
+        run_evaluation(
+            model, tokenizer, device, args, mcq_results_lookup, log_file_path, step,
+            mcq_accuracy_log_file_path=mcq_accuracy_log_file_path,
+            answer_distributions_log_file_path=answer_distributions_log_file_path,
+            eval_type="test",
+            data_path=args.test_data_path
+        )
 
     finish_wandb()
 
@@ -855,6 +1138,10 @@ def parse_args():
     parser.add_argument("--val_data_path", type=str,
                         default=None,
                         help="Path to JSONL validation dataset (optional)")
+    
+    parser.add_argument("--test_data_path", type=str,
+                        default=None,
+                        help="Path to JSONL test dataset (optional, will be evaluated after training)")
 
     parser.add_argument("--batch_size", type=int,
                         default=4,

@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import random
 import traceback
 from datetime import datetime, timezone
 from torch.utils.data import Dataset
@@ -553,6 +554,84 @@ def load_mcq_results_data(mcq_results_path, log_file_path=None):
         write_log(log_file_path, {"message": f"Loaded {len(results_lookup)} MCQ results entries"})
 
     return results_lookup
+
+
+def compute_ABCD_entropy(probs):
+    """
+    Compute entropy from probability distribution for A, B, C, D options.
+
+    Args:
+        probs: tensor, list, or dict - probabilities for A, B, C, D
+               If dict, should have keys "A", "B", "C", "D"
+               If list/tensor, should be in order [A, B, C, D]
+
+    Returns:
+        scalar entropy value
+    """
+    import torch
+    
+    # Handle dictionary format (keys: "A", "B", "C", "D")
+    if isinstance(probs, dict):
+        probs = [
+            probs.get("A", 0.0),
+            probs.get("B", 0.0),
+            probs.get("C", 0.0),
+            probs.get("D", 0.0)
+        ]
+
+    # Convert to tensor if needed
+    if not isinstance(probs, torch.Tensor):
+        probs = torch.tensor(probs, dtype=torch.float32)
+
+    # Ensure probabilities sum to 1
+    probs = probs / (probs.sum() + 1e-12)
+
+    # Compute entropy (natural logs)
+    entropy = -(probs * torch.log(probs + 1e-12)).sum()
+    return entropy
+
+
+def shuffle_options_and_update_correct_letter(row):
+    """
+    Shuffle the options (A, B, C, D) and update the correct_letter accordingly.
+    
+    This ensures the correct answer isn't always in position A, preventing
+    position bias in the model.
+    
+    Args:
+        row: Dictionary with "options" (dict with keys A, B, C, D) and "correct_letter"
+        
+    Returns:
+        row: Modified row with shuffled options and updated correct_letter
+    """
+    if "options" not in row or "correct_letter" not in row:
+        return row
+    
+    options = row["options"]
+    correct_letter = row["correct_letter"]
+    
+    # Get the correct answer text
+    correct_answer_text = options.get(correct_letter, "")
+    
+    # Create list of (letter, text) pairs
+    option_pairs = [(letter, options[letter]) for letter in "ABCD" if letter in options]
+    
+    # Shuffle the pairs
+    random.shuffle(option_pairs)
+    
+    # Rebuild options dict with new letter assignments
+    new_options = {}
+    new_correct_letter = None
+    for new_letter, (old_letter, text) in zip("ABCD", option_pairs):
+        new_options[new_letter] = text
+        if old_letter == correct_letter:
+            new_correct_letter = new_letter
+    
+    # Update row
+    row["options"] = new_options
+    row["correct_letter"] = new_correct_letter
+    
+    return row
 
 
 def normalize_text(s):
