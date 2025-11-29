@@ -1,0 +1,88 @@
+
+============================================================
+Top tokens on POSITIVE side (SELF-aligned)
+============================================================
+ 1. id=  7315  token='Ġzero'               score= 0.0818
+ 2. id= 18811  token='ĠZero'               score= 0.0782
+ 3. id= 18483  token='Zero'                score= 0.0740
+ 4. id= 14486  token='zero'                score= 0.0721
+ 5. id= 55693  token='ĠZERO'               score= 0.0675
+ 6. id=  1041  token='100'                 score= 0.0663
+ 7. id=  6263  token='conf'                score= 0.0649
+ 8. id=    39  token='H'                   score= 0.0629
+ 9. id= 19920  token='_zero'               score= 0.0611
+10. id= 75056  token='ZERO'                score= 0.0603
+11. id=110260  token='éĽ¶'                 score= 0.0601
+12. id= 88370  token='ĠHundred'            score= 0.0597
+13. id= 77278  token='Ġzer'                score= 0.0587
+14. id= 38029  token='-zero'               score= 0.0583
+15. id= 15949  token='Conf'                score= 0.0574
+16. id=  2389  token='Ġconf'               score= 0.0572
+17. id=   854  token='Ġnull'               score= 0.0568
+18. id= 17975  token='Ġzeros'              score= 0.0538
+19. id=  3360  token='Null'                score= 0.0533
+20. id=    15  token='0'                   score= 0.0532
+21. id= 60341  token='/conf'               score= 0.0530
+22. id=  2994  token='null'                score= 0.0528
+23. id=119493  token='ÂłH'                 score= 0.0521
+24. id= 51817  token='-conf'               score= 0.0521
+25. id= 33374  token='ĠNil'                score= 0.0519
+26. id= 36589  token='.Zero'               score= 0.0518
+27. id= 18576  token='ĠNull'               score= 0.0505
+28. id= 15514  token='_null'               score= 0.0505
+29. id= 40470  token='_ZERO'               score= 0.0500
+30. id=  1808  token='ĠNULL'               score= 0.0498
+31. id= 58473  token='Ġconfession'         score= 0.0496
+32. id= 91980  token='-confidence'         score= 0.0491
+33. id=  3924  token='.H'                  score= 0.0488
+34. id=  7895  token='Ġhundred'            score= 0.0487
+35. id= 15323  token='ĠConf'               score= 0.0483
+36. id= 13595  token='ĉH'                  score= 0.0482
+37. id= 98543  token='Ġzeroes'             score= 0.0480
+38. id= 11529  token='-H'                  score= 0.0480
+39. id=  8551  token='nil'                 score= 0.0477
+40. id= 26932  token='.zero'               score= 0.0475
+
+============================================================
+Top tokens on NEGATIVE side (OTHER-aligned)
+============================================================
+ 1. id= 49182  token='#:'                  score=-0.0439
+ 2. id=  9099  token='Ġminor'              score=-0.0398
+ 3. id= 78212  token='adoo'                score=-0.0395
+ 4. id=107801  token='ë´ī'                 score=-0.0395
+ 5. id= 26491  token='946'                 score=-0.0389
+ 6. id= 69014  token='Ġ%}Ċ'                score=-0.0385
+ 7. id= 25926  token='794'                 score=-0.0381
+ 8. id=   426  token='ĠB'                  score=-0.0381
+ 9. id=   674  token='Ġ#'                  score=-0.0376
+10. id= 55144  token='.borderColor'        score=-0.0376
+11. id=  3428  token='Ġlow'                score=-0.0372
+12. id= 13240  token='Ġestimated'          score=-0.0370
+13. id=  9628  token='LOW'                 score=-0.0367
+14. id=    20  token='5'                   score=-0.0367
+15. id=118792  token='ĠâīĪ'                score=-0.0364
+16. id= 26051  token='863'                 score=-0.0363
+17. id= 23800  token='744'                 score=-0.0363
+18. id=127255  token='ï½Ń'                 score=-0.0360
+19. id=127587  token='âĩ'                  score=-0.0358
+20. id= 52278  token='Ġ<<='                score=-0.0358
+21. id= 63940  token='dre'                 score=-0.0351
+22. id=107390  token='ĠDÃ¼n'               score=-0.0349
+23. id= 11651  token='ĠâĨĴ'                score=-0.0349
+24. id= 17989  token='Ġestimates'          score=-0.0347
+25. id= 28279  token='appa'                score=-0.0344
+26. id=119440  token='Ġninh'               score=-0.0343
+27. id= 10290  token='143'                 score=-0.0343
+28. id=  2678  token='Ġsmall'              score=-0.0340
+29. id= 47118  token='Ġâĩ'                 score=-0.0338
+30. id=   356  token='ĠC'                  score=-0.0338
+31. id= 25476  token='979'                 score=-0.0335
+32. id=  3929  token='Ġ-->'                score=-0.0335
+33. id= 78984  token='spar'                score=-0.0334
+34. id=100015  token='Ġ#=>'                score=-0.0334
+35. id= 93571  token='ĠGow'                score=-0.0334
+36. id=   975  token='14'                  score=-0.0334
+37. id= 50257  token='%B'                  score=-0.0333
+38. id= 17590  token='342'                 score=-0.0333
+39. id= 85873  token='CGColor'             score=-0.0333
+40. id= 91374  token='Ġgezocht'            score=-0.0333

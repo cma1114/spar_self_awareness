@@ -1,0 +1,66 @@
+Provider: OpenRouter
+Using 50 provided questions
+
+Starting Capabilities Measurement for Subject: deepseek-chat_SimpleMC_50
+Configuration: Questions=50, is_human_player=False, temperature=0.0, resample_for_probs=False, nested=None
+
+========== Starting Capability Measuring ==========
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_test_logs/deepseek-chat_SimpleMC_50_1760620745_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_test_logs/deepseek-chat_SimpleMC_50_1760620745_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_test_logs/deepseek-chat_SimpleMC_50_1760620745_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_test_logs/deepseek-chat_SimpleMC_50_1760620745_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_test_logs/deepseek-chat_SimpleMC_50_1760620745_test_data.json
+
+Capabilities Test Complete. Accuracy: 40.00% (20/50)
+Data saved to: ./capabilities_test_logs/deepseek-chat_SimpleMC_50_1760620745_test_data.json
+Capabilities measurement completed. Results saved to: ./capabilities_test_logs/deepseek-chat_SimpleMC_50_1760620745_test_data.json

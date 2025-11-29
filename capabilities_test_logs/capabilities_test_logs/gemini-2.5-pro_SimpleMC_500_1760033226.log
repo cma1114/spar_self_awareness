@@ -1,0 +1,32 @@
+Provider: Google
+Using 500 provided questions
+
+Starting Capabilities Measurement for Subject: gemini-2.5-pro_SimpleMC_500
+Configuration: Questions=500, is_human_player=False, temperature=1.0, resample_for_probs=False, nested=None
+
+========== Starting Capability Measuring ==========
+In model_call, provider=Google, attempt=1
+Thread execution error: ClientError: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+Error in llm processing: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+In model_call, provider=Google, attempt=2
+Thread execution error: ClientError: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+Error in llm processing: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+In model_call, provider=Google, attempt=3
+Thread execution error: ClientError: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+Error in llm processing: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+In model_call, provider=Google, attempt=4
+Thread execution error: ClientError: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+Error in llm processing: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+In model_call, provider=Google, attempt=5
+Thread execution error: ClientError: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+Error in llm processing: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+In model_call, provider=Google, attempt=6
+Thread execution error: ClientError: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+Error in llm processing: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+In model_call, provider=Google, attempt=7
+Thread execution error: ClientError: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+Error in llm processing: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+In model_call, provider=Google, attempt=8
+Thread execution error: ClientError: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+Error in llm processing: 400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'The model does not support setting thinking_budget to 0.', 'status': 'INVALID_ARGUMENT'}}
+In model_call, provider=Google, attempt=9

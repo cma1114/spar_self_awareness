@@ -1,0 +1,2 @@
+pair_id,answer_letter,easy_qid,easy_pmax,easy_margin,easy_entropy,easy_correct,easy_question,hard_qid,hard_pmax,hard_margin,hard_entropy,hard_correct,hard_question
+eh_D_000,D,sqa_test_20dffbea5716c531a77979d8a6c40e019b3c0fe73a78dd3515c6fd1a489aff67,0.9999999998264208,0.9999999997358601,4.208046336517183e-09,1,,sqa_test_670263205e91d781b778aced7a03ac0d0737eb891359639eb1c02ad115e946b5,0.34629103341586703,0.0,1.1082159518992247,1,

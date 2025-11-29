@@ -1,0 +1,3008 @@
+Provider: OpenRouter
+--- Starting LLM ToM Test ---
+
+--- Running Spec 1/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the box. C leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, brick)
+B answers: brick
+Correct! The box contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 2/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put an apple in the bag. C leaves the room. You move the apple to the box. You put a stapler in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, stapler)
+B answers: stapler
+Correct! The bag contains stapler.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 3/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, apple)
+B answers: apple
+Correct! The bag contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 4/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the bag. D leaves the room. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: stapler
+Correct! The bag contains stapler.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 5/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the bag. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: banana
+Correct! The bag contains banana.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 6/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the box. D leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: orange
+Correct! The box contains orange.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 7/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the bag. C leaves the room. D moves the apple to the box. D puts a brick in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, brick)
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 8/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a ball in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: ball
+Correct! The box contains ball.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 9/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. D puts a ball in the bag. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, ball)
+B answers: ball
+Incorrect. The bag actually contains banana.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 10/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an apple in the box. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, apple)
+B answers: apple
+Incorrect. The box actually contains stapler.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 11/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the bag. B leaves the room. D leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 12/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the box. D leaves the room. You move the brick to the bag. B puts a stapler in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, stapler)
+B answers: stapler
+Correct! The box contains stapler.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 13/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. You put a banana in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 14/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. You put a banana in the box. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 15/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put a stapler in the bag. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: stapler
+Correct! The bag contains stapler.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 16/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the bag. B leaves the room. D leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: apple
+Correct! The bag contains apple.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 17/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the box. C leaves the room. You move the stapler to the bag. B puts a brick in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, brick)
+B answers: brick
+Correct! The box contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 18/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put a banana in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 19/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. C leaves the room. You move the stapler to the box. You put an apple in the bag. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, apple)
+B answers: apple
+Correct! The bag contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 20/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an orange in the bag. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, orange)
+B answers: orange
+Incorrect. The bag actually contains stapler.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 21/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the bag. C leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: banana
+Correct! The bag contains banana.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 22/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a banana in the bag. D leaves the room. You move the banana to the box. C puts a brick in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, brick)
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 23/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a ball in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, ball)
+B answers: ball
+Correct! The bag contains ball.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 24/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the box. D leaves the room. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, apple)
+B answers: apple
+Correct! The box contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 25/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The box actually contains stapler.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 26/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an apple in the box. C leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, apple)
+B answers: apple
+Correct! The box contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 27/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the bag. D leaves the room. B moves the stapler to the box. C puts an orange in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, orange)
+B answers: orange
+Correct! The bag contains orange.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 28/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an orange in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, orange)
+B answers: orange
+Correct! The box contains orange.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 29/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the bag. D leaves the room. B moves the brick to the box. B puts an orange in the bag. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, orange)
+B answers: orange
+Correct! The bag contains orange.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 30/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put a banana in the bag. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, banana)
+B answers: banana
+Correct! The bag contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 31/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the box. C leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, stapler)
+B answers: stapler
+Correct! The box contains stapler.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 32/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. C leaves the room. B moves the stapler to the box. B puts a brick in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, brick)
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 33/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a ball in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, ball)
+B answers: ball
+Correct! The bag contains ball.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 34/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room. D leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The bag actually contains orange.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 35/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a brick in the box. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, brick)
+B answers: brick
+Incorrect. The box actually contains stapler.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 36/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a ball in the box. C leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, ball)
+B answers: ball
+Correct! The box contains ball.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 37/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the box. C leaves the room. D moves the brick to the bag. D puts an apple in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, apple)
+B answers: apple
+Correct! The box contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 38/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: stapler
+Correct! The bag contains stapler.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 39/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an orange in the box. You leave the room. B leaves the room. D leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, orange)
+B answers: orange
+Incorrect. The box actually contains brick.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 40/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: orange
+Incorrect. The bag actually contains banana.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 41/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the box. B leaves the room. D leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: stapler
+Correct! The box contains stapler.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 42/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a ball in the box. D leaves the room. C moves the ball to the bag. You put a banana in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 43/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, apple)
+B answers: apple
+Correct! The bag contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 44/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room. D leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The bag actually contains banana.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 45/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The box actually contains stapler.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 46/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the box. D leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: brick
+Correct! The box contains brick.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 47/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an orange in the bag. D leaves the room. You move the orange to the box. You put a brick in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, brick)
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 48/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, apple)
+B answers: apple
+Correct! The box contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 49/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room. C leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The box actually contains ball.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 50/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: orange
+Incorrect. The bag actually contains banana.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 51/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. C leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 52/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a ball in the bag. C leaves the room. D moves the ball to the box. You put a stapler in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, stapler)
+B answers: stapler
+Correct! The bag contains stapler.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 53/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, apple)
+B answers: apple
+Correct! The box contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 54/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room. C leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The bag actually contains brick.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 55/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the bag. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, brick)
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 56/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a ball in the bag. B leaves the room. C leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, ball)
+B answers: ball
+Correct! The bag contains ball.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 57/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a banana in the bag. C leaves the room. You move the banana to the box. B puts a brick in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, brick)
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 58/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: banana
+Correct! The bag contains banana.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 59/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a brick in the bag. You leave the room. B leaves the room. D leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, brick)
+B answers: brick
+Incorrect. The bag actually contains ball.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 60/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The bag actually contains apple.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 61/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put a banana in the box. B leaves the room. C leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 62/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a brick in the box. C leaves the room. B moves the brick to the bag. D puts a ball in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, ball)
+B answers: ball
+Correct! The box contains ball.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 63/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, apple)
+B answers: apple
+Correct! The bag contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 64/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room. C leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The box actually contains brick.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 65/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the box. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: apple
+Correct! The box contains apple.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 66/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. D leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 67/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a ball in the bag. D leaves the room. You move the ball to the box. C puts a banana in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, banana)
+B answers: banana
+Correct! The bag contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 68/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, apple)
+B answers: apple
+Correct! The bag contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 69/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an orange in the box. You leave the room. D leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, orange)
+B answers: orange
+Correct! The box contains orange.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 70/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. D puts an orange in the bag. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, orange)
+B answers: orange
+Incorrect. The bag actually contains apple.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 71/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a banana in the bag. B leaves the room. C leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, banana)
+B answers: banana
+Correct! The bag contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 72/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put an apple in the box. C leaves the room. You move the apple to the bag. B puts a stapler in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, stapler)
+B answers: stapler
+Correct! The box contains stapler.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 73/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, stapler)
+B answers: stapler
+Correct! The bag contains stapler.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 74/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the box. C leaves the room. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, apple)
+B answers: apple
+Correct! The box contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 75/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a ball in the bag. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, ball)
+B answers: ball
+Incorrect. The bag actually contains banana.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 76/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the box. C leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: stapler
+Correct! The box contains stapler.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 77/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a ball in the box. D leaves the room. B moves the ball to the bag. C puts a brick in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, brick)
+B answers: brick
+Correct! The box contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 78/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 79/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. C leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The bag actually contains apple.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 80/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, stapler)
+B answers: stapler
+Incorrect. The bag actually contains brick.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 81/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the box. D leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, brick)
+B answers: brick
+Correct! The box contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 82/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the box. C leaves the room. B moves the stapler to the bag. B puts a banana in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 83/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put a brick in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, brick)
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 84/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. B puts a ball in the box. B leaves the room. You leave the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: ball
+Incorrect. The box actually contains brick.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 85/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the box. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, apple)
+B answers: apple
+Correct! The box contains apple.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 86/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. C leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: orange
+Correct! The bag contains orange.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 87/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the bag. D leaves the room. You move the banana to the box. You put a stapler in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, stapler)
+B answers: stapler
+Correct! The bag contains stapler.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 88/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: orange
+Correct! The bag contains orange.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 89/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room. C leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The box actually contains ball.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 90/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the bag. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, apple)
+B answers: apple
+Incorrect. The bag actually contains stapler.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 91/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an orange in the bag. C leaves the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, orange)
+B answers: orange
+Correct! The bag contains orange.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 92/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a ball in the bag. C leaves the room. You move the ball to the box. D puts a stapler in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, stapler)
+B answers: stapler
+Correct! The bag contains stapler.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 93/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and D are in a room. Inside the room are an empty bag and an empty box. You put a stapler in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, stapler)
+B answers: stapler
+Correct! The box contains stapler.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 94/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room. C leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: nothing
+Incorrect. The box actually contains stapler.
+
+Outcome: Blue +0.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.0 - Red 0.0
+It's a tie!
+======================================================================
+
+--- Running Spec 95/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a stapler in the bag. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, stapler)
+B answers: stapler
+Incorrect. The bag actually contains apple.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+--- Running Spec 96/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the bag. B leaves the room. D leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 97/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the box. C leaves the room. B moves the stapler to the bag. You put a banana in the box. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, banana)
+B answers: banana
+Correct! The box contains banana.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 98/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put a brick in the bag. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, bag, brick)
+B answers: brick
+Correct! The bag contains brick.
+
+Outcome: Blue +0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 0.5 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 99/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.UNKNOWN: 'Unknown'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the box. You leave the room. B leaves the room. D leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Pass
+B answers: stapler
+Correct! The box contains stapler.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Spec 100/100: {'Answerer': 'Teammate', 'KS_Self': <EpistemicState.BELIEVES_X: 'Believes X'>, 'KS_Teammate': <EpistemicState.UNKNOWN: 'Unknown'>, 'KS_Opponent': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an apple in the box. You leave the room. B leaves the room.
+----------------------------------------------
+I am going to ask B what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+
+Action: Tell(B, box, apple)
+B answers: apple
+Incorrect. The box actually contains brick.
+
+Outcome: Blue -0.5, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue -0.5 - Red 0.0
+Winner: Red team
+======================================================================
+
+======================================================================
+LLM ToM Test Finished
+LLM was optimal in 32/100 turns (32.00%).
+
+Game results saved to ./tom_llm_logs/llama-3.1-405b-instruct_1763178116_game_data.json

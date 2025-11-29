@@ -90,20 +90,27 @@ class Scenario_Builder:
         self.events.append(Event('put', who, container=container, item=item))
         self.used.add(who)
 
-    def plan_availability(self, spec: dict):
+    def plan_availability(self, spec: dict, answerer: str):
 
         actor, teammate, opponent1, opponent2 = _map_to_char_names(spec['Actor'])
         if spec['KS_Self'] == EpistemicState.BELIEVES_X:
             self.exclude.add(actor) 
             if spec['KS_Teammate'] == EpistemicState.KNOWS_TRUTH and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
                 self.include.add(teammate)
-                self.include.add(random.choice([opponent1, opponent2])) 
+                if spec.get('Answerer') == 'Opponent':
+                    # ensure the chosen opponent (the one who must answer) is present
+                    self.include.add(answerer)
+                else:
+                    self.include.add(random.choice([opponent1, opponent2])) 
 
             elif spec['KS_Teammate'] == EpistemicState.KNOWS_TRUTH and spec['KS_Opponent'] == EpistemicState.UNKNOWN:
                 self.include.add(teammate)
                 if spec['Answerer'] == 'Self':
                     self.exclude.add(opponent1)
                     self.exclude.add(opponent2)
+                elif spec.get('Answerer') == 'Opponent':
+                    # ensure the chosen opponent (the one who must answer) is exclu
+                    self.exclude.add(answerer)
                 else:
                     self.exclude.add(random.choice([opponent1, opponent2])) 
 
@@ -114,6 +121,9 @@ class Scenario_Builder:
                 if spec['Answerer'] == 'Self':
                     self.include.add(opponent1)
                     self.include.add(opponent2)
+                elif spec.get('Answerer') == 'Opponent':
+                    # ensure the chosen opponent (the one who must answer) is present
+                    self.include.add(answerer)
                 else:
                     self.include.add(random.choice([opponent1, opponent2])) 
 
@@ -122,8 +132,12 @@ class Scenario_Builder:
                 if spec['Answerer'] == 'Teammate':
                     self.must_leave_together = (teammate, actor)
                 # Ensure one opponent stays, one leaves
-                stay_opponent = self.rng.choice([opponent1, opponent2])
-                leave_opponent = opponent2 if stay_opponent == opponent1 else opponent1
+                if spec.get('Answerer') == 'Opponent':
+                    leave_opponent = answerer
+                    stay_opponent = opponent1 if leave_opponent == opponent2 else opponent2
+                else:
+                    stay_opponent = self.rng.choice([opponent1, opponent2])
+                    leave_opponent = opponent2 if stay_opponent == opponent1 else opponent1
                 self.include.add(stay_opponent)  # This opponent must stay until end
                 self.exclude.add(leave_opponent)  # This opponent must leave
 
@@ -131,7 +145,10 @@ class Scenario_Builder:
             self.include.add(actor) 
             if spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH and spec['KS_Opponent'] == EpistemicState.BELIEVES_TRUTH:
                 self.exclude_true.add(teammate)
-                self.exclude_true.add(random.choice([opponent1, opponent2])) 
+                if spec.get('Answerer') == 'Opponent':
+                    self.exclude_true.add(answerer) 
+                else:
+                    self.exclude_true.add(random.choice([opponent1, opponent2])) 
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH and spec['KS_Opponent'] == EpistemicState.BELIEVES_FALSE:
                 self.exclude_true.add(teammate)
                 if spec['Answerer'] == 'Opponent':
@@ -141,27 +158,40 @@ class Scenario_Builder:
                     self.exclude_false.add(random.choice([opponent1, opponent2])) 
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
                 self.exclude_true.add(teammate)
-                self.include.add(random.choice([opponent1, opponent2])) 
+                if spec.get('Answerer') == 'Opponent':
+                    self.include.add(answerer)
+                else:
+                    self.include.add(random.choice([opponent1, opponent2]))
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_FALSE and spec['KS_Opponent'] == EpistemicState.BELIEVES_TRUTH:
                 self.exclude_false.add(teammate)
                 if spec['Answerer'] == 'Teammate':
                     self.exclude_true.add(opponent1) 
                     self.exclude_true.add(opponent2) 
+                elif spec.get('Answerer') == 'Opponent':
+                    self.exclude_true.add(answerer)
                 else:
                     self.exclude_true.add(random.choice([opponent1, opponent2])) 
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_FALSE and spec['KS_Opponent'] == EpistemicState.BELIEVES_FALSE:
                 self.exclude_false.add(teammate)
-                self.exclude_false.add(random.choice([opponent1, opponent2])) #need to keep one around to do the move
+                if spec['Answerer'] == 'Opponent':
+                    self.exclude_false.add(answerer)
+                else:
+                    self.exclude_false.add(random.choice([opponent1, opponent2])) #need to keep one around to do the move
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_FALSE and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
                 self.exclude_false.add(teammate)
                 if spec['Answerer'] == 'Teammate':
                     self.include.add(opponent1) 
-                    self.include.add(opponent2) 
+                    self.include.add(opponent2)
+                elif spec.get('Answerer') == 'Opponent':
+                    self.include.add(answerer) 
                 else:
                     self.include.add(random.choice([opponent1, opponent2])) 
             elif spec['KS_Teammate'] == EpistemicState.KNOWS_TRUTH and spec['KS_Opponent'] == EpistemicState.BELIEVES_TRUTH:
                 self.include.add(teammate)
-                self.exclude_true.add(random.choice([opponent1, opponent2])) 
+                if spec['Answerer'] == 'Opponent':
+                    self.exclude_true.add(answerer) 
+                else:
+                    self.exclude_true.add(random.choice([opponent1, opponent2])) 
             elif spec['KS_Teammate'] == EpistemicState.KNOWS_TRUTH and spec['KS_Opponent'] == EpistemicState.BELIEVES_FALSE:
                 self.include.add(teammate)
                 if spec['Answerer'] == 'Teammate' or spec['Answerer'] == 'Opponent':
@@ -171,7 +201,10 @@ class Scenario_Builder:
                     self.exclude_false.add(random.choice([opponent1, opponent2])) 
             elif spec['KS_Teammate'] == EpistemicState.KNOWS_TRUTH and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
                 self.include.add(teammate)
-                self.include.add(random.choice([opponent1, opponent2])) 
+                if spec.get('Answerer') == 'Opponent':
+                    self.include.add(answerer) 
+                else:
+                    self.include.add(random.choice([opponent1, opponent2])) 
 
         self.present_initially = self.exclude | self.exclude_true | self.exclude_false | self.include # who must be present initially
 
@@ -289,7 +322,7 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
         queried_item = rng.choice(ITEMS_GEN)
 
         sb = Scenario_Builder(rng, queried_container, queried_item, available)
-        sb.plan_availability(row)
+        sb.plan_availability(row, answerer)
         sb.build_scenario(answerer)
 
         present_initially = sorted(list(sb.present_initially))
@@ -305,6 +338,7 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             question_container=queried_container,
             events=sb.events,
             present_initially=present_initially,
+            id=row['Id'],
         )
 
         # Validate invariants

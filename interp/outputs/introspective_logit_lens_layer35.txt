@@ -1,0 +1,46 @@
+Logit Lens for Introspective Confidence (Layer 35)
+==================================================
+
+Top Tokens (High Confidence):
+sil                  0.0471
+bully                0.0469
+祥                    0.0468
+adian                0.0461
+ゝ                    0.0458
+santé                0.0455
+_Util                0.0449
+.IsTrue              0.0445
+ieren                0.0443
+sạn                  0.0435
+buffers              0.0432
+Yam                  0.0432
+Заг                  0.0430
+icontrol             0.0426
+_TestCase            0.0426
+GenerationStrategy   0.0425
+peer                 0.0422
+suff                 0.0417
+CascadeType          0.0416
+abei                 0.0414
+
+Bottom Tokens (Low Confidence):
+ノ                    -0.0483
+Neither              -0.0480
+No                   -0.0474
+neither              -0.0457
+uae                  -0.0447
+Hib                  -0.0446
+lest                 -0.0443
+ani                  -0.0441
+Liberty              -0.0436
+hap                  -0.0433
+pon                  -0.0427
+TN                   -0.0426
+McCorm               -0.0424
+Poster               -0.0423
+Blanch               -0.0421
+cyn                  -0.0418
+plastic              -0.0416
+pessim               -0.0414
+esty                 -0.0412
+ramp                 -0.0410

@@ -1,14 +1,17 @@
-import time
 import json
-from load_and_format_datasets import load_and_format_dataset
-from base_game_class import *
 import random
 import string
+import time
+
+from base_game_class import *
+from load_and_format_datasets import load_and_format_dataset
+
 
 class CapabilitiesTest(BaseGameClass):
     """
     Just ask independent multiple-choice or short answer questions and record responses.
     """
+
     def __init__(
         self,
         subject_id,
@@ -21,7 +24,7 @@ class CapabilitiesTest(BaseGameClass):
         resample_for_probs=False,
         nested=None,
         include_question_num=False,
-        include_total_questions=False
+        include_total_questions=False,
     ):
         """
         Args:
@@ -34,7 +37,13 @@ class CapabilitiesTest(BaseGameClass):
             include_question_num (bool): If True, pass question_num to present_question
             include_total_questions (bool): If True, pass total_questions to present_question
         """
-        filepath = "capabilities_test_logs" if not nested else "capabilities_3p_test_logs" if nested == "Other" else "capabilities_1p_test_logs"
+        filepath = (
+            "capabilities_test_logs"
+            if not nested
+            else "capabilities_3p_test_logs"
+            if nested == "Other"
+            else "capabilities_1p_test_logs"
+        )
         super().__init__(subject_id, subject_name, is_human_player, filepath)
         self.n_questions = len(questions) if not n_questions else n_questions
 
@@ -63,15 +72,55 @@ class CapabilitiesTest(BaseGameClass):
         self.nested_option_dict = None
         self.nested_range_midpoints = None
         if self.nested == "Other":
-            self.nested_option_dict = {"A": "<5%", "B": "5-10%", "C": "10-20%", "D": "20-40%", "E": "40-60%", "F": "60-80%", "G": "80-90%", "H": ">90%"}
-            self.nested_range_midpoints = {"A": 0.025, "B": 0.075, "C": 0.15,  "D": 0.3, "E": 0.5, "F": 0.7, "G": 0.85, "H": 0.95}
+            self.nested_option_dict = {
+                "A": "<5%",
+                "B": "5-10%",
+                "C": "10-20%",
+                "D": "20-40%",
+                "E": "40-60%",
+                "F": "60-80%",
+                "G": "80-90%",
+                "H": ">90%",
+            }
+            self.nested_range_midpoints = {
+                "A": 0.025,
+                "B": 0.075,
+                "C": 0.15,
+                "D": 0.3,
+                "E": 0.5,
+                "F": 0.7,
+                "G": 0.85,
+                "H": 0.95,
+            }
             self.nested_setup_prompt = "I want your help calibrating question difficulty. I'm going to show you a multiple-choice question, and I want you to tell me approximately what percentage of college-educated people you think would get it right. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text."
-            self.nested_question_prompt = "What percentage of college-educated people would get this question right?"
+            self.nested_question_prompt = (
+                "What percentage of college-educated people would get this question right?"
+            )
         elif self.nested == "Self":
-            self.nested_option_dict = {"A": "<5%", "B": "5-10%", "C": "10-20%", "D": "20-40%", "E": "40-60%", "F": "60-80%", "G": "80-90%", "H": ">90%"}
-            self.nested_range_midpoints = {"A": 0.025, "B": 0.075, "C": 0.15,  "D": 0.3, "E": 0.5, "F": 0.7, "G": 0.85, "H": 0.95}
+            self.nested_option_dict = {
+                "A": "<5%",
+                "B": "5-10%",
+                "C": "10-20%",
+                "D": "20-40%",
+                "E": "40-60%",
+                "F": "60-80%",
+                "G": "80-90%",
+                "H": ">90%",
+            }
+            self.nested_range_midpoints = {
+                "A": 0.025,
+                "B": 0.075,
+                "C": 0.15,
+                "D": 0.3,
+                "E": 0.5,
+                "F": 0.7,
+                "G": 0.85,
+                "H": 0.95,
+            }
             self.nested_setup_prompt = "I'm going to show you a multiple-choice question, and I want you to tell me your level of confidence that you would get the question right. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text."
-            self.nested_question_prompt = "How confident are you that you would get this question right?"
+            self.nested_question_prompt = (
+                "How confident are you that you would get this question right?"
+            )
 
         # Run parameters for reproducibility (run-level only; no per-question values)
         self.run_parameters = {
@@ -82,8 +131,8 @@ class CapabilitiesTest(BaseGameClass):
             "nested": self.nested,
             "present_question_args": {
                 "include_question_num": self.include_question_num,
-                "include_total_questions": self.include_total_questions
-            }
+                "include_total_questions": self.include_total_questions,
+            },
             # Added during the run when applicable:
             # "parallel_config": {...}
             # "get_llm_answer_static_args": {...}
@@ -98,15 +147,17 @@ class CapabilitiesTest(BaseGameClass):
         }
 
         if len(questions) < self.n_questions:
-            raise ValueError(f"Not enough questions provided ({len(questions)}); ({self.n_questions} needed)")
-        
+            raise ValueError(
+                f"Not enough questions provided ({len(questions)}); ({self.n_questions} needed)"
+            )
+
         # Take the first n_questions
-        self.questions = questions[:self.n_questions]
+        self.questions = questions[: self.n_questions]
         self._log(f"Using {len(self.questions)} provided questions")
 
         if resume_from and resume_from != "":
             try:
-                with open(resume_from, "r") as f:
+                with open(resume_from) as f:
                     prev_data = json.load(f)
             except Exception as e:
                 self._log(f"ERROR: Error opening resume file: {str(e)}")
@@ -114,7 +165,8 @@ class CapabilitiesTest(BaseGameClass):
             self.results = prev_data["results"]
             self._log(f"Resuming from {resume_from} holding {len(self.results)} questions")
             for rdict in self.results.values():
-                if rdict["is_correct"] == True: self.correct_count +=1
+                if rdict["is_correct"] == True:
+                    self.correct_count += 1
                 self.total_count += 1
             self.questions = [q for q in self.questions if q["id"] not in self.results]
 
@@ -127,9 +179,9 @@ class CapabilitiesTest(BaseGameClass):
             "results": self.results,
             "run_parameters": self.run_parameters,
         }
-                    
+
         filename = f"{self.log_base_name}{self.log_suffix}.json"
-        with open(filename, 'w', encoding='utf-8') as f:
+        with open(filename, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         self._log(f"Data saved to: {filename}")
 
@@ -159,7 +211,9 @@ class CapabilitiesTest(BaseGameClass):
         Uses present_question indices based on provided question_num/total_questions.
         """
         if self.nested:
-            q_text = self._present_nested_question(question, self.nested_question_prompt, self.nested_option_dict)
+            q_text = self._present_nested_question(
+                question, self.nested_question_prompt, self.nested_option_dict
+            )
             options = list(self.nested_option_dict.keys())
             setup_prompt = self.nested_setup_prompt
             RANGE_MIDPOINTS = self.nested_range_midpoints
@@ -174,7 +228,11 @@ class CapabilitiesTest(BaseGameClass):
             setup_prompt = self.mc_setup_prompt
             RANGE_MIDPOINTS = None
 
-        options_str = " or ".join(options) if len(options) == 2 else ", ".join(options[:-1]) + f", or {options[-1]}"
+        options_str = (
+            " or ".join(options)
+            if len(options) == 2
+            else ", ".join(options[:-1]) + f", or {options[-1]}"
+        )
         llm_prompt = q_text + f"\nYour choice ({options_str}): "
         return q_text, setup_prompt, options, RANGE_MIDPOINTS, llm_prompt
 
@@ -182,19 +240,23 @@ class CapabilitiesTest(BaseGameClass):
         """
         Measures a subject's performance on multiple choice questions.
         Uses parallel execution for resampling if configured.
-        
+
         Returns:
             bool: True if completed successfully, False otherwise
             str: Path to the capabilities data file
         """
         start_message = f"\nStarting Capabilities Measurement for Subject: {self.subject_id}"
         self._log(start_message)
-        self._log(f"Configuration: Questions={self.n_questions}, is_human_player={self.is_human_player}, temperature={self.temperature}, resample_for_probs={self.resample_for_probs}, nested={self.nested}")
-        self._log("\n" + "="*10 + " Starting Capability Measuring " + "="*10)
-        
+        self._log(
+            f"Configuration: Questions={self.n_questions}, is_human_player={self.is_human_player}, temperature={self.temperature}, resample_for_probs={self.resample_for_probs}, nested={self.nested}"
+        )
+        self._log("\n" + "=" * 10 + " Starting Capability Measuring " + "=" * 10)
+
         log_interval = 10
 
-        self.run_parameters["setup_prompt"] = self.mc_setup_prompt if not self.nested else self.nested_setup_prompt
+        self.run_parameters["setup_prompt"] = (
+            self.mc_setup_prompt if not self.nested else self.nested_setup_prompt
+        )
         if self.nested:
             self.run_parameters["nested_option_dict"] = self.nested_option_dict
             self.run_parameters["nested_range_midpoints"] = self.nested_range_midpoints
@@ -206,7 +268,10 @@ class CapabilitiesTest(BaseGameClass):
             #################################################################
             max_workers = 4
             epsilon = 0.05
-            self.run_parameters["parallel_config"] = {"max_workers": max_workers, "epsilon": epsilon}
+            self.run_parameters["parallel_config"] = {
+                "max_workers": max_workers,
+                "epsilon": epsilon,
+            }
 
             # --- Phase 1: Prepare all tasks ---
             self._log(f"Preparing {len(self.questions)} questions for parallel resampling...")
@@ -216,34 +281,38 @@ class CapabilitiesTest(BaseGameClass):
                 _, setup_prompt, options, RANGE_MIDPOINTS, llm_prompt = self._prepare_mc_for_llm(
                     question,
                     idx if self.include_question_num else None,
-                    total_q if self.include_total_questions else None
+                    total_q if self.include_total_questions else None,
                 )
 
                 task = {
                     "question_obj": question,
                     "prompt": setup_prompt + "\n\n" + llm_prompt,
                     "options": options,
-                    "message_history": [], # no history
+                    "message_history": [],  # no history
                     "epsilon": epsilon,
                     "range_midpoints": RANGE_MIDPOINTS,
                 }
                 estimation_tasks.append(task)
-            
+
             # --- Phase 2: Execute all tasks in parallel ---
-            parallel_results = self.run_estimations_in_parallel(estimation_tasks, max_workers=max_workers)
+            parallel_results = self.run_estimations_in_parallel(
+                estimation_tasks, max_workers=max_workers
+            )
 
             # --- Phase 3: Process the results ---
             self._log("Processing results from parallel execution...")
             for result_item in parallel_results:
-                if result_item.get('error'):
-                    self._log(f"ERROR: Task for question '{result_item['task']['question_obj'].get('id')}' failed: {result_item['error']}")
+                if result_item.get("error"):
+                    self._log(
+                        f"ERROR: Task for question '{result_item['task']['question_obj'].get('id')}' failed: {result_item['error']}"
+                    )
                     continue
-                
-                subject_answer, _, probs = result_item['result']
-                question = result_item['task']['question_obj']
-                options = result_item['task']['options']
-                RANGE_MIDPOINTS = result_item['task'].get('range_midpoints')
-                
+
+                subject_answer, _, probs = result_item["result"]
+                question = result_item["task"]["question_obj"]
+                options = result_item["task"]["options"]
+                RANGE_MIDPOINTS = result_item["task"].get("range_midpoints")
+
                 subject_decision = self._parse_subject_decision(subject_answer, options)
 
                 if self.nested:
@@ -256,20 +325,20 @@ class CapabilitiesTest(BaseGameClass):
                     else:
                         is_correct = 0.0
                 else:
-                    is_correct = (subject_decision == question["correct_answer"])
+                    is_correct = subject_decision == question["correct_answer"]
 
                 if is_correct:
                     self.correct_count += 1
-                
+
                 if subject_decision != "":
                     self.results[question["id"]] = {
                         "question": question,
                         "subject_answer": subject_decision,
                         "is_correct": is_correct,
-                        "probs": probs 
+                        "probs": probs,
                     }
                 self.total_count += 1
-            
+
             # Save data once at the end of processing
             self._save_data()
 
@@ -284,13 +353,17 @@ class CapabilitiesTest(BaseGameClass):
                 self.run_parameters["human_mc_input_prompt"] = self.human_mc_input_prompt
             else:
                 # Record static _get_llm_answer args used in this run (MC path)
-                max_tokens_used = None if ('opus-4' in self.subject_name or 'sonnet-4' in self.subject_name) else 1
+                max_tokens_used = (
+                    None
+                    if ("opus-4" in self.subject_name or "sonnet-4" in self.subject_name)
+                    else 1
+                )
                 self.run_parameters["get_llm_answer_static_args"] = {
                     "keep_appending": False,
                     "message_history": [],
                     "MAX_TOKENS": max_tokens_used,
                     "temp": self.temperature,
-                    "accept_any": False if 'base' in self.subject_name else True
+                    "accept_any": False if "base" in self.subject_name else True,
                 }
 
             total_q = len(self.questions)
@@ -300,8 +373,7 @@ class CapabilitiesTest(BaseGameClass):
                     q_text = self._present_question_with_indices(question, i, total_q)
                     print(q_text)
                     subject_answer = self._get_subject_answer(
-                        list(question["options"].keys()), 
-                        self.human_mc_input_prompt
+                        list(question["options"].keys()), self.human_mc_input_prompt
                     )
                     if subject_answer is None:
                         return False, None
@@ -310,10 +382,12 @@ class CapabilitiesTest(BaseGameClass):
                     probs = None
                 else:
                     # For LLM subject: prepare once, honoring index config
-                    _, setup_prompt, options, RANGE_MIDPOINTS, llm_prompt = self._prepare_mc_for_llm(
-                        question,
-                        i if self.include_question_num else None,
-                        total_q if self.include_total_questions else None
+                    _, setup_prompt, options, RANGE_MIDPOINTS, llm_prompt = (
+                        self._prepare_mc_for_llm(
+                            question,
+                            i if self.include_question_num else None,
+                            total_q if self.include_total_questions else None,
+                        )
                     )
 
                     gla_args = self.run_parameters["get_llm_answer_static_args"]
@@ -324,47 +398,56 @@ class CapabilitiesTest(BaseGameClass):
                         keep_appending=gla_args["keep_appending"],
                         MAX_TOKENS=gla_args["MAX_TOKENS"],
                         temp=gla_args["temp"],
-                        accept_any=gla_args["accept_any"]
+                        accept_any=gla_args["accept_any"],
                     )
-                
+
                 # --- Same result processing logic as parallel path ---
                 subject_decision = self._parse_subject_decision(subject_answer, options)
 
                 if self.nested:
-                    is_correct = (sum(
-                        RANGE_MIDPOINTS[key.strip()] * mass
-                        for key, mass in (probs or {}).items()
-                        if key.strip() in RANGE_MIDPOINTS
-                    ) if probs else RANGE_MIDPOINTS[subject_decision] if (RANGE_MIDPOINTS and subject_decision in RANGE_MIDPOINTS) else 0.0)
+                    is_correct = (
+                        sum(
+                            RANGE_MIDPOINTS[key.strip()] * mass
+                            for key, mass in (probs or {}).items()
+                            if key.strip() in RANGE_MIDPOINTS
+                        )
+                        if probs
+                        else (
+                            RANGE_MIDPOINTS[subject_decision]
+                            if (RANGE_MIDPOINTS and subject_decision in RANGE_MIDPOINTS)
+                            else 0.0
+                        )
+                    )
                 else:
-                    is_correct = (subject_decision == question["correct_answer"])
+                    is_correct = subject_decision == question["correct_answer"]
 
                 if is_correct:
                     self.correct_count += 1
-                
+
                 if subject_decision != "":
                     self.results[question["id"]] = {
                         "question": question,
                         "subject_answer": subject_decision,
                         "is_correct": is_correct,
-                        "probs": probs 
+                        "probs": probs,
                     }
                 self.total_count += 1
                 print(f"Completed question {self.total_count}/{len(self.questions)}")
-                if (i) % log_interval == 0: self._save_data()
-        
+                if (i) % log_interval == 0:
+                    self._save_data()
+
         # --- Finalization steps, common to both paths ---
         if self.total_count > 0:
             self.accuracy = self.correct_count / self.total_count
         else:
             self.accuracy = 0.0
             self._log("WARNING: No questions were processed.")
-        
+
         summary = f"\nCapabilities Test Complete. Accuracy: {self.accuracy:.2%} ({self.correct_count}/{self.total_count})"
         self._log(summary)
-        
+
         self._save_data()
-                    
+
         capabilities_file_path = f"{self.log_base_name}{self.log_suffix}.json"
         self._log(f"Capabilities measurement completed. Results saved to: {capabilities_file_path}")
         return True, capabilities_file_path
@@ -372,16 +455,18 @@ class CapabilitiesTest(BaseGameClass):
     def run_capabilities_measurement_sa(self):
         """
         This measures a subject's performance on short answer questions and saves the results to a file.
-        
+
         Returns:
             bool: True if completed successfully, False otherwise
             str: Path to the capabilities data file
         """
         start_message = f"\nStarting Capabilities Measurement for Subject: {self.subject_id}"
         self._log(start_message)
-        self._log(f"Configuration: Questions={self.n_questions}, is_human_player={self.is_human_player}, temperature={self.temperature}, resample_for_probs={self.resample_for_probs}, nested={self.nested}")
-        self._log("\n" + "="*10 + " Starting Capability Measuring " + "="*10)
-        
+        self._log(
+            f"Configuration: Questions={self.n_questions}, is_human_player={self.is_human_player}, temperature={self.temperature}, resample_for_probs={self.resample_for_probs}, nested={self.nested}"
+        )
+        self._log("\n" + "=" * 10 + " Starting Capability Measuring " + "=" * 10)
+
         # Initialize state
         probs = None
         log_interval = 10
@@ -396,9 +481,9 @@ class CapabilitiesTest(BaseGameClass):
                 "keep_appending": False,
                 "message_history": [],
                 "MAX_TOKENS": None,
-                "temp": self.temperature
+                "temp": self.temperature,
             }
-        
+
         # Process each question
         total_q = len(self.questions)
         for i, question in enumerate(self.questions, start=1):
@@ -408,10 +493,7 @@ class CapabilitiesTest(BaseGameClass):
             # Get subject's answer
             if self.is_human_player:
                 print(q_text)
-                subject_answer = self._get_subject_answer(
-                    [], 
-                    self.human_sa_input_prompt
-                )
+                subject_answer = self._get_subject_answer([], self.human_sa_input_prompt)
                 if subject_answer is None:
                     return False
                 probs = None
@@ -423,30 +505,31 @@ class CapabilitiesTest(BaseGameClass):
                 subject_answer, _, probs = self._get_llm_answer(
                     None,
                     setup_prompt + "\n\n" + llm_prompt,
-                    gla_args["message_history"], # no history
+                    gla_args["message_history"],  # no history
                     keep_appending=gla_args["keep_appending"],
                     MAX_TOKENS=gla_args["MAX_TOKENS"],
-                    temp=gla_args["temp"]
+                    temp=gla_args["temp"],
                 )
-                        
+
             # Store result
             if subject_answer != "":
                 self.results[question["id"]] = {
                     "question": question,
                     "subject_answer": subject_answer,
                     "is_correct": None,
-                    "probs": probs 
+                    "probs": probs,
                 }
             self.total_count += 1
             print(f"Completed question {self.total_count}/{len(self.questions)}")
-            if (i) % log_interval == 0: self._save_data()
-            
+            if (i) % log_interval == 0:
+                self._save_data()
+
         # Summary
-        summary = f"\nCapabilities Test Complete."
+        summary = "\nCapabilities Test Complete."
         self._log(summary)
-        
+
         self._save_data()
-                    
+
         # Return the path to the capabilities data file
         capabilities_file_path = f"{self.log_base_name}{self.log_suffix}.json"
         self._log(f"Capabilities measurement completed. Results saved to: {capabilities_file_path}")
@@ -455,9 +538,11 @@ class CapabilitiesTest(BaseGameClass):
     def run_capabilities_measurement_grp(self):
         start_message = f"\nStarting Capabilities Measurement for Subject: {self.subject_id}"
         self._log(start_message)
-        self._log(f"Configuration: Questions={self.n_questions}, is_human_player={self.is_human_player}, temperature={self.temperature}, resample_for_probs={self.resample_for_probs}, nested={self.nested}")
-        self._log("\n" + "="*10 + " Starting Capability Measuring " + "="*10)
-        
+        self._log(
+            f"Configuration: Questions={self.n_questions}, is_human_player={self.is_human_player}, temperature={self.temperature}, resample_for_probs={self.resample_for_probs}, nested={self.nested}"
+        )
+        self._log("\n" + "=" * 10 + " Starting Capability Measuring " + "=" * 10)
+
         # Initialize state
         probs = None
         log_interval = 10
@@ -473,9 +558,9 @@ class CapabilitiesTest(BaseGameClass):
                 "keep_appending": False,
                 "message_history": [],
                 "MAX_TOKENS": None,
-                "temp": self.temperature
+                "temp": self.temperature,
             }
-        
+
         # Process each question
         total_q = len(self.questions)
         for i, question in enumerate(self.questions, start=1):
@@ -485,10 +570,7 @@ class CapabilitiesTest(BaseGameClass):
             # Get subject's answer
             if self.is_human_player:
                 print(q_text)
-                subject_answer = self._get_subject_answer(
-                    [], 
-                    self.human_sa_input_prompt
-                )
+                subject_answer = self._get_subject_answer([], self.human_sa_input_prompt)
                 if subject_answer is None:
                     return False
                 probs = None
@@ -500,45 +582,49 @@ class CapabilitiesTest(BaseGameClass):
                 subject_answer, _, probs = self._get_llm_answer(
                     None,
                     setup_prompt + "\n\n" + llm_prompt,
-                    gla_args["message_history"], # no history
+                    gla_args["message_history"],  # no history
                     keep_appending=gla_args["keep_appending"],
                     MAX_TOKENS=gla_args["MAX_TOKENS"],
-                    temp=gla_args["temp"]
+                    temp=gla_args["temp"],
                 )
-                        
+
             # Store result
             if subject_answer != "":
-                subject_decision = subject_answer.lower().strip(string.whitespace + string.punctuation)
+                subject_decision = subject_answer.lower().strip(
+                    string.whitespace + string.punctuation
+                )
                 correct_answer = question["correct_answer"]
-                is_correct = (subject_decision == correct_answer.lower())
+                is_correct = subject_decision == correct_answer.lower()
                 self.results[question["id"]] = {
                     "question": question,
                     "subject_answer": subject_answer,
                     "is_correct": is_correct,
-                    "probs": probs 
+                    "probs": probs,
                 }
                 if is_correct:
                     self.correct_count += 1
             self.total_count += 1
             print(f"Completed question {self.total_count}/{len(self.questions)}")
-            if (i) % log_interval == 0: self._save_data()
-            
+            if (i) % log_interval == 0:
+                self._save_data()
+
         # Summary
         if self.total_count > 0:
             self.accuracy = self.correct_count / self.total_count
         else:
             self.accuracy = 0.0
             self._log("WARNING: No questions were processed.")
-        
+
         summary = f"\nCapabilities Test Complete. Accuracy: {self.accuracy:.2%} ({self.correct_count}/{self.total_count})"
         self._log(summary)
-        
+
         self._save_data()
-                    
+
         # Return the path to the capabilities data file
         capabilities_file_path = f"{self.log_base_name}{self.log_suffix}.json"
         self._log(f"Capabilities measurement completed. Results saved to: {capabilities_file_path}")
         return True, capabilities_file_path
+
 
 def main(model_dataset_dict, temp):
     for subject_name, datasets in model_dataset_dict.items():
@@ -546,26 +632,52 @@ def main(model_dataset_dict, temp):
             IS_HUMAN = False
             INCLUDE_QNUM = False
             INCLUDE_TOTAL = False
-            resume_from = None#"capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847064_test_data.json"#
+            resume_from = None  # "capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847064_test_data.json"#
             RESAMPLE = False
             NESTED = "Other" #values: None, "Self", "Other"
             temp = temp
             seed = 42
-            
-            N_QUESTIONS = 5 if IS_HUMAN else 447 if DATASET_NAME.startswith("GP") else 500 if not DATASET_NAME.startswith("Garupanese") else 500
+
+            N_QUESTIONS = (
+                5
+                if IS_HUMAN
+                else (
+                    447
+                    if DATASET_NAME.startswith("GP")
+                    else 500
+                    if not DATASET_NAME.startswith("Garupanese")
+                    else 500
+                )
+            )
             SUBJECT_ID = f"{subject_name.replace('/', '-')}_{DATASET_NAME}_{N_QUESTIONS}"
             try:
                 # Load questions for capabilities measurement
                 print(f"Loading {N_QUESTIONS} questions for capabilities measurement...")
-                formatted_questions = load_and_format_dataset(DATASET_NAME, N_QUESTIONS, split="f2e" if "f2e" in subject_name and DATASET_NAME.startswith("Garupanese") else "e2f" if "e2f" in subject_name and DATASET_NAME.startswith("Garupanese") else "both" if DATASET_NAME.startswith("Garupanese") else None)
+                formatted_questions = load_and_format_dataset(
+                    DATASET_NAME,
+                    N_QUESTIONS,
+                    split=(
+                        "f2e"
+                        if "f2e" in subject_name and DATASET_NAME.startswith("Garupanese")
+                        else (
+                            "e2f"
+                            if "e2f" in subject_name and DATASET_NAME.startswith("Garupanese")
+                            else "both"
+                            if DATASET_NAME.startswith("Garupanese")
+                            else None
+                        )
+                    ),
+                )
 
                 random.seed(seed)
                 random.shuffle(formatted_questions)
-                    
+
                 if not formatted_questions or len(formatted_questions) < N_QUESTIONS:
-                    print(f"Error: Not enough questions available ({len(formatted_questions) if formatted_questions else 0}). Needed: {N_QUESTIONS}")
+                    print(
+                        f"Error: Not enough questions available ({len(formatted_questions) if formatted_questions else 0}). Needed: {N_QUESTIONS}"
+                    )
                     return
-                
+
                 # Create game instance for capabilities measurement
                 game = CapabilitiesTest(
                     subject_id=SUBJECT_ID,
@@ -578,12 +690,12 @@ def main(model_dataset_dict, temp):
                     resample_for_probs=RESAMPLE,
                     nested=NESTED,
                     include_question_num=INCLUDE_QNUM,
-                    include_total_questions=INCLUDE_TOTAL
+                    include_total_questions=INCLUDE_TOTAL,
                 )
 
                 # Store the seed used (run-level, for reproducibility)
                 game.run_parameters["seed"] = seed
-                            
+
                 # Run capabilities measurement
                 if (DATASET_NAME == "SimpleQA" or DATASET_NAME == "GPSA") and not NESTED:
                     success, capabilities_file = game.run_capabilities_measurement_sa()
@@ -591,22 +703,30 @@ def main(model_dataset_dict, temp):
                     success, capabilities_file = game.run_capabilities_measurement_grp()
                 else:
                     success, capabilities_file = game.run_capabilities_measurement()
-                
+
                 if success:
-                    print(f"\nCapabilities measurement completed successfully.")
+                    print("\nCapabilities measurement completed successfully.")
                     print(f"Results saved to: {capabilities_file}")
                 else:
                     print("\nCapabilities measurement failed.")
-                    
+
             except Exception as e:
                 print(f"Error during execution: {e}")
                 import traceback
+
                 traceback.print_exc()
-    
+
     print("\nExecution completed.")
+
 
 if __name__ == "__main__":
     model_dataset_dict = {
+<<<<<<< HEAD
         "gpt-4o-mini-2024-07-18": ["SimpleQA"],
         }
     main(model_dataset_dict, temp=1.0)
+=======
+        "llama-3.1-8b-instruct": ["SimpleMC"],
+    }
+    main(model_dataset_dict, temp=1.0)
+>>>>>>> 525ec88154a5fbbab0077b5943d372362527e1bc

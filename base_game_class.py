@@ -293,19 +293,26 @@ class BaseGameClass:
                             ),
 #                            'seed': 42,
                             'provider': {
-#                                **({"only": ["Chutes"]} if 'v3.1' in self.subject_name else {"only": ["DeepInfra"]} if '-r1' in self.subject_name else {"only": ["Cerebras"]} if 'qwen' in self.subject_name else {}),
-                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'llama-3.1-405' in self.subject_name else True,
-                                "allow_fallbacks": False,
+                                'order': ['Chutes'] if 'v3.1' in self.subject_name else [],
+                                'allow_fallbacks': True,
+                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'llama-3.1-405' in self.subject_name or 'gemini' in self.subject_name else True,
 #                                'quantizations': ['fp8'],
                             },
                         }} if self.provider == "OpenRouter" else {}
                     ) 
-                    if self.provider == "OpenRouter": print(f"Provider that responded: {completion.provider}")
+                    if self.provider == "OpenRouter": 
+                        print(f"Provider that responded: {completion.provider}")
+                        # Log additional provider details
+                        if hasattr(completion, 'headers'):
+                            prov = completion.headers.get('x-openrouter-provider')
+                            backend = completion.headers.get('x-openrouter-model')
+                            if prov or backend:
+                                print(f"[OpenRouter] provider_used={prov} backend_model={backend}")
+                    
                     reasoning = getattr(completion.choices[0].message, "reasoning", None)
                     if reasoning:
                         self._log("REASONING TRACE:")
                         self._log(reasoning)
-
                     #print(f"completion={completion}")
                     #exit()
                     resp = completion.choices[0].message.content.strip()

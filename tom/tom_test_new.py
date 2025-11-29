@@ -58,11 +58,23 @@ class TurnRecord:
     was_optimal: bool
     blue_score_after: float
     red_score_after: float
+    scenario_id: Optional[str] = None
     epistemic_type: Optional[str] = None
     ask_constraint: Optional[str] = None
     ks_self: Optional[str] = None
     ks_teammate: Optional[str] = None
     ks_opponent: Optional[str] = None
+    # New fields:
+    answerer: Optional[str] = None
+    asked_player: Optional[str] = None
+    asked_player_present: Optional[str] = None
+    ask_container_matches: Optional[str] = None
+    told_player: Optional[str] = None
+    told_player_present: Optional[str] = None
+    tell_truthful_about_question: Optional[str] = None
+    b_left_before_a: Optional[str] = None
+    a_left_before_put: Optional[str] = None
+    b_put_or_moved: Optional[str] = None
 
 class GameState:
     """Manages the game state."""
@@ -478,9 +490,63 @@ Respond ONLY with your action, and no other text."""
         else:
             was_optimal = True
             expected_action_str = action_str
+
+        # Calculate additional turn record fields
+        answerer = scenario.who_answers
+        
+        # Ask-related fields
+        asked_player = ""
+        asked_player_present = ""
+        ask_container_matches = ""
+        if action.action_type == ActionType.ASK:
+            asked_player = action.target_char
+            present_at_end = game.get_present_at_end(scenario)
+            asked_player_present = "TRUE" if action.target_char in present_at_end else "FALSE"
+            ask_container_matches = "TRUE" if action.container == scenario.question_container else "FALSE"
+        
+        # Tell-related fields
+        told_player = ""
+        told_player_present = ""
+        tell_truthful_about_question = ""
+        if action.action_type == ActionType.TELL:
+            told_player = action.target_char
+            present_at_end = game.get_present_at_end(scenario)
+            told_player_present = "TRUE" if action.target_char in present_at_end else "FALSE"
+            
+            # Check truthfulness only if telling about question container
+            # Compare against what the player believes (their knowledge), not final true contents
+            if action.container == scenario.question_container:
+                player_belief = game.characters[turn_char].get_belief(action.container)
+                tell_truthful_about_question = "TRUE" if action.contents == player_belief else "FALSE"
+        
+        # Event-based fields
+        a_leave_idx = None
+        b_leave_idx = None
+        for idx, event in enumerate(scenario.events):
+            if event.event_type == 'leave':
+                if event.character == 'A':
+                    a_leave_idx = idx
+                elif event.character == 'B':
+                    b_leave_idx = idx
+        
+        # B left before A
+        b_left_before_a = ""
+        if a_leave_idx is not None and b_leave_idx is not None:
+            b_left_before_a = "TRUE" if b_leave_idx < a_leave_idx else "FALSE"
+        
+        # A left before put
+        a_left_before_put = ""
+        if a_leave_idx is not None:
+            any_put_before_a_left = any(idx < a_leave_idx for idx, event in enumerate(scenario.events) 
+                                        if event.event_type == 'put')
+            a_left_before_put = "FALSE" if any_put_before_a_left else "TRUE"
+        
+        # B put or moved an item
+        b_put_or_moved = "TRUE" if any((event.event_type == 'put' or event.event_type == 'move') and event.character == 'B' 
+                                       for event in scenario.events) else "FALSE"
         
         turn_record = TurnRecord(
-            round_num=scenario.round_num, character=turn_char, scenario_desc=scenario_desc,
+            round_num=scenario.round_num, scenario_id=scenario.id, character=turn_char, scenario_desc=scenario_desc,
             question=question_desc, action=action_str, action_cost=abs(score_delta),
             answer_given=answer_given, answer_correct=is_correct, answer_score=answer_score,
             optimal_action=expected_action_str, was_optimal=was_optimal,
@@ -490,6 +556,16 @@ Respond ONLY with your action, and no other text."""
             ks_self=scenario.ks_self if scenario.ks_self else None,
             ks_teammate=scenario.ks_teammate if scenario.ks_teammate else None,
             ks_opponent=scenario.ks_opponent if scenario.ks_opponent else None,
+            answerer=answerer,
+            asked_player=asked_player,
+            asked_player_present=asked_player_present,
+            ask_container_matches=ask_container_matches,
+            told_player=told_player,
+            told_player_present=told_player_present,
+            tell_truthful_about_question=tell_truthful_about_question,
+            b_left_before_a=b_left_before_a,
+            a_left_before_put=a_left_before_put,
+            b_put_or_moved=b_put_or_moved,
         )
         game.turn_records.append(turn_record)
         

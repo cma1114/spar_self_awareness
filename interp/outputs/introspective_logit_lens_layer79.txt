@@ -1,0 +1,46 @@
+Logit Lens for Introspective Confidence (Layer 79)
+==================================================
+
+Top Tokens (High Confidence):
+ocrine               0.0464
+Guerrero             0.0456
+uhan                 0.0439
+Bashar               0.0432
+ustum                0.0431
+vul                  0.0428
+crow                 0.0426
+Seventh              0.0420
+Rockefeller          0.0420
+286                  0.0413
+basil                0.0403
+_third               0.0402
+seventh              0.0402
+Basil                0.0401
+614                  0.0398
+�                    0.0396
+ارک                  0.0392
+.scalablytyped       0.0390
+Seven                0.0388
+283                  0.0388
+
+Bottom Tokens (Low Confidence):
+nil                  -0.0651
+null                 -0.0604
+5                    -0.0575
+random               -0.0555
+NULL                 -0.0552
+Random               -0.0552
+none                 -0.0543
+Nil                  -0.0537
+A                    -0.0506
+Random               -0.0499
+RANDOM               -0.0494
+automatically        -0.0491
+randomly             -0.0487
+helpful              -0.0487
+chance               -0.0482
+NONE                 -0.0475
+nil                  -0.0474
+None                 -0.0469
+convenience          -0.0469
+0                    -0.0459

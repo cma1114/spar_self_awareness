@@ -1,0 +1,46 @@
+Logit Lens for Introspective Confidence (Layer 50)
+==================================================
+
+Top Tokens (High Confidence):
+bable                0.0474
+ange                 0.0473
+IEL                  0.0434
+conf                 0.0403
+Bucc                 0.0397
+ー                    0.0396
+eu                   0.0393
+Pant                 0.0393
+confident            0.0384
+역                    0.0381
+ados                 0.0377
+ters                 0.0374
+ALT                  0.0374
+YES                  0.0371
+oline                0.0367
+BOARD                0.0367
+lak                  0.0366
+enc                  0.0363
+Jer                  0.0362
+�                    0.0361
+
+Bottom Tokens (Low Confidence):
+imson                -0.0549
+thấp                 -0.0544
+engin                -0.0533
+worse                -0.0518
+lows                 -0.0513
+basement             -0.0504
+onse                 -0.0503
+ґ                    -0.0502
+ContextMenu          -0.0490
+��                   -0.0486
+_CLEAN               -0.0482
+contres              -0.0480
+低                    -0.0475
+PropTypes            -0.0473
+◄                    -0.0470
+�建                   -0.0466
+lowest               -0.0458
+っ�                   -0.0455
+.Low                 -0.0454
+low                  -0.0453

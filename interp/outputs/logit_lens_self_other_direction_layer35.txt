@@ -1,0 +1,88 @@
+
+============================================================
+Top tokens on POSITIVE side (SELF-aligned)
+============================================================
+ 1. id= 88521  token='ninger'              score= 0.0537
+ 2. id= 50532  token='ĠColeman'            score= 0.0530
+ 3. id=  2104  token='Ġprovid'             score= 0.0519
+ 4. id=122802  token='èĢĢ'                 score= 0.0471
+ 5. id=  3577  token='Ġpress'              score= 0.0468
+ 6. id= 76836  token='ĠCrosby'             score= 0.0463
+ 7. id= 59710  token='ReadWrite'           score= 0.0455
+ 8. id= 47661  token='bine'                score= 0.0455
+ 9. id= 12636  token='parator'             score= 0.0455
+10. id= 81400  token='ĠTavern'             score= 0.0450
+11. id= 34818  token='avern'               score= 0.0446
+12. id= 42574  token='ullen'               score= 0.0441
+13. id= 95468  token='parity'              score= 0.0440
+14. id=109841  token='@nate'               score= 0.0440
+15. id= 89158  token='\\uff'               score= 0.0439
+16. id= 16117  token='lessly'              score= 0.0431
+17. id= 16764  token='/*čĊ'                score= 0.0428
+18. id= 80838  token='-await'              score= 0.0425
+19. id= 79263  token='Ġsubordinate'        score= 0.0424
+20. id= 31056  token='Ġbutt'               score= 0.0424
+21. id= 65486  token='Ġturret'             score= 0.0423
+22. id=116757  token='Î®Î½'                score= 0.0420
+23. id= 97219  token='ubo'                 score= 0.0416
+24. id=  5081  token='ture'                score= 0.0416
+25. id= 79963  token='.navigator'          score= 0.0415
+26. id= 53018  token='RunWith'             score= 0.0414
+27. id= 53396  token='Ġull'                score= 0.0412
+28. id= 25164  token='.nav'                score= 0.0411
+29. id= 59015  token='ĠGap'                score= 0.0410
+30. id= 22847  token='oler'                score= 0.0410
+31. id= 82684  token='NotSupportedException'  score= 0.0410
+32. id=124490  token='æ¬ł'                 score= 0.0408
+33. id=  3151  token='omic'                score= 0.0406
+34. id= 57438  token='ĠCla'                score= 0.0405
+35. id= 97720  token='/Dk'                 score= 0.0404
+36. id= 42454  token='urret'               score= 0.0403
+37. id=118352  token='Ð°Ð½Ð³'              score= 0.0399
+38. id= 57141  token='(OS'                 score= 0.0399
+39. id= 72261  token='ĠDenn'               score= 0.0399
+40. id= 73208  token='ningen'              score= 0.0399
+
+============================================================
+Top tokens on NEGATIVE side (OTHER-aligned)
+============================================================
+ 1. id= 39447  token='ĠJoel'               score=-0.0453
+ 2. id=  5879  token='ÂŃ'                  score=-0.0449
+ 3. id= 68294  token='xia'                 score=-0.0437
+ 4. id= 67105  token='Ġobliv'              score=-0.0436
+ 5. id=  3428  token='Ġlow'                score=-0.0435
+ 6. id=119872  token='à¥įà¤¬à¤°'           score=-0.0433
+ 7. id=  6275  token='Ġserial'             score=-0.0428
+ 8. id=  2593  token='Ġeas'                score=-0.0421
+ 9. id= 50090  token='indy'                score=-0.0421
+10. id= 79153  token='ĠSpells'             score=-0.0417
+11. id=118027  token='Ø®Ùģ'                score=-0.0407
+12. id=  3833  token='rel'                 score=-0.0404
+13. id=103167  token='ä½İ'                 score=-0.0404
+14. id= 17996  token='ento'                score=-0.0401
+15. id= 97468  token='Ġkali'               score=-0.0399
+16. id=  3545  token='ral'                 score=-0.0398
+17. id=108112  token='ãģıãģł'              score=-0.0391
+18. id= 53532  token='Ġdus'                score=-0.0391
+19. id=  1375  token='Ġrel'                score=-0.0387
+20. id= 11269  token='eto'                 score=-0.0386
+21. id=  8189  token='ĠSD'                 score=-0.0384
+22. id= 76077  token='elah'                score=-0.0380
+23. id=  2678  token='Ġsmall'              score=-0.0380
+24. id= 75161  token='Ġgrooming'           score=-0.0380
+25. id=115687  token='ãĥ´ãĤ¡'              score=-0.0377
+26. id= 21291  token='isd'                 score=-0.0375
+27. id=  8727  token='hide'                score=-0.0371
+28. id= 45854  token='hf'                  score=-0.0370
+29. id= 63012  token='ĠQing'               score=-0.0370
+30. id=111826  token='Ð¾Ð»ÑĮÐ½Ð¾'          score=-0.0368
+31. id=  4846  token='Ġformer'             score=-0.0366
+32. id= 10392  token='serial'              score=-0.0365
+33. id= 42470  token='Idle'                score=-0.0363
+34. id= 66728  token='oten'                score=-0.0361
+35. id= 90454  token='ĠChun'               score=-0.0361
+36. id= 35965  token='alis'                score=-0.0359
+37. id=  6040  token='Serial'              score=-0.0359
+38. id= 70859  token='ActionCreators'      score=-0.0358
+39. id=103036  token='Ġå°ı'                score=-0.0358
+40. id= 49612  token='Ġanonymity'          score=-0.0357

@@ -93,6 +93,7 @@ class Scenario:
     question_container: str
     events: List[Event]
     present_initially: List[str]
+    id: Optional[str] = None
     ks_self: Optional[str] = None
     ks_teammate: Optional[str] = None
     ks_opponent: Optional[str] = None
@@ -162,6 +163,7 @@ class Scenario:
             'question_container': self.question_container,
             'events': [asdict(e) for e in self.events],
             'present_initially': self.present_initially,
+            'id': self.id if self.id else None, 
             'epistemic_type': self.epistemic_type.value if self.epistemic_type else None,
             'ask_constraint': self.ask_constraint.value if self.ask_constraint else None,
             'ks_self': self.ks_self if self.ks_self else None,
@@ -180,6 +182,7 @@ class Scenario:
             question_container=data['question_container'],
             events=[Event(**e) for e in data['events']],
             present_initially=data['present_initially'],
+            id=data.get('id') if data.get('id') else None,
             epistemic_type=EpistemicType(data['epistemic_type']) if data.get('epistemic_type') else None,
             ask_constraint=AskConstraintType(data['ask_constraint']) if data.get('ask_constraint') else None,
             ks_self=data.get('ks_self') if data.get('ks_self') else None,
@@ -220,6 +223,7 @@ def read_specs_from_csv(infile='ToM - scenarios.csv') -> List[SpecTuple]:
         reader = csv.DictReader(f)
         for row in reader:
             specs.append({
+                'Id': row['Id'],
                 'Answerer': row['Answerer'],
                 'KS_Self': EpistemicState(row['Self']),
                 'KS_Teammate': EpistemicState(row['Teammate']),
