@@ -303,7 +303,7 @@ def run_diagnostics(base_model, data_path, checkpoint_path=None, device="cuda",
 
 
 def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda", 
-                       validation_step=0, log_file_path=None, num_questions=500):
+                       validation_step=0, log_file_path=None, num_questions=500, temperature=0.0, seed=None):
     """
     Assess model accuracy on multiple choice questions from validation set.
     
@@ -318,6 +318,8 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
         validation_step: Current validation step number (e.g., 100, 200, etc.)
         log_file_path: Path to log file for detailed question-level logs
         num_questions: Number of random questions to sample (default: 500)
+        temperature: Temperature for sampling predictions (0.0 = deterministic)
+        seed: Random seed for sampling (None = use current random state)
         
     Returns:
         dict with keys:
@@ -329,18 +331,29 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
     
     model.eval()
     
-    # Randomly sample questions from validation dataset
+    # Check if we should sample or use all questions
     dataset_size = len(val_dataset)
     num_questions = min(num_questions, dataset_size)
-    sampled_indices = random.sample(range(dataset_size), num_questions)
+    
+    # If num_questions equals dataset_size, use all questions (no sampling needed)
+    # This happens when a pre-sampled subset is passed
+    if num_questions == dataset_size:
+        # Use all questions in order (no random sampling)
+        sampled_indices = list(range(dataset_size))
+        print(f"Assessing MCQ accuracy on {num_questions} questions...")
+    else:
+        # Set seed if provided (for reproducibility)
+        if seed is not None:
+            random.seed(seed)
+        # Randomly sample questions from validation dataset
+        sampled_indices = random.sample(range(dataset_size), num_questions)
+        print(f"Assessing MCQ accuracy on {num_questions} random questions from validation set...")
     
     all_correct = []
     all_entropies = []
     all_confidence_predictions = []  # For confidence assessment
     predicted_letter_counts = {"A": 0, "B": 0, "C": 0, "D": 0}
     correct_letter_counts = {"A": 0, "B": 0, "C": 0, "D": 0}
-    
-    print(f"Assessing MCQ accuracy on {num_questions} random questions from validation set...")
     
     # Process in batches for efficiency
     batch_size = 4
@@ -380,9 +393,16 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
                 )
                 answer_logits4 = final_logits[:, abcd_ids]
                 
-                # Compute probabilities and predictions for MCQ
-                answer_probs = torch.softmax(answer_logits4, dim=-1)
-                predicted_indices = answer_probs.argmax(dim=-1)
+                # Compute probabilities and predictions for MCQ (with temperature)
+                if temperature > 0:
+                    scaled_logits = answer_logits4 / temperature
+                    answer_probs = torch.softmax(scaled_logits, dim=-1)
+                    # Sample from the distribution
+                    predicted_indices = torch.multinomial(answer_probs, num_samples=1).squeeze(-1)
+                else:
+                    answer_probs = torch.softmax(answer_logits4, dim=-1)
+                    # Deterministic: use argmax
+                    predicted_indices = answer_probs.argmax(dim=-1)
                 
                 # Now run confidence assessment on the same batch
                 confidence_prompts = build_self_confidence_prompts(batch)
@@ -439,14 +459,16 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
                     # Also check by letter for logging/debugging
                     is_correct_by_letter = 1 if predicted_letter == correct_letter else 0
                     
-                    # Use text-based comparison for accuracy calculation
-                    all_correct.append(is_correct_by_text)
+                    # Use letter-based comparison for accuracy calculation (matches capabilities_test.py)
+                    # This ensures consistency: capabilities_test.py uses subject_decision == question["correct_answer"]
+                    all_correct.append(is_correct_by_letter)
                     
                     # Debug: Warn if text and letter comparisons don't match
                     if is_correct_by_text != is_correct_by_letter:
                         print(f"WARNING: Mismatch for qid {row.get('qid')}: text_match={is_correct_by_text}, letter_match={is_correct_by_letter}")
                         print(f"  Predicted: {predicted_letter}='{predicted_answer_text}' (norm: '{predicted_normalized}')")
                         print(f"  Correct: {correct_letter}='{correct_answer_text}' (norm: '{correct_normalized}')")
+                        print(f"  Note: Using letter_match for accuracy (matching capabilities_test.py behavior)")
                     
                     # Calculate entropy for this answer distribution
                     probs_for_entropy = answer_probs[i].cpu()
@@ -523,14 +545,11 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
                 # Clear batch
                 batch = []
                 batch_indices = []
-                
-                # Progress update
-                if (idx + 1) % 50 == 0:
-                    print(f"  Processed {idx + 1}/{num_questions} questions...")
     
     # Calculate aggregate metrics
     accuracy = np.mean(all_correct) if all_correct else 0.0
     avg_entropy = np.mean(all_entropies) if all_entropies else 0.0
+    std_entropy = np.std(all_entropies) if all_entropies else 0.0
     
     print(f"\n{'='*80}")
     print(f"MCQ Accuracy Assessment Results:")
@@ -565,6 +584,7 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
     return {
         "accuracy": accuracy,
         "avg_entropy": avg_entropy,
+        "std_entropy": std_entropy,
         "predicted_letter_counts": predicted_letter_counts,
         "correct_letter_counts": correct_letter_counts,
         "total_questions": len(all_correct),
