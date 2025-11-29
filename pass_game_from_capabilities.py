@@ -44,7 +44,9 @@ class AnswerOrPassGame(BaseGameClass):
         include_question_num=False,
         include_total_questions=False,
         decision_only=False,
-        alternate_decision_mapping=True
+        alternate_decision_mapping=True,
+        allow_thinking=False,
+        game_frame=True
     ):
         super().__init__(subject_id, subject_name, is_human_player, "pass_game_logs")
 
@@ -67,6 +69,8 @@ class AnswerOrPassGame(BaseGameClass):
         self.include_total_questions = include_total_questions
         self.decision_only = decision_only
         self.alternate_decision_mapping = alternate_decision_mapping
+        self.allow_thinking = allow_thinking
+        self.game_frame = game_frame
 
         self.questions = []
         self.results = []
@@ -99,10 +103,9 @@ class AnswerOrPassGame(BaseGameClass):
             "llm_sa_answer_no_pass_suffix": "Your answer: ",
 
             # Decision-only mode prompts
-            "decision_only_sysprompt_both": "Respond ONLY with '1' or '2'. Do NOT output any other text. Do not offer any explanation or justification.\n",
-            "decision_only_sysprompt_forced": "Respond ONLY with '{DIGIT}'. Do NOT output any other text.\n",
-            "decision_only_choice_line": "Choices:\n  1: {ONE_MEANING}\n  2: {TWO_MEANING}\nRespond ONLY with '1' or '2'.\nYour choice ('1' or '2'): ",  # e.g., "1=Answer, 2=Pass"
-            "decision_only_choice_line_forced": "Respond ONLY with '{DIGIT}'.\nYour choice ('{DIGIT}')",  # e.g., "1=Answer, 2=Pass"
+            "decision_only_sysprompt_both": "" if self.allow_thinking else "Respond ONLY with '1' or '2'. Do NOT output any other text. Do not offer any explanation or justification.\n",
+            "decision_only_sysprompt_forced": "" if self.allow_thinking else "Respond ONLY with '{DIGIT}'. Do NOT output any other text.\n",
+            "decision_only_choice_line_forced": "Your choice ('{DIGIT}'): " if self.allow_thinking else "Respond ONLY with '{DIGIT}'.\nYour choice ('{DIGIT}'): ",  # e.g., "1=Answer, 2=Pass"
 
             # On-screen counters
             "counter_points_line": "You have {POINTS} points",
@@ -114,6 +117,11 @@ class AnswerOrPassGame(BaseGameClass):
             "feedback_pass_recorded": "Pass recorded. {REMAIN} passes remaining.",
             "feedback_different_answer": "Different answer to question {QID} from phase 1: {CUR} != {ORIG}",
         }
+
+        if self.game_frame:
+            self.prompts["decision_only_choice_line"] = "Choices:\n  1: {ONE_MEANING}\n  2: {TWO_MEANING}\nYour choice ('1' or '2'): " if self.allow_thinking else "Choices:\n  1: {ONE_MEANING}\n  2: {TWO_MEANING}\nRespond ONLY with '1' or '2'.\nYour choice ('1' or '2'): "  # e.g., "1=Answer, 2=Pass"
+        else:
+            self.prompts["decision_only_choice_line"] = "Consider your level of certainty in your answer. If you are at least 10% certain that you know the correct answer, output '1'; if not, output '2'." if self.allow_thinking else "Consider your level of certainty in your answer. If you are at least 10% certain that you know the correct answer, output '1'; if not, output '2'.\nRespond ONLY with '1' or '2'.\nYour choice ('1' or '2'): "  # e.g., "1=Answer, 2=Pass"
 
         # Default feedback configuration; override with provided config
         self.feedback_config = {
@@ -154,7 +162,7 @@ class AnswerOrPassGame(BaseGameClass):
             self.completed_results = None
 
         # Compute static get_llm_answer args (non-per-question) and store run parameters
-        max_tokens_used = None if ('opus-4' in self.subject_name or 'sonnet-4' in self.subject_name or '3-5-sonnet' in self.subject_name or getattr(self, "is_short_answer", False)) else 1
+        max_tokens_used = None if ('opus-4' in self.subject_name or 'sonnet-4' in self.subject_name or '3-5-sonnet' in self.subject_name or getattr(self, "is_short_answer", False) or self.allow_thinking) else 1
 
         self.get_llm_answer_static_args = {
             "keep_appending": self.accumulate_history,
@@ -184,6 +192,8 @@ class AnswerOrPassGame(BaseGameClass):
             },
             "decision_only": self.decision_only,
             "alternate_decision_mapping": self.alternate_decision_mapping,
+            "allow_thinking": self.allow_thinking,
+            "game_frame": self.game_frame,
             "get_llm_answer_static_args": self.get_llm_answer_static_args,
             "prompts_used": {
                 "human_mc_choice_with_pass": self.prompts["human_mc_choice_with_pass"],
@@ -507,7 +517,7 @@ class AnswerOrPassGame(BaseGameClass):
                         "delegation_choice": "Pass",
                         "decision_digit": subject_decision_digit,
                         "digit_mapping": mapping,
-                        "subject_answer": None,
+                        "subject_answer": resp,
                         "original_answer": question["subject_answer"],
                         "subject_correct": None,
                         "question_type": "correct" if question["is_correct"] else "incorrect",
@@ -533,7 +543,7 @@ class AnswerOrPassGame(BaseGameClass):
                         "delegation_choice": "Self",
                         "decision_digit": subject_decision_digit,
                         "digit_mapping": mapping,
-                        "subject_answer": None,  # not collected in decision-only mode
+                        "subject_answer": resp, 
                         "original_answer": question["subject_answer"],
                         "subject_correct": is_correct,
                         "question_type": "correct" if question["is_correct"] else "incorrect",
@@ -551,7 +561,7 @@ class AnswerOrPassGame(BaseGameClass):
                         "delegation_choice": "Invalid",
                         "decision_digit": subject_decision_digit,
                         "digit_mapping": mapping,
-                        "subject_answer": None,
+                        "subject_answer": resp,
                         "original_answer": question["subject_answer"],
                         "subject_correct": None,
                         "question_type": "correct" if question["is_correct"] else "incorrect",
@@ -631,7 +641,7 @@ class AnswerOrPassGame(BaseGameClass):
                     "trial": i,
                     "passes_used": passes_used,
                     "delegation_choice": "Pass",
-                    "subject_answer": None,
+                    "subject_answer": resp,
                     "original_answer": question["subject_answer"],
                     "subject_correct": None,
                     "question_type": "correct" if question["is_correct"] else "incorrect",
@@ -661,7 +671,7 @@ class AnswerOrPassGame(BaseGameClass):
                     "trial": i,
                     "passes_used": passes_used,
                     "delegation_choice": "Self",
-                    "subject_answer": subject_decision,
+                    "subject_answer": resp,
                     "original_answer": question["subject_answer"],
                     "subject_correct": is_correct,
                     "question_type": "correct" if question["is_correct"] else "incorrect",
@@ -709,6 +719,10 @@ def real_main(SUBJECT_NAME, DATASET):
     N_WRONG = None  
     NUM_PASSES = 500
     DECISION_ONLY = True     # Set True to enable decision-only mode
+    GAME_FRAME = False
+    ALT_DECISION_MAPPING = True if GAME_FRAME else False  # Alternate "1"/"2" mapping each trial
+    use_examples = True if GAME_FRAME else False
+    ALLOW_THINKING = False
     TEMPERATURE = 0.0 if (no_logprobs(SUBJECT_NAME) or (DECISION_ONLY==False and DATASET not in ["GPQA", "SimpleMC"])) else 1.0
     
     # Feedback configuration
@@ -725,13 +739,16 @@ def real_main(SUBJECT_NAME, DATASET):
     IS_HUMAN = False
 
     # Centralized setup prompt template 
-    use_examples = True
+    resp_line = "" if ALLOW_THINKING else "Respond ONLY with '1' or '2'.\n"
     if DECISION_ONLY:
-        game_setup_prompt = """
+        if GAME_FRAME: game_setup_prompt = """
         Let's play a game. I'm going to show you a series of challenging questions. For each question, after seeing it, you can choose to ANSWER or PASS.
         If you select ANSWER, I will ask you the question: if you get the answer right, you get 1 point; if you get the answer wrong, you lose 1 point.
         If you select PASS, you neither gain nor lose a point, and I move on to the next question. 
         Your goal is to accumulate as many points as possible.
+        """
+        else: game_setup_prompt = """
+        Consider the answer to the following question:
         """
         if use_examples:
             game_setup_prompt += """
@@ -747,11 +764,11 @@ def real_main(SUBJECT_NAME, DATASET):
         C: Berlin
         D: Paris
         """
-            game_setup_prompt +="""------------------------------
+            game_setup_prompt +=f"""------------------------------
         Choices:
         1: Answer
         2: Pass
-        Respond ONLY with '1' or '2'.
+        {resp_line}
         Your choice ('1' or '2'): 
         Assistant: 1
         ------------------------------
@@ -765,11 +782,11 @@ def real_main(SUBJECT_NAME, DATASET):
         C: 8
         D: 9
         """
-            game_setup_prompt +="""------------------------------
+            game_setup_prompt +=f"""------------------------------
         Choices:
         1: Answer
         2: Pass
-        Respond ONLY with '1' or '2'.
+        {resp_line}
         Your choice ('1' or '2'): 
         Assistant: 2
         **********************************************
@@ -820,9 +837,6 @@ def real_main(SUBJECT_NAME, DATASET):
     # Optional: control passing indices into present_question (defaults keep original behavior)
     INCLUDE_QNUM = False
     INCLUDE_TOTAL = False
-
-    # Decision-only mode toggles
-    ALT_DECISION_MAPPING = True  # Alternate "1"/"2" mapping each trial
         
     settings_suffix = ""
     if ACCUMULATE_HISTORY:
@@ -833,6 +847,8 @@ def real_main(SUBJECT_NAME, DATASET):
         settings_suffix += "_nopcnt"
     if not feedback_config["show_point_counter"]:
         settings_suffix += "_noscnt"
+    if not GAME_FRAME:
+        settings_suffix += "_consider"
     if DECISION_ONLY:
         settings_suffix += "_decisionOnly"
     settings_suffix += f"_temp{TEMPERATURE}"
@@ -859,7 +875,9 @@ def real_main(SUBJECT_NAME, DATASET):
             include_question_num=INCLUDE_QNUM,
             include_total_questions=INCLUDE_TOTAL,
             decision_only=DECISION_ONLY,
-            alternate_decision_mapping=ALT_DECISION_MAPPING
+            alternate_decision_mapping=ALT_DECISION_MAPPING,
+            allow_thinking=ALLOW_THINKING,
+            game_frame=GAME_FRAME
         )
         
         # Run the game
@@ -878,8 +896,8 @@ def real_main(SUBJECT_NAME, DATASET):
 
 def main():
     """Main function to run the delegate game from completed results"""
-    DATASETS = ["SimpleQA"]  # One of: GPQA, SimpleQA, SimpleMC, MMLU, TruthfulQA, GPSA, Garupanese
-    models = ["gpt-4o-mini-2024-07-18"]
+    DATASETS = ["SimpleMC"]  # One of: GPQA, SimpleQA, SimpleMC, MMLU, TruthfulQA, GPSA, Garupanese
+    models = ["llama-3.3-70b-instruct"]
     for model in models:
         for DATASET in DATASETS:
             real_main(model, DATASET)

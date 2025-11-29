@@ -511,7 +511,7 @@ class BaseGameClass:
 
                     else:                                   # multiple-choice – inspect 1st token only
                         # top_candidates[0].candidates = k alternatives for the 1st token
-                        if len(resp) > 1:
+                        if len(resp) > 1 and not think:
                             resp, token_probs = find_answer_in_output(logres, options)
                         else:
                             first_step = logres.top_candidates[0].candidates

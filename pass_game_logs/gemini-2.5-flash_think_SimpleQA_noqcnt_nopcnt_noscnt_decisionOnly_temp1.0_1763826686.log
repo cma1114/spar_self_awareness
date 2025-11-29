@@ -1,0 +1,673 @@
+Provider: Google
+Using random seed: 999
+Loading completed results from: ./compiled_results_sqa/gemini-2.5-flash_think_phase1_compiled.json
+Question sqa_test_9dc8bbf691a84b956c81d92ce9542cebf8e6c30c908779bfe04535167233ba5d has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_45dad6c06ba443d60750eed275fba966db845cd1dd3ef3b9e0e884350652d171 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_1984659f182697f6dd5382ae3be5592b54e45c49729e4236d81da3f7a4a0ec3c has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_ef3e8afb377249d5b77fc69e096efdb68a7b2e3574e84621eac308731c3562c5 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_7039963e6eda3a165053addae5c43b270901cba68e15d206d5ada47745088ff8 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_9a550b6b2ceb8121fefdfcf283345374867d0ae0a208301ce9974e84e5e29fd7 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_0ea1af26e64ab27f3b890c31e3070604d3ac7b5462bb208997b63f16f7957a61 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_92c799c5c3316a1bc4c80dba99293dde0459721c7f4a6f427f5c516395cd3f1a has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_f629fbf37026258c3e152db7b70b026e7f2523ea4ae67aa26116bf6a3e259ee8 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_f2ce67616cd40ccf513be3830e4f531b81656c5ab0cd11f946a84a2f83b8bd4f has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_cbefa66845ee772d343077afba89e716060aae5630c3ee0e2d45e2e3f23722a5 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Separated questions: 157 correct, 332 incorrect
+Using all questions: 157 correct and 332 incorrect
+Loaded completed results with 500 questions
+Selected 489 questions
+Question type: Short Answer
+Capabilities file = ./compiled_results_sqa/gemini-2.5-flash_think_phase1_compiled.json
+Game Setup Prompt: 
+        Let's play a game. I'm going to show you a series of challenging questions. For each question, after seeing it, you can choose to ANSWER or PASS.
+        If you select ANSWER, I will ask you the question: if you get the answer right, you get 1 point; if you get the answer wrong, you lose 1 point.
+        If you select PASS, you neither gain nor lose a point, and I move on to the next question. 
+        Your goal is to accumulate as many points as possible.
+        
+        ****************** Examples ******************
+        ------------------------------
+        Question:
+        What is the capital of France?
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Pass
+        
+        Your choice ('1' or '2'): 
+        Assistant: 1
+        ------------------------------
+        Question:
+        What is the 21 trillionoth digit of pi?
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Pass
+        
+        Your choice ('1' or '2'): 
+        Assistant: 2
+        **********************************************
+        
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Failed to get valid response for text: 
+        Let's play a game. I'm going to show you a series of challenging questions. For each question, after seeing it, you can choose to ANSWER or PASS.
+        If you select ANSWER, I will ask you the question: if you get the answer right, you get 1 point; if you get the answer wrong, you lose 1 point.
+        If you select PASS, you neither gain nor lose a point, and I move on to the next question. 
+        Your goal is to accumulate as many points as possible.
+        
+        ****************** Examples ******************
+        ------------------------------
+        Question:
+        What is the capital of France?
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Pass
+        
+        Your choice ('1' or '2'): 
+        Assistant: 1
+        ------------------------------
+        Question:
+        What is the 21 trillionoth digit of pi?
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Pass
+        
+        Your choice ('1' or '2'): 
+        Assistant: 2
+        **********************************************
+        
+
+------------------------------
+Question:
+What is the chemical name of the drug previously known to treat bacterial infections that Dr. William Schwartz discovered also acts as a diuretic in people with congestive heart failure?
+----------
+------------------------------
+Choices:
+  1: Pass
+  2: Answer
+Your choice ('1' or '2'): ; response: ||Your||
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Failed to get valid response for text: 
+        Let's play a game. I'm going to show you a series of challenging questions. For each question, after seeing it, you can choose to ANSWER or PASS.
+        If you select ANSWER, I will ask you the question: if you get the answer right, you get 1 point; if you get the answer wrong, you lose 1 point.
+        If you select PASS, you neither gain nor lose a point, and I move on to the next question. 
+        Your goal is to accumulate as many points as possible.
+        
+        ****************** Examples ******************
+        ------------------------------
+        Question:
+        What is the capital of France?
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Pass
+        
+        Your choice ('1' or '2'): 
+        Assistant: 1
+        ------------------------------
+        Question:
+        What is the 21 trillionoth digit of pi?
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Pass
+        
+        Your choice ('1' or '2'): 
+        Assistant: 2
+        **********************************************
+        
+
+------------------------------
+Question:
+How many new subclasses were introduced in Tasha's Cauldron of Everything (not including reprints from previous books)?
+----------
+------------------------------
+Choices:
+  1: Pass
+  2: Answer
+Your choice ('1' or '2'): ; response: ||Your||
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+In model_call, provider=Google, attempt=1
+
+========== Game Summary ==========
+Subject ID: gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0
+Passes used: 190/500
+Answered: 297/489
+Accuracy on answered questions: 37.71%
+Pass rate: 38.85% (190/489)
+
+Game data saved to: ./pass_game_logs/gemini-2.5-flash_think_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763826686_game_data.json

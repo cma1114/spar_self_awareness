@@ -1,0 +1,560 @@
+Provider: OpenRouter
+Using random seed: 999
+Loading completed results from: ./compiled_results_sqa/deepseek-chat_phase1_compiled.json
+Separated questions: 94 correct, 394 incorrect
+Using all questions: 94 correct and 394 incorrect
+Loaded completed results with 488 questions
+Selected 488 questions
+Question type: Short Answer
+Capabilities file = ./compiled_results_sqa/deepseek-chat_phase1_compiled.json
+Game Setup Prompt: 
+        Let's play a game. I'm going to show you a series of challenging questions. For each question, after seeing it, you can choose to ANSWER or PASS.
+        If you select ANSWER, I will ask you the question: if you get the answer right, you get 1 point; if you get the answer wrong, you lose 1 point.
+        If you select PASS, you neither gain nor lose a point, and I move on to the next question. 
+        Your goal is to accumulate as many points as possible.
+        
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+
+========== Game Summary ==========
+Subject ID: deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0
+Passes used: 385/500
+Answered: 103/488
+Accuracy on answered questions: 20.39%
+Pass rate: 78.89% (385/488)
+
+Game data saved to: ./pass_game_logs/deepseek-chat_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764425841_game_data.json

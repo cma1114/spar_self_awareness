@@ -1,0 +1,570 @@
+Provider: OpenRouter
+Using random seed: 999
+Loading completed results from: ./compiled_results_sqa/gpt-4o-mini-2024-07-18_phase1_compiled.json
+Question sqa_test_1984659f182697f6dd5382ae3be5592b54e45c49729e4236d81da3f7a4a0ec3c has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_b03b267e5876747c5c6a92f741fb1dad6bf3f245b3e00fb8b413325dcd4419c9 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_3a8a8815890d3a707e32240fdfaaf5a460c9bd506390eeaa74dd304d71641513 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_7aea7de03f47d6d743bd55b4d89e9fe5d040fe2f776a33a7f23a54a590fe9558 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_d4403802cdf1d3cb03f66a809ce9ad9db83015c4cbf3ff22cdddbe27d3d895b4 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Question sqa_test_f0e2d2594d02aef81dbfdeb949ee73291cdc4d3c8157cd3e243981413c6c0770 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Separated questions: 40 correct, 454 incorrect
+Using all questions: 40 correct and 454 incorrect
+Loaded completed results with 500 questions
+Selected 494 questions
+Question type: Short Answer
+Capabilities file = ./compiled_results_sqa/gpt-4o-mini-2024-07-18_phase1_compiled.json
+Game Setup Prompt: 
+        Consider the answer to the following question:
+        
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+
+========== Game Summary ==========
+Subject ID: gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0
+Passes used: 202/500
+Answered: 292/494
+Accuracy on answered questions: 11.30%
+Pass rate: 40.89% (202/494)
+
+Game data saved to: ./pass_game_logs/gpt-4o-mini-2024-07-18_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764423297_game_data.json

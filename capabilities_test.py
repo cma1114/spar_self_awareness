@@ -548,7 +548,7 @@ def main(model_dataset_dict, temp):
             INCLUDE_TOTAL = False
             resume_from = None#"capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847064_test_data.json"#
             RESAMPLE = False
-            NESTED = "Self" #values: None, "Self", "Other"
+            NESTED = "Other" #values: None, "Self", "Other"
             temp = temp
             seed = 42
             
@@ -607,6 +607,6 @@ def main(model_dataset_dict, temp):
 
 if __name__ == "__main__":
     model_dataset_dict = {
-        "ft:gpt-4.1-mini-2025-04-14:personal:garupanese-41mini-f2e:CbUqb8Sj": ["Garupanese"],
+        "gpt-4o-mini-2024-07-18": ["SimpleQA"],
         }
     main(model_dataset_dict, temp=1.0)

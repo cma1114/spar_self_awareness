@@ -1,0 +1,596 @@
+Provider: OpenAI
+Using random seed: 999
+Loading completed results from: ./compiled_results_sqa/gpt-4.1-2025-04-14_phase1_compiled.json
+Question sqa_test_3a8a8815890d3a707e32240fdfaaf5a460c9bd506390eeaa74dd304d71641513 has 'is_correct' as 'None'. Skipping for correct/incorrect separation.
+Separated questions: 187 correct, 312 incorrect
+Using all questions: 187 correct and 312 incorrect
+Loaded completed results with 500 questions
+Selected 499 questions
+Question type: Short Answer
+Capabilities file = ./compiled_results_sqa/gpt-4.1-2025-04-14_phase1_compiled.json
+Game Setup Prompt: 
+        Let's play a game. I'm going to show you a series of challenging questions. For each question, after seeing it, you can choose to ANSWER or PASS.
+        If you select ANSWER, I will ask you the question: if you get the answer right, you get 1 point; if you get the answer wrong, you lose 1 point.
+        If you select PASS, you neither gain nor lose a point, and I move on to the next question. 
+        Your goal is to accumulate as many points as possible.
+        
+        ****************** Examples ******************
+        ------------------------------
+        Question:
+        What is the capital of France?
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Pass
+        
+        Your choice ('1' or '2'): 
+        Assistant: 1
+        ------------------------------
+        Question:
+        What is the 21 trillionoth digit of pi?
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Pass
+        
+        Your choice ('1' or '2'): 
+        Assistant: 2
+        **********************************************
+        
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+In model_call, provider=OpenAI, attempt=1
+
+========== Game Summary ==========
+Subject ID: gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0
+Passes used: 107/500
+Answered: 392/499
+Accuracy on answered questions: 39.80%
+Pass rate: 21.44% (107/499)
+
+Game data saved to: ./pass_game_logs/gpt-4.1-2025-04-14_SimpleQA_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1763825776_game_data.json
