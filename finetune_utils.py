@@ -6,6 +6,34 @@ import traceback
 from datetime import datetime, timezone
 from torch.utils.data import Dataset
 import torch
+import string
+
+def parse_letter_from_model_text(model_text, valid_letters):
+    """
+    EXACTLY matches your mentor's logic in base_game_class.py:_parse_subject_decision.
+    """
+    if model_text is None:
+        return None
+
+    # Normalize
+    cleaned = model_text.upper().rstrip(string.whitespace + string.punctuation)
+
+    if len(cleaned) == 0:
+        return None
+
+    # Check first character
+    if cleaned[0] in valid_letters:
+        return cleaned[0]
+
+    # Check last character
+    if cleaned[-1] in valid_letters:
+        return cleaned[-1]
+
+    return None
+
+
+
+
 
 
 def write_log(log_file_path, entry_dict):
@@ -60,144 +88,367 @@ def validate_file_exists_and_not_empty(file_path, file_description="file"):
         )
 
 
+# def build_multiple_choice_question_prompts(batch):
+#     """
+#     Builds direct MCQ prompts wrapped in FULL Llama-3 chat template including system prompt.
+#     Matches explicit_confidence_task.py content but with proper chat formatting.
+#     """
+#     # Llama-3 Control Tokens
+#     BOS = "<|begin_of_text|>"
+#     SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
+#     SYSTEM_CONTENT = "You are a helpful AI assistant."  # Standard Llama-3 system prompt
+#     USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
+#     EOT = "<|eot_id|>"
+#     ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
+    
+#     setup_prompt = (
+#         "I'm going to ask you a series of multiple-choice questions. For each one, "
+#         "select the answer you think is best. Respond only with the letter of your choice; "
+#         "do NOT output any other text."
+#     )
+    
+#     prompts = []
+#     for row in batch:
+#         question = row["question"]
+#         options = row["options"]
+        
+#         # Structure matches BaseGameClass._present_question logic seen in logs
+#         # Header: Question + Text
+#         # Separator: 10 dashes
+#         # Body: Indented Options
+#         q_text = (
+#             "------------------------------\n"
+#             "Question:\n"
+#             f"{question}\n"
+#             "----------\n"
+#         )
+        
+#         # Options are indented by 2 spaces
+#         for key in ["A", "B", "C", "D"]:
+#             if key in options:
+#                 q_text += f"  {key}: {options[key]}\n"
+        
+#         q_text += "------------------------------"
+        
+#         # Full prompt assembly
+#         llm_prompt = q_text + "\nYour choice (A, B, C, or D): "
+#         user_content = setup_prompt + "\n\n" + llm_prompt
+        
+#         # Apply FULL Llama-3 chat template WITH system prompt
+#         # Format: BOS + SYSTEM + USER + ASSISTANT
+#         full_prompt = f"{BOS}{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
+#         prompts.append(full_prompt)
+    
+#     return prompts
+
+# def build_multiple_choice_question_prompts(batch):
+#     """
+#     Builds direct MCQ prompts wrapped in FULL Llama-3 chat template including system prompt.
+#     Matches explicit_confidence_task.py content but with proper chat formatting.
+#     """
+#     # Llama-3 Control Tokens
+#     # BOS definition removed because tokenizer adds it automatically
+#     SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
+#     SYSTEM_CONTENT = "You are a helpful AI assistant." 
+#     USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
+#     EOT = "<|eot_id|>"
+#     ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
+    
+#     setup_prompt = (
+#         "I'm going to ask you a series of multiple-choice questions. For each one, "
+#         "select the answer you think is best. Respond only with the letter of your choice; "
+#         "do NOT output any other text."
+#     )
+    
+#     prompts = []
+#     for row in batch:
+#         question = row["question"]
+#         options = row["options"]
+        
+#         q_text = (
+#             "------------------------------\n"
+#             "Question:\n"
+#             f"{question}\n"
+#             "----------\n"
+#         )
+        
+#         for key in ["A", "B", "C", "D"]:
+#             if key in options:
+#                 q_text += f"  {key}: {options[key]}\n"
+        
+#         q_text += "------------------------------"
+        
+#         llm_prompt = q_text + "\nYour choice (A, B, C, or D): "
+#         user_content = setup_prompt + "\n\n" + llm_prompt
+        
+#         # Apply FULL Llama-3 chat template WITH system prompt
+#         # FIX: Removed {BOS} from the start
+#         full_prompt = f"{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
+#         prompts.append(full_prompt)
+    
+#     return prompts
+
 def build_multiple_choice_question_prompts(batch):
     """
-    Builds direct MCQ prompts wrapped in FULL Llama-3 chat template including system prompt.
-    Matches explicit_confidence_task.py content but with proper chat formatting.
+    Build plain-text MCQ prompts (no ChatML control tokens).
+
+    These are designed so that the *next* token after the prompt
+    is directly one of: "A", "B", "C", or "D".
     """
-    # Llama-3 Control Tokens
-    BOS = "<|begin_of_text|>"
-    SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
-    SYSTEM_CONTENT = "You are a helpful AI assistant."  # Standard Llama-3 system prompt
-    USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
-    EOT = "<|eot_id|>"
-    ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
-    
+
     setup_prompt = (
-        "I'm going to ask you a series of multiple-choice questions. For each one, "
-        "select the answer you think is best. Respond only with the letter of your choice; "
-        "do NOT output any other text."
+        "I'm going to ask you a series of multiple-choice questions. "
+        "For each one, select the answer you think is best. "
+        "Respond only with the letter of your choice; do NOT output any other text."
     )
-    
+
     prompts = []
     for row in batch:
-        question = row["question"]
-        options = row["options"]
-        
-        # Structure matches BaseGameClass._present_question logic seen in logs
-        # Header: Question + Text
-        # Separator: 10 dashes
-        # Body: Indented Options
-        q_text = (
-            "------------------------------\n"
-            "Question:\n"
-            f"{question}\n"
-            "----------\n"
-        )
-        
-        # Options are indented by 2 spaces
-        for key in ["A", "B", "C", "D"]:
-            if key in options:
-                q_text += f"  {key}: {options[key]}\n"
-        
-        q_text += "------------------------------"
-        
-        # Full prompt assembly
-        llm_prompt = q_text + "\nYour choice (A, B, C, or D): "
-        user_content = setup_prompt + "\n\n" + llm_prompt
-        
-        # Apply FULL Llama-3 chat template WITH system prompt
-        # Format: BOS + SYSTEM + USER + ASSISTANT
-        full_prompt = f"{BOS}{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
-        prompts.append(full_prompt)
-    
+        question = row["question"].strip()
+        options = row.get("options", {})
+
+        # Ensure we have A–D keys
+        a_text = options.get("A", "").strip()
+        b_text = options.get("B", "").strip()
+        c_text = options.get("C", "").strip()
+        d_text = options.get("D", "").strip()
+
+        q_lines = [
+            setup_prompt,
+            "",
+            f"Question: {question}",
+            "----------",
+            f"A: {a_text}",
+            f"B: {b_text}",
+            f"C: {c_text}",
+            f"D: {d_text}",
+            "------------------------------",
+            "Your choice (A, B, C, or D):"
+        ]
+
+        # Trailing space makes it cleaner for next-token prediction
+        prompt = "\n".join(q_lines) + " "
+        prompts.append(prompt)
+
     return prompts
+
+
+# def build_self_confidence_prompts(batch):
+#     """
+#     Builds self-confidence prompts wrapped in FULL Llama-3 chat template including system prompt.
+#     Matches explicit_confidence_task.py content but with proper chat formatting.
+#     """
+#     # Llama-3 Control Tokens
+#     BOS = "<|begin_of_text|>"
+#     SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
+#     SYSTEM_CONTENT = "You are a helpful AI assistant."  # Standard Llama-3 system prompt
+#     USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
+#     EOT = "<|eot_id|>"
+#     ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
+    
+#     setup_prompt = (
+#         "I'm going to show you a multiple-choice question, and I want you to tell me "
+#         "your level of confidence that you would get the question right. Respond only "
+#         "with the letter corresponding to the percentage range you choose; do NOT output "
+#         "any other text."
+#     )
+    
+#     # Matching explicit_confidence_task.py (lines 88-90)
+#     nested_option_dict = {
+#         "A": "<5%", "B": "5-10%", "C": "10-20%", "D": "20-40%", 
+#         "E": "40-60%", "F": "60-80%", "G": "80-90%", "H": ">90%"
+#     }
+#     nested_question_prompt = "How confident are you that you would get this question right?"
+    
+#     prompts = []
+#     for row in batch:
+#         question = row["question"]
+#         options = row["options"]
+        
+#         # Structure matches BaseGameClass._present_nested_question logic
+#         # Header: Nested Prompt
+#         # Separator: 10 dashes
+#         # Body: Question Text + Indented Options
+#         # Separator: 10 dashes
+#         # Nested Body: Indented Nested Options
+#         q_text = (
+#             "------------------------------\n"
+#             f"{nested_question_prompt}\n"
+#             "----------\n"
+#             f"{question}\n"
+#         )
+        
+#         # Original Question Options
+#         for key in ["A", "B", "C", "D"]:
+#             if key in options:
+#                 q_text += f"  {key}: {options[key]}\n"
+        
+#         q_text += "----------\n"
+        
+#         # Confidence Options
+#         for key in ["A", "B", "C", "D", "E", "F", "G", "H"]:
+#             q_text += f"  {key}: {nested_option_dict[key]}\n"
+            
+#         q_text += "------------------------------"
+        
+#         # Full prompt assembly
+#         options_str = "A, B, C, D, E, F, G, or H"
+#         llm_prompt = q_text + f"\nYour choice ({options_str}): "
+#         user_content = setup_prompt + "\n\n" + llm_prompt
+        
+#         # Apply FULL Llama-3 chat template WITH system prompt
+#         # Format: BOS + SYSTEM + USER + ASSISTANT
+#         full_prompt = f"{BOS}{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
+#         prompts.append(full_prompt)
+        
+#     return prompts
 
 
 def build_self_confidence_prompts(batch):
     """
-    Builds self-confidence prompts wrapped in FULL Llama-3 chat template including system prompt.
-    Matches explicit_confidence_task.py content but with proper chat formatting.
+    Build plain-text self-confidence prompts (no ChatML control tokens).
+    The next token after the prompt is directly one of A–H.
     """
-    # Llama-3 Control Tokens
-    BOS = "<|begin_of_text|>"
-    SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
-    SYSTEM_CONTENT = "You are a helpful AI assistant."  # Standard Llama-3 system prompt
-    USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
-    EOT = "<|eot_id|>"
-    ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
-    
+
     setup_prompt = (
         "I'm going to show you a multiple-choice question, and I want you to tell me "
         "your level of confidence that you would get the question right. Respond only "
         "with the letter corresponding to the percentage range you choose; do NOT output "
         "any other text."
     )
-    
-    # Matching explicit_confidence_task.py (lines 88-90)
-    nested_option_dict = {
-        "A": "<5%", "B": "5-10%", "C": "10-20%", "D": "20-40%", 
-        "E": "40-60%", "F": "60-80%", "G": "80-90%", "H": ">90%"
+
+    # Confidence ranges A–H
+    confidence_bins = {
+        "A": "<5%",
+        "B": "5-10%",
+        "C": "10-20%",
+        "D": "20-40%",
+        "E": "40-60%",
+        "F": "60-80%",
+        "G": "80-90%",
+        "H": ">90%",
     }
-    nested_question_prompt = "How confident are you that you would get this question right?"
-    
+
+    nested_question_prompt = (
+        "How confident are you that you would get this question right?"
+    )
+
     prompts = []
     for row in batch:
-        question = row["question"]
-        options = row["options"]
-        
-        # Structure matches BaseGameClass._present_nested_question logic
-        # Header: Nested Prompt
-        # Separator: 10 dashes
-        # Body: Question Text + Indented Options
-        # Separator: 10 dashes
-        # Nested Body: Indented Nested Options
-        q_text = (
-            "------------------------------\n"
-            f"{nested_question_prompt}\n"
-            "----------\n"
-            f"{question}\n"
-        )
-        
-        # Original Question Options
-        for key in ["A", "B", "C", "D"]:
-            if key in options:
-                q_text += f"  {key}: {options[key]}\n"
-        
-        q_text += "----------\n"
-        
-        # Confidence Options
-        for key in ["A", "B", "C", "D", "E", "F", "G", "H"]:
-            q_text += f"  {key}: {nested_option_dict[key]}\n"
-            
-        q_text += "------------------------------"
-        
-        # Full prompt assembly
-        options_str = "A, B, C, D, E, F, G, or H"
-        llm_prompt = q_text + f"\nYour choice ({options_str}): "
-        user_content = setup_prompt + "\n\n" + llm_prompt
-        
-        # Apply FULL Llama-3 chat template WITH system prompt
-        # Format: BOS + SYSTEM + USER + ASSISTANT
-        full_prompt = f"{BOS}{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
-        prompts.append(full_prompt)
-        
+        question = row["question"].strip()
+        options = row.get("options", {})
+
+        # Extract original MCQ options
+        a_text = options.get("A", "").strip()
+        b_text = options.get("B", "").strip()
+        c_text = options.get("C", "").strip()
+        d_text = options.get("D", "").strip()
+
+        q_lines = [
+            setup_prompt,
+            "",
+            "------------------------------",
+            nested_question_prompt,
+            "----------",
+            f"Question: {question}",
+            f"A: {a_text}",
+            f"B: {b_text}",
+            f"C: {c_text}",
+            f"D: {d_text}",
+            "----------",
+            "Confidence options:",
+        ]
+
+        for letter in "ABCDEFGH":
+            q_lines.append(f"{letter}: {confidence_bins[letter]}")
+
+        q_lines.extend([
+            "------------------------------",
+            "Your choice (A, B, C, D, E, F, G, or H):"
+        ])
+
+        # Add trailing space for smooth next-token logits
+        prompt = "\n".join(q_lines) + " "
+        prompts.append(prompt)
+
     return prompts
+
+
+
+
+# def build_other_confidence_prompts(batch):
+#     """
+#     Builds other-confidence (college-educated) prompts wrapped in FULL Llama-3 chat template including system prompt.
+#     Matches explicit_confidence_task.py content but with proper chat formatting.
+#     """
+#     # Llama-3 Control Tokens
+#     BOS = "<|begin_of_text|>"
+#     SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
+#     SYSTEM_CONTENT = "You are a helpful AI assistant."  # Standard Llama-3 system prompt
+#     USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
+#     EOT = "<|eot_id|>"
+#     ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
+    
+#     setup_prompt = (
+#         "I want your help calibrating question difficulty. I'm going to show you a "
+#         "multiple-choice question, and I want you to tell me approximately what "
+#         "percentage of college-educated people you think would get it right. Respond "
+#         "only with the letter corresponding to the percentage range you choose; do NOT "
+#         "output any other text."
+#     )
+    
+#     # Matching explicit_confidence_task.py (lines 83-85)
+#     nested_option_dict = {
+#         "A": "<5%", "B": "5-10%", "C": "10-20%", "D": "20-40%", 
+#         "E": "40-60%", "F": "60-80%", "G": "80-90%", "H": ">90%"
+#     }
+#     nested_question_prompt = "What percentage of college-educated people would get this question right?"
+    
+#     prompts = []
+#     for row in batch:
+#         question = row["question"]
+#         options = row["options"]
+        
+#         # Structure matches BaseGameClass._present_nested_question logic
+#         q_text = (
+#             "------------------------------\n"
+#             f"{nested_question_prompt}\n"
+#             "----------\n"
+#             f"{question}\n"
+#         )
+        
+#         # Original Question Options
+#         for key in ["A", "B", "C", "D"]:
+#             if key in options:
+#                 q_text += f"  {key}: {options[key]}\n"
+        
+#         q_text += "----------\n"
+        
+#         # Confidence Options
+#         for key in ["A", "B", "C", "D", "E", "F", "G", "H"]:
+#             q_text += f"  {key}: {nested_option_dict[key]}\n"
+            
+#         q_text += "------------------------------"
+        
+#         # Full prompt assembly
+#         options_str = "A, B, C, D, E, F, G, or H"
+#         llm_prompt = q_text + f"\nYour choice ({options_str}): "
+#         user_content = setup_prompt + "\n\n" + llm_prompt
+        
+#         # Apply FULL Llama-3 chat template WITH system prompt
+#         # Format: BOS + SYSTEM + USER + ASSISTANT
+#         full_prompt = f"{BOS}{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
+#         prompts.append(full_prompt)
+        
+#     return prompts
 
 
 def build_other_confidence_prompts(batch):
     """
-    Builds other-confidence (college-educated) prompts wrapped in FULL Llama-3 chat template including system prompt.
-    Matches explicit_confidence_task.py content but with proper chat formatting.
+    Build plain-text 'other-confidence' prompts (college-educated predictions).
+    No ChatML tokens. Next token is directly in A–H.
     """
-    # Llama-3 Control Tokens
-    BOS = "<|begin_of_text|>"
-    SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
-    SYSTEM_CONTENT = "You are a helpful AI assistant."  # Standard Llama-3 system prompt
-    USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
-    EOT = "<|eot_id|>"
-    ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
-    
+
     setup_prompt = (
         "I want your help calibrating question difficulty. I'm going to show you a "
         "multiple-choice question, and I want you to tell me approximately what "
@@ -205,51 +456,61 @@ def build_other_confidence_prompts(batch):
         "only with the letter corresponding to the percentage range you choose; do NOT "
         "output any other text."
     )
-    
-    # Matching explicit_confidence_task.py (lines 83-85)
-    nested_option_dict = {
-        "A": "<5%", "B": "5-10%", "C": "10-20%", "D": "20-40%", 
-        "E": "40-60%", "F": "60-80%", "G": "80-90%", "H": ">90%"
+
+    confidence_bins = {
+        "A": "<5%",
+        "B": "5-10%",
+        "C": "10-20%",
+        "D": "20-40%",
+        "E": "40-60%",
+        "F": "60-80%",
+        "G": "80-90%",
+        "H": ">90%",
     }
-    nested_question_prompt = "What percentage of college-educated people would get this question right?"
-    
+
+    nested_question_prompt = (
+        "What percentage of college-educated people would get this question right?"
+    )
+
     prompts = []
     for row in batch:
-        question = row["question"]
-        options = row["options"]
-        
-        # Structure matches BaseGameClass._present_nested_question logic
-        q_text = (
-            "------------------------------\n"
-            f"{nested_question_prompt}\n"
-            "----------\n"
-            f"{question}\n"
-        )
-        
-        # Original Question Options
-        for key in ["A", "B", "C", "D"]:
-            if key in options:
-                q_text += f"  {key}: {options[key]}\n"
-        
-        q_text += "----------\n"
-        
-        # Confidence Options
-        for key in ["A", "B", "C", "D", "E", "F", "G", "H"]:
-            q_text += f"  {key}: {nested_option_dict[key]}\n"
-            
-        q_text += "------------------------------"
-        
-        # Full prompt assembly
-        options_str = "A, B, C, D, E, F, G, or H"
-        llm_prompt = q_text + f"\nYour choice ({options_str}): "
-        user_content = setup_prompt + "\n\n" + llm_prompt
-        
-        # Apply FULL Llama-3 chat template WITH system prompt
-        # Format: BOS + SYSTEM + USER + ASSISTANT
-        full_prompt = f"{BOS}{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
-        prompts.append(full_prompt)
-        
+        question = row["question"].strip()
+        options = row.get("options", {})
+
+        a_text = options.get("A", "").strip()
+        b_text = options.get("B", "").strip()
+        c_text = options.get("C", "").strip()
+        d_text = options.get("D", "").strip()
+
+        q_lines = [
+            setup_prompt,
+            "",
+            "------------------------------",
+            nested_question_prompt,
+            "----------",
+            f"Question: {question}",
+            f"A: {a_text}",
+            f"B: {b_text}",
+            f"C: {c_text}",
+            f"D: {d_text}",
+            "----------",
+            "Confidence options:",
+        ]
+
+        for letter in "ABCDEFGH":
+            q_lines.append(f"{letter}: {confidence_bins[letter]}")
+
+        q_lines.extend([
+            "------------------------------",
+            "Your choice (A, B, C, D, E, F, G, or H):"
+        ])
+
+        prompt = "\n".join(q_lines) + " "
+        prompts.append(prompt)
+
     return prompts
+
+
 
 # ============================================================
 # Dataset: no logprobs needed, only the raw MCQ fields
@@ -317,34 +578,57 @@ def normalize_text(s):
     return s
 
 
+# def get_single_token_id(tokenizer, letter: str, context: str = None) -> int:
+#     """
+#     Find a single-token representation for a letter.
+#     Try ' A' first (common for LLaMA), then 'A'.
+    
+#     If context is provided, tokenize in that context to ensure we get the right token ID
+#     that matches how the model will see it during inference.
+#     """
+#     if context is not None:
+#         # Tokenize the context + letter, then extract just the letter's token ID
+#         full_text = context + letter
+#         ids = tokenizer.encode(full_text, add_special_tokens=False)
+#         context_ids = tokenizer.encode(context, add_special_tokens=False)
+#         if len(ids) == len(context_ids) + 1:
+#             # The letter was tokenized as a single token
+#             return ids[-1]
+#         # Fallback to standard method if context doesn't help
+    
+#     # Try with leading space (common SPM pattern)
+#     ids = tokenizer.encode(" " + letter, add_special_tokens=False)
+#     if len(ids) == 1:
+#         return ids[0]
+#     # Fallback: bare letter
+#     ids = tokenizer.encode(letter, add_special_tokens=False)
+#     if len(ids) == 1:
+#         return ids[0]
+#     raise ValueError(f"Could not find a single-token encoding for {letter}: got {ids}")
+
 def get_single_token_id(tokenizer, letter: str, context: str = None) -> int:
     """
     Find a single-token representation for a letter.
-    Try ' A' first (common for LLaMA), then 'A'.
-    
-    If context is provided, tokenize in that context to ensure we get the right token ID
-    that matches how the model will see it during inference.
+    Prioritize bare letter 'A' (ID 32) over ' A' (ID 320) for Llama-3.
     """
     if context is not None:
-        # Tokenize the context + letter, then extract just the letter's token ID
         full_text = context + letter
         ids = tokenizer.encode(full_text, add_special_tokens=False)
         context_ids = tokenizer.encode(context, add_special_tokens=False)
         if len(ids) == len(context_ids) + 1:
-            # The letter was tokenized as a single token
             return ids[-1]
-        # Fallback to standard method if context doesn't help
     
-    # Try with leading space (common SPM pattern)
-    ids = tokenizer.encode(" " + letter, add_special_tokens=False)
-    if len(ids) == 1:
-        return ids[0]
-    # Fallback: bare letter
+    # PRIORITY CHANGE: Check bare letter FIRST
     ids = tokenizer.encode(letter, add_special_tokens=False)
     if len(ids) == 1:
         return ids[0]
-    raise ValueError(f"Could not find a single-token encoding for {letter}: got {ids}")
 
+    # Then check with leading space
+    ids = tokenizer.encode(" " + letter, add_special_tokens=False)
+    if len(ids) == 1:
+        return ids[0]
+        
+    raise ValueError(f"Could not find a single-token encoding for {letter}: got {ids}")
 
 def load_mcq_results_data(mcq_results_path, log_file_path=None):
     """

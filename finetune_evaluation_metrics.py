@@ -24,6 +24,7 @@ from finetune_utils import (
     shuffle_options_and_update_correct_letter,
     validate_and_load_dataset,
     log_wandb_metrics,
+    parse_letter_from_model_text
 )
 
 
@@ -305,8 +306,18 @@ def run_diagnostics(base_model, data_path, checkpoint_path=None, device="cuda",
 
 
 
-def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda", 
-                       validation_step=0, log_file_path=None, num_questions=500, temperature=0.0, seed=None):
+def assess_mcq_accuracy(
+    model,
+    tokenizer,
+    val_dataset,
+    device="cuda",
+    validation_step=0,
+    log_file_path=None,
+    num_questions=500,
+    temperature=0.0,
+    seed=None,
+    shuffle_options=True,
+):
     """
     Assess model accuracy on multiple choice questions from validation set.
     
@@ -395,9 +406,10 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
             
             # Process batch when full or at end
             if len(batch) == batch_size or idx == len(sampled_indices) - 1:
-                # Shuffle options to prevent position bias
-                for row in batch:
-                    shuffle_options_and_update_correct_letter(row)
+                # Shuffle options to prevent position bias (if enabled)
+                if shuffle_options:
+                    for row in batch:
+                        shuffle_options_and_update_correct_letter(row)
                 
                 # Build prompts using the utility function
                 answer_prompts = build_multiple_choice_question_prompts(batch)
@@ -481,6 +493,16 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
                     assert predicted_letter in "ABCD", f"MCQ prediction must be A-D, got {predicted_letter}"
                     assert pred_idx < 4, f"MCQ prediction index must be 0-3 (A-D), got {pred_idx}"
                     
+                    # Get the exact model output: apply same temperature logic to full vocab logits
+                    if temperature > 0:
+                        scaled_full_logits = final_logits[i] / temperature
+                        full_probs = torch.softmax(scaled_full_logits, dim=-1)
+                        mcq_response_token_id = torch.multinomial(full_probs, num_samples=1).item()
+                    else:
+                        mcq_response_token_id = final_logits[i].argmax().item()
+                    mcq_response_logit = final_logits[i][mcq_response_token_id].item()
+                    mcq_response_text = tokenizer.decode([mcq_response_token_id], skip_special_tokens=False)
+                    
                     # Get correct answer letter
                     correct_letter = row["correct_letter"]
                     assert correct_letter in "ABCD", f"Correct answer must be A-D, got {correct_letter}"
@@ -529,6 +551,17 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
                     verbal_confidence = expected_conf[i].item()
                     # Compute confidence entropy (entropy of confidence distribution)
                     conf_entropy = -(conf_probs[i] * torch.log(conf_probs[i] + 1e-12)).sum().item()
+                    
+                    # Get the exact model output: apply same temperature logic to full vocab logits
+                    if temperature > 0:
+                        scaled_full_logits2 = final_logits2[i] / temperature
+                        full_probs2 = torch.softmax(scaled_full_logits2, dim=-1)
+                        conf_response_token_id = torch.multinomial(full_probs2, num_samples=1).item()
+                    else:
+                        conf_response_token_id = final_logits2[i].argmax().item()
+                    conf_response_logit = final_logits2[i][conf_response_token_id].item()
+                    conf_response_text = tokenizer.decode([conf_response_token_id], skip_special_tokens=False)
+                    
                     all_confidence_predictions.append({
                         "qid": row.get("qid", f"sample_{batch_indices[i]}"),
                         "confidence_letter": conf_pred_letter,
@@ -545,6 +578,10 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
                             "validation_step": validation_step,
                             "qid": row.get("qid", f"sample_{batch_indices[i]}"),
                             "question": row.get("question", ""),
+                            "full_prompt": answer_prompts[i],  # Full prompt as model sees it
+                            "model_response_token_id": int(mcq_response_token_id),
+                            "model_response_logit": float(mcq_response_logit),  # Logit value for the predicted token
+                            "model_response_text": mcq_response_text,  # Exact decoded response from model (argmax of full vocab)
                             "correct_answer_letter": correct_letter,
                             "correct_answer_text": correct_answer_text,
                             "model_answer_letter": predicted_letter,
@@ -574,6 +611,10 @@ def assess_mcq_accuracy(model, tokenizer, val_dataset, device="cuda",
                             "validation_step": validation_step,
                             "qid": row.get("qid", f"sample_{batch_indices[i]}"),
                             "question": row.get("question", ""),
+                            "full_prompt": confidence_prompts[i],  # Full prompt as model sees it
+                            "model_response_token_id": int(conf_response_token_id),
+                            "model_response_logit": float(conf_response_logit),  # Logit value for the predicted token
+                            "model_response_text": conf_response_text,  # Exact decoded response from model (argmax of full vocab)
                             "confidence_predicted_letter": conf_pred_letter,
                             "verbal_confidence": float(verbal_confidence),
                             "confidence_entropy": float(conf_entropy),
@@ -816,7 +857,7 @@ def log_answer_distributions(log_file_path, step_type, step_number,
 def run_evaluation(model, tokenizer, device, args, mcq_results_lookup, log_file_path, step,
                    mcq_accuracy_log_file_path, answer_distributions_log_file_path,
                    eval_type, val_dataloader=None, val_dataset=None, data_path=None,
-                   val_metrics_log_file_path=None, limit_val_batches=None, temperature=0.0):
+                   val_metrics_log_file_path=None, limit_val_batches=None, val_num_samples=500, temperature=0.0):
     """
     Unified function to run evaluation on validation or test datasets.
     
@@ -841,6 +882,7 @@ def run_evaluation(model, tokenizer, device, args, mcq_results_lookup, log_file_
         data_path: Path to dataset JSONL file (required for test, optional for others)
         val_metrics_log_file_path: Path for validation metrics logging (only for validation)
         limit_val_batches: Optional limit on number of batches to process (only for validation)
+        val_num_samples: Number of random questions to sample from validation dataset (default: 500)
         
     Returns:
         dict with evaluation metrics
@@ -881,15 +923,15 @@ def run_evaluation(model, tokenizer, device, args, mcq_results_lookup, log_file_
             collate_fn=collate_fn
         )
         print(f"✓ Test dataset loaded: {len(dataset)} samples")
-        num_questions_for_mcq = min(500, len(dataset))
+        num_questions_for_mcq = min(val_num_samples, len(dataset))
     else:
-        # For baseline and validation: sample 500 random questions
+        # For baseline and validation: sample random questions
         if dataloader is None or dataset is None:
             raise ValueError(f"val_dataloader and val_dataset must be provided for {eval_type} evaluation")
         
-        # Sample 500 random indices from the dataset
+        # Sample random indices from the dataset
         dataset_size = len(dataset)
-        num_questions_for_mcq = min(500, dataset_size)
+        num_questions_for_mcq = min(val_num_samples, dataset_size)
         # Use seed=42 for baseline (to match capabilities_test.py), step for validation steps
         if eval_type == "baseline":
             random.seed(42)  # Match capabilities_test.py seed for baseline
@@ -988,7 +1030,8 @@ def run_evaluation(model, tokenizer, device, args, mcq_results_lookup, log_file_
             mcq_results = assess_mcq_accuracy(
                 model, tokenizer, dataset, device=device,
                 validation_step=step, log_file_path=mcq_accuracy_log_file_path,
-                num_questions=num_questions_for_mcq, temperature=temperature, seed=42
+                num_questions=num_questions_for_mcq, temperature=temperature, seed=42,
+                shuffle_options=args.shuffle_options,
             )
         else:
             # For baseline/validation, use the same subset we already processed
@@ -997,7 +1040,8 @@ def run_evaluation(model, tokenizer, device, args, mcq_results_lookup, log_file_
             mcq_results = assess_mcq_accuracy(
                 model, tokenizer, dataset, device=device,
                 validation_step=step, log_file_path=mcq_accuracy_log_file_path,
-                num_questions=len(dataset), temperature=temperature, seed=None  # Use all questions in the subset
+                num_questions=len(dataset), temperature=temperature, seed=None,  # Use all questions in the subset
+                shuffle_options=args.shuffle_options,
             )
         mcq_accuracy = mcq_results["accuracy"]
         mcq_entropy = mcq_results["avg_entropy"]

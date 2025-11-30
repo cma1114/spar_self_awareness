@@ -33,6 +33,7 @@ from finetune_utils import (
     validate_training_files,
     compute_ABCD_entropy,
     shuffle_options_and_update_correct_letter,
+    parse_letter_from_model_text
 )
 
 
@@ -118,7 +119,7 @@ def convert_entropy_to_soft_labels(entropy, sigma=10.0):
 
 
 # ------------------------------------------------------------------
-# Training Step
+# Validation Step
 # ------------------------------------------------------------------
 
 def val_step(model, tokenizer, batch, sigma=10.0, device="cuda",
@@ -157,9 +158,10 @@ def val_step(model, tokenizer, batch, sigma=10.0, device="cuda",
         row["options"] = opts
         resolved_results.append(result_data)
     
-    # 1.5. Shuffle options to prevent position bias
-    for row in batch:
-        shuffle_options_and_update_correct_letter(row)
+    # 1.5. Shuffle options to prevent position bias (if enabled)
+    if args.shuffle_options:
+        for row in batch:
+            shuffle_options_and_update_correct_letter(row)
     
     # 2. Build MCQ prompts
     answer_prompts = build_multiple_choice_question_prompts(batch)
@@ -302,6 +304,122 @@ def val_step(model, tokenizer, batch, sigma=10.0, device="cuda",
     }
 
 
+# def val_step(
+#     model,
+#     tokenizer,
+#     batch,
+#     sigma=10.0,
+#     device="cuda",
+#     mcq_results_lookup=None,
+#     log_file_path=None,
+#     args=None,
+#     temperature=0.0,
+# ):
+
+#     model.eval()
+
+#     ########################################
+#     # 1. Build MCQ prompts
+#     ########################################
+#     mcq_prompts = build_multiple_choice_question_prompts(batch)
+#     enc = tokenizer(mcq_prompts, return_tensors="pt", padding=True).to(device)
+
+#     ########################################
+#     # 2. Forward pass to get logits
+#     ########################################
+#     with torch.no_grad():
+#         out = model(**enc, use_cache=False)
+#         logits = out.logits[:, -1, :]                   # [B, V]
+
+#     ########################################
+#     # 3. Extract A–D logits for entropy
+#     ########################################
+#     abcd_ids = torch.tensor(
+#         [get_single_token_id(tokenizer, c) for c in "ABCD"],
+#         device=device
+#     )                                                   # [4]
+
+#     mcq_logits4 = logits[:, abcd_ids]                  # [B, 4]
+
+#     ########################################
+#     # 4. Compute entropy (first-order signal)
+#     ########################################
+#     probs = torch.softmax(mcq_logits4, dim=-1)
+#     entropies = -(probs * torch.log(probs + 1e-12)).sum(dim=-1)  # [B]
+
+#     ########################################
+#     # 5. Extract MCQ answer
+#     ########################################
+#     generated = model.generate(
+#         **enc,
+#         max_new_tokens=1,
+#         do_sample=False,
+#         temperature=0.0,
+#         top_p=1.0
+#     )
+
+#     decoded = tokenizer.batch_decode(generated[:, enc["input_ids"].shape[1]:])
+#     pred_letters = []
+
+#     for txt in decoded:
+#         c = txt.strip()[:1].upper()
+#         if c not in "ABCD":
+#             c = "?"   # mentor fallback behavior
+#         pred_letters.append(c)
+
+#     ########################################
+#     # 6. Build soft targets from entropy
+#     ########################################
+#     soft_targets = torch.stack([
+#         convert_entropy_to_soft_labels(ent.item()).to(device)
+#         for ent in entropies
+#     ])
+
+#     ########################################
+#     # 7. Build confidence prompts and forward pass
+#     ########################################
+#     conf_prompts = build_self_confidence_prompts(batch)
+#     enc_conf = tokenizer(conf_prompts, return_tensors="pt", padding=True).to(device)
+
+#     with torch.no_grad():
+#         out2 = model(**enc_conf, use_cache=False)
+#         conf_logits = out2.logits[:, -1, :]
+
+#     bins_ids = torch.tensor(
+#         [get_single_token_id(tokenizer, c) for c in "ABCDEFGH"],
+#         device=device
+#     )
+#     conf_logits8 = conf_logits[:, bins_ids]            # [B, 8]
+
+#     ########################################
+#     # 8. Compute loss
+#     ########################################
+#     log_probs = torch.log_softmax(conf_logits8, dim=-1)
+#     loss = (-soft_targets * log_probs).sum(dim=1).mean()
+
+#     ########################################
+#     # 9. Compute correctness
+#     ########################################
+#     correct = []
+#     for i, row in enumerate(batch):
+#         gold = row["correct_letter"]
+#         pred = pred_letters[i]
+#         correct.append(1.0 if pred == gold else 0.0)
+
+#     return {
+#         "loss": loss.detach(),
+#         "correct": torch.tensor(correct, device=device),
+#         "entropy": entropies.detach()
+#     }
+
+
+
+
+# ------------------------------------------------------------------
+# Training Step
+# ------------------------------------------------------------------
+
+
 def train_step(model, tokenizer, batch, sigma=10.0, device="cuda",
                mcq_results_lookup=None, log_file_path=None, args=None,
                step=None, prompt_log_file_path=None, temperature=0.0):
@@ -343,10 +461,11 @@ def train_step(model, tokenizer, batch, sigma=10.0, device="cuda",
         resolved_results.append(result_data)  # save for later target lookup
 
     # ------------------------------------------------------------------
-    # 1.5. Shuffle options to prevent position bias
+    # 1.5. Shuffle options to prevent position bias (if enabled)
     # ------------------------------------------------------------------
-    for row in batch:
-        shuffle_options_and_update_correct_letter(row)
+    if args.shuffle_options:
+        for row in batch:
+            shuffle_options_and_update_correct_letter(row)
 
     # ------------------------------------------------------------------
     # 2. Build MCQ prompts using the utility function
@@ -502,7 +621,6 @@ def train_step(model, tokenizer, batch, sigma=10.0, device="cuda",
 # ============================================================
 # Main training
 # ============================================================
-
 
 def train(args):
     """Main training function."""
@@ -700,6 +818,7 @@ def train(args):
             val_dataset=val_dataset,
             val_metrics_log_file_path=None,  # Don't log baseline to val_metrics file
             limit_val_batches=args.limit_val_batches,
+            val_num_samples=args.val_num_samples,
             temperature=args.temperature
         )
         
@@ -746,6 +865,7 @@ def train(args):
                     val_dataset=val_dataset,
                     val_metrics_log_file_path=val_metrics_log_file_path,
                     limit_val_batches=args.limit_val_batches,
+                    val_num_samples=args.val_num_samples,
                     temperature=args.temperature
                 )
                 model.train()
@@ -783,6 +903,7 @@ def train(args):
             answer_distributions_log_file_path=answer_distributions_log_file_path,
             eval_type="test",
             data_path=args.test_data_path,
+            val_num_samples=args.val_num_samples,
             temperature=args.temperature
         )
 
@@ -850,10 +971,16 @@ def parse_args():
                         help="Run validation every N training steps")
     parser.add_argument("--limit_val_batches", type=int, default=None,
                         help="Limit validation to N batches (None = use all validation data)")
+    parser.add_argument("--val_num_samples", type=int, default=500,
+                        help="Number of random questions to sample from validation dataset for validation steps (default: 500)")
     parser.add_argument("--sigma", type=float, default=10.0,
                         help="Sigma parameter for soft label distribution")
     parser.add_argument("--temperature", type=float, default=0.0,
                         help="Temperature for sampling predictions (0.0 = deterministic/argmax, >0 = sampling)")
+    parser.add_argument(
+        "--no_shuffle_options", dest="shuffle_options", action="store_false",
+        help="Disable shuffling of multiple choice answer options (shuffling is enabled by default)"
+    )
     parser.add_argument(
         "--use_recorded_responses", action="store_true", default=None,
         help=("Use recorded MCQ responses (frozen teacher) as training "
@@ -918,6 +1045,10 @@ def parse_args():
                         help="Save model as W&B artifact for reproducibility")
 
     args = parser.parse_args()
+    
+    # Set default for shuffle_options (True if --no_shuffle_options was not provided)
+    if not hasattr(args, 'shuffle_options'):
+        args.shuffle_options = True
     
     # Validate that exactly one of --use_recorded_responses or --no_use_recorded_responses is set
     if args.use_recorded_responses is None:
