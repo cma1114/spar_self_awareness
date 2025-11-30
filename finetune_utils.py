@@ -120,7 +120,7 @@ def run_mcq_forward_pass(model, tokenizer, prompts, device="cuda", temperature=0
     probs4 = torch.softmax(logits4, dim=-1)
     entropy = -(probs4 * torch.log(probs4 + 1e-12)).sum(dim=-1)
 
-    # Mentor-style argmax prediction
+    # Argmax prediction
     idx = logits4.argmax(dim=-1).tolist()
     pred_letters = [ "ABCD"[i] for i in idx ]
 
@@ -256,149 +256,6 @@ def _get_log_file_path(log_dir, model_name, suffix):
     )
 
 
-# def build_multiple_choice_question_prompts(batch):
-#     """
-#     Builds direct MCQ prompts wrapped in FULL Llama-3 chat template including system prompt.
-#     Matches explicit_confidence_task.py content but with proper chat formatting.
-#     """
-#     # Llama-3 Control Tokens
-#     BOS = "<|begin_of_text|>"
-#     SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
-#     SYSTEM_CONTENT = "You are a helpful AI assistant."  # Standard Llama-3 system prompt
-#     USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
-#     EOT = "<|eot_id|>"
-#     ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
-    
-#     setup_prompt = (
-#         "I'm going to ask you a series of multiple-choice questions. For each one, "
-#         "select the answer you think is best. Respond only with the letter of your choice; "
-#         "do NOT output any other text."
-#     )
-    
-#     prompts = []
-#     for row in batch:
-#         question = row["question"]
-#         options = row["options"]
-        
-#         # Structure matches BaseGameClass._present_question logic seen in logs
-#         # Header: Question + Text
-#         # Separator: 10 dashes
-#         # Body: Indented Options
-#         q_text = (
-#             "------------------------------\n"
-#             "Question:\n"
-#             f"{question}\n"
-#             "----------\n"
-#         )
-        
-#         # Options are indented by 2 spaces
-#         for key in ["A", "B", "C", "D"]:
-#             if key in options:
-#                 q_text += f"  {key}: {options[key]}\n"
-        
-#         q_text += "------------------------------"
-        
-#         # Full prompt assembly
-#         llm_prompt = q_text + "\nYour choice (A, B, C, or D): "
-#         user_content = setup_prompt + "\n\n" + llm_prompt
-        
-#         # Apply FULL Llama-3 chat template WITH system prompt
-#         # Format: BOS + SYSTEM + USER + ASSISTANT
-#         full_prompt = f"{BOS}{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
-#         prompts.append(full_prompt)
-    
-#     return prompts
-
-# def build_multiple_choice_question_prompts(batch):
-#     """
-#     Builds direct MCQ prompts wrapped in FULL Llama-3 chat template including system prompt.
-#     Matches explicit_confidence_task.py content but with proper chat formatting.
-#     """
-#     # Llama-3 Control Tokens
-#     # BOS definition removed because tokenizer adds it automatically
-#     SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
-#     SYSTEM_CONTENT = "You are a helpful AI assistant." 
-#     USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
-#     EOT = "<|eot_id|>"
-#     ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
-    
-#     setup_prompt = (
-#         "I'm going to ask you a series of multiple-choice questions. For each one, "
-#         "select the answer you think is best. Respond only with the letter of your choice; "
-#         "do NOT output any other text."
-#     )
-    
-#     prompts = []
-#     for row in batch:
-#         question = row["question"]
-#         options = row["options"]
-        
-#         q_text = (
-#             "------------------------------\n"
-#             "Question:\n"
-#             f"{question}\n"
-#             "----------\n"
-#         )
-        
-#         for key in ["A", "B", "C", "D"]:
-#             if key in options:
-#                 q_text += f"  {key}: {options[key]}\n"
-        
-#         q_text += "------------------------------"
-        
-#         llm_prompt = q_text + "\nYour choice (A, B, C, or D): "
-#         user_content = setup_prompt + "\n\n" + llm_prompt
-        
-#         # Apply FULL Llama-3 chat template WITH system prompt
-#         # FIX: Removed {BOS} from the start
-#         full_prompt = f"{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
-#         prompts.append(full_prompt)
-    
-#     return prompts
-
-# def build_multiple_choice_question_prompts(batch):
-#     """
-#     Build plain-text MCQ prompts (no ChatML control tokens).
-
-#     These are designed so that the *next* token after the prompt
-#     is directly one of: "A", "B", "C", or "D".
-#     """
-
-#     setup_prompt = (
-#         "I'm going to ask you a series of multiple-choice questions. "
-#         "For each one, select the answer you think is best. "
-#         "Respond only with the letter of your choice; do NOT output any other text."
-#     )
-
-#     prompts = []
-#     for row in batch:
-#         question = row["question"].strip()
-#         options = row.get("options", {})
-
-#         # Ensure we have A–D keys
-#         a_text = options.get("A", "").strip()
-#         b_text = options.get("B", "").strip()
-#         c_text = options.get("C", "").strip()
-#         d_text = options.get("D", "").strip()
-
-#         q_lines = [
-#             setup_prompt,
-#             "",
-#             f"Question: {question}",
-#             "----------",
-#             f"A: {a_text}",
-#             f"B: {b_text}",
-#             f"C: {c_text}",
-#             f"D: {d_text}",
-#             "------------------------------",
-#             "Your choice (A, B, C, or D):"
-#         ]
-
-#         # Trailing space makes it cleaner for next-token prediction
-#         prompt = "\n".join(q_lines) + " "
-#         prompts.append(prompt)
-
-#     return prompts
 
 def build_multiple_choice_question_prompts(batch, tokenizer):
     """Build MCQ prompts with proper chat template."""
@@ -426,75 +283,6 @@ def build_multiple_choice_question_prompts(batch, tokenizer):
     
     return prompts
 
-# def build_self_confidence_prompts(batch):
-#     """
-#     Builds self-confidence prompts wrapped in FULL Llama-3 chat template including system prompt.
-#     Matches explicit_confidence_task.py content but with proper chat formatting.
-#     """
-#     # Llama-3 Control Tokens
-#     BOS = "<|begin_of_text|>"
-#     SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
-#     SYSTEM_CONTENT = "You are a helpful AI assistant."  # Standard Llama-3 system prompt
-#     USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
-#     EOT = "<|eot_id|>"
-#     ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
-    
-#     setup_prompt = (
-#         "I'm going to show you a multiple-choice question, and I want you to tell me "
-#         "your level of confidence that you would get the question right. Respond only "
-#         "with the letter corresponding to the percentage range you choose; do NOT output "
-#         "any other text."
-#     )
-    
-#     # Matching explicit_confidence_task.py (lines 88-90)
-#     nested_option_dict = {
-#         "A": "<5%", "B": "5-10%", "C": "10-20%", "D": "20-40%", 
-#         "E": "40-60%", "F": "60-80%", "G": "80-90%", "H": ">90%"
-#     }
-#     nested_question_prompt = "How confident are you that you would get this question right?"
-    
-#     prompts = []
-#     for row in batch:
-#         question = row["question"]
-#         options = row["options"]
-        
-#         # Structure matches BaseGameClass._present_nested_question logic
-#         # Header: Nested Prompt
-#         # Separator: 10 dashes
-#         # Body: Question Text + Indented Options
-#         # Separator: 10 dashes
-#         # Nested Body: Indented Nested Options
-#         q_text = (
-#             "------------------------------\n"
-#             f"{nested_question_prompt}\n"
-#             "----------\n"
-#             f"{question}\n"
-#         )
-        
-#         # Original Question Options
-#         for key in ["A", "B", "C", "D"]:
-#             if key in options:
-#                 q_text += f"  {key}: {options[key]}\n"
-        
-#         q_text += "----------\n"
-        
-#         # Confidence Options
-#         for key in ["A", "B", "C", "D", "E", "F", "G", "H"]:
-#             q_text += f"  {key}: {nested_option_dict[key]}\n"
-            
-#         q_text += "------------------------------"
-        
-#         # Full prompt assembly
-#         options_str = "A, B, C, D, E, F, G, or H"
-#         llm_prompt = q_text + f"\nYour choice ({options_str}): "
-#         user_content = setup_prompt + "\n\n" + llm_prompt
-        
-#         # Apply FULL Llama-3 chat template WITH system prompt
-#         # Format: BOS + SYSTEM + USER + ASSISTANT
-#         full_prompt = f"{BOS}{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
-#         prompts.append(full_prompt)
-        
-#     return prompts
 
 def build_self_confidence_prompts(batch, tokenizer):
     """
@@ -570,73 +358,6 @@ def build_self_confidence_prompts(batch, tokenizer):
         prompts.append(prompt)
 
     return prompts
-
-
-# def build_other_confidence_prompts(batch):
-#     """
-#     Builds other-confidence (college-educated) prompts wrapped in FULL Llama-3 chat template including system prompt.
-#     Matches explicit_confidence_task.py content but with proper chat formatting.
-#     """
-#     # Llama-3 Control Tokens
-#     BOS = "<|begin_of_text|>"
-#     SYSTEM_START = "<|start_header_id|>system<|end_header_id|>\n\n"
-#     SYSTEM_CONTENT = "You are a helpful AI assistant."  # Standard Llama-3 system prompt
-#     USER_START = "<|start_header_id|>user<|end_header_id|>\n\n"
-#     EOT = "<|eot_id|>"
-#     ASSISTANT_START = "<|start_header_id|>assistant<|end_header_id|>\n\n"
-    
-#     setup_prompt = (
-#         "I want your help calibrating question difficulty. I'm going to show you a "
-#         "multiple-choice question, and I want you to tell me approximately what "
-#         "percentage of college-educated people you think would get it right. Respond "
-#         "only with the letter corresponding to the percentage range you choose; do NOT "
-#         "output any other text."
-#     )
-    
-#     # Matching explicit_confidence_task.py (lines 83-85)
-#     nested_option_dict = {
-#         "A": "<5%", "B": "5-10%", "C": "10-20%", "D": "20-40%", 
-#         "E": "40-60%", "F": "60-80%", "G": "80-90%", "H": ">90%"
-#     }
-#     nested_question_prompt = "What percentage of college-educated people would get this question right?"
-    
-#     prompts = []
-#     for row in batch:
-#         question = row["question"]
-#         options = row["options"]
-        
-#         # Structure matches BaseGameClass._present_nested_question logic
-#         q_text = (
-#             "------------------------------\n"
-#             f"{nested_question_prompt}\n"
-#             "----------\n"
-#             f"{question}\n"
-#         )
-        
-#         # Original Question Options
-#         for key in ["A", "B", "C", "D"]:
-#             if key in options:
-#                 q_text += f"  {key}: {options[key]}\n"
-        
-#         q_text += "----------\n"
-        
-#         # Confidence Options
-#         for key in ["A", "B", "C", "D", "E", "F", "G", "H"]:
-#             q_text += f"  {key}: {nested_option_dict[key]}\n"
-            
-#         q_text += "------------------------------"
-        
-#         # Full prompt assembly
-#         options_str = "A, B, C, D, E, F, G, or H"
-#         llm_prompt = q_text + f"\nYour choice ({options_str}): "
-#         user_content = setup_prompt + "\n\n" + llm_prompt
-        
-#         # Apply FULL Llama-3 chat template WITH system prompt
-#         # Format: BOS + SYSTEM + USER + ASSISTANT
-#         full_prompt = f"{BOS}{SYSTEM_START}{SYSTEM_CONTENT}{EOT}{USER_START}{user_content}{EOT}{ASSISTANT_START}"
-#         prompts.append(full_prompt)
-        
-#     return prompts
 
 
 def build_other_confidence_prompts(batch):
@@ -823,28 +544,20 @@ def compute_ABCD_entropy(probs):
 def convert_entropy_to_soft_labels(entropy, sigma=10.0):
     """
     Convert entropy value to soft 8-bin confidence distribution.
-
-    Args:
-        entropy: scalar entropy value (float) or tensor of shape [B]
-        sigma: Gaussian width in percentage space (default: 10)
-
-    Returns:
-        tensor of shape [8] or [B, 8] with soft label distribution
+    Handles both Tensor inputs (training) and float inputs (evaluation).
     """
-    # Handle both float and tensor inputs
+    # Fix: Ensure input is a tensor so we can access .device or operate on it
     if not isinstance(entropy, torch.Tensor):
-        # Convert float to tensor on CPU (caller can move to device if needed)
         entropy = torch.tensor(entropy, dtype=torch.float32)
-    
-    # Get device from entropy tensor
+
+    # Get device from entropy tensor (defaults to cpu if created from float)
     device = entropy.device
     
     # Convert entropy to "confidence percentage"
     # confidence = (1 - H/log(4)) * 100
     confidence_percent = (1 - entropy / math.log(4)) * 100.0
 
-    # Bin midpoints + widths (same as compute_soft_labels)
-    # Create tensors on the same device as entropy
+    # Bin midpoints + widths
     bin_edges = torch.tensor(
         [0, 5, 10, 20, 40, 60, 80, 90, 100],
         dtype=torch.float32,
@@ -855,22 +568,20 @@ def convert_entropy_to_soft_labels(entropy, sigma=10.0):
         dtype=torch.float32,
         device=device
     )
-    bin_widths = bin_edges[1:] - bin_edges[:-1]  # shape [8]
+    bin_widths = bin_edges[1:] - bin_edges[:-1]
 
     # Gaussian kernel in percentage space
-    # Handle broadcasting: if entropy is scalar, confidence_percent is scalar
-    # If entropy is [B], confidence_percent is [B]
-    # We need to broadcast with bin_midpoints [8] to get [8] or [B, 8]
-    if entropy.dim() == 0:
-        # Scalar case: result should be [8]
-        distances = (bin_midpoints - confidence_percent) ** 2
-        weights = torch.exp(-distances / (2 * sigma * sigma)) * bin_widths
-        return weights / weights.sum()
-    else:
-        # Batched case: result should be [B, 8]
+    # Handle broadcasting for both scalar [1] and batched [B] inputs
+    if entropy.ndim > 0:
         distances = (bin_midpoints.unsqueeze(0) - confidence_percent.unsqueeze(-1)) ** 2
         weights = torch.exp(-distances / (2 * sigma * sigma)) * bin_widths.unsqueeze(0)
-        return weights / weights.sum(dim=-1, keepdim=True)
+    else:
+        # Scalar case (often hits here during simple eval loops)
+        distances = (bin_midpoints - confidence_percent) ** 2
+        weights = torch.exp(-distances / (2 * sigma * sigma)) * bin_widths
+
+    # Normalize along the last dimension
+    return weights / weights.sum(dim=-1, keepdim=True)
 
 
 def shuffle_options_and_update_correct_letter(row):
