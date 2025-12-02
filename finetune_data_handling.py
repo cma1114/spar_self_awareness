@@ -22,12 +22,52 @@ def write_jsonl(path, obj):
         f.write(json.dumps(obj) + "\n")
 
         
+# def load_jsonl_dataset(path):
+#     """
+#     Load the PopMC dataset and convert each entry into the canonical MCQ format:
+#         - options: A, B, C, D
+#         - correct_letter: 'A' … 'D'
+#     """
+#     out = []
+#     with open(path, "r") as f:
+#         for line in f:
+#             row = json.loads(line)
+
+#             question = row["question"]
+#             correct = row["correct_answer"]
+#             distractors = row["distractors"]
+
+#             # Build 4-option MCQ set
+#             opts = [correct] + distractors
+#             if len(opts) != 4:
+#                 # Skip malformed items
+#                 continue
+
+#             # Shuffle + keep track of correct letter
+#             letters = ["A", "B", "C", "D"]
+#             paired = list(zip(letters, opts))
+#             random.shuffle(paired)
+
+#             shuffled_letters, shuffled_opts = zip(*paired)
+#             options = {L: O for L, O in paired}
+
+#             # Find which letter contains the correct answer
+#             for L, O in options.items():
+#                 if O == correct:
+#                     correct_letter = L
+#                     break
+
+#             out.append({
+#                 "qid": row.get("qid"),
+#                 "question": question,
+#                 "options": options,
+#                 "correct_letter": correct_letter,
+#             })
+
+#     return out
+
 def load_jsonl_dataset(path):
-    """
-    Load the PopMC dataset and convert each entry into the canonical MCQ format:
-        - options: A, B, C, D
-        - correct_letter: 'A' … 'D'
-    """
+    """Load dataset with proper shuffling."""
     out = []
     with open(path, "r") as f:
         for line in f:
@@ -40,22 +80,23 @@ def load_jsonl_dataset(path):
             # Build 4-option MCQ set
             opts = [correct] + distractors
             if len(opts) != 4:
-                # Skip malformed items
                 continue
 
-            # Shuffle + keep track of correct letter
-            letters = ["A", "B", "C", "D"]
-            paired = list(zip(letters, opts))
-            random.shuffle(paired)
-
-            shuffled_letters, shuffled_opts = zip(*paired)
-            options = {L: O for L, O in paired}
-
-            # Find which letter contains the correct answer
-            for L, O in options.items():
-                if O == correct:
-                    correct_letter = L
-                    break
+            # Shuffle options
+            random.shuffle(opts)
+            
+            # Assign to letters and find correct letter
+            options = {}
+            correct_letter = None
+            for i, letter in enumerate(["A", "B", "C", "D"]):
+                options[letter] = opts[i]
+                if opts[i] == correct:
+                    correct_letter = letter
+            
+            # Verify we found the correct answer
+            if correct_letter is None:
+                print(f"WARNING: Could not find correct answer for {row.get('qid')}")
+                continue
 
             out.append({
                 "qid": row.get("qid"),
@@ -65,7 +106,6 @@ def load_jsonl_dataset(path):
             })
 
     return out
-
 
 
 class MCQDataset(Dataset):
@@ -129,334 +169,90 @@ def normalize_text(s):
     return s
 
 
-def load_mcq_results_data(mcq_results_path, log_file_path=None):
+def load_mcq_results_data(mcq_results_path):
     """
-    Load MCQ results data from JSON or JSONL file.
-    Returns a dictionary mapping question ID to result data, plus a text-to-ID mapping.
+    Load MCQ results data from JSON file.
+    Returns dict mapping question ID -> {probs, subject_answer, entropy}
+    """
+    import torch  # ADD THIS
+    import json
+    import math
     
-    Structure:
-    - results_lookup: {qid: result_data} - primary storage by ID
-    - text_to_id: {normalized_text: qid} - mapping from text to ID for fallback lookup
-    """
     if mcq_results_path is None:
-        print("mcq_results_path is None")
         return None
-    
-    results_lookup = {}  # Primary storage: {qid: result_data}
-    text_to_id = {}  # Secondary mapping: {normalized_text: qid} for text-based lookup
-    unique_question_count = 0  # Track unique questions
     
     try:
-        # Try different encodings in case of BOM or encoding issues
-        encodings = ['utf-8', 'utf-8-sig', 'latin-1']
-        file_handle = None
+        with open(mcq_results_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
         
-        for encoding in encodings:
-            try:
-                file_handle = open(mcq_results_path, 'r', encoding=encoding)
-                # Read first few bytes to check format
-                first_bytes = file_handle.read(1024)
-                file_handle.seek(0)
-                
-                # Strip BOM if present
-                if first_bytes.startswith('\ufeff'):
-                    first_bytes = first_bytes[1:]
-                    file_handle.seek(1)
-                
-                first_char = first_bytes.strip()[0] if first_bytes.strip() else ''
-                break
-            except Exception as e:
-                if file_handle:
-                    file_handle.close()
-                continue
+        results_lookup = {}
         
-        if file_handle is None:
-            raise IOError(f"Could not open file with any encoding: {encodings}")
+        # Handle wrapped format {"results": {...}}
+        if isinstance(data, dict) and "results" in data:
+            data = data["results"]
         
-        try:
-            if first_char == '{':
-                # Likely JSON format - try to parse as single JSON object
-                print("Attempting to parse as JSON format...")
-                try:
-                    data = json.load(file_handle)
-                    if isinstance(data, dict) and "results" in data:
-                        # JSON format with results dictionary
-                        print(f"Found 'results' dictionary with {len(data['results'])} entries")
-                        for qid, result in data["results"].items():
-                            unique_question_count += 1
-                            question_data = result.get("question", {})
-                            question_id = question_data.get("id", qid)
-                            question_text = question_data.get("question", "")
-                            
-                            # Extract options from question_data if available
-                            options = question_data.get("options", {})
-                            
-                            # Store once by ID (preferred) or by text if no ID
-                            result_data = {
-                                "subject_answer": result.get("subject_answer"),
-                                "probs": result.get("probs", {}),
-                                "options": options
-                            }
-                            
-                            if question_id:
-                                results_lookup[str(question_id)] = result_data
-                                # Also create text-to-ID mapping for fallback lookup
-                                if question_text:
-                                    norm_text = normalize_text(question_text)
-                                    if norm_text:
-                                        text_to_id[norm_text] = str(question_id)
-                            elif question_text:
-                                # No ID available, use normalized text as key
-                                norm_text = normalize_text(question_text)
-                                if norm_text:
-                                    results_lookup[norm_text] = result_data
-                    else:
-                        # Single result object, not wrapped in "results"
-                        unique_question_count += 1
-                        question_data = data.get("question", {})
-                        question_id = question_data.get("id")
-                        question_text = question_data.get("question", "")
-                        
-                        result_data = {
-                            "subject_answer": data.get("subject_answer"),
-                            "probs": data.get("probs", {})
-                        }
-                        
-                        if question_id:
-                            results_lookup[str(question_id)] = result_data
-                            if question_text:
-                                norm_text = normalize_text(question_text)
-                                if norm_text:
-                                    text_to_id[norm_text] = str(question_id)
-                        elif question_text:
-                            norm_text = normalize_text(question_text)
-                            if norm_text:
-                                results_lookup[norm_text] = result_data
-                except json.JSONDecodeError as json_err:
-                    print(f"JSON parsing error: {json_err}")
-                    error_pos = json_err.pos if hasattr(json_err, 'pos') else None
-                    print(f"Error at position {error_pos}")
-                    
-                    # Try to parse the results dictionary manually by extracting entries
-                    print("Attempting to extract results entries manually...")
-                    file_handle.seek(0)
-                    content = file_handle.read()
-                    
-                    # Try to find and parse the "results" dictionary
-                    # Look for the pattern: "results": {
-                    results_start = content.find('"results": {')
-                    if results_start != -1:
-                        # Find the opening brace of results
-                        brace_start = content.find(
-                            '{', results_start + len('"results": '))
-                        if brace_start != -1:
-                            # Try to extract individual entries
-                            # Pattern: "qid": { ... }
-                            # Match pattern: "key": { ... } where key is a question ID
-                            # This regex matches a quoted key followed by a JSON object
-                            pattern = r'"([^"]+)":\s*\{'
-                            matches = list(re.finditer(pattern, content[brace_start:]))
-                            
-                            print(f"Found {len(matches)} potential result entries")
-                            
-                            # Try to extract each entry
-                            for i, match in enumerate(matches):
-                                entry_start = brace_start + match.end() - 1  # -1 to include the {
-                                # Find the matching closing brace
-                                brace_count = 0
-                                entry_end = entry_start
-                                for j, char in enumerate(content[entry_start:], start=entry_start):
-                                    if char == '{':
-                                        brace_count += 1
-                                    elif char == '}':
-                                        brace_count -= 1
-                                        if brace_count == 0:
-                                            entry_end = j + 1
-                                            break
-                                
-                                if entry_end > entry_start:
-                                    try:
-                                        entry_json = content[entry_start:entry_end]
-                                        result = json.loads(entry_json)
-                                        
-                                        # Ensure result is a dictionary
-                                        if not isinstance(result, dict):
-                                            continue
-                                        
-                                        unique_question_count += 1
-                                        question_data = result.get("question", {})
-                                        
-                                        # Ensure question_data is a dictionary
-                                        if not isinstance(question_data, dict):
-                                            # If question_data is not a dict, try to use the match group as question_id
-                                            question_id = match.group(1)
-                                            question_text = ""
-                                        else:
-                                            question_id = question_data.get("id", match.group(1))
-                                            question_text = question_data.get("question", "")
-                                        
-                                        result_data = {
-                                            "subject_answer": result.get("subject_answer"),
-                                            "probs": result.get("probs", {})
-                                        }
-                                        
-                                        if question_id:
-                                            results_lookup[str(question_id)] = result_data
-                                            if question_text:
-                                                norm_text = normalize_text(question_text)
-                                                if norm_text:
-                                                    text_to_id[norm_text] = str(question_id)
-                                        elif question_text:
-                                            norm_text = normalize_text(question_text)
-                                            if norm_text:
-                                                results_lookup[norm_text] = result_data
-                                    except (json.JSONDecodeError, AttributeError, TypeError) as e:
-                                        # Skip this entry if it can't be parsed or has wrong structure
-                                        continue
-                                
-                                # Progress update
-                                if (i + 1) % 1000 == 0:
-                                    print(f"Processed {i + 1} entries, found {len(results_lookup)} valid results so far...")
-                            
-                            if len(results_lookup) > 0:
-                                print(f"Successfully extracted {len(results_lookup)} results from malformed JSON")
-                            else:
-                                print("Could not extract any results from malformed JSON")
-                                # Fall back to JSONL attempt
-                                print("Attempting to parse as JSONL format...")
-                                file_handle.seek(0)
-                                line_num = 0
-                                for line in file_handle:
-                                    line_num += 1
-                                    if line.strip():
-                                        try:
-                                            result = json.loads(line)
-                                            unique_question_count += 1
-                                            question_data = result.get("question", {})
-                                            question_id = question_data.get("id")
-                                            question_text = question_data.get("question", "")
-                                            
-                                            result_data = {
-                                                "subject_answer": result.get("subject_answer"),
-                                                "probs": result.get("probs", {})
-                                            }
-                                            
-                                            if question_id:
-                                                results_lookup[str(question_id)] = result_data
-                                                if question_text:
-                                                    norm_text = normalize_text(question_text)
-                                                    if norm_text:
-                                                        text_to_id[norm_text] = str(question_id)
-                                            elif question_text:
-                                                norm_text = normalize_text(question_text)
-                                                if norm_text:
-                                                    results_lookup[norm_text] = result_data
-                                        except json.JSONDecodeError as line_err:
-                                            if line_num <= 5:  # Only print first few errors
-                                                print(f"Warning: Failed to parse line {line_num}: {line_err}")
-                        else:
-                            print("Could not find results dictionary in file")
-                    else:
-                        print("Could not find 'results' key in file")
-                        # Fall back to JSONL attempt
-                        print("Attempting to parse as JSONL format...")
-                        file_handle.seek(0)
-                        line_num = 0
-                        for line in file_handle:
-                            line_num += 1
-                            if line.strip():
-                                try:
-                                    result = json.loads(line)
-                                    unique_question_count += 1
-                                    question_data = result.get("question", {})
-                                    question_id = question_data.get("id")
-                                    question_text = question_data.get("question", "")
-                                    
-                                    result_data = {
-                                        "subject_answer": result.get("subject_answer"),
-                                        "probs": result.get("probs", {})
-                                    }
-                                    
-                                    if question_id:
-                                        results_lookup[str(question_id)] = result_data
-                                        if question_text:
-                                            norm_text = normalize_text(question_text)
-                                            if norm_text:
-                                                text_to_id[norm_text] = str(question_id)
-                                    elif question_text:
-                                        norm_text = normalize_text(question_text)
-                                        if norm_text:
-                                            results_lookup[norm_text] = result_data
-                                except json.JSONDecodeError as line_err:
-                                    if line_num <= 5:  # Only print first few errors
-                                        print(f"Warning: Failed to parse line {line_num}: {line_err}")
-            else:
-                # Likely JSONL format - one JSON object per line
-                print("Attempting to parse as JSONL format...")
-                line_num = 0
-                for line in file_handle:
-                    line_num += 1
-                    if line.strip():
-                        try:
-                            result = json.loads(line)
-                            unique_question_count += 1
-                            question_data = result.get("question", {})
-                            question_id = question_data.get("id")
-                            question_text = question_data.get("question", "")
-                            
-                            # Extract options from question_data if available
-                            options = question_data.get("options", {})
-                            
-                            result_data = {
-                                "subject_answer": result.get("subject_answer"),
-                                "probs": result.get("probs", {}),
-                                "options": options
-                            }
-                            
-                            if question_id:
-                                results_lookup[str(question_id)] = result_data
-                                if question_text:
-                                    norm_text = normalize_text(question_text)
-                                    if norm_text:
-                                        text_to_id[norm_text] = str(question_id)
-                            elif question_text:
-                                norm_text = normalize_text(question_text)
-                                if norm_text:
-                                    results_lookup[norm_text] = result_data
-                        except json.JSONDecodeError as line_err:
-                            if line_num <= 5:  # Only print first few errors
-                                print(f"Warning: Failed to parse line {line_num}: {line_err}")
-        finally:
-            file_handle.close()
+        # Process each question
+        for qid, result in data.items():
+            probs_dict = result.get("probs", {})
             
+            # Compute entropy from probs
+            probs = [probs_dict.get(letter, 0.0) for letter in "ABCD"]
+            probs_tensor = torch.tensor(probs, dtype=torch.float32)
+            entropy = -(probs_tensor * torch.log(probs_tensor + 1e-12)).sum().item()
+            
+            results_lookup[str(qid)] = {
+                "probs": probs_dict,
+                "subject_answer": result.get("subject_answer"),
+                "entropy": entropy,
+                "options": result.get("question", {}).get("options", {})
+            }
+        
+        print(f"✓ Loaded {len(results_lookup)} pre-recorded MCQ results")
+        return results_lookup
+        
     except Exception as e:
-        print(f"Warning: Failed to load MCQ results data from "
-              f"{mcq_results_path}: {e}")
-        print(f"Traceback: {traceback.format_exc()}")
+        print(f"Error loading MCQ results from {mcq_results_path}: {e}")
+        import traceback
+        traceback.print_exc()  # This will show the full error
         return None
-    
-    # Attach text-to-ID mapping to the lookup dict for use in verify_and_resolve_options
-    # We'll use a special key that won't conflict with question IDs
-    results_lookup["__text_to_id__"] = text_to_id
-    
-    # Report loading statistics
-    if unique_question_count > 0:
-        print(f"Loaded {unique_question_count} unique questions")
-        print(f"  Created {len(results_lookup) - 1} primary lookup entries (stored by ID, with text-to-ID mapping for fallback)")
-    else:
-        print(f"Loaded {len(results_lookup) - 1 if '__text_to_id__' in results_lookup else len(results_lookup)} MCQ lookup entries")
-    
-    if log_file_path:
-        # Import here to avoid circular import
-        from finetune_utils import write_log
-        write_log(log_file_path, {
-            "message": f"Loaded {unique_question_count} unique questions",
-            "lookup_entries": len(results_lookup) - 1 if '__text_to_id__' in results_lookup else len(results_lookup),
-            "text_to_id_mappings": len(text_to_id),
-            "note": "Questions stored once by ID, with text-to-ID mapping for flexible lookup"
-        })
 
-    return results_lookup
+
+def filter_dataset_by_mcq_results(dataset, mcq_results_lookup, dataset_name="dataset"):
+    """
+    Filter dataset to only include questions with pre-recorded MCQ results.
+    
+    Args:
+        dataset: List of question dicts
+        mcq_results_lookup: Dict from load_mcq_results_data()
+        dataset_name: Name for logging (e.g., "training", "validation")
+    
+    Returns:
+        Filtered dataset (list)
+    """
+    if mcq_results_lookup is None:
+        return dataset
+    
+    original_size = len(dataset)
+    
+    # Filter to only questions with matching qid in results
+    filtered = [
+        row for row in dataset 
+        if row.get("qid") and row.get("qid") in mcq_results_lookup
+    ]
+    
+    filtered_size = len(filtered)
+    removed = original_size - filtered_size
+    removed_pct = (removed / original_size * 100) if original_size > 0 else 0
+    
+    print(f"\n🔍 Filtered {dataset_name}:")
+    print(f"  Original size: {original_size}")
+    print(f"  After filtering: {filtered_size}")
+    print(f"  Removed: {removed} ({removed_pct:.1f}%)")
+    
+    if removed > 0:
+        print(f"  ⚠️  {removed_pct:.1f}% of {dataset_name} data will not be used")
+    
+    return filtered
 
 
 def verify_and_resolve_options(row, mcq_results_lookup, log_file_path=None):

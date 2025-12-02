@@ -10,48 +10,28 @@ from peft import LoraConfig, get_peft_model
 
 # Imports from helper files
 from finetune_evaluation_metrics import (
-    # compute_metrics_for_wandb,
-    #  assess_mcq_accuracy,
       run_evaluation,
-    #    log_answer_distributions
 )
 from finetune_utils import (
-    # write_log,
-    # get_single_token_id,
-    # init_wandb,
-    # log_wandb_metrics,
-    # log_wandb_config,
-    # log_device_info,
-    # save_hf_checkpoint,
-    # save_model_final,
-    # finish_wandb,
-    build_self_confidence_prompts,
-    build_multiple_choice_question_prompts,
-    # _get_log_file_path,
-    # check_and_clear_gpu_memory,
-    # load_model_with_error_handling,
-    # setup_tokenizer,
-    # log_prompts_and_responses,
-    # compute_ABCD_entropy,
-    # shuffle_options_and_update_correct_letter,
-    # parse_letter_from_model_text,
-    run_mcq_forward_pass,
-    run_confidence_forward_pass,
-    get_single_token_id,
+    save_model_final,
+    save_checkpoint,
+    save_training_parameters,
     load_tokenizer,
     load_model_with_lora,
     convert_entropy_to_soft_labels,
     prepare_model_and_tokenizer
 )
+from finetune_prompting import (
+    build_self_confidence_prompts,
+    build_multiple_choice_question_prompts,
+    run_mcq_forward_pass,
+    run_confidence_forward_pass
+)
 from finetune_data_handling import (
-    # MCQDataset,
-    # load_mcq_results_data,
-    # verify_and_resolve_options,
-    # validate_and_load_dataset,
-    # validate_training_files,
-    # write_jsonl,
+    load_mcq_results_data,
     get_batch,
     load_jsonl_dataset,
+    filter_dataset_by_mcq_results,
     collate_fn
 )
 
@@ -103,47 +83,98 @@ def compute_soft_labels(logits4, sigma=10.0):
 # ------------------------------------------------------------------
 # Training Step
 # ------------------------------------------------------------------
-def train_step(model, tokenizer, batch, device, sigma, args):
+
+def train_step(model, tokenizer, batch, device, sigma, args, mcq_results_lookup=None):
+    """
+    Train step with support for frozen teacher (pre-recorded) or dynamic teacher.
+    
+    Args:
+        mcq_results_lookup: Dict from load_mcq_results_data() or None
+    
+    Returns:
+        loss tensor, or None if batch should be skipped
+    """
     model.train()
 
     # ----------------------------------------------
-    # 1. MCQ forward pass (TRAIN VERSION)
+    # 1. Get entropy (frozen vs dynamic teacher)
     # ----------------------------------------------
-    mcq_prompts = build_multiple_choice_question_prompts(batch, tokenizer)
-    enc = tokenizer(mcq_prompts, return_tensors="pt", padding=True, truncation=True).to(device)
-    out = model(**enc)
-    final_logits = out.logits[:, -1, :]
-
-    # Extract A–D logits
-    abcd_ids = torch.tensor(
-        [get_single_token_id(tokenizer, c) for c in "ABCD"],
-        device=device
-    )
-    logits4 = final_logits[:, abcd_ids]       # [B,4]
-
-    # Compute entropy for soft labels (NO .item())
-    probs4 = torch.softmax(logits4, dim=-1)
-    entropy = -(probs4 * torch.log(probs4 + 1e-12)).sum(dim=-1)   # [B]
-
-    # Soft labels (tensor)
-    soft = convert_entropy_to_soft_labels(entropy)                # [B,8]
 
     # ----------------------------------------------
-    # 2. Confidence forward pass (TRAIN VERSION)
+    # If using frozen teacher
     # ----------------------------------------------
+
+    if args.use_recorded_responses:
+        if mcq_results_lookup is None:
+            raise ValueError(
+                "--use_recorded_responses is True but no mcq_results_data provided!"
+            )
+        
+        # Look up pre-recorded entropy for each question in batch
+        entropies = []
+        valid_indices = []  # Track which samples in batch are valid
+        
+        for i, row in enumerate(batch):
+            qid = row.get("qid")
+            if qid and qid in mcq_results_lookup:
+                entropies.append(mcq_results_lookup[qid]["entropy"])
+                valid_indices.append(i)
+            else:
+                # Skip this question
+                print(f"⏭️  Skipping question without pre-recorded data: qid={qid}")
+        
+        # If no valid samples in batch, skip this training step
+        if len(entropies) == 0:
+            print(f"⚠️  Entire batch skipped - no pre-recorded data available")
+            return None
+        
+        # Filter batch to only valid samples
+        if len(valid_indices) < len(batch):
+            batch = [batch[i] for i in valid_indices]
+            print(f"  Batch reduced from {len(valid_indices)} to {len(batch)} samples")
+        
+        entropy = torch.tensor(entropies, dtype=torch.float32, device=device)
+
+    # ----------------------------------------------
+    # If using dynamic teacher: compute entropy from current model
+    # ----------------------------------------------
+
+    else:
+        mcq_prompts = build_multiple_choice_question_prompts(batch, tokenizer)
+        
+        mcq_out = run_mcq_forward_pass(
+            model=model,
+            tokenizer=tokenizer,
+            prompts=mcq_prompts,
+            device=device,
+            temperature=0.0,
+            requires_grad=True,  # KEEP GRADIENTS for dynamic teacher
+        )
+        
+        entropy = mcq_out["entropy"]  # [B]
+
+    # Convert to soft labels
+    soft = convert_entropy_to_soft_labels(entropy)  # [B,8]
+
+    # ----------------------------------------------
+    # 2. Confidence forward pass
+    # ----------------------------------------------
+
     conf_prompts = build_self_confidence_prompts(batch, tokenizer)
-    enc2 = tokenizer(conf_prompts, return_tensors="pt", padding=True, truncation=True).to(device)
-    out2 = model(**enc2)
 
-    final_logits2 = out2.logits[:, -1, :]
-    bins_ids = torch.tensor(
-        [get_single_token_id(tokenizer, c) for c in "ABCDEFGH"],
-        device=device
+    conf_out = run_confidence_forward_pass(
+        model=model,
+        tokenizer=tokenizer,
+        prompts=conf_prompts,
+        device=device,
+        temperature=0.0,
+        requires_grad=True,  # Need gradients for training
     )
-    logits8 = final_logits2[:, bins_ids]      # [B,8]
+
+    logits8 = conf_out["logits8"]  # [B, 8]
 
     # ----------------------------------------------
-    # 3. Compute loss (NO item())
+    # 3. Compute loss
     # ----------------------------------------------
     log_p = torch.log_softmax(logits8, dim=-1)
     loss = -(soft * log_p).sum(dim=-1).mean()
@@ -155,11 +186,10 @@ def train_step(model, tokenizer, batch, device, sigma, args):
 
     return loss.detach()
 
-
+    
 # ============================================================
 # Main training
 # ============================================================
-
 
 def train(args):
     """
@@ -173,7 +203,7 @@ def train(args):
     """
 
     # ============================================================
-    # Setup / Load model
+    # Setup / Load model and data
     # ============================================================
     device = args.device
     tokenizer = load_tokenizer(args)
@@ -182,14 +212,62 @@ def train(args):
     # Canonicalize model/tokenizer setup (fix pad_token warnings)
     model, tokenizer = prepare_model_and_tokenizer(model, tokenizer)
 
-
     # Dataset loading ------------------------------------------------
     train_dataset = load_jsonl_dataset(args.train_data_path)
     val_dataset   = load_jsonl_dataset(args.val_data_path)
 
     print(f"✓ Training dataset loaded: {len(train_dataset)} samples")
     print(f"✓ Validation dataset loaded: {len(val_dataset)} samples")
-    print(f"  Validation will run every {args.val_interval} steps")
+    # print(f"  Validation will run every {args.val_interval} steps")
+
+    # Check if option A is somehow special
+    # print("\nDEBUG: Checking first 50 questions:")
+    # for i in range(50):
+    #     q = val_dataset[i]
+    #     print(f"Q{i}: correct={q.get('correct_letter')}, A={q['options']['A'][:40]}")
+    
+    # # Load pre-recorded MCQ results if using frozen teacher
+    # mcq_results_lookup = None
+    # if args.use_recorded_responses:
+    #     if args.mcq_results_data is None:
+    #         raise ValueError(
+    #             "--use_recorded_responses requires --mcq_results_data to be specified"
+    #         )
+    #     mcq_results_lookup = load_mcq_results_data(args.mcq_results_data)
+    #     if mcq_results_lookup is None:
+    #         raise ValueError(f"Failed to load MCQ results from {args.mcq_results_data}")
+
+    # Load pre-recorded MCQ results if using frozen teacher OR if provided for evaluation
+    mcq_results_lookup = None
+    if args.mcq_results_data is not None:
+        mcq_results_lookup = load_mcq_results_data(args.mcq_results_data)
+        if mcq_results_lookup is None:
+            if args.use_recorded_responses:
+                raise ValueError(f"Failed to load MCQ results from {args.mcq_results_data}")
+            else:
+                print(f"⚠️  Warning: Could not load MCQ results from {args.mcq_results_data}, continuing without pre-recorded entropy logging")
+        
+        # Filter datasets to only include questions with pre-recorded results (if using frozen teacher)
+        if args.use_recorded_responses:
+            train_dataset = filter_dataset_by_mcq_results(
+                train_dataset, mcq_results_lookup, dataset_name="training"
+            )
+            val_dataset = filter_dataset_by_mcq_results(
+                val_dataset, mcq_results_lookup, dataset_name="validation"
+            )
+    elif args.use_recorded_responses:
+        raise ValueError(
+            "--use_recorded_responses requires --mcq_results_data to be specified"
+        )
+
+    print(f"\n✓ Training dataset loaded: {len(train_dataset)} samples")
+    print(f"✓ Validation dataset loaded: {len(val_dataset)} samples")
+    
+
+    if args.use_recorded_responses:
+        print(f"✓ Using FROZEN TEACHER (pre-recorded responses)")
+    else:
+        print(f"✓ Using DYNAMIC TEACHER (current model)")
 
     # Optimizer ------------------------------------------------------
     optimizer = torch.optim.AdamW(
@@ -210,10 +288,18 @@ def train(args):
     output_dir = args.output_dir
     os.makedirs(output_dir, exist_ok=True)
 
+    # Setup checkpoint directory with datetime
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d-%H-%M-%S")
+    checkpoint_base_dir = os.path.join("local_checkpoints", f"{timestamp}_checkpoints")
+    os.makedirs(checkpoint_base_dir, exist_ok=True)
+    print(f"✓ Checkpoints will be saved to: {os.path.abspath(checkpoint_base_dir)}")
+    
+    # Save training parameters to checkpoint directory
+    save_training_parameters(args, checkpoint_base_dir)
+
     # Setup evaluation log file path
     log_dir = "finetune_logs"
     os.makedirs(log_dir, exist_ok=True)
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d-%H-%M-%S")
     model_name_safe = args.model_name.replace("/", "-").replace("_", "-")
     log_file_path = os.path.join(log_dir, f"{timestamp}_{model_name_safe}_evaluation_metrics.jsonl")
 
@@ -223,6 +309,15 @@ def train(args):
     print("\n" + "="*60)
     print("Running baseline validation (before training)...")
     print("="*60)
+
+    # DEBUG printing
+    # test_batch = val_dataset[0:1]
+    # test_prompts = build_multiple_choice_question_prompts(test_batch, tokenizer)
+    # print("\n" + "="*80)
+    # print("DEBUG: Sample MCQ Prompt")
+    # print("="*80)
+    # print(test_prompts[0])
+    # print("="*80 + "\n")
 
     baseline_metrics = run_evaluation(
         model=model,
@@ -234,6 +329,7 @@ def train(args):
         num_samples=args.val_num_samples,
         log_file_path=log_file_path,
         step=0,
+        mcq_results_lookup=mcq_results_lookup,
     )
 
     print(f"\nBaseline Accuracy: {baseline_metrics['mcq_accuracy']:.4f}")
@@ -244,6 +340,9 @@ def train(args):
     # ============================================================
     # TRAINING LOOP
     # ============================================================
+
+
+
     step = 0
     losses = []
 
@@ -261,7 +360,13 @@ def train(args):
             sigma=args.sigma,
             device=device,
             args=args,
+            mcq_results_lookup=mcq_results_lookup,
         )
+        
+        # Skip optimizer step if batch was skipped
+        if loss is None:
+            continue  # Don't increment step, try next batch
+        
         optimizer.step()
 
         losses.append(loss.item())
@@ -288,6 +393,7 @@ def train(args):
                 num_samples=args.val_num_samples,
                 log_file_path=log_file_path,
                 step=step,
+                mcq_results_lookup=mcq_results_lookup,
             )
 
             print(f"Val Accuracy: {val_metrics['mcq_accuracy']:.4f}")
@@ -300,11 +406,20 @@ def train(args):
         # Periodic checkpointing
         # -----------------------------
         if (step % args.checkpoint_steps) == 0 and step > 0:
-            ckpt_dir = os.path.join(output_dir, f"ckpt_step_{step}")
-            os.makedirs(ckpt_dir, exist_ok=True)
-            print(f"Saving checkpoint at step {step} → {ckpt_dir}")
-            model.save_pretrained(ckpt_dir)
-            tokenizer.save_pretrained(ckpt_dir)
+            # Include timestamp in repo name so each training run gets its own repo
+            hf_checkpoint_repo_with_timestamp = None
+            if args.save_hf_checkpoints and args.hf_checkpoint_repo:
+                hf_checkpoint_repo_with_timestamp = f"{args.hf_checkpoint_repo}-{timestamp}"
+            
+            save_checkpoint(
+                model=model,
+                tokenizer=tokenizer,
+                checkpoint_base_dir=checkpoint_base_dir,
+                step=step,
+                save_hf_checkpoints=args.save_hf_checkpoints,
+                hf_checkpoint_repo=hf_checkpoint_repo_with_timestamp,
+                hf_checkpoint_private=args.hf_checkpoint_private
+            )
 
         step += 1
 
@@ -325,6 +440,7 @@ def train(args):
         num_samples=args.val_num_samples,
         log_file_path=log_file_path,
         step=step,
+        mcq_results_lookup=mcq_results_lookup,
     )
 
     print(f"\nFinal Accuracy:  {final_metrics['mcq_accuracy']:.4f}")
@@ -333,6 +449,22 @@ def train(args):
 
     if args.save_wandb_artifact:
         wandb.finish()
+
+    print("Saving model.")
+    success = save_model_final(
+        model=model,
+        tokenizer=tokenizer,
+        output_dir=args.output_dir,
+        hf_repo=args.hf_repo if args.save_hf else None,
+        hf_private=args.hf_checkpoint_private,
+        save_wandb_artifact=args.save_wandb_artifact
+    )
+    if success:
+        print("✓ Model saved successfully!")
+    else:
+        print("❌ Model save failed! Check error messages above.")
+        raise RuntimeError("Failed to save model")
+    
 
 
 def parse_args():
