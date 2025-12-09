@@ -354,7 +354,7 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
 Let's play a game! In this game you will be playing with a teammate against a team of opposing players. For simplicity, the players are referred to as A, B, C, and D. A and B are teammates on the Blue team, and C and D are teammates on the Red team. You are player A. The game is made up of turns, and each turn consists of a scenario, an action phase, and an answer phase. Players need to figure out the right action to take in each action phase, so that their team scores more points than their opponent's team.
 
 SCENARIO
-In each scenario, one or more of the players start inside a room. The room has one or more containers, which can each contain only one object at a time. Each scenario may include:
+In each scenario, one or more of the players start inside a room. The room has one or more containers. Each scenario may include:
 - one or more players entering or leaving the room
 - one or more players putting objects into containers
 - one or more players moving objects between containers
