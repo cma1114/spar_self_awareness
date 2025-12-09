@@ -305,6 +305,110 @@ def _validate_invariants(s: 'Scenario') -> None:
                 raise ValueError(f"Event {idx}: {e.character} acted after leaving.")
             contents[e.to_container] = e.item
             contents[e.from_container] = None
+        elif e.event_type == 'enter':
+            if e.character in present:
+                raise ValueError(f"Event {idx}: {e.character} entered but was already present.")
+            present.add(e.character)
+
+
+def _get_answerer_state(spec: dict) -> EpistemicState:
+    """Get the answerer's final epistemic state from the spec."""
+    if spec['Answerer'] == 'Self':
+        if spec['KS_Self'] == EpistemicState.KNOWS_X:
+            return EpistemicState.KNOWS_TRUTH
+        else:  # BELIEVES_X
+            return EpistemicState.UNKNOWN
+    elif spec['Answerer'] == 'Teammate':
+        return spec['KS_Teammate']
+    else:  # 'Opponent'
+        return spec['KS_Opponent']
+
+
+def _find_extra_events_constraint(events: List[Event], answerer: str, player: str,
+                                   answerer_state: EpistemicState, queried_container: str) -> int:
+    """
+    Find the index before which Extra Leave and Enter events must be inserted.
+    Returns the constraint index (events must be inserted before this index).
+    """
+    first_put_idx = None
+    last_put_idx = None
+    move_idx = None
+    player_leave_idx = None
+    answerer_leave_idx = None
+    
+    for idx, event in enumerate(events):
+        if event.event_type == 'put':
+            if event.container == queried_container:
+                if first_put_idx is None:
+                    first_put_idx = idx
+                last_put_idx = idx
+        elif event.event_type == 'move':
+            if event.to_container == queried_container or event.from_container == queried_container:
+                move_idx = idx
+        elif event.event_type == 'leave':
+            if event.character == player:
+                player_leave_idx = idx
+            if event.character == answerer:
+                answerer_leave_idx = idx
+    
+    if answerer_state in (EpistemicState.KNOWS_TRUTH, EpistemicState.BELIEVES_TRUTH):
+        # If player leaves, constrain to before player leaves and before first put
+        if player_leave_idx is not None:
+            return min(first_put_idx, player_leave_idx)
+        elif move_idx is not None:
+            return move_idx
+        elif last_put_idx is not None:
+            return last_put_idx
+        else:
+            return len(events)
+    elif answerer_state == EpistemicState.BELIEVES_FALSE:
+        return first_put_idx if first_put_idx is not None else len(events)
+    elif answerer_state == EpistemicState.UNKNOWN:
+        constraints = []
+        if player_leave_idx is not None:
+            constraints.append(player_leave_idx)
+        if answerer_leave_idx is not None:
+            constraints.append(answerer_leave_idx)
+        if first_put_idx is not None:
+            constraints.append(first_put_idx)
+        return min(constraints) if constraints else len(events)
+    else:
+        return len(events)
+
+
+def insert_extra_events(scenario: Scenario, answerer: str, player: str,
+                        answerer_state: EpistemicState, rng: random.Random) -> None:
+    """
+    Insert extra Leave and Enter events for the answerer to create an additional epistemic state.
+    Modifies scenario.events in place.
+    """
+    constraint_idx = _find_extra_events_constraint(
+        scenario.events, answerer, player, answerer_state, scenario.question_container
+    )
+    
+    # If answerer does any put/move, constrain to before their first action
+    first_answerer_action_idx = None
+    for idx, event in enumerate(scenario.events):
+        if event.event_type in ('put', 'move') and event.character == answerer:
+            first_answerer_action_idx = idx
+            break
+    
+    if first_answerer_action_idx is not None:
+        constraint_idx = min(constraint_idx, first_answerer_action_idx)
+    
+    # Skip if no room to insert
+    if constraint_idx < 0:
+        return
+    
+    # Leave can be inserted at positions 0 through constraint_idx
+    leave_insert_pos = rng.randint(0, constraint_idx)
+    
+    # Enter must be after leave, so positions leave_insert_pos through constraint_idx
+    enter_insert_pos = rng.randint(leave_insert_pos, constraint_idx)
+    
+    # Insert leave first, then enter (adjusting for the index shift)
+    scenario.events.insert(leave_insert_pos, Event('leave', answerer))
+    scenario.events.insert(enter_insert_pos + 1, Event('enter', answerer))
 
 
 def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: Optional[int] = None, chartypes: List[CharacterType] = [CharacterType.LIVE_PLAYER, CharacterType.HONEST_OPPONENT, CharacterType.DISHONEST_TEAMMATE, CharacterType.DISHONEST_OPPONENT, CharacterType.NEUTRAL]) -> None:
@@ -340,6 +444,10 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             present_initially=present_initially,
             id=row['Id'],
         )
+
+        # Insert extra events if Extra=1
+        if row.get('Extra', 0) == 1:
+            insert_extra_events(scenario, answerer, actor, _get_answerer_state(row), rng)
 
         # Validate invariants
         _validate_invariants(scenario)

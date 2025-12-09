@@ -162,6 +162,9 @@ class GameState:
                         
             elif event.event_type == 'leave':
                 present.discard(event.character)
+
+            elif event.event_type == 'enter':
+                present.add(event.character)
         
         return container_contents
     
@@ -351,11 +354,11 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
 Let's play a game! In this game you will be playing with a teammate against a team of opposing players. For simplicity, the players are referred to as A, B, C, and D. A and B are teammates on the Blue team, and C and D are teammates on the Red team. You are player A. The game is made up of turns, and each turn consists of a scenario, an action phase, and an answer phase. Players need to figure out the right action to take in each action phase, so that their team scores more points than their opponent's team.
 
 SCENARIO
-In each scenario, one or more of the players start inside a room. The room has one or more containers. Each scenario may include:
-- one or more players leaving the room
+In each scenario, one or more of the players start inside a room. The room has one or more containers, which can each contain only one object at a time. Each scenario may include:
+- one or more players entering or leaving the room
 - one or more players putting objects into containers
 - one or more players moving objects between containers
-When a player is in the room they are aware of everything that happens in the room. When a player is outside the room they are unaware of anything happening in the room, but do know if anyone leaves the room. If something happens inside the room while a player is outside the room, it will not be described to that player, but other players leaving or entering the room will be described to that player.
+Players cannot see inside containers, but when a player is inside the room, they are aware of anything that happens in the room. When a player is outside the room they are unaware of anything that happens in the room, but do know if anyone enters or leaves the room. If an object is put or moved into a container while a player is outside the room, it will not be described to that player, but players leaving or entering the room will be described to that player.
 At the end of the scenario, I will reveal a question that I will ask in the answer phase.
 
 ACTION PHASE
@@ -363,6 +366,8 @@ In the action phase, the player whose turn it is can take one action: Ask, Tell,
 An Ask action entails asking any player the contents of one container. The format for an Ask action is: Ask(Player, Container); this will result in the player you ask answering your question. It costs your team 0.5 points to do this action.
 A Tell action entails telling any player the contents of one container. The format for a Tell action is: Tell(Player, Container, Contents); this will result in the player you tell hearing the answer you give. It costs your team 0.5 points to do this action.
 The format for a Pass action is simply "Pass". Nothing changes as a result of this action, and it costs 0 points.
+Ask and Tell actions are private between the two players involved; other players do not hear or see these actions or their results.
+Players do not have to tell the truth either in their Tell actions or in response to another player's Ask action. 
 A team's points can go negative.
 
 ANSWER PHASE
