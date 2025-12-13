@@ -24,6 +24,7 @@ gemini_api_key = os.environ.get("GEMINI_API_KEY")
 xai_api_key = os.environ.get("XAI_API_KEY")
 deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY")    
 openrouter_api_key = os.environ.get("SPAR2025_OPENROUTER_KEY")##os.environ.get("OPENROUTER_API_KEY")
+HF_TOKEN = os.environ.get("HF_TOKEN")
 
 from collections import Counter
 from typing import List, Dict, Tuple
@@ -140,6 +141,86 @@ class BaseGameClass:
             # Re-raise for retry handling
             raise
 
+    def load_model(self, model_path, base_model_path, bnb = False, device = None, train = False, lora = False):
+        import gc
+        from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+        if device is None:
+            if torch.cuda.is_available():
+                device = 'cuda'
+            elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+                device = 'mps' 
+            else:
+                device = 'cpu'
+        gc.collect()
+        if device == 'cuda': torch.cuda.empty_cache()
+        #if not train: _ = torch.set_grad_enabled(False)
+        #else: _ = torch.set_grad_enabled(True)
+        if not train:
+            with torch.set_grad_enabled(False):
+                if bnb:
+                    bnb_config = BitsAndBytesConfig(load_in_8bit=True)
+                    model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16, token=HF_TOKEN, quantization_config=bnb_config, device_map="auto")
+                else:
+                    model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16, token=HF_TOKEN).to(device)
+        else:
+            with torch.set_grad_enabled(True):
+                if bnb:
+                    bnb_config = BitsAndBytesConfig(load_in_8bit=True)
+                    model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16, token=HF_TOKEN, quantization_config=bnb_config, device_map="auto")
+                else:
+                    if lora:
+                        model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16, token=HF_TOKEN, device_map="auto").to(device)
+                        for param in model.parameters():
+                            param.requires_grad = True       
+                    else: model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16, token=HF_TOKEN).to(device)
+        tokenizer = AutoTokenizer.from_pretrained(base_model_path, token=HF_TOKEN)
+        model.tokenizer = tokenizer
+        if model.tokenizer.pad_token is None:
+            #model.tokenizer.pad_token = model.tokenizer.eos_token
+            #model.tokenizer.pad_token_id = model.tokenizer.eos_token_id
+            new_pad_token = model.tokenizer.eos_token#"[PAD]"#
+            num_added_tokens = model.tokenizer.add_special_tokens({'pad_token': new_pad_token})
+            model.resize_token_embeddings(len(model.tokenizer))
+            model.config.pad_token_id = model.tokenizer.pad_token_id
+        return model
+
+    @staticmethod
+    def run_hf_forward_pass(model, prompts, device="cuda"):
+        
+        enc = model.tokenizer(prompts, return_tensors="pt", padding=True).to(device)
+
+        with torch.no_grad():
+            out = model(**enc, use_cache=False)
+
+        final_logits = out.logits[0, -1, :]  # [vocab] - first item in batch, last token
+        probs = torch.softmax(final_logits, dim=-1)
+        top_probs, top_indices = torch.topk(probs, 4)
+        top_tokens = model.tokenizer.convert_ids_to_tokens(top_indices.tolist())
+        
+        token_prob_dict = {tok: prob.item() for tok, prob in zip(top_tokens, top_probs)}
+        
+        #entropy = -(probs * torch.log(probs + 1e-12)).sum().item()
+        
+        return top_tokens[0], token_prob_dict
+
+    HF_MODEL = None
+    def handle_hf_model(self, user_msg, system_msg, temp):
+        base_model_path = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+        if BaseGameClass.HF_MODEL is None:
+            BaseGameClass.HF_MODEL = self.load_model(base_model_path, base_model_path, bnb = False)
+            if self.subject_name != "llama-3.1-8b-instruct":
+                from peft import PeftModel
+                BaseGameClass.HF_MODEL = PeftModel.from_pretrained(BaseGameClass.HF_MODEL, "Tristan-Day/llm_metacognition-wbtl9xqu-step-1280-20251203-224144")
+
+        messages = [{"role": "system", "content": system_msg}, user_msg]
+        prompt = BaseGameClass.HF_MODEL.tokenizer.apply_chat_template(
+            messages,
+            tokenize=False,
+            add_generation_prompt=True
+        )
+        return self.run_hf_forward_pass(BaseGameClass.HF_MODEL, prompt)
+
+
     def _get_llm_answer(self, options, q_text, message_history, keep_appending=True, setup_text="", MAX_TOKENS=1, temp=0.0, accept_any=True, top_p=None, top_k=None):
         """Gets answer from LLM model"""
         # Prepare common data
@@ -186,6 +267,9 @@ class BaseGameClass:
                     return resp, None
                 elif self.provider == "OpenAI" or self.provider == "xAI" or self.provider == "DeepSeek" or self.provider == "OpenRouter":
                     if self.provider == "OpenRouter":
+                        ###Special handling for HF models
+######                        if self.subject_name.startswith("llama-3.1-8b-instruct"): return self.handle_hf_model(user_msg, system_msg, temp)
+                        ###
                         if self.subject_name == "gpt-4.1-2025-04-14": model_name = "openai/gpt-4.1"
                         elif self.subject_name=='claude-3-5-sonnet-20241022': model_name = 'anthropic/claude-3.5-sonnet'
                         elif self.subject_name=='claude-sonnet-4-20250514': model_name = 'anthropic/claude-sonnet-4'

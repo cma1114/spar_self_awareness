@@ -897,7 +897,7 @@ def real_main(SUBJECT_NAME, DATASET):
 def main():
     """Main function to run the delegate game from completed results"""
     DATASETS = ["SimpleMC"]  # One of: GPQA, SimpleQA, SimpleMC, MMLU, TruthfulQA, GPSA, Garupanese
-    models = ["llama-3.3-70b-instruct"]
+    models = ["llama-3.1-8b-instruct"]
     for model in models:
         for DATASET in DATASETS:
             real_main(model, DATASET)

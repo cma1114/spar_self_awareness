@@ -68,58 +68,43 @@ class CapabilitiesTest(BaseGameClass):
         self.human_sa_input_prompt = "Your answer: "
 
         # Explicit likelihood self/other
+        opt_tok_type = "number"
+        keys = list("STUVWXYZ") if opt_tok_type == "number" else list("ABCDEFGH")
+        opt_tok_type = "letter"
         self.nested_question_prompt = None
         self.nested_option_dict = None
         self.nested_range_midpoints = None
         if self.nested == "Other":
-            self.nested_option_dict = {
-                "A": "<5%",
-                "B": "5-10%",
-                "C": "10-20%",
-                "D": "20-40%",
-                "E": "40-60%",
-                "F": "60-80%",
-                "G": "80-90%",
-                "H": ">90%",
-            }
-            self.nested_range_midpoints = {
-                "A": 0.025,
-                "B": 0.075,
-                "C": 0.15,
-                "D": 0.3,
-                "E": 0.5,
-                "F": 0.7,
-                "G": 0.85,
-                "H": 0.95,
-            }
+            self.nested_option_dict = dict(zip(keys, [
+                "<5%", "5-10%", "10-20%", "20-40%", 
+                "40-60%", "60-80%", "80-90%", ">90%"
+            ]))
+            self.nested_range_midpoints = dict(zip(keys, [
+                0.025, 0.075, 0.15, 0.3, 0.5, 0.7, 0.85, 0.95
+            ]))
             self.nested_setup_prompt = "I want your help calibrating question difficulty. I'm going to show you a multiple-choice question, and I want you to tell me approximately what percentage of college-educated people you think would get it right. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text."
             self.nested_question_prompt = (
                 "What percentage of college-educated people would get this question right?"
             )
+            self.nested_setup_prompt = f"I want your help calibrating question difficulty. I'm going to show you a question, and I want you to tell me approximately what percentage of college-educated people you think know the correct answer to this question. Respond only with the {opt_tok_type} corresponding to the percentage range you choose; do NOT output any other text."
+            self.nested_question_prompt = (
+                "What percentage of college-educated people know the correct answer to this question?"
+            )
         elif self.nested == "Self":
-            self.nested_option_dict = {
-                "A": "<5%",
-                "B": "5-10%",
-                "C": "10-20%",
-                "D": "20-40%",
-                "E": "40-60%",
-                "F": "60-80%",
-                "G": "80-90%",
-                "H": ">90%",
-            }
-            self.nested_range_midpoints = {
-                "A": 0.025,
-                "B": 0.075,
-                "C": 0.15,
-                "D": 0.3,
-                "E": 0.5,
-                "F": 0.7,
-                "G": 0.85,
-                "H": 0.95,
-            }
+            self.nested_option_dict = dict(zip(keys, [
+                "<5%", "5-10%", "10-20%", "20-40%", 
+                "40-60%", "60-80%", "80-90%", ">90%"
+            ]))
+            self.nested_range_midpoints = dict(zip(keys, [
+                0.025, 0.075, 0.15, 0.3, 0.5, 0.7, 0.85, 0.95
+            ]))
             self.nested_setup_prompt = "I'm going to show you a multiple-choice question, and I want you to tell me your level of confidence that you would get the question right. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text."
             self.nested_question_prompt = (
                 "How confident are you that you would get this question right?"
+            )
+            self.nested_setup_prompt = f"I'm going to show you a question, and I want you to tell me your level of confidence that you know the correct answer to this question. Respond only with the {opt_tok_type} corresponding to the percentage range you choose; do NOT output any other text."
+            self.nested_question_prompt = (
+                "How confident are you that you know the correct answer to this question?"
             )
 
         # Run parameters for reproducibility (run-level only; no per-question values)
@@ -634,7 +619,7 @@ def main(model_dataset_dict, temp):
             INCLUDE_TOTAL = False
             resume_from = None  # "capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847064_test_data.json"#
             RESAMPLE = False
-            NESTED = "Other" #values: None, "Self", "Other"
+            NESTED = "Self" #values: None, "Self", "Other"
             temp = temp
             seed = 42
 
@@ -721,12 +706,6 @@ def main(model_dataset_dict, temp):
 
 if __name__ == "__main__":
     model_dataset_dict = {
-<<<<<<< HEAD
-        "gpt-4o-mini-2024-07-18": ["SimpleQA"],
+        "llama-3.1-8b-instruct": ["SimpleMC"],
         }
     main(model_dataset_dict, temp=1.0)
-=======
-        "llama-3.1-8b-instruct": ["SimpleMC"],
-    }
-    main(model_dataset_dict, temp=1.0)
->>>>>>> 525ec88154a5fbbab0077b5943d372362527e1bc
