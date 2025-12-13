@@ -151,6 +151,13 @@ class Scenario:
                 present.discard(event.character)
                 if event.character == character_name:
                     perspective_present = False
+                    
+            elif event.event_type == 'enter':
+                verb_enter = "enter" if you_form else "enters"
+                lines.append(f"{actor} {verb_enter} the room.")
+                present.add(event.character)
+                if event.character == character_name:
+                    perspective_present = True
 
         return " ".join(lines)
     
@@ -224,6 +231,7 @@ def read_specs_from_csv(infile='ToM - scenarios.csv') -> List[SpecTuple]:
         for row in reader:
             specs.append({
                 'Id': row['Id'],
+                'Extra': int(row.get('Extra', 0)),
                 'Answerer': row['Answerer'],
                 'KS_Self': EpistemicState(row['Self']),
                 'KS_Teammate': EpistemicState(row['Teammate']),
