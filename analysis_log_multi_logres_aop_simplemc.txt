@@ -51,8 +51,8 @@ Capent-Gament corr: nan [nan, nan], p=nan
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      498
 Method:                           MLE   Df Model:                            1
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:               0.0005621
-Time:                        12:30:22   Log-Likelihood:                -168.94
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:               0.0005621
+Time:                        08:39:23   Log-Likelihood:                -168.94
 converged:                       True   LL-Null:                       -169.03
 Covariance Type:            nonrobust   LLR p-value:                    0.6629
 ==================================================================================
@@ -68,8 +68,8 @@ s_i_capability     0.1268      0.291      0.436      0.663      -0.444       0.6
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      484
 Method:                           MLE   Df Model:                           15
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                  0.1255
-Time:                        12:30:22   Log-Likelihood:                -147.83
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                  0.1255
+Time:                        08:39:23   Log-Likelihood:                -147.83
 converged:                      False   LL-Null:                       -169.03
 Covariance Type:            nonrobust   LLR p-value:                 0.0001936
 ======================================================================================================
@@ -104,26 +104,26 @@ Partial correlation on decision with Correctness for same answer, Stated Other c
 Partial correlation on decision with Correctness for same answer, all controls: nan [nan, nan]
 Capent coefficient with all controls: -0.4538 [-0.8264, -0.0812], z=-2.3870, stderr=0.1901
 pseudo-R2, all controls model: 0.2051
-Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2703 [0.2525, 0.3868]
-Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.0959 [0.0825, 0.1104]
-Partial correlation on decision with all controls, controlling for baseline correctness: 0.2796 [0.2581, 0.3915]
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2703 [0.2500, 0.3862]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.0959 [0.0822, 0.1094]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.2796 [0.2596, 0.3885]
 Partial correlation on decision with Capent, no controls: 0.1294 [0.0422, 0.2147]
 Partial correlation on decision with Capent, surface controls: 0.1285 [0.0401, 0.2149]
 Partial correlation on decision with Capent, Stated Other control: 0.1187 [0.0313, 0.2044]
 Partial correlation on decision with Capent, all controls: 0.1200 [0.0314, 0.2068]
 Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
 Partial correlation on decision with Capent, same answer, all controls: nan [nan, nan]
-Partial correlation on decision with surface controls: 0.2743 [0.2523, 0.3782]
-Partial correlation on decision with Stated Other control: 0.0808 [0.0633, 0.0988]
-Partial correlation on decision with all controls: 0.2796 [0.2598, 0.3860]
-Variance partitioning: Entropy unique R2=0.0152 [0.0022, 0.0374]
-Variance partitioning: Surface unique R2=0.0769 [0.0620, 0.1541]
-Variance partitioning: Shared R2=0.0015 [-0.0053, 0.0099]
-Variance partitioning: Unexplained R2=0.9064 [0.8275, 0.9239]
-Brier Resolution (ranking): 0.0234 [0.0152, 0.0391]
-Brier Reliability (reality): 0.0498 [0.0353, 0.0745]
-Brier: 0.2766 [0.2539, 0.3006]
-ECE: 0.2041 [0.1658, 0.2471]
+Partial correlation on decision with surface controls: 0.2743 [0.2498, 0.3890]
+Partial correlation on decision with Stated Other control: 0.0808 [0.0633, 0.0981]
+Partial correlation on decision with all controls: 0.2796 [0.2582, 0.3862]
+Variance partitioning: Entropy unique R2=0.0152 [0.0023, 0.0366]
+Variance partitioning: Surface unique R2=0.0769 [0.0619, 0.1528]
+Variance partitioning: Shared R2=0.0015 [-0.0063, 0.0108]
+Variance partitioning: Unexplained R2=0.9064 [0.8255, 0.9223]
+Brier Resolution (ranking): 0.0234 [0.0154, 0.0391]
+Brier Reliability (reality): 0.0498 [0.0351, 0.0733]
+Brier: 0.2766 [0.2521, 0.3006]
+ECE: 0.2041 [0.1672, 0.2499]
 df_model[p_i_capability] mean: 0.7023, std: 0.2128
 Partial correlation on decision prob with Capent, no controls: 0.1605 [0.0739, 0.2448]
 Partial correlation on decision prob with Capent, surface controls: 0.1628 [0.0750, 0.2481]
@@ -141,8 +141,8 @@ Linres on decision prob with Capent, all controls, standardized: 3.4919 [1.5270,
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      485
 Method:                           MLE   Df Model:                           14
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                  0.1253
-Time:                        12:30:27   Log-Likelihood:                -147.85
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                  0.1253
+Time:                        08:39:27   Log-Likelihood:                -147.85
 converged:                      False   LL-Null:                       -169.03
 Covariance Type:            nonrobust   LLR p-value:                 0.0001081
 ======================================================================================================
@@ -218,8 +218,8 @@ Capent-Gament corr: nan [nan, nan], p=nan
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      498
 Method:                           MLE   Df Model:                            1
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.02114
-Time:                        12:30:30   Log-Likelihood:                -325.01
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.02114
+Time:                        08:39:30   Log-Likelihood:                -325.01
 converged:                       True   LL-Null:                       -332.03
 Covariance Type:            nonrobust   LLR p-value:                 0.0001793
 ==================================================================================
@@ -245,8 +245,8 @@ Correlation between capabilities_entropy and Other Prob: -0.3477699434082358
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      484
 Method:                           MLE   Df Model:                           15
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                  0.1132
-Time:                        12:30:30   Log-Likelihood:                -294.46
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                  0.1132
+Time:                        08:39:30   Log-Likelihood:                -294.46
 converged:                       True   LL-Null:                       -332.03
 Covariance Type:            nonrobust   LLR p-value:                 5.312e-10
 ======================================================================================================
@@ -281,42 +281,42 @@ Partial correlation on decision with Correctness for same answer, Stated Other c
 Partial correlation on decision with Correctness for same answer, all controls: nan [nan, nan]
 Capent coefficient with all controls: -0.3430 [-0.5639, -0.1221], z=-3.0431, stderr=0.1127
 pseudo-R2, all controls model: 0.1869
-Partial correlation on decision with surface controls, controlling for baseline correctness: 0.3465 [0.3066, 0.4510]
-Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.3312 [0.2668, 0.3896]
-Partial correlation on decision with all controls, controlling for baseline correctness: 0.4299 [0.3907, 0.5207]
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.3465 [0.3062, 0.4537]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.3312 [0.2669, 0.3928]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.4299 [0.3906, 0.5223]
 Partial correlation on decision with Capent, no controls: 0.2843 [0.2016, 0.3629]
 Partial correlation on decision with Capent, surface controls: 0.2254 [0.1393, 0.3080]
 Partial correlation on decision with Capent, Stated Other control: 0.1871 [0.1010, 0.2704]
 Partial correlation on decision with Capent, all controls: 0.1556 [0.0676, 0.2412]
 Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
 Partial correlation on decision with Capent, same answer, all controls: nan [nan, nan]
-Partial correlation on decision with surface controls: 0.3295 [0.2874, 0.4393]
-Partial correlation on decision with Stated Other control: 0.2724 [0.2089, 0.3332]
-Partial correlation on decision with all controls: 0.3907 [0.3483, 0.4897]
-Variance partitioning: Entropy unique R2=0.0221 [0.0046, 0.0508]
-Variance partitioning: Surface unique R2=0.1403 [0.1111, 0.2238]
-Variance partitioning: Shared R2=0.0587 [0.0332, 0.0917]
-Variance partitioning: Unexplained R2=0.7789 [0.6861, 0.8147]
-Brier Resolution (ranking): 0.0126 [0.0085, 0.0242]
-Brier Reliability (reality): 0.1332 [0.1072, 0.1718]
-Brier: 0.3474 [0.3165, 0.3809]
-ECE: 0.3202 [0.2821, 0.3630]
+Partial correlation on decision with surface controls: 0.3295 [0.2862, 0.4432]
+Partial correlation on decision with Stated Other control: 0.2724 [0.2028, 0.3327]
+Partial correlation on decision with all controls: 0.3907 [0.3537, 0.4878]
+Variance partitioning: Entropy unique R2=0.0221 [0.0038, 0.0498]
+Variance partitioning: Surface unique R2=0.1403 [0.1095, 0.2255]
+Variance partitioning: Shared R2=0.0587 [0.0325, 0.0902]
+Variance partitioning: Unexplained R2=0.7789 [0.6872, 0.8149]
+Brier Resolution (ranking): 0.0126 [0.0083, 0.0240]
+Brier Reliability (reality): 0.1332 [0.1067, 0.1703]
+Brier: 0.3474 [0.3171, 0.3797]
+ECE: 0.3202 [0.2794, 0.3644]
 df_model[p_i_capability] mean: 0.8322, std: 0.1938
 Partial correlation (entropy → game), all controls: 0.244
 Partial correlation (entropy → stated), all controls: 0.335
-Decision Prob minus Stated Prob entropy correlation, all controls: -0.091 [-0.175, -0.005]
+Decision Prob minus Stated Prob entropy correlation, all controls: -0.091 [-0.171, 0.000]
 Steiger's test: z = -2.29, p = 0.023
 Partial correlation (entropy → game): 0.371
 Partial correlation (entropy → stated): 0.447
-Decision Prob minus Stated Prob entropy correlation, no controls: -0.076 [-0.148, -0.007]
+Decision Prob minus Stated Prob entropy correlation, no controls: -0.076 [-0.143, -0.012]
 Steiger's test: z = -2.31, p = 0.021
 Partial correlation (entropy → stated): 0.447
 Partial correlation (entropy → other): 0.348
-Stated Prob minus Other Prob entropy correlation, no controls: 0.099 [0.027, 0.172]
+Stated Prob minus Other Prob entropy correlation, no controls: 0.099 [0.025, 0.169]
 Steiger's test: z = 2.57, p = 0.010
-Influence of surface confounds on game decisions: R² = 0.298 [0.254, 0.392]
-Influence of surface confounds on stated confidence: R² = 0.356 [0.317, 0.429]
-Influence of surface confounds on game-stated: -0.058 [-0.117, 0.005]
+Influence of surface confounds on game decisions: R² = 0.298 [0.248, 0.381]
+Influence of surface confounds on stated confidence: R² = 0.356 [0.321, 0.433]
+Influence of surface confounds on game-stated: -0.058 [-0.118, 0.006]
 Partial correlation on decision prob with Capent, no controls: 0.3706 [0.2924, 0.4439]
 Partial correlation on decision prob with Capent, surface controls: 0.3105 [0.2279, 0.3886]
 Partial correlation on decision prob with Capent, Stated Other control: 0.2652 [0.1817, 0.3450]
@@ -333,8 +333,8 @@ Linres on decision prob with Capent, all controls, standardized: 5.5216 [3.5568,
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      485
 Method:                           MLE   Df Model:                           14
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                  0.1029
-Time:                        12:30:37   Log-Likelihood:                -297.86
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                  0.1029
+Time:                        08:39:37   Log-Likelihood:                -297.86
 converged:                       True   LL-Null:                       -332.03
 Covariance Type:            nonrobust   LLR p-value:                 3.831e-09
 ======================================================================================================
@@ -410,8 +410,8 @@ Capent-Gament corr: 0.0671 [-0.0233, 0.1564], p=0.1453
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      498
 Method:                           MLE   Df Model:                            1
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.02410
-Time:                        12:30:41   Log-Likelihood:                -105.31
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.02410
+Time:                        08:39:40   Log-Likelihood:                -105.31
 converged:                       True   LL-Null:                       -107.91
 Covariance Type:            nonrobust   LLR p-value:                   0.02258
 ==================================================================================
@@ -427,8 +427,8 @@ s_i_capability     0.9045      0.391      2.311      0.021       0.137       1.6
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      484
 Method:                           MLE   Df Model:                           15
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                  0.1574
-Time:                        12:30:41   Log-Likelihood:                -90.923
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                  0.1574
+Time:                        08:39:40   Log-Likelihood:                -90.923
 converged:                       True   LL-Null:                       -107.91
 Covariance Type:            nonrobust   LLR p-value:                  0.003438
 ======================================================================================================
@@ -454,15 +454,15 @@ q_length                              -0.1535      0.554     -0.277      0.782  
 Partial correlation on decision with Correctness, no controls: -0.1063 [-0.1922, -0.0188]
 Partial correlation on decision with Correctness, surface controls: -0.1346 [-0.2208, -0.0463]
 Partial correlation on decision with Correctness for same answer, surface controls: nan [nan, nan]
-Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2815 [0.2234, 0.3604]
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2824 [0.2231, 0.3546]
 Partial correlation on decision with Capent, no controls: 0.0315 [-0.0564, 0.1188]
 Partial correlation on decision with Capent, surface controls: -0.0278 [-0.1163, 0.0612]
 Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
-Partial correlation on decision with surface controls: 0.2196 [0.2132, 0.3403]
-Brier Resolution (ranking): 0.0004 [0.0007, 0.0066]
-Brier Reliability (reality): 0.2788 [0.2377, 0.3298]
-Brier: 0.4866 [0.4540, 0.5195]
-ECE: 0.4958 [0.4523, 0.5369]
+Partial correlation on decision with surface controls: 0.2196 [0.2116, 0.3318]
+Brier Resolution (ranking): 0.0004 [0.0007, 0.0063]
+Brier Reliability (reality): 0.2788 [0.2350, 0.3260]
+Brier: 0.4866 [0.4541, 0.5175]
+ECE: 0.4958 [0.4533, 0.5410]
 df_model[p_i_capability] mean: 0.7958, std: 0.1907
 
                   Model 7: delegate_choice ~ C(topic) + C(answer_type) + q_length
@@ -471,8 +471,8 @@ df_model[p_i_capability] mean: 0.7958, std: 0.1907
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      485
 Method:                           MLE   Df Model:                           14
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                  0.1238
-Time:                        12:30:44   Log-Likelihood:                -94.546
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                  0.1238
+Time:                        08:39:43   Log-Likelihood:                -94.546
 converged:                       True   LL-Null:                       -107.91
 Covariance Type:            nonrobust   LLR p-value:                   0.02090
 ======================================================================================================
@@ -548,8 +548,8 @@ Capent-Gament corr: -0.0760 [-0.1987, 0.0490], p=0.2328
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      498
 Method:                           MLE   Df Model:                            1
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                0.007340
-Time:                        12:30:47   Log-Likelihood:                -344.01
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                0.007340
+Time:                        08:39:46   Log-Likelihood:                -344.01
 converged:                       True   LL-Null:                       -346.56
 Covariance Type:            nonrobust   LLR p-value:                   0.02410
 ==================================================================================
@@ -575,8 +575,8 @@ Correlation between capabilities_entropy and Other Prob: -0.2634492538480043
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      484
 Method:                           MLE   Df Model:                           15
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.07215
-Time:                        12:30:47   Log-Likelihood:                -321.55
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.07215
+Time:                        08:39:46   Log-Likelihood:                -321.55
 converged:                       True   LL-Null:                       -346.56
 Covariance Type:            nonrobust   LLR p-value:                 1.199e-05
 ======================================================================================================
@@ -611,42 +611,42 @@ Partial correlation on decision with Correctness for same answer, Stated Other c
 Partial correlation on decision with Correctness for same answer, all controls: nan [nan, nan]
 Capent coefficient with all controls: -0.1671 [-0.3701, 0.0359], z=-1.6134, stderr=0.1036
 pseudo-R2, all controls model: 0.1171
-Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2967 [0.2601, 0.4089]
-Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.2775 [0.2151, 0.3418]
-Partial correlation on decision with all controls, controlling for baseline correctness: 0.3645 [0.3314, 0.4645]
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2967 [0.2588, 0.4135]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.2775 [0.2115, 0.3391]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.3645 [0.3279, 0.4628]
 Partial correlation on decision with Capent, no controls: 0.1931 [0.1073, 0.2762]
 Partial correlation on decision with Capent, surface controls: 0.1302 [0.0418, 0.2165]
 Partial correlation on decision with Capent, Stated Other control: 0.1278 [0.0404, 0.2132]
 Partial correlation on decision with Capent, all controls: 0.0866 [-0.0023, 0.1742]
 Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
 Partial correlation on decision with Capent, same answer, all controls: nan [nan, nan]
-Partial correlation on decision with surface controls: 0.2771 [0.2441, 0.3910]
-Partial correlation on decision with Stated Other control: 0.2470 [0.1864, 0.3089]
-Partial correlation on decision with all controls: 0.3379 [0.3107, 0.4409]
-Variance partitioning: Entropy unique R2=0.0065 [0.0000, 0.0255]
-Variance partitioning: Surface unique R2=0.1099 [0.0881, 0.1838]
-Variance partitioning: Shared R2=0.0308 [0.0102, 0.0568]
-Variance partitioning: Unexplained R2=0.8528 [0.7685, 0.8793]
-Brier Resolution (ranking): 0.0074 [0.0059, 0.0162]
-Brier Reliability (reality): 0.1206 [0.0935, 0.1558]
-Brier: 0.3550 [0.3196, 0.3899]
-ECE: 0.3328 [0.2918, 0.3777]
+Partial correlation on decision with surface controls: 0.2771 [0.2389, 0.3917]
+Partial correlation on decision with Stated Other control: 0.2470 [0.1860, 0.3072]
+Partial correlation on decision with all controls: 0.3379 [0.3058, 0.4382]
+Variance partitioning: Entropy unique R2=0.0065 [0.0001, 0.0242]
+Variance partitioning: Surface unique R2=0.1099 [0.0886, 0.1843]
+Variance partitioning: Shared R2=0.0308 [0.0113, 0.0556]
+Variance partitioning: Unexplained R2=0.8528 [0.7710, 0.8789]
+Brier Resolution (ranking): 0.0074 [0.0061, 0.0165]
+Brier Reliability (reality): 0.1206 [0.0969, 0.1580]
+Brier: 0.3550 [0.3242, 0.3905]
+ECE: 0.3328 [0.2917, 0.3793]
 df_model[p_i_capability] mean: 0.8668, std: 0.1806
 Partial correlation (entropy → game), all controls: 0.092
 Partial correlation (entropy → stated), all controls: 0.140
-Decision Prob minus Stated Prob entropy correlation, all controls: -0.048 [-0.151, 0.054]
+Decision Prob minus Stated Prob entropy correlation, all controls: -0.048 [-0.160, 0.060]
 Steiger's test: z = -0.86, p = 0.391
 Partial correlation (entropy → game): 0.207
 Partial correlation (entropy → stated): 0.216
-Decision Prob minus Stated Prob entropy correlation, no controls: -0.009 [-0.106, 0.084]
+Decision Prob minus Stated Prob entropy correlation, no controls: -0.009 [-0.100, 0.078]
 Steiger's test: z = -0.19, p = 0.852
 Partial correlation (entropy → stated): 0.216
 Partial correlation (entropy → other): 0.263
-Stated Prob minus Other Prob entropy correlation, no controls: -0.047 [-0.142, 0.042]
+Stated Prob minus Other Prob entropy correlation, no controls: -0.047 [-0.136, 0.041]
 Steiger's test: z = -0.92, p = 0.356
-Influence of surface confounds on game decisions: R² = 0.181 [0.156, 0.265]
-Influence of surface confounds on stated confidence: R² = 0.171 [0.147, 0.261]
-Influence of surface confounds on game-stated: 0.010 [-0.065, 0.079]
+Influence of surface confounds on game decisions: R² = 0.181 [0.147, 0.261]
+Influence of surface confounds on stated confidence: R² = 0.171 [0.142, 0.254]
+Influence of surface confounds on game-stated: 0.010 [-0.064, 0.070]
 Partial correlation on decision prob with Capent, no controls: 0.2069 [0.1215, 0.2894]
 Partial correlation on decision prob with Capent, surface controls: 0.1439 [0.0558, 0.2298]
 Partial correlation on decision prob with Capent, Stated Other control: 0.1285 [0.0412, 0.2139]
@@ -663,8 +663,8 @@ Linres on decision prob with Capent, all controls, standardized: 2.0199 [0.0550,
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      485
 Method:                           MLE   Df Model:                           14
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.07098
-Time:                        12:30:55   Log-Likelihood:                -321.96
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.07098
+Time:                        08:39:54   Log-Likelihood:                -321.96
 converged:                       True   LL-Null:                       -346.56
 Covariance Type:            nonrobust   LLR p-value:                 8.322e-06
 ======================================================================================================
@@ -740,8 +740,8 @@ Capent-Gament corr: nan [nan, nan], p=nan
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      498
 Method:                           MLE   Df Model:                            1
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.05002
-Time:                        12:30:58   Log-Likelihood:                -150.19
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.05002
+Time:                        08:39:56   Log-Likelihood:                -150.19
 converged:                       True   LL-Null:                       -158.10
 Covariance Type:            nonrobust   LLR p-value:                 6.973e-05
 ==================================================================================
@@ -757,8 +757,8 @@ s_i_capability    -1.2850      0.346     -3.709      0.000      -1.964      -0.6
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      484
 Method:                           MLE   Df Model:                           15
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                  0.1032
-Time:                        12:30:58   Log-Likelihood:                -141.79
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                  0.1032
+Time:                        08:39:56   Log-Likelihood:                -141.79
 converged:                       True   LL-Null:                       -158.10
 Covariance Type:            nonrobust   LLR p-value:                  0.005285
 ======================================================================================================
@@ -793,26 +793,26 @@ Partial correlation on decision with Correctness for same answer, Stated Other c
 Partial correlation on decision with Correctness for same answer, all controls: nan [nan, nan]
 Capent coefficient with all controls: -1.6948 [-2.3389, -1.0506], z=-5.1569, stderr=0.3286
 pseudo-R2, all controls model: 0.2556
-Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2423 [0.1744, 0.3200]
-Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.3709 [0.2731, 0.4569]
-Partial correlation on decision with all controls, controlling for baseline correctness: 0.4409 [0.3635, 0.5157]
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2416 [0.1751, 0.3247]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.3701 [0.2779, 0.4536]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.4400 [0.3655, 0.5167]
 Partial correlation on decision with Capent, no controls: 0.3529 [0.2737, 0.4274]
 Partial correlation on decision with Capent, surface controls: 0.3357 [0.2544, 0.4122]
 Partial correlation on decision with Capent, Stated Other control: 0.2667 [0.1832, 0.3464]
 Partial correlation on decision with Capent, all controls: 0.2717 [0.1873, 0.3522]
 Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
 Partial correlation on decision with Capent, same answer, all controls: nan [nan, nan]
-Partial correlation on decision with surface controls: 0.1546 [0.1440, 0.3045]
-Partial correlation on decision with Stated Other control: 0.3007 [0.2012, 0.3910]
-Partial correlation on decision with all controls: 0.3520 [0.3157, 0.4643]
-Variance partitioning: Entropy unique R2=0.0608 [0.0257, 0.0931]
-Variance partitioning: Surface unique R2=0.1085 [0.0803, 0.1946]
-Variance partitioning: Shared R2=0.0637 [0.0358, 0.1037]
-Variance partitioning: Unexplained R2=0.7670 [0.6745, 0.8133]
-Brier Resolution (ranking): 0.0345 [0.0234, 0.0550]
-Brier Reliability (reality): 0.0794 [0.0608, 0.1067]
-Brier: 0.2916 [0.2662, 0.3175]
-ECE: 0.2636 [0.2271, 0.3057]
+Partial correlation on decision with surface controls: 0.1546 [0.1483, 0.3017]
+Partial correlation on decision with Stated Other control: 0.3007 [0.2114, 0.3896]
+Partial correlation on decision with all controls: 0.3520 [0.3079, 0.4606]
+Variance partitioning: Entropy unique R2=0.0608 [0.0274, 0.0941]
+Variance partitioning: Surface unique R2=0.1085 [0.0817, 0.1912]
+Variance partitioning: Shared R2=0.0637 [0.0351, 0.1023]
+Variance partitioning: Unexplained R2=0.7670 [0.6754, 0.8070]
+Brier Resolution (ranking): 0.0345 [0.0239, 0.0543]
+Brier Reliability (reality): 0.0794 [0.0619, 0.1118]
+Brier: 0.2916 [0.2671, 0.3185]
+ECE: 0.2636 [0.2228, 0.3050]
 df_model[p_i_capability] mean: 0.7450, std: 0.2165
 Partial correlation on decision prob with Capent, no controls: 0.3908 [0.3138, 0.4627]
 Partial correlation on decision prob with Capent, surface controls: 0.3816 [0.3029, 0.4551]
@@ -830,8 +830,8 @@ Linres on decision prob with Capent, all controls, standardized: 7.1517 [5.1868,
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      485
 Method:                           MLE   Df Model:                           14
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.05639
-Time:                        12:31:02   Log-Likelihood:                -149.19
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.05639
+Time:                        08:40:01   Log-Likelihood:                -149.19
 converged:                       True   LL-Null:                       -158.10
 Covariance Type:            nonrobust   LLR p-value:                    0.2146
 ======================================================================================================
@@ -907,8 +907,8 @@ Capent-Gament corr: nan [nan, nan], p=nan
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      498
 Method:                           MLE   Df Model:                            1
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                0.003522
-Time:                        12:31:05   Log-Likelihood:                -236.37
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                0.003522
+Time:                        08:40:04   Log-Likelihood:                -236.37
 converged:                       True   LL-Null:                       -237.21
 Covariance Type:            nonrobust   LLR p-value:                    0.1961
 ==================================================================================
@@ -924,8 +924,8 @@ s_i_capability     0.3155      0.242      1.304      0.192      -0.159       0.7
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      484
 Method:                           MLE   Df Model:                           15
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.08530
-Time:                        12:31:05   Log-Likelihood:                -216.97
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.08530
+Time:                        08:40:04   Log-Likelihood:                -216.97
 converged:                       True   LL-Null:                       -237.21
 Covariance Type:            nonrobust   LLR p-value:                 0.0003852
 ======================================================================================================
@@ -951,15 +951,15 @@ q_length                               0.7025      0.318      2.210      0.027  
 Partial correlation on decision with Correctness, no controls: -0.0585 [-0.1454, 0.0294]
 Partial correlation on decision with Correctness, surface controls: -0.0648 [-0.1528, 0.0242]
 Partial correlation on decision with Correctness for same answer, surface controls: nan [nan, nan]
-Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2724 [0.2372, 0.3866]
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2724 [0.2422, 0.3904]
 Partial correlation on decision with Capent, no controls: 0.0910 [0.0034, 0.1773]
 Partial correlation on decision with Capent, surface controls: 0.0517 [-0.0373, 0.1399]
 Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
-Partial correlation on decision with surface controls: 0.2592 [0.2319, 0.3736]
-Brier Resolution (ranking): 0.0041 [0.0023, 0.0116]
-Brier Reliability (reality): 0.2752 [0.2363, 0.3226]
-Brier: 0.4975 [0.4648, 0.5318]
-ECE: 0.5146 [0.4736, 0.5564]
+Partial correlation on decision with surface controls: 0.2592 [0.2236, 0.3743]
+Brier Resolution (ranking): 0.0041 [0.0024, 0.0114]
+Brier Reliability (reality): 0.2752 [0.2362, 0.3245]
+Brier: 0.4975 [0.4625, 0.5307]
+ECE: 0.5146 [0.4747, 0.5594]
 df_model[p_i_capability] mean: 0.8306, std: 0.1785
 
                   Model 7: delegate_choice ~ C(topic) + C(answer_type) + q_length
@@ -968,8 +968,8 @@ df_model[p_i_capability] mean: 0.8306, std: 0.1785
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      485
 Method:                           MLE   Df Model:                           14
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.07944
-Time:                        12:31:09   Log-Likelihood:                -218.36
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.07944
+Time:                        08:40:07   Log-Likelihood:                -218.36
 converged:                       True   LL-Null:                       -237.21
 Covariance Type:            nonrobust   LLR p-value:                 0.0005801
 ======================================================================================================
@@ -1045,8 +1045,8 @@ Capent-Gament corr: nan [nan, nan], p=nan
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      498
 Method:                           MLE   Df Model:                            1
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                0.007205
-Time:                        12:31:12   Log-Likelihood:                -306.52
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                0.007205
+Time:                        08:40:10   Log-Likelihood:                -306.52
 converged:                       True   LL-Null:                       -308.75
 Covariance Type:            nonrobust   LLR p-value:                   0.03492
 ==================================================================================
@@ -1062,8 +1062,8 @@ s_i_capability    -0.4159      0.199     -2.094      0.036      -0.805      -0.0
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      484
 Method:                           MLE   Df Model:                           15
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.08735
-Time:                        12:31:12   Log-Likelihood:                -281.78
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.08735
+Time:                        08:40:10   Log-Likelihood:                -281.78
 converged:                       True   LL-Null:                       -308.75
 Covariance Type:            nonrobust   LLR p-value:                 2.687e-06
 ======================================================================================================
@@ -1089,15 +1089,15 @@ q_length                              -0.1134      0.280     -0.405      0.686  
 Partial correlation on decision with Correctness, no controls: 0.0939 [0.0063, 0.1801]
 Partial correlation on decision with Correctness, surface controls: 0.0889 [0.0001, 0.1764]
 Partial correlation on decision with Correctness for same answer, surface controls: nan [nan, nan]
-Partial correlation on decision with surface controls, controlling for baseline correctness: 0.3081 [0.2719, 0.4201]
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.3081 [0.2753, 0.4150]
 Partial correlation on decision with Capent, no controls: 0.2495 [0.1654, 0.3300]
 Partial correlation on decision with Capent, surface controls: 0.2325 [0.1467, 0.3149]
 Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
-Partial correlation on decision with surface controls: 0.2971 [0.2627, 0.4062]
-Brier Resolution (ranking): 0.0259 [0.0170, 0.0426]
-Brier Reliability (reality): 0.0418 [0.0280, 0.0628]
-Brier: 0.2613 [0.2366, 0.2860]
-ECE: 0.1867 [0.1527, 0.2311]
+Partial correlation on decision with surface controls: 0.2971 [0.2635, 0.4067]
+Brier Resolution (ranking): 0.0259 [0.0163, 0.0423]
+Brier Reliability (reality): 0.0418 [0.0300, 0.0637]
+Brier: 0.2613 [0.2387, 0.2868]
+ECE: 0.1867 [0.1511, 0.2301]
 df_model[p_i_capability] mean: 0.7467, std: 0.1993
 
                   Model 7: delegate_choice ~ C(topic) + C(answer_type) + q_length
@@ -1106,8 +1106,8 @@ df_model[p_i_capability] mean: 0.7467, std: 0.1993
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      485
 Method:                           MLE   Df Model:                           14
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.08066
-Time:                        12:31:15   Log-Likelihood:                -283.84
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.08066
+Time:                        08:40:13   Log-Likelihood:                -283.84
 converged:                       True   LL-Null:                       -308.75
 Covariance Type:            nonrobust   LLR p-value:                 6.577e-06
 ======================================================================================================
@@ -1130,6 +1130,198 @@ C(answer_type)[T.Place]               -1.2001      0.409     -2.933      0.003  
 q_length                              -0.1492      0.278     -0.537      0.591      -0.694       0.395
 ======================================================================================================
 No misused predictors found.
+
+--- Analyzing llama-3.1-8b-instruct (NoMsgHist, NoQCtr, NoPCtr, NoSCtr, decisionOnly, 1 game files) ---
+              Game files for analysis: ['./pass_game_logs/llama-3.1-8b-instruct_SimpleMC_noqcnt_nopcnt_noscnt_consider_decisionOnly_temp1.0_1765470725_game_data.json']
+
+Delegation rate: 0.6600 (n=500)
+Team-acc: 0.436
+Team-acc lift = -0.064 [-0.107, -0.021]
+Max possible team accuracy: 0.4234
+Optimal delegation rate: 0.6960
+Best possible self-accuracy: 0.6968
+Agreement rate: 0.5680 [0.5242, 0.6107]
+Weighted agreement rate: 0.7911
+Norm-weighted agreement rate: 0.5062
+Underconfidence rate: 0.1980
+Overconfidence rate: 0.2340
+Weighted underconfidence rate: 0.8622
+Weighted overconfidence rate: 0.9289
+Unweighted confidence: 0.0833 [-0.0508, 0.2174]
+Weighted confidence: -0.3191 [-0.4342, -0.1909]
+Introspection score = 0.012 [-0.074, 0.102], p=0.806
+FP = 99
+FN = 117
+Probability of delegating when s_i_capability is 0: 0.6638
+Probability of delegating when s_i_capability is 1: 0.6513
+Phase 1 accuracy: 0.3040 (n=500)
+Phase 2 self-accuracy: 0.3118 (n=170)
+Self-acc lift = 0.008 [-0.063, 0.078], p=0.8032
+Normed Self-acc lift = 0.011 [-0.090, 0.113]
+Balanced Accuracy Effect Size = 0.026 [-0.164, 0.217]
+Full AUC = 0.660 [0.606, 0.709]
+Calibration AUC = 0.541 [0.487, 0.596]
+Calibration Entropy AUC = 0.542 [0.485, 0.596]
+Game-Test Change Rate: 1.0000
+Game-Test Good Change Rate: 0.3118
+Game-Test Bad Change Rate: 0.0000
+Game-Test Bad-to-Bad Change Rate: 0.6882
+Number of answer changes without correctness flip: 53
+     s_i_capability  subject_correct  answer_changed                                               q_id
+9                 1             True            True  sqa_test_7b0976e6e5c0f1b1053eaba28118c1185b2b0...
+37                1             True            True  sqa_test_acddb159d86f56aa594c5c78f8fa05ecf7566...
+93                1             True            True  sqa_test_5627931e4fbad66f3f729757aa846259f6d9d...
+104               1             True            True  sqa_test_b26cb41f20d6ebd39b48d509a1546872d71ba...
+111               1             True            True  sqa_test_15bc7b9ba95e2904e7434586de3e2bf03b9e8...
+P(good | change): 0.3118
+P(bad | change): 0.0000
+Game-Test Change on Incor Rate: 1.0
+Game-Test Change on Cor Rate: 1.0
+Capent-Gament corr: nan [nan, nan], p=nan
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  500
+Model:                          Logit   Df Residuals:                      498
+Method:                           MLE   Df Model:                            1
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:               0.0001142
+Time:                        08:40:16   Log-Likelihood:                -320.48
+converged:                       True   LL-Null:                       -320.52
+Covariance Type:            nonrobust   LLR p-value:                    0.7867
+==================================================================================
+                     coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+Intercept          0.6802      0.113      5.995      0.000       0.458       0.903
+s_i_capability    -0.0554      0.205     -0.271      0.786      -0.456       0.346
+==================================================================================
+
+Correlation between Other's Prob and Self Prob: 0.652295205711204
+
+Correlation between p_i_capability and Self Prob: 0.11824143316854131
+
+Correlation between p_i_capability and Other Prob: 0.049475010648310884
+
+Correlation between capabilities_entropy and Self Prob: -0.16696206732273589
+
+Correlation between capabilities_entropy and Other Prob: -0.06902131439881869
+
+                  Model 4 (No Interactions): delegate_choice ~ s_i_capability + C(topic) + C(answer_type) + q_length
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  500
+Model:                          Logit   Df Residuals:                      484
+Method:                           MLE   Df Model:                           15
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.08902
+Time:                        08:40:16   Log-Likelihood:                -291.98
+converged:                       True   LL-Null:                       -320.52
+Covariance Type:            nonrobust   LLR p-value:                 7.995e-07
+======================================================================================================
+                                         coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------------------------
+Intercept                              2.1453      1.275      1.682      0.093      -0.354       4.645
+C(topic)[T.Geography]                 -0.1203      0.488     -0.247      0.805      -1.076       0.835
+C(topic)[T.History]                   -0.3353      0.519     -0.647      0.518      -1.352       0.681
+C(topic)[T.Music]                     -0.3662      0.429     -0.854      0.393      -1.207       0.474
+C(topic)[T.Other]                      0.2512      0.428      0.587      0.557      -0.588       1.090
+C(topic)[T.Politics]                  -0.3396      0.368     -0.923      0.356      -1.060       0.381
+C(topic)[T.Science and technology]    -0.8020      0.339     -2.364      0.018      -1.467      -0.137
+C(topic)[T.Sports]                     0.3810      0.488      0.781      0.435      -0.576       1.338
+C(topic)[T.TV shows]                  -0.4418      0.463     -0.954      0.340      -1.349       0.466
+C(topic)[T.Video games]               -1.5865      0.574     -2.765      0.006      -2.711      -0.462
+C(answer_type)[T.Number]               0.9639      0.397      2.428      0.015       0.186       1.742
+C(answer_type)[T.Other]               -0.9726      0.284     -3.426      0.001      -1.529      -0.416
+C(answer_type)[T.Person]              -0.8180      0.268     -3.052      0.002      -1.343      -0.293
+C(answer_type)[T.Place]               -0.4302      0.423     -1.017      0.309      -1.259       0.399
+s_i_capability                        -0.0218      0.220     -0.099      0.921      -0.454       0.410
+q_length                              -0.1791      0.273     -0.657      0.511      -0.714       0.356
+======================================================================================================
+Partial correlation on decision with Correctness, no controls: 0.0121 [-0.0757, 0.0997]
+Partial correlation on decision with Correctness, surface controls: -0.0003 [-0.0892, 0.0885]
+Partial correlation on decision with Correctness for same answer, surface controls: nan [nan, nan]
+Baseline correctness coefficient with Stated Other control: 0.1558 [-0.2781, 0.5896], z=0.7037, stderr=0.2214
+Baseline correctness coefficient with all controls: 0.1536 [-0.3082, 0.6153], z=0.6518, stderr=0.2356
+Baseline correctness coefficient with all controls, standardized: 0.6518 [-1.3081, 2.6118]
+Partial correlation on decision with Correctness, Stated Other control: 0.0292 [-0.0587, 0.1167]
+Partial correlation on decision with Correctness, all controls: 0.0193 [-0.0697, 0.1081]
+Partial correlation on decision with Correctness for same answer, Stated Other control: nan [nan, nan]
+Partial correlation on decision with Correctness for same answer, all controls: nan [nan, nan]
+Capent coefficient with all controls: -0.6776 [-0.9098, -0.4453], z=-5.7184, stderr=0.1185
+pseudo-R2, all controls model: 0.1841
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.3258 [0.2897, 0.4344]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.3724 [0.2950, 0.4476]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.4610 [0.4199, 0.5503]
+Partial correlation on decision with Capent, no controls: 0.3033 [0.2215, 0.3809]
+Partial correlation on decision with Capent, surface controls: 0.2622 [0.1774, 0.3430]
+Partial correlation on decision with Capent, Stated Other control: 0.2998 [0.2177, 0.3776]
+Partial correlation on decision with Capent, all controls: 0.2649 [0.1802, 0.3457]
+Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
+Partial correlation on decision with Capent, same answer, all controls: nan [nan, nan]
+Partial correlation on decision with surface controls: 0.2894 [0.2601, 0.4018]
+Partial correlation on decision with Stated Other control: 0.3689 [0.2980, 0.4438]
+Partial correlation on decision with all controls: 0.4400 [0.3997, 0.5303]
+Variance partitioning: Entropy unique R2=0.0554 [0.0235, 0.0936]
+Variance partitioning: Surface unique R2=0.1758 [0.1407, 0.2560]
+Variance partitioning: Shared R2=0.0366 [0.0117, 0.0687]
+Variance partitioning: Unexplained R2=0.7322 [0.6413, 0.7735]
+Brier Resolution (ranking): 0.0051 [0.0028, 0.0146]
+Brier Reliability (reality): 0.1724 [0.1405, 0.2120]
+Brier: 0.3777 [0.3530, 0.4027]
+ECE: 0.3720 [0.3317, 0.4182]
+df_model[p_i_capability] mean: 0.6760, std: 0.2012
+Partial correlation (entropy → game), all controls: 0.344
+Partial correlation (entropy → stated), all controls: 0.156
+Decision Prob minus Stated Prob entropy correlation, all controls: 0.189 [0.105, 0.276]
+Steiger's test: z = 4.83, p = 0.000
+Partial correlation (entropy → game): 0.364
+Partial correlation (entropy → stated): 0.167
+Decision Prob minus Stated Prob entropy correlation, no controls: 0.197 [0.127, 0.268]
+Steiger's test: z = 5.80, p = 0.000
+Partial correlation (entropy → stated): 0.167
+Partial correlation (entropy → other): 0.069
+Stated Prob minus Other Prob entropy correlation, no controls: 0.098 [0.018, 0.182]
+Steiger's test: z = 2.66, p = 0.008
+Influence of surface confounds on game decisions: R² = 0.297 [0.250, 0.386]
+Influence of surface confounds on stated confidence: R² = 0.484 [0.432, 0.564]
+Influence of surface confounds on game-stated: -0.186 [-0.245, -0.115]
+Partial correlation on decision prob with Capent, no controls: 0.3640 [0.2854, 0.4377]
+Partial correlation on decision prob with Capent, surface controls: 0.3273 [0.2456, 0.4044]
+Partial correlation on decision prob with Capent, Stated Other control: 0.3737 [0.2956, 0.4468]
+Partial correlation on decision prob with Capent, all controls: 0.3444 [0.2635, 0.4204]
+Linres on decision prob with Capent, surface controls: 0.1912 [0.1420, 0.2404], z=7.6342, stderr=0.0250
+Linres on decision prob with Capent, no controls: 0.2176 [0.1685, 0.2666], z=8.7218, stderr=0.0249
+Linres on decision prob with Capent, Stated Other control: 0.2000 [0.1562, 0.2437], z=8.9807, stderr=0.0223
+Linres on decision prob with Capent, all controls: 0.1811 [0.1370, 0.2253], z=8.0622, stderr=0.0225
+Linres on decision prob with Capent, all controls, standardized: 8.0622 [6.0974, 10.0271]
+
+                  Model 7: delegate_choice ~ C(topic) + C(answer_type) + q_length
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  500
+Model:                          Logit   Df Residuals:                      485
+Method:                           MLE   Df Model:                           14
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.08901
+Time:                        08:40:23   Log-Likelihood:                -291.99
+converged:                       True   LL-Null:                       -320.52
+Covariance Type:            nonrobust   LLR p-value:                 3.823e-07
+======================================================================================================
+                                         coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------------------------
+Intercept                              2.1427      1.275      1.681      0.093      -0.356       4.641
+C(topic)[T.Geography]                 -0.1188      0.487     -0.244      0.807      -1.074       0.836
+C(topic)[T.History]                   -0.3377      0.518     -0.652      0.515      -1.353       0.678
+C(topic)[T.Music]                     -0.3689      0.428     -0.862      0.389      -1.207       0.470
+C(topic)[T.Other]                      0.2494      0.428      0.583      0.560      -0.589       1.088
+C(topic)[T.Politics]                  -0.3423      0.367     -0.933      0.351      -1.061       0.376
+C(topic)[T.Science and technology]    -0.8008      0.339     -2.362      0.018      -1.465      -0.136
+C(topic)[T.Sports]                     0.3806      0.488      0.780      0.435      -0.576       1.337
+C(topic)[T.TV shows]                  -0.4398      0.463     -0.950      0.342      -1.347       0.467
+C(topic)[T.Video games]               -1.5870      0.574     -2.765      0.006      -2.712      -0.462
+C(answer_type)[T.Number]               0.9611      0.396      2.428      0.015       0.185       1.737
+C(answer_type)[T.Other]               -0.9752      0.283     -3.450      0.001      -1.529      -0.421
+C(answer_type)[T.Person]              -0.8204      0.267     -3.072      0.002      -1.344      -0.297
+C(answer_type)[T.Place]               -0.4314      0.423     -1.021      0.307      -1.260       0.397
+q_length                              -0.1796      0.273     -0.659      0.510      -0.714       0.355
+======================================================================================================
+Misused predictors: ['answer_type_Number']
 
 --- Analyzing llama-3.3-70b-instruct (NoMsgHist, NoQCtr, NoPCtr, NoSCtr, decisionOnly, 1 game files) ---
               Game files for analysis: ['./pass_game_logs/llama-3.3-70b-instruct_SimpleMC_noqcnt_nopcnt_noscnt_decisionOnly_temp1.0_1764436612_game_data.json']
@@ -1183,8 +1375,8 @@ Capent-Gament corr: nan [nan, nan], p=nan
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      498
 Method:                           MLE   Df Model:                            1
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                0.003488
-Time:                        12:31:19   Log-Likelihood:                -345.11
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                0.003488
+Time:                        08:40:26   Log-Likelihood:                -345.11
 converged:                       True   LL-Null:                       -346.32
 Covariance Type:            nonrobust   LLR p-value:                    0.1201
 ==================================================================================
@@ -1210,8 +1402,8 @@ Correlation between capabilities_entropy and Other Prob: -0.02379686150335914
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      484
 Method:                           MLE   Df Model:                           15
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.05528
-Time:                        12:31:19   Log-Likelihood:                -327.17
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.05528
+Time:                        08:40:26   Log-Likelihood:                -327.17
 converged:                       True   LL-Null:                       -346.32
 Covariance Type:            nonrobust   LLR p-value:                 0.0008184
 ======================================================================================================
@@ -1246,42 +1438,42 @@ Partial correlation on decision with Correctness for same answer, Stated Other c
 Partial correlation on decision with Correctness for same answer, all controls: nan [nan, nan]
 Capent coefficient with all controls: -0.1950 [-0.4065, 0.0164], z=-1.8075, stderr=0.1079
 pseudo-R2, all controls model: 0.1872
-Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2643 [0.2339, 0.3851]
-Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.4047 [0.3451, 0.4662]
-Partial correlation on decision with all controls, controlling for baseline correctness: 0.4621 [0.4263, 0.5425]
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2643 [0.2334, 0.3864]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.4047 [0.3401, 0.4663]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.4621 [0.4264, 0.5427]
 Partial correlation on decision with Capent, no controls: 0.1170 [0.0296, 0.2026]
 Partial correlation on decision with Capent, surface controls: 0.0876 [-0.0012, 0.1751]
 Partial correlation on decision with Capent, Stated Other control: 0.1174 [0.0299, 0.2030]
 Partial correlation on decision with Capent, all controls: 0.0895 [0.0005, 0.1770]
 Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
 Partial correlation on decision with Capent, same answer, all controls: nan [nan, nan]
-Partial correlation on decision with surface controls: 0.2539 [0.2251, 0.3748]
-Partial correlation on decision with Stated Other control: 0.4020 [0.3406, 0.4647]
-Partial correlation on decision with all controls: 0.4565 [0.4248, 0.5375]
-Variance partitioning: Entropy unique R2=0.0064 [0.0001, 0.0251]
-Variance partitioning: Surface unique R2=0.2056 [0.1753, 0.2865]
-Variance partitioning: Shared R2=0.0073 [-0.0010, 0.0237]
-Variance partitioning: Unexplained R2=0.7808 [0.6948, 0.8116]
-Brier Resolution (ranking): 0.0098 [0.0049, 0.0200]
-Brier Reliability (reality): 0.2163 [0.1817, 0.2611]
-Brier: 0.4518 [0.4169, 0.4922]
-ECE: 0.4552 [0.4113, 0.4987]
+Partial correlation on decision with surface controls: 0.2539 [0.2259, 0.3733]
+Partial correlation on decision with Stated Other control: 0.4020 [0.3389, 0.4634]
+Partial correlation on decision with all controls: 0.4565 [0.4220, 0.5382]
+Variance partitioning: Entropy unique R2=0.0064 [0.0001, 0.0235]
+Variance partitioning: Surface unique R2=0.2056 [0.1753, 0.2892]
+Variance partitioning: Shared R2=0.0073 [-0.0015, 0.0235]
+Variance partitioning: Unexplained R2=0.7808 [0.6955, 0.8095]
+Brier Resolution (ranking): 0.0098 [0.0053, 0.0194]
+Brier Reliability (reality): 0.2163 [0.1791, 0.2588]
+Brier: 0.4518 [0.4129, 0.4907]
+ECE: 0.4552 [0.4145, 0.5018]
 df_model[p_i_capability] mean: 0.9086, std: 0.1461
 Partial correlation (entropy → game), all controls: 0.114
 Partial correlation (entropy → stated), all controls: 0.129
-Decision Prob minus Stated Prob entropy correlation, all controls: -0.016 [-0.095, 0.052]
+Decision Prob minus Stated Prob entropy correlation, all controls: -0.016 [-0.095, 0.061]
 Steiger's test: z = -0.37, p = 0.710
 Partial correlation (entropy → game): 0.138
 Partial correlation (entropy → stated): 0.142
-Decision Prob minus Stated Prob entropy correlation, no controls: -0.004 [-0.064, 0.063]
+Decision Prob minus Stated Prob entropy correlation, no controls: -0.004 [-0.069, 0.065]
 Steiger's test: z = -0.10, p = 0.923
 Partial correlation (entropy → stated): 0.142
 Partial correlation (entropy → other): 0.024
-Stated Prob minus Other Prob entropy correlation, no controls: 0.118 [0.045, 0.189]
+Stated Prob minus Other Prob entropy correlation, no controls: 0.118 [0.048, 0.191]
 Steiger's test: z = 2.89, p = 0.004
-Influence of surface confounds on game decisions: R² = 0.251 [0.221, 0.329]
-Influence of surface confounds on stated confidence: R² = 0.385 [0.334, 0.473]
-Influence of surface confounds on game-stated: -0.134 [-0.187, -0.068]
+Influence of surface confounds on game decisions: R² = 0.251 [0.218, 0.329]
+Influence of surface confounds on stated confidence: R² = 0.385 [0.334, 0.475]
+Influence of surface confounds on game-stated: -0.134 [-0.199, -0.061]
 Partial correlation on decision prob with Capent, no controls: 0.1383 [0.0512, 0.2232]
 Partial correlation on decision prob with Capent, surface controls: 0.1081 [0.0194, 0.1951]
 Partial correlation on decision prob with Capent, Stated Other control: 0.1424 [0.0553, 0.2274]
@@ -1298,8 +1490,8 @@ Linres on decision prob with Capent, all controls, standardized: 2.5145 [0.5496,
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      485
 Method:                           MLE   Df Model:                           14
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.05189
-Time:                        12:31:26   Log-Likelihood:                -328.35
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.05189
+Time:                        08:40:33   Log-Likelihood:                -328.35
 converged:                       True   LL-Null:                       -346.32
 Covariance Type:            nonrobust   LLR p-value:                  0.001064
 ======================================================================================================
@@ -1374,8 +1566,8 @@ Game-Test Change on Cor Rate: 1.0
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      498
 Method:                           MLE   Df Model:                            1
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.01027
-Time:                        12:31:29   Log-Likelihood:                -342.24
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.01027
+Time:                        08:40:35   Log-Likelihood:                -342.24
 converged:                       True   LL-Null:                       -345.79
 Covariance Type:            nonrobust   LLR p-value:                  0.007692
 ==================================================================================
@@ -1391,8 +1583,8 @@ s_i_capability    -0.4893      0.184     -2.657      0.008      -0.850      -0.1
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      484
 Method:                           MLE   Df Model:                           15
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.05961
-Time:                        12:31:29   Log-Likelihood:                -325.18
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.05961
+Time:                        08:40:35   Log-Likelihood:                -325.18
 converged:                       True   LL-Null:                       -345.79
 Covariance Type:            nonrobust   LLR p-value:                 0.0002955
 ======================================================================================================
@@ -1427,26 +1619,26 @@ Partial correlation on decision with Correctness for same answer, Stated Other c
 Partial correlation on decision with Correctness for same answer, all controls: nan [nan, nan]
 Capent coefficient with all controls: -0.4261 [-0.6412, -0.2110], z=-3.8828, stderr=0.1097
 pseudo-R2, all controls model: 0.1434
-Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2576 [0.2251, 0.3748]
-Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.2763 [0.2305, 0.3299]
-Partial correlation on decision with all controls, controlling for baseline correctness: 0.3661 [0.3417, 0.4555]
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.2576 [0.2275, 0.3759]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.2763 [0.2338, 0.3294]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.3661 [0.3406, 0.4578]
 Partial correlation on decision with Capent, no controls: 0.2121 [0.1268, 0.2943]
 Partial correlation on decision with Capent, surface controls: 0.1781 [0.0907, 0.2628]
 Partial correlation on decision with Capent, Stated Other control: 0.1977 [0.1118, 0.2806]
 Partial correlation on decision with Capent, all controls: 0.1783 [0.0908, 0.2631]
 Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
 Partial correlation on decision with Capent, same answer, all controls: nan [nan, nan]
-Partial correlation on decision with surface controls: 0.2341 [0.2094, 0.3542]
-Partial correlation on decision with Stated Other control: 0.2662 [0.2223, 0.3174]
-Partial correlation on decision with all controls: 0.3503 [0.3257, 0.4465]
-Variance partitioning: Entropy unique R2=0.0292 [0.0074, 0.0614]
-Variance partitioning: Surface unique R2=0.1172 [0.0983, 0.1900]
-Variance partitioning: Shared R2=0.0158 [-0.0001, 0.0399]
-Variance partitioning: Unexplained R2=0.8378 [0.7540, 0.8614]
-Brier Resolution (ranking): 0.0234 [0.0148, 0.0393]
-Brier Reliability (reality): 0.0462 [0.0334, 0.0675]
-Brier: 0.2576 [0.2310, 0.2841]
-ECE: 0.2086 [0.1708, 0.2511]
+Partial correlation on decision with surface controls: 0.2341 [0.2076, 0.3537]
+Partial correlation on decision with Stated Other control: 0.2662 [0.2223, 0.3197]
+Partial correlation on decision with all controls: 0.3503 [0.3255, 0.4452]
+Variance partitioning: Entropy unique R2=0.0292 [0.0070, 0.0633]
+Variance partitioning: Surface unique R2=0.1172 [0.0994, 0.1925]
+Variance partitioning: Shared R2=0.0158 [-0.0005, 0.0390]
+Variance partitioning: Unexplained R2=0.8378 [0.7541, 0.8596]
+Brier Resolution (ranking): 0.0234 [0.0140, 0.0388]
+Brier Reliability (reality): 0.0462 [0.0330, 0.0669]
+Brier: 0.2576 [0.2295, 0.2854]
+ECE: 0.2086 [0.1711, 0.2478]
 df_model[p_i_capability] mean: 0.8126, std: 0.1886
 
                   Model 7: delegate_choice ~ C(topic) + C(answer_type) + q_length
@@ -1455,8 +1647,8 @@ df_model[p_i_capability] mean: 0.8126, std: 0.1886
 Dep. Variable:        delegate_choice   No. Observations:                  500
 Model:                          Logit   Df Residuals:                      485
 Method:                           MLE   Df Model:                           14
-Date:                Sat, 29 Nov 2025   Pseudo R-squ.:                 0.04920
-Time:                        12:31:33   Log-Likelihood:                -328.78
+Date:                Thu, 11 Dec 2025   Pseudo R-squ.:                 0.04920
+Time:                        08:40:40   Log-Likelihood:                -328.78
 converged:                       True   LL-Null:                       -345.79
 Covariance Type:            nonrobust   LLR p-value:                  0.002044
 ======================================================================================================
@@ -1481,8 +1673,8 @@ q_length                              -0.4349      0.254     -1.709      0.087  
 No misused predictors found.
 
 
-not more than expected by chance (k=2/5, expected=2.2, p=0.7354)
-Exact binomial test against 0 chance rate: BinomTestResult(k=2, n=5, alternative='greater', statistic=0.4, pvalue=0.0)
+not more than expected by chance (k=3/6, expected=2.8, p=0.6013)
+Exact binomial test against 0 chance rate: BinomTestResult(k=3, n=6, alternative='greater', statistic=0.5, pvalue=0.0)
 
-Potential misuses tested: 56; Significant after FDR correction: 0; Significant misused predictors: 
+Potential misuses tested: 66; Significant after FDR correction: 0; Significant misused predictors: 
 None survived FDR correction
