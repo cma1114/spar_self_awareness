@@ -59,6 +59,7 @@ class TurnRecord:
     blue_score_after: float
     red_score_after: float
     scenario_id: Optional[str] = None
+    extra: Optional[int] = None
     epistemic_type: Optional[str] = None
     ask_constraint: Optional[str] = None
     ks_self: Optional[str] = None
@@ -75,6 +76,7 @@ class TurnRecord:
     b_left_before_a: Optional[str] = None
     a_left_before_put: Optional[str] = None
     b_put_or_moved: Optional[str] = None
+
 
 class GameState:
     """Manages the game state."""
@@ -159,6 +161,11 @@ class GameState:
                 for char_name in present:
                     self.characters[char_name].update_knowledge(event.to_container, event.item)
                     self.characters[char_name].update_knowledge(event.from_container, None)
+
+            elif event.event_type == 'remove':
+                container_contents[event.container] = None
+                for char_name in present:
+                    self.characters[char_name].update_knowledge(event.container, None)
                         
             elif event.event_type == 'leave':
                 present.discard(event.character)
@@ -357,7 +364,7 @@ SCENARIO
 In each scenario, one or more of the players start inside a room. The room has one or more containers. Each scenario may include:
 - one or more players entering or leaving the room
 - one or more players putting objects into containers
-- one or more players moving objects between containers
+- one or more players removing objects from containers
 Players cannot see inside containers, but when a player is inside the room, they are aware of anything that happens in the room. When a player is outside the room they are unaware of anything that happens in the room, but do know if anyone enters or leaves the room. If an object is put or moved into a container while a player is outside the room, it will not be described to that player, but players leaving or entering the room will be described to that player.
 At the end of the scenario, I will reveal a question that I will ask in the answer phase.
 
@@ -551,7 +558,7 @@ Respond ONLY with your action, and no other text."""
                                        for event in scenario.events) else "FALSE"
         
         turn_record = TurnRecord(
-            round_num=scenario.round_num, scenario_id=scenario.id, character=turn_char, scenario_desc=scenario_desc,
+            round_num=scenario.round_num, scenario_id=scenario.id, extra=scenario.extra, character=turn_char, scenario_desc=scenario_desc,
             question=question_desc, action=action_str, action_cost=abs(score_delta),
             answer_given=answer_given, answer_correct=is_correct, answer_score=answer_score,
             optimal_action=expected_action_str, was_optimal=was_optimal,

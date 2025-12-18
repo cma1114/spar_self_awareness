@@ -284,7 +284,7 @@ def _validate_invariants(s: 'Scenario') -> None:
     """
     Defensive checks to catch logical errors early:
       - No one acts after leaving.
-      - Asked container never narrates two different items without an intervening move.
+      - No put into a non-empty container.
     """
     present = set(s.present_initially)
     contents = {'bag': None, 'box': None}
@@ -294,11 +294,8 @@ def _validate_invariants(s: 'Scenario') -> None:
         elif e.event_type == 'put':
             if e.character not in present:
                 raise ValueError(f"Event {idx}: {e.character} acted after leaving.")
-            if contents[e.container] is not None and contents[e.container] != e.item:
-                # Should be immediately preceded by a move out of that container
-                if not (idx > 0 and s.events[idx-1].event_type == 'move'
-                        and s.events[idx-1].from_container == e.container):
-                    raise ValueError(f"Event {idx}: put into non-empty {e.container} without prior move.")
+            if contents[e.container] is not None:
+                raise ValueError(f"Event {idx}: put into non-empty {e.container}.")
             contents[e.container] = e.item
         elif e.event_type == 'move':
             if e.character not in present:
@@ -309,6 +306,10 @@ def _validate_invariants(s: 'Scenario') -> None:
             if e.character in present:
                 raise ValueError(f"Event {idx}: {e.character} entered but was already present.")
             present.add(e.character)
+        elif e.event_type == 'remove':
+            if e.character not in present:
+                raise ValueError(f"Event {idx}: {e.character} acted after leaving.")
+            contents[e.container] = None
 
 
 def _get_answerer_state(spec: dict) -> EpistemicState:
@@ -411,6 +412,85 @@ def insert_extra_events(scenario: Scenario, answerer: str, player: str,
     scenario.events.insert(enter_insert_pos + 1, Event('enter', answerer))
 
 
+def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+    """
+    Insert extra put/move/remove events for scenarios where Answerer=Teammate,
+    Self=Knows X, Teammate=Believes Truth, with Extra=1.
+    Creates journey: Believes Truth -> Believes False -> Believes Truth
+    Modifies scenario.events in place.
+    """
+    queried = scenario.question_container
+    other = _other_container(queried)
+    
+    # Find where answerer leaves and track container contents
+    answerer_leave_idx = None
+    contents = {'bag': None, 'box': None}
+    present = set(scenario.present_initially)
+    
+    for idx, event in enumerate(scenario.events):
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+        elif event.event_type == 'move':
+            contents[event.to_container] = event.item
+            contents[event.from_container] = None
+        elif event.event_type == 'remove':
+            contents[event.container] = None
+        elif event.event_type == 'leave':
+            if event.character == answerer:
+                answerer_leave_idx = idx
+                break
+            present.discard(event.character)
+    
+    if answerer_leave_idx is None:
+        return
+    
+    # Z = what answerer believes (item in queried container when they left)
+    # X = item in other container (might be None)
+    Z = contents[queried]
+    X = contents[other]
+    
+    if Z is None:
+        return  # Nothing to work with
+    
+    # Pick a new item Y different from Z and X
+    Y = rng.choice([item for item in ITEMS_GEN if item != Z and item != X])
+    
+    # Pick random present characters to perform actions
+    # (answerer just left, so use remaining present characters)
+    present.discard(answerer)
+    if not present:
+        return
+    
+    # Build the extra events
+    extra_events = []
+    
+    # a. If X exists in other container: REMOVE X
+    if X is not None:
+        actor = rng.choice(list(present))
+        extra_events.append(Event('remove', actor, container=other, item=X))
+    
+    # b. MOVE Z from queried to other container
+    actor = rng.choice(list(present))
+    extra_events.append(Event('move', actor, from_container=queried, to_container=other, item=Z))
+    
+    # c. PUT Y in queried container
+    actor = rng.choice(list(present))
+    extra_events.append(Event('put', actor, container=queried, item=Y))
+    
+    # d. REMOVE Y from queried container
+    actor = rng.choice(list(present))
+    extra_events.append(Event('remove', actor, container=queried, item=Y))
+    
+    # e. MOVE Z from other back to queried container
+    actor = rng.choice(list(present))
+    extra_events.append(Event('move', actor, from_container=other, to_container=queried, item=Z))
+    
+    # Insert all extra events right after answerer leaves
+    insert_pos = answerer_leave_idx + 1
+    for i, event in enumerate(extra_events):
+        scenario.events.insert(insert_pos + i, event)
+
+
 def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: Optional[int] = None, chartypes: List[CharacterType] = [CharacterType.LIVE_PLAYER, CharacterType.HONEST_OPPONENT, CharacterType.DISHONEST_TEAMMATE, CharacterType.DISHONEST_OPPONENT, CharacterType.NEUTRAL]) -> None:
     rng = random.Random(seed)
     scenarios: List[Scenario] = []
@@ -443,11 +523,17 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             events=sb.events,
             present_initially=present_initially,
             id=row['Id'],
+            extra=row.get('Extra', 0),
         )
 
         # Insert extra events if Extra=1
         if row.get('Extra', 0) == 1:
-            insert_extra_events(scenario, answerer, actor, _get_answerer_state(row), rng)
+            if (row['Answerer'] == 'Teammate' and 
+                row['KS_Self'] == EpistemicState.KNOWS_X and 
+                row['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
+                insert_extra_puts(scenario, answerer, rng)
+            else:
+                insert_extra_events(scenario, answerer, actor, _get_answerer_state(row), rng)
 
         # Validate invariants
         _validate_invariants(scenario)

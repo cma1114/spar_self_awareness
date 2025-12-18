@@ -94,6 +94,7 @@ class Scenario:
     events: List[Event]
     present_initially: List[str]
     id: Optional[str] = None
+    extra: Optional[int] = None
     ks_self: Optional[str] = None
     ks_teammate: Optional[str] = None
     ks_opponent: Optional[str] = None
@@ -145,6 +146,11 @@ class Scenario:
                     verb_move = "move" if you_form else "moves"
                     lines.append(f"{actor} {verb_move} the {event.item} to the {event.to_container}.")
 
+            elif event.event_type == 'remove':
+                if perspective_present:
+                    verb_remove = "remove" if you_form else "removes"
+                    lines.append(f"{actor} {verb_remove} the {event.item} from the {event.container}.")
+
             elif event.event_type == 'leave':
                 verb_leave = "leave" if you_form else "leaves"
                 lines.append(f"{actor} {verb_leave} the room.")
@@ -171,6 +177,7 @@ class Scenario:
             'events': [asdict(e) for e in self.events],
             'present_initially': self.present_initially,
             'id': self.id if self.id else None, 
+            'extra': self.extra if self.extra else None,
             'epistemic_type': self.epistemic_type.value if self.epistemic_type else None,
             'ask_constraint': self.ask_constraint.value if self.ask_constraint else None,
             'ks_self': self.ks_self if self.ks_self else None,
@@ -190,6 +197,7 @@ class Scenario:
             events=[Event(**e) for e in data['events']],
             present_initially=data['present_initially'],
             id=data.get('id') if data.get('id') else None,
+            extra=data.get('extra') if data.get('extra') else None,
             epistemic_type=EpistemicType(data['epistemic_type']) if data.get('epistemic_type') else None,
             ask_constraint=AskConstraintType(data['ask_constraint']) if data.get('ask_constraint') else None,
             ks_self=data.get('ks_self') if data.get('ks_self') else None,
