@@ -140,8 +140,10 @@ class GameState:
         for event in scenario.events:
             if event.event_type == 'leave':
                 present.discard(event.character)
+            elif event.event_type == 'enter':
+                present.add(event.character)
         return present
-    
+
     def process_scenario_events(self, scenario: Scenario):
         """Process scenario events to determine what each character knows."""
         self.reset_scenario_knowledge()
@@ -222,7 +224,7 @@ class GameState:
         if ask_match:
             return Action(ActionType.ASK, ask_match.group(1).upper(), ask_match.group(2).lower())
         
-        tell_match = re.match(r'Tell\(([A-DN]),\s*(bag|box),\s*(\w+)\)', action_str, re.IGNORECASE)
+        tell_match = re.match(r'Tell\(([A-DN]),\s*(bag|box),\s*(?:an? |the )?(\w+)\)', action_str, re.IGNORECASE)
         if tell_match:
             return Action(ActionType.TELL, tell_match.group(1).upper(), 
                          tell_match.group(2).lower(), tell_match.group(3).lower())
@@ -529,7 +531,11 @@ Respond ONLY with your action, and no other text."""
             # Compare against what the player believes (their knowledge), not final true contents
             if action.container == scenario.question_container:
                 player_belief = game.characters[turn_char].get_belief(action.container)
-                tell_truthful_about_question = "TRUE" if action.contents == player_belief else "FALSE"
+                # Handle empty container case: None belief matches "empty" or "nothing"
+                if player_belief is None:
+                    tell_truthful_about_question = "TRUE" if action.contents in ("empty", "nothing") else "FALSE"
+                else:
+                    tell_truthful_about_question = "TRUE" if action.contents == player_belief else "FALSE"
         
         # Event-based fields
         a_leave_idx = None
