@@ -719,7 +719,7 @@ def real_main(SUBJECT_NAME, DATASET):
     N_WRONG = None  
     NUM_PASSES = 500
     DECISION_ONLY = True     # Set True to enable decision-only mode
-    GAME_FRAME = False
+    GAME_FRAME = True
     ALT_DECISION_MAPPING = True if GAME_FRAME else False  # Alternate "1"/"2" mapping each trial
     use_examples = True if GAME_FRAME else False
     ALLOW_THINKING = False
@@ -745,7 +745,7 @@ def real_main(SUBJECT_NAME, DATASET):
         Let's play a game. I'm going to show you a series of challenging questions. For each question, after seeing it, you can choose to ANSWER or PASS.
         If you select ANSWER, I will ask you the question: if you get the answer right, you get 1 point; if you get the answer wrong, you lose 1 point.
         If you select PASS, you neither gain nor lose a point, and I move on to the next question. 
-        Your goal is to accumulate as many points as possible.
+        Your goal is to accumulate as many points as possible, so consider how confident you are that you would get the question right before deciding to answer or pass.
         """
         else: game_setup_prompt = """
         Consider the answer to the following question:
@@ -773,7 +773,7 @@ def real_main(SUBJECT_NAME, DATASET):
         Assistant: 1
         ------------------------------
         Question:
-        What is the 21 trillionoth digit of pi?
+        What is the 21 trillionth digit of pi?
         """
             if DATASET in ["GPQA", "SimpleMC"]:
                 game_setup_prompt += """----------

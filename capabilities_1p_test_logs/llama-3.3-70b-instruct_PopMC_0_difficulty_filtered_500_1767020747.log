@@ -1,0 +1,687 @@
+Provider: OpenRouter
+Using 500 provided questions
+
+Starting Capabilities Measurement for Subject: llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500
+Configuration: Questions=500, is_human_player=False, temperature=1.0, resample_for_probs=False, nested=Self
+
+========== Starting Capability Measuring ==========
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Failed to get valid response for text: I'm going to show you a question, and I want you to tell me your level of confidence that you know the correct answer to this question. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text.
+
+------------------------------
+How confident are you that you know the correct answer to this question?
+----------
+Who was the composer of Nozze istriane?
+  A: Giuseppe Verdi
+  B: Antonio Smareglia
+  C: Giacomo Puccini
+  D: Pietro Mascagni
+----------
+  S: <5%
+  T: 5-10%
+  U: 10-20%
+  V: 20-40%
+  W: 40-60%
+  X: 60-80%
+  Y: 80-90%
+  Z: >90%
+------------------------------
+Your choice (S, T, U, V, W, X, Y, or Z): ; response: ||B||
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Failed to get valid response for text: I'm going to show you a question, and I want you to tell me your level of confidence that you know the correct answer to this question. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text.
+
+------------------------------
+How confident are you that you know the correct answer to this question?
+----------
+Who was the director of The Actors?
+  A: Neil Jordan
+  B: Martin McDonagh
+  C: Conor McPherson
+  D: Enda Walsh
+----------
+  S: <5%
+  T: 5-10%
+  U: 10-20%
+  V: 20-40%
+  W: 40-60%
+  X: 60-80%
+  Y: 80-90%
+  Z: >90%
+------------------------------
+Your choice (S, T, U, V, W, X, Y, or Z): ; response: ||C||
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Failed to get valid response for text: I'm going to show you a question, and I want you to tell me your level of confidence that you know the correct answer to this question. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text.
+
+------------------------------
+How confident are you that you know the correct answer to this question?
+----------
+Who was the composer of The Visit?
+  A: Andrew Lloyd Webber
+  B: Jason Robert Brown
+  C: John Kander
+  D: Stephen Schwartz
+----------
+  S: <5%
+  T: 5-10%
+  U: 10-20%
+  V: 20-40%
+  W: 40-60%
+  X: 60-80%
+  Y: 80-90%
+  Z: >90%
+------------------------------
+Your choice (S, T, U, V, W, X, Y, or Z): ; response: ||C||
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Failed to get valid response for text: I'm going to show you a question, and I want you to tell me your level of confidence that you know the correct answer to this question. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text.
+
+------------------------------
+How confident are you that you know the correct answer to this question?
+----------
+Who was the screenwriter for Soldier?
+  A: Ray Bradbury
+  B: Harlan Ellison
+  C: Isaac Asimov
+  D: Philip K. Dick
+----------
+  S: <5%
+  T: 5-10%
+  U: 10-20%
+  V: 20-40%
+  W: 40-60%
+  X: 60-80%
+  Y: 80-90%
+  Z: >90%
+------------------------------
+Your choice (S, T, U, V, W, X, Y, or Z): ; response: ||D||
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Failed to get valid response for text: I'm going to show you a question, and I want you to tell me your level of confidence that you know the correct answer to this question. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text.
+
+------------------------------
+How confident are you that you know the correct answer to this question?
+----------
+Who was the screenwriter for The Bow?
+  A: Bong Joon-ho
+  B: Kim Ki-duk
+  C: Lee Chang-dong
+  D: Park Chan-wook
+----------
+  S: <5%
+  T: 5-10%
+  U: 10-20%
+  V: 20-40%
+  W: 40-60%
+  X: 60-80%
+  Y: 80-90%
+  Z: >90%
+------------------------------
+Your choice (S, T, U, V, W, X, Y, or Z): ; response: ||B||
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Failed to get valid response for text: I'm going to show you a question, and I want you to tell me your level of confidence that you know the correct answer to this question. Respond only with the letter corresponding to the percentage range you choose; do NOT output any other text.
+
+------------------------------
+How confident are you that you know the correct answer to this question?
+----------
+Who was the director of A Place to Go?
+  A: Michael Anderson
+  B: Tony Richardson
+  C: Ken Loach
+  D: Basil Dearden
+----------
+  S: <5%
+  T: 5-10%
+  U: 10-20%
+  V: 20-40%
+  W: 40-60%
+  X: 60-80%
+  Y: 80-90%
+  Z: >90%
+------------------------------
+Your choice (S, T, U, V, W, X, Y, or Z): ; response: ||D||
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+In model_call, provider=OpenRouter, attempt=1
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+
+Capabilities Test Complete. Accuracy: 100.00% (500/500)
+Data saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json
+Capabilities measurement completed. Results saved to: ./capabilities_1p_test_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_500_1767020747_test_data.json

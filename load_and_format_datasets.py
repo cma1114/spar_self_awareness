@@ -11,7 +11,7 @@ hf_token = os.environ.get("HF_TOKEN")
 def text_to_id(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
-def load_and_format_dataset(dataset_name, num_questions_needed=None, split=None, skip_questions=None):
+def load_and_format_dataset(dataset_name, num_questions_needed=None, split=None, skip_questions=None, shuffle_answers=True):
     if dataset_name=="GPQA":
         if split is None:
             return load_and_format_gpqa(num_questions_needed, hf_token=hf_token, skip_questions=skip_questions)
@@ -39,6 +39,15 @@ def load_and_format_dataset(dataset_name, num_questions_needed=None, split=None,
             return load_and_format_simpleqa(num_questions_needed, split=split, skip_questions=skip_questions)
     elif dataset_name=="SimpleMC":
         return load_and_format_simplemc(num_questions_needed, skip_questions=skip_questions)
+    elif dataset_name=="PopMC":
+        return load_and_format_popmc(num_questions_needed, skip_questions=skip_questions, shuffle_answers=shuffle_answers)
+    elif dataset_name=="PopMC_0_difficulty_filtered":
+        if split is None:
+            return load_and_format_popmc_filtered(num_questions_needed, skip_questions=skip_questions, shuffle_answers=shuffle_answers)
+        else:
+            return load_and_format_popmc_filtered(num_questions_needed, split=split, skip_questions=skip_questions, shuffle_answers=shuffle_answers)
+    elif dataset_name=="TriviaMC":
+        return load_and_format_triviamc(num_questions_needed, skip_questions=skip_questions, shuffle_answers=shuffle_answers)
     elif dataset_name=="Garupanese":
         if split is None:
             return load_and_format_garupanese(num_questions_needed, skip_questions=skip_questions)
@@ -836,4 +845,263 @@ def load_and_format_garupanesemc(num_questions_needed=None, split="both", skip_q
 
     random.shuffle(formatted_questions)
     print(f"Successfully formatted {len(formatted_questions)} unique questions from Garupanese.")
+    return formatted_questions
+
+
+def load_and_format_popmc(num_questions_needed=None, split="test", skip_questions=None, shuffle_answers=True):
+    """
+    Loads the PopMC dataset from a local JSONL file and formats questions into the A-D multiple-choice format.
+    """
+    import json
+    print(f"Attempting to load PopMC...")
+    try:
+        filename = "./data/PopMC.jsonl"
+        with open(filename, 'r') as f:
+            dataset = [json.loads(line) for line in f]
+        print("PopMC Dataset loaded successfully.")
+    except Exception as e:
+        print(f"Error loading PopMC dataset: {e}")
+        return None
+
+    formatted_questions = []
+
+    dataset_indices = list(range(len(dataset)))
+    random.shuffle(dataset_indices)
+
+    question_ids_added = set()  # Keep track of IDs to ensure uniqueness
+
+    if not num_questions_needed: num_questions_needed = len(dataset)
+    print(f"Formatting {num_questions_needed} questions from PopMC...")
+    for idx in dataset_indices:
+        if len(formatted_questions) >= num_questions_needed:
+            break
+
+        item = dataset[idx]
+        question_text = item.get('question')
+        qid = item.get('qid')
+        
+        if qid in question_ids_added:
+            continue
+
+        if skip_questions is not None and question_text in skip_questions:
+            continue
+
+        # Gather options
+        correct_answer_text = item.get('correct_answer', '').strip()
+        incorrect_answers_text = item.get('distractors', [])
+        
+        # Basic validation
+        if not correct_answer_text or not incorrect_answers_text:
+            continue
+        if len(incorrect_answers_text) < 3:
+            continue
+        if any(len(ans.strip()) == 0 for ans in incorrect_answers_text):
+            continue
+
+        # Create the pool of 4 options and optionally shuffle
+        options_list = [correct_answer_text] + incorrect_answers_text[:3]  # Take first 3 distractors
+        if shuffle_answers:
+            random.shuffle(options_list)
+
+        # Assign labels (A-D) and find the correct one
+        options_dict = {}
+        correct_label = None
+        labels = ["A", "B", "C", "D"]
+        
+        for i, option_text in enumerate(options_list):
+            label = labels[i]
+            options_dict[label] = option_text
+            if option_text == correct_answer_text:
+                correct_label = label
+
+        # Create the formatted dictionary
+        formatted_q = {
+            "id": qid if qid else f"popmc_{split}_{text_to_id(question_text)}",
+            "question": question_text,
+            "options": options_dict,
+            "correct_answer": correct_label,
+            "prop": item.get('prop'),
+            "s_pop": item.get('s_pop'),
+            "o_pop": item.get('o_pop')
+        }
+        formatted_questions.append(formatted_q)
+        question_ids_added.add(qid if qid else formatted_q["id"])
+
+    if len(formatted_questions) < num_questions_needed:
+        print(f"Warning: Only able to format {len(formatted_questions)} unique questions, but {num_questions_needed} were requested.")
+
+    print(f"Successfully formatted {len(formatted_questions)} unique questions from PopMC.")
+    return formatted_questions
+
+def load_and_format_popmc_filtered(num_questions_needed=None, split="test", skip_questions=None, shuffle_answers=True):
+    """
+    Loads the PopMC_0_difficulty_filtered dataset from a local JSONL file and formats questions into the A-D multiple-choice format.
+    
+    Args:
+        shuffle_answers: If True, randomly shuffle the order of answer options. If False, correct answer is always in position A.
+    """
+    import json
+    print(f"Attempting to load PopMC_0_difficulty_filtered ({split} split)...")
+    try:
+        # Construct filename based on split
+        if split == "val" or split == "validation":
+            filename = "./data/PopMC_0_difficulty_filtered_val.jsonl"
+        else:
+            filename = "./data/PopMC_0_difficulty_filtered.jsonl"
+        with open(filename, 'r') as f:
+            dataset = [json.loads(line) for line in f]
+        print(f"PopMC_0_difficulty_filtered Dataset ({split} split) loaded successfully.")
+    except Exception as e:
+        print(f"Error loading PopMC_0_difficulty_filtered dataset ({split} split): {e}")
+        return None
+
+    formatted_questions = []
+
+    dataset_indices = list(range(len(dataset)))
+    random.shuffle(dataset_indices)
+
+    question_ids_added = set()  # Keep track of IDs to ensure uniqueness
+
+    if not num_questions_needed: num_questions_needed = len(dataset)
+    print(f"Formatting {num_questions_needed} questions from PopMC_0_difficulty_filtered...")
+    for idx in dataset_indices:
+        if len(formatted_questions) >= num_questions_needed:
+            break
+
+        item = dataset[idx]
+        question_text = item.get('question')
+        qid = item.get('qid')
+        
+        if qid in question_ids_added:
+            continue
+
+        if skip_questions is not None and question_text in skip_questions:
+            continue
+
+        # Gather options
+        correct_answer_text = item.get('correct_answer', '').strip()
+        incorrect_answers_text = item.get('distractors', [])
+        
+        # Basic validation
+        if not correct_answer_text or not incorrect_answers_text:
+            continue
+        if len(incorrect_answers_text) < 3:
+            continue
+        if any(len(ans.strip()) == 0 for ans in incorrect_answers_text):
+            continue
+
+        # Create the pool of 4 options and shuffle
+        options_list = [correct_answer_text] + incorrect_answers_text[:3]  # Take first 3 distractors
+        random.shuffle(options_list)
+
+        # Assign labels (A-D) and find the correct one
+        options_dict = {}
+        correct_label = None
+        labels = ["A", "B", "C", "D"]
+        
+        for i, option_text in enumerate(options_list):
+            label = labels[i]
+            options_dict[label] = option_text
+            if option_text == correct_answer_text:
+                correct_label = label
+
+        # Create the formatted dictionary
+        formatted_q = {
+            "id": qid if qid else f"popmc_filtered_{split}_{text_to_id(question_text)}",
+            "question": question_text,
+            "options": options_dict,
+            "correct_answer": correct_label,
+            "prop": item.get('prop'),
+            "s_pop": item.get('s_pop'),
+            "o_pop": item.get('o_pop')
+        }
+        formatted_questions.append(formatted_q)
+        question_ids_added.add(qid if qid else formatted_q["id"])
+
+    if len(formatted_questions) < num_questions_needed:
+        print(f"Warning: Only able to format {len(formatted_questions)} unique questions, but {num_questions_needed} were requested.")
+
+    print(f"Successfully formatted {len(formatted_questions)} unique questions from PopMC_0_difficulty_filtered.")
+    return formatted_questions
+
+def load_and_format_triviamc(num_questions_needed=None, split="test", skip_questions=None, shuffle_answers=True):
+    """
+    Loads the TriviaMC dataset from a local JSONL file and formats questions into the A-D multiple-choice format.
+    """
+    import json
+    print(f"Attempting to load TriviaMC...")
+    try:
+        filename = "./data/TriviaMC.jsonl"
+        with open(filename, 'r') as f:
+            dataset = [json.loads(line) for line in f]
+        print("TriviaMC Dataset loaded successfully.")
+    except Exception as e:
+        print(f"Error loading TriviaMC dataset: {e}")
+        return None
+
+    formatted_questions = []
+
+    dataset_indices = list(range(len(dataset)))
+    random.shuffle(dataset_indices)
+
+    question_ids_added = set()  # Keep track of IDs to ensure uniqueness
+
+    if not num_questions_needed: num_questions_needed = len(dataset)
+    print(f"Formatting {num_questions_needed} questions from TriviaMC...")
+    for idx in dataset_indices:
+        if len(formatted_questions) >= num_questions_needed:
+            break
+
+        item = dataset[idx]
+        question_text = item.get('question')
+        qid = item.get('qid')
+        
+        if qid in question_ids_added:
+            continue
+
+        if skip_questions is not None and question_text in skip_questions:
+            continue
+
+        # Gather options
+        correct_answer_text = item.get('correct_answer', '').strip()
+        incorrect_answers_text = item.get('distractors', [])
+        
+        # Basic validation
+        if not correct_answer_text or not incorrect_answers_text:
+            continue
+        if len(incorrect_answers_text) < 3:
+            continue
+        if any(len(ans.strip()) == 0 for ans in incorrect_answers_text):
+            continue
+
+        # Create the pool of 4 options and optionally shuffle
+        options_list = [correct_answer_text] + incorrect_answers_text[:3]  # Take first 3 distractors
+        if shuffle_answers:
+            random.shuffle(options_list)
+
+        # Assign labels (A-D) and find the correct one
+        options_dict = {}
+        correct_label = None
+        labels = ["A", "B", "C", "D"]
+        
+        for i, option_text in enumerate(options_list):
+            label = labels[i]
+            options_dict[label] = option_text
+            if option_text == correct_answer_text:
+                correct_label = label
+
+        # Create the formatted dictionary
+        formatted_q = {
+            "id": qid if qid else f"triviamc_{split}_{text_to_id(question_text)}",
+            "question": question_text,
+            "options": options_dict,
+            "correct_answer": correct_label
+        }
+        formatted_questions.append(formatted_q)
+        question_ids_added.add(qid if qid else formatted_q["id"])
+
+    if len(formatted_questions) < num_questions_needed:
+        print(f"Warning: Only able to format {len(formatted_questions)} unique questions, but {num_questions_needed} were requested.")
+
+    print(f"Successfully formatted {len(formatted_questions)} unique questions from TriviaMC.")
     return formatted_questions

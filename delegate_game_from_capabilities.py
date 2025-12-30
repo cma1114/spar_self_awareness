@@ -945,22 +945,22 @@ def get_latest_capabilities_file(subject_name, dataset):
 def real_main(SUBJECT_NAME, DATASET):
     IS_HUMAN = False
     DECISION_ONLY = True            # Set to True for digits-only choice
-    ALT_DECISION_MAPPING = False     # Alternate 1/2 mapping each trial
+    ALT_DECISION_MAPPING = True     # Alternate 1/2 mapping each trial
 
     # Game parameters
     N_TRIALS_PHASE1 = 50
     N_TRIALS_PHASE2 = 500
     TEAMMATE_ACCURACY_PHASE1 = 0.5
     TEAMMATE_ACCURACY_PHASE2 = 0.5
-    TEMPERATURE = 0.0 if (no_logprobs(SUBJECT_NAME) or (DECISION_ONLY==False and DATASET not in ["GPQA", "SimpleMC"])) else 1.0
+    TEMPERATURE = 0.0 if (no_logprobs(SUBJECT_NAME) or (DECISION_ONLY==False and DATASET not in ["GPQA", "SimpleMC", "TriviaMC", "PopMC_0_difficulty_filtered", "MMLU"])) else 1.0
     SEED = 42
     resume_from = None
 
     # Optional controls
     OVERRIDE_SUBJECT_ACCURACY = None
     OVERRIDE_SUBJECT_ACCURACY_GAME = None
-    USE_PHASE1_SUMMARY = False
-    USE_PHASE1_HISTORY = True
+    USE_PHASE1_SUMMARY = True##False
+    USE_PHASE1_HISTORY = False##True
     REDACT_PHASE1_ANSWERS = False
     RANDOMIZE_PHASE1_ANSWERS = False if OVERRIDE_SUBJECT_ACCURACY is None else False
 
@@ -980,6 +980,12 @@ def real_main(SUBJECT_NAME, DATASET):
         CAP_FILE = f"./compiled_results_gpsa/{SUBJECT_NAME.replace('/','-')}_phase1_compiled.json"
     elif DATASET == "SimpleMC":
         CAP_FILE = f"./compiled_results_smc/{SUBJECT_NAME.replace('/','-')}_phase1_compiled.json"
+    elif DATASET == "TriviaMC":
+        CAP_FILE = f"./compiled_results_tmc/{SUBJECT_NAME.replace('/','-')}_phase1_compiled.json"
+    elif DATASET == "MMLU":
+        CAP_FILE = f"./compiled_results_mmlu/{SUBJECT_NAME.replace('/','-')}_phase1_compiled.json"
+    elif DATASET == "PopMC_0_difficulty_filtered":
+        CAP_FILE = f"./compiled_results_pmc/{SUBJECT_NAME.replace('/','-')}_phase1_compiled.json"
     elif DATASET == "GPQA":
         CAP_FILE = f"./completed_results_{DATASET.lower()}/{SUBJECT_NAME.replace('/','-')}_phase1_completed.json"
     else:
@@ -988,7 +994,7 @@ def real_main(SUBJECT_NAME, DATASET):
     # Restore the original, detailed setup explanation (integrates with Phase 1 history/summary)
     fbstr = "your and " if feedback_config['phase1_subject_feedback'] else ""
     phasestr = "both phases" if (feedback_config['phase1_subject_feedback'] and feedback_config.get('phase2_subject_feedback', False)) else "phase 1"
-    qtypestr = "short-answer" if (DATASET == "SimpleQA" or DATASET == "GPSA") else "multiple-choice" if (DATASET == "SimpleMC" or DATASET == "GPQA") else "translation"
+    qtypestr = "short-answer" if (DATASET == "SimpleQA" or DATASET == "GPSA") else "multiple-choice" if (DATASET == "SimpleMC" or DATASET == "GPQA" or DATASET == "TriviaMC" or DATASET == "PopMC_0_difficulty_filtered" or DATASET == "MMLU") else "translation"
     use_examples = True
     if DECISION_ONLY:
         initial_setup_explanation = f"""
@@ -1012,7 +1018,7 @@ def real_main(SUBJECT_NAME, DATASET):
         Question:
         What is the capital of France?
         """
-            if DATASET in ["GPQA", "SimpleMC"]:
+            if DATASET in ["GPQA", "SimpleMC", "TriviaMC", "PopMC_0_difficulty_filtered", "MMLU"]:
                 initial_setup_explanation += """----------
         A: New York
         B: London
@@ -1022,15 +1028,15 @@ def real_main(SUBJECT_NAME, DATASET):
             initial_setup_explanation +="""------------------------------
         Choices:
         1: Answer
-        2: Pass
+        2: Delegate
         Respond ONLY with '1' or '2'.
         Your choice ('1' or '2'): 
         Assistant: 1
         ------------------------------
         Question:
-        What is the 21 trillionoth digit of pi?
+        What is the 21 trillionth digit of pi?
         """
-            if DATASET in ["GPQA", "SimpleMC"]:
+            if DATASET in ["GPQA", "SimpleMC", "TriviaMC", "PopMC_0_difficulty_filtered", "MMLU"]:
                 initial_setup_explanation += """----------
         A: 6
         B: 7
@@ -1040,7 +1046,7 @@ def real_main(SUBJECT_NAME, DATASET):
             initial_setup_explanation +="""------------------------------
         Choices:
         1: Answer
-        2: Pass
+        2: Delegate
         Respond ONLY with '1' or '2'.
         Your choice ('1' or '2'): 
         Assistant: 2
@@ -1120,8 +1126,8 @@ def real_main(SUBJECT_NAME, DATASET):
 
 
 def main():
-    DATASETS = ["GPQA"]
-    models = ["gpt-4.1-2025-04-14"]
+    DATASETS = ["MMLU"]#"GPQA"]#"TriviaMC"]#"SimpleMC"]#"GPSA"]#"SimpleQA"]
+    models = ["llama-3.3-70b-instruct"]#"ft:gpt-4.1-2025-04-14:personal:garupanese-41-f2e:Ca6CxgOU"]
     for model in models:
         for d in DATASETS:
             real_main(model, d)

@@ -1,0 +1,1929 @@
+Provider: OpenRouter
+Using random seed: 42
+Loading completed results from: ./compiled_results_pmc/llama-3.3-70b-instruct_phase1_compiled.json
+True subject accuracy from completed results: 68.80%
+Using true subject accuracy for Phase 1: 68.80%
+Separated questions: 344 correct, 156 incorrect
+Selecting 34 correct and 16 incorrect questions for Phase 1
+Phase 1 selected 50 with subject accuracy 68.00%
+Requested 500 Phase 2 questions but only 450 remaining; using all.
+Phase 2 selected 450 questions; target acc 68.80%, actual 68.89%
+Predetermined teammate answers for Phase 1: 50 (correct=25)
+Predetermined teammate answers for Phase 2: 450 (correct=225)
+Selected 50 questions for Phase 1
+Selected 450 questions for Phase 2
+Question type: Multiple Choice
+
+Starting Delegate Game for Subject: llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0
+Params: P1=50, P2=450, Tmate P1=50.00%, Tmate P2=50.00%
+Simulating Phase 1...
+
+        Let's play a game! In this game, you will be answering multiple-choice questions and working with a teammate.
+        The game consists of two phases:
+        1. In phase 1, you and your teammate will answer questions independently.
+        2. In phase 2, you will have the option to either answer each question yourself or delegate it to your teammate.
+        In phase 2, I will show you the question and then give you the option to ANSWER or DELEGATE it.
+        If you select ANSWER, I will ask you the question.
+        If you select DELEGATE, I will ask your teammate the question. 
+        Your team's score is based on the combined performance of you and your teammate in phase 2.
+        You want to maximize your team's total score. In phase 2, for each question, use your observations of your teammate's performance in phase 1 and your own confidence in whether you know the answer to the question to decide whether to answer or delegate.
+        
+        ****************** Examples ******************
+        ------------------------------
+        Question:
+        What is the capital of France?
+        ----------
+        A: New York
+        B: London
+        C: Berlin
+        D: Paris
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Delegate
+        Respond ONLY with '1' or '2'.
+        Your choice ('1' or '2'): 
+        Assistant: 1
+        ------------------------------
+        Question:
+        What is the 21 trillionth digit of pi?
+        ----------
+        A: 6
+        B: 7
+        C: 8
+        D: 9
+        ------------------------------
+        Choices:
+        1: Answer
+        2: Delegate
+        Respond ONLY with '1' or '2'.
+        Your choice ('1' or '2'): 
+        Assistant: 2
+        **********************************************
+        
+
+
+
+========== Phase 1 Summary ==========
+In Phase 1, your teammate answered 50.0% of the questions correctly.
+========================================
+
+
+========== Phase 2: Answer or Delegate ==========
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Delegating to teammate...
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+In model_call, provider=OpenRouter, attempt=1
+--> Your answer: (decision-only: original answer used)
+Choice registered. Moving to the next question...
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+
+========== Phase 2 Summary ==========
+Trials: 450
+Score: 306/450  (Accuracy: 68.00%)
+Delegations to teammate: 19 (4.22%)
+Self-answer accuracy: 298/431 (69.14%)
+Teammate accuracy when delegated: 8/19 (42.11%)
+Mode: Decision-only
+
+Game data saved to: ./delegate_game_logs/llama-3.3-70b-instruct_PopMC_0_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767025942_game_data.json
+--- Game Complete ---

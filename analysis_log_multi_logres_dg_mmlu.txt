@@ -1,0 +1,322 @@
+
+--- Analyzing llama-3.1-8b-instruct (Feedback_False, Non_Redacted, NoSubjAccOverride, NoSubjGameOverride, NotRandomized, NoHistory, NotFiltered, decisionOnly, 1 game files) ---
+              Game files for analysis: ['./delegate_game_logs/llama-3.1-8b-instruct_MMLU_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767043008_game_data.json']
+
+Teammate accuracy phase 1: 0.5000
+Delegation rate: 0.4089 (n=450)
+Team-acc: 0.6777777777777778
+Team-acc lift = -0.122 [-0.167, -0.081]
+Max possible team accuracy: 0.8456
+Optimal delegation rate: 0.1978
+Best possible self-accuracy: 0.9308
+Agreement rate: 0.5533 [0.5071, 0.5986]
+Weighted agreement rate: 0.7767
+Norm-weighted agreement rate: 0.5533
+Underconfidence rate: 0.3289
+Overconfidence rate: 0.1178
+Weighted underconfidence rate: 0.8356
+Weighted overconfidence rate: 0.9411
+Unweighted confidence: -0.4726 [-0.5941, -0.3497]
+Weighted confidence: -0.4726 [-0.5941, -0.3497]
+Introspection score = -0.004 [-0.097, 0.088], p=0.928
+FP = 148
+FN = 53
+Probability of delegating when s_i_capability is 0: 0.4045
+Probability of delegating when s_i_capability is 1: 0.4100
+Phase 1 accuracy: 0.8022 (n=450)
+Phase 2 self-accuracy: 0.8008 (n=266)
+Self-acc lift = -0.001 [-0.050, 0.044], p=0.9387
+Normed Self-acc lift = -0.007 [-0.255, 0.221]
+Balanced Accuracy Effect Size = -0.011 [-0.243, 0.221]
+Full AUC = 0.514 [0.458, 0.569]
+Calibration AUC = 0.795 [0.741, 0.845]
+Calibration Entropy AUC = 0.794 [0.740, 0.844]
+Game-Test Change Rate: 1.0000
+Game-Test Good Change Rate: 0.8008
+Game-Test Bad Change Rate: 0.0000
+Game-Test Bad-to-Bad Change Rate: 0.1992
+Number of answer changes without correctness flip: 213
+    s_i_capability  subject_correct  answer_changed                                               q_id
+1                1             True            True  mmlu_27f50722d61e2eabed85bbab3bb8f7066e0598db1...
+5                1             True            True  mmlu_89fbefa449f7621eca6092e552d795d712774b9a5...
+10               1             True            True  mmlu_3fa40c055e3cd3154007de061f1db838c3b9a71ce...
+11               1             True            True  mmlu_b322dc64d8249c64e810a0de3562d866bc8bc6f28...
+16               1             True            True  mmlu_8db8e8688120a7ea351139a8b417772d289018c59...
+P(good | change): 0.8008
+P(bad | change): 0.0000
+Game-Test Change on Incor Rate: 1.0
+Game-Test Change on Cor Rate: 1.0
+Capent-Gament corr: nan [nan, nan], p=nan
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  450
+Model:                          Logit   Df Residuals:                      448
+Method:                           MLE   Df Model:                            1
+Date:                Mon, 29 Dec 2025   Pseudo R-squ.:               1.457e-05
+Time:                        16:40:14   Log-Likelihood:                -304.40
+converged:                       True   LL-Null:                       -304.40
+Covariance Type:            nonrobust   LLR p-value:                    0.9250
+==================================================================================
+                     coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+Intercept         -0.3868      0.216     -1.791      0.073      -0.810       0.037
+s_i_capability     0.0227      0.241      0.094      0.925      -0.450       0.495
+==================================================================================
+
+Correlation between Other's Prob and Self Prob: 0.5750879845654364
+
+Correlation between p_i_capability and Self Prob: 0.24797488205302745
+
+Correlation between p_i_capability and Other Prob: 0.13960517209707607
+
+Correlation between capabilities_entropy and Self Prob: -0.26459564273877184
+
+Correlation between capabilities_entropy and Other Prob: -0.14995050056894704
+
+                  Model 4 (No Interactions): delegate_choice ~ s_i_capability + C(topic) + C(answer_type) + q_length
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  450
+Model:                          Logit   Df Residuals:                      447
+Method:                           MLE   Df Model:                            2
+Date:                Mon, 29 Dec 2025   Pseudo R-squ.:               4.777e-05
+Time:                        16:40:14   Log-Likelihood:                -304.39
+converged:                       True   LL-Null:                       -304.40
+Covariance Type:            nonrobust   LLR p-value:                    0.9856
+==================================================================================
+                     coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+Intercept         -0.2857      0.742     -0.385      0.700      -1.740       1.169
+s_i_capability     0.0198      0.242      0.082      0.935      -0.454       0.494
+q_length          -0.0140      0.099     -0.142      0.887      -0.208       0.179
+==================================================================================
+Partial correlation on decision with Correctness, no controls: -0.0044 [-0.0968, 0.0880]
+Partial correlation on decision with Correctness, surface controls: -0.0039 [-0.0964, 0.0887]
+Partial correlation on decision with Correctness for same answer, surface controls: nan [nan, nan]
+Baseline correctness coefficient with Stated Other control: -0.0355 [-0.5104, 0.4394], z=-0.1465, stderr=0.2423
+                    Could not fit Logit on decision with correctness and Stated Other control: Singular matrix
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.0067 [0.0015, 0.1078]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.0249 [0.0016, 0.1208]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.0253 [0.0107, 0.1361]
+Partial correlation on decision with Capent, no controls: 0.0190 [-0.0736, 0.1112]
+Partial correlation on decision with Capent, surface controls: 0.0199 [-0.0728, 0.1123]
+Partial correlation on decision with Capent, Stated Other control: 0.0155 [-0.0771, 0.1079]
+Partial correlation on decision with Capent, all controls: 0.0163 [-0.0764, 0.1088]
+Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
+Partial correlation on decision with Capent, same answer, all controls: nan [nan, nan]
+Partial correlation on decision with surface controls: 0.0093 [0.0010, 0.1069]
+Partial correlation on decision with Stated Other control: 0.0217 [0.0022, 0.1132]
+Partial correlation on decision with all controls: 0.0229 [0.0105, 0.1337]
+Variance partitioning: Entropy unique R2=0.0003 [0.0000, 0.0122]
+Variance partitioning: Surface unique R2=0.0005 [0.0001, 0.0186]
+Variance partitioning: Shared R2=0.0001 [-0.0019, 0.0023]
+Variance partitioning: Unexplained R2=0.9991 [0.9761, 0.9994]
+Brier Resolution (ranking): 0.0310 [0.0188, 0.0505]
+Brier Reliability (reality): 0.0115 [0.0073, 0.0242]
+Brier: 0.1380 [0.1143, 0.1655]
+ECE: 0.0997 [0.0780, 0.1378]
+df_model[p_i_capability] mean: 0.8942, std: 0.1718
+Partial correlation (entropy → game), all controls: 0.042
+Partial correlation (entropy → stated), all controls: 0.240
+Decision Prob minus Stated Prob entropy correlation, all controls: -0.197 [-0.319, -0.065]
+Steiger's test: z = -3.00, p = 0.003
+Partial correlation (entropy → game): 0.048
+Partial correlation (entropy → stated): 0.265
+Decision Prob minus Stated Prob entropy correlation, no controls: -0.216 [-0.353, -0.094]
+Steiger's test: z = -3.34, p = 0.001
+Partial correlation (entropy → stated): 0.265
+Partial correlation (entropy → other): 0.150
+Stated Prob minus Other Prob entropy correlation, no controls: 0.115 [0.035, 0.191]
+Steiger's test: z = 2.73, p = 0.007
+Influence of surface confounds on game decisions: R² = 0.001 [0.000, 0.021]
+Influence of surface confounds on stated confidence: R² = 0.341 [0.261, 0.424]
+Influence of surface confounds on game-stated: -0.339 [-0.417, -0.255]
+Partial correlation on decision prob with Capent, no controls: 0.0484 [-0.0442, 0.1402]
+Partial correlation on decision prob with Capent, surface controls: 0.0464 [-0.0464, 0.1383]
+Partial correlation on decision prob with Capent, Stated Other control: 0.0449 [-0.0478, 0.1369]
+Partial correlation on decision prob with Capent, all controls: 0.0424 [-0.0505, 0.1345]
+Linres on decision prob with Capent, surface controls: 0.0090 [-0.0090, 0.0269], z=0.9813, stderr=0.0091
+Linres on decision prob with Capent, no controls: 0.0093 [-0.0085, 0.0271], z=1.0258, stderr=0.0091
+Linres on decision prob with Capent, Stated Other control: 0.0087 [-0.0093, 0.0267], z=0.9505, stderr=0.0092
+Linres on decision prob with Capent, all controls: 0.0083 [-0.0099, 0.0265], z=0.8961, stderr=0.0093
+Linres on decision prob with Capent, all controls, standardized: 0.8961 [-1.0692, 2.8614]
+
+                  Model 7: delegate_choice ~ C(topic) + C(answer_type) + q_length
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  450
+Model:                          Logit   Df Residuals:                      448
+Method:                           MLE   Df Model:                            1
+Date:                Mon, 29 Dec 2025   Pseudo R-squ.:               3.678e-05
+Time:                        16:40:19   Log-Likelihood:                -304.39
+converged:                       True   LL-Null:                       -304.40
+Covariance Type:            nonrobust   LLR p-value:                    0.8811
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept     -0.2650      0.698     -0.380      0.704      -1.633       1.102
+q_length      -0.0147      0.098     -0.150      0.881      -0.207       0.178
+==============================================================================
+No misused predictors found.
+
+--- Analyzing llama-3.3-70b-instruct (Feedback_False, Non_Redacted, NoSubjAccOverride, NoSubjGameOverride, NotRandomized, NoHistory, NotFiltered, decisionOnly, 1 game files) ---
+              Game files for analysis: ['./delegate_game_logs/llama-3.3-70b-instruct_MMLU_50_500_nohistory_summary_decisionOnly_team0.5_temp1.0_1767044060_game_data.json']
+
+Teammate accuracy phase 1: 0.5000
+Delegation rate: 0.0022 (n=450)
+Team-acc: 0.9022222222222223
+Team-acc lift = 0.002 [-0.029, 0.026]
+Max possible team accuracy: 0.9491
+Optimal delegation rate: 0.0956
+Best possible self-accuracy: 0.9966
+Agreement rate: 0.9022 [0.8713, 0.9264]
+Weighted agreement rate: 0.9511
+Norm-weighted agreement rate: 0.9022
+Underconfidence rate: 0.0022
+Overconfidence rate: 0.0956
+Weighted underconfidence rate: 0.9989
+Weighted overconfidence rate: 0.9522
+Unweighted confidence: 0.9545 [0.8500, 1.0000]
+Weighted confidence: 0.9545 [0.8500, 1.0000]
+Introspection score = -0.015 [-0.029, 0.000], p=0.735
+FP = 1
+FN = 43
+Probability of delegating when s_i_capability is 0: 0.0000
+Probability of delegating when s_i_capability is 1: 0.0025
+Phase 1 accuracy: 0.9044 (n=450)
+Phase 2 self-accuracy: 0.9042 (n=449)
+Self-acc lift = -0.000 [-0.027, 0.027], p=1
+Normed Self-acc lift = -0.002 [-0.283, 0.277]
+Balanced Accuracy Effect Size = -0.099 [-0.413, 0.215]
+Full AUC = 0.847 [nan, nan]
+Calibration AUC = 0.775 [0.688, 0.802]
+Calibration Entropy AUC = 0.822 [0.721, 0.859]
+Game-Test Change Rate: 1.0000
+Game-Test Good Change Rate: 0.9042
+Game-Test Bad Change Rate: 0.0000
+Game-Test Bad-to-Bad Change Rate: 0.0958
+Number of answer changes without correctness flip: 406
+   s_i_capability  subject_correct  answer_changed                                               q_id
+0               1             True            True  mmlu_5d601693074da5ba02248f8f2e50f157785016f95...
+1               1             True            True  mmlu_417475aa68cb45af2bbc4b61411da812e4329d972...
+2               1             True            True  mmlu_e14c22812538baca2b5e6ed9af167fb321d46f650...
+3               1             True            True  mmlu_469049b26a5d75fec3d51fa958e432e28ae8a1ec4...
+5               1             True            True  mmlu_97fb9c78af563096dc0a1a2e7e06105158142f4cf...
+P(good | change): 0.9042
+P(bad | change): 0.0000
+Game-Test Change on Incor Rate: 1.0
+Game-Test Change on Cor Rate: 1.0
+Capent-Gament corr: nan [nan, nan], p=nan
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  450
+Model:                          Logit   Df Residuals:                      448
+Method:                           MLE   Df Model:                            1
+Date:                Mon, 29 Dec 2025   Pseudo R-squ.:                 0.01415
+Time:                        16:40:20   Log-Likelihood:                -7.0076
+converged:                       True   LL-Null:                       -7.1081
+Covariance Type:            nonrobust   LLR p-value:                    0.6538
+==================================================================================
+                     coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+Intercept        -38.6329   5.06e+07  -7.63e-07      1.000   -9.92e+07    9.92e+07
+s_i_capability    32.6265   5.06e+07   6.45e-07      1.000   -9.92e+07    9.92e+07
+==================================================================================
+
+Correlation between Other's Prob and Self Prob: 0.27746696653797875
+
+Correlation between p_i_capability and Self Prob: 0.002790318635527974
+
+Correlation between p_i_capability and Other Prob: -0.0524477685525541
+
+Correlation between capabilities_entropy and Self Prob: 0.002857791179591575
+
+Correlation between capabilities_entropy and Other Prob: 0.050956954291492065
+
+                  Model 4 (No Interactions): delegate_choice ~ s_i_capability + C(topic) + C(answer_type) + q_length
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  450
+Model:                          Logit   Df Residuals:                      447
+Method:                           MLE   Df Model:                            2
+Date:                Mon, 29 Dec 2025   Pseudo R-squ.:                 0.06291
+Time:                        16:40:20   Log-Likelihood:                -6.6610
+converged:                      False   LL-Null:                       -7.1081
+Covariance Type:            nonrobust   LLR p-value:                    0.6394
+==================================================================================
+                     coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+Intercept        -39.7941   1.53e+04     -0.003      0.998      -3e+04    2.99e+04
+s_i_capability    17.2730   1.53e+04      0.001      0.999      -3e+04       3e+04
+q_length           2.2334      3.272      0.683      0.495      -4.179       8.646
+==================================================================================
+
+Possibly complete quasi-separation: A fraction 0.18 of observations can be
+perfectly predicted. This might indicate that there is complete
+quasi-separation. In this case some parameters will not be identified.
+Partial correlation on decision with Correctness, no controls: -0.0153 [-0.1076, 0.0772]
+Partial correlation on decision with Correctness, surface controls: -0.0157 [-0.1081, 0.0770]
+                    Could not fit Logit on decision with correctness and surface controls: Not enough samples after cleaning: n=1
+Baseline correctness coefficient with Stated Other control: -19.6095 [-108117.9119, 108078.6930], z=-0.0004, stderr=55153.2086
+                    Could not fit Logit on decision with correctness and Stated Other control: Singular matrix
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.0256 [0.0230, 0.0283]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.1644 [0.1427, 0.1910]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.1648 [0.1426, 0.1920]
+Partial correlation on decision with Capent, no controls: -0.0076 [-0.1000, 0.0849]
+Partial correlation on decision with Capent, surface controls: -0.0076 [-0.1001, 0.0850]
+Partial correlation on decision with Capent, Stated Other control: 0.0007 [-0.0919, 0.0932]
+Partial correlation on decision with Capent, all controls: 0.0006 [-0.0920, 0.0933]
+                    Could not compute partial correlation on capent: Not enough samples after cleaning: n=1
+Brier Resolution (ranking): 0.0109 [0.0050, 0.0194]
+Brier Reliability (reality): 0.0171 [0.0086, 0.0303]
+Brier: 0.0912 [0.0666, 0.1177]
+ECE: 0.0921 [0.0688, 0.1209]
+df_model[p_i_capability] mean: 0.9937, std: 0.0439
+Partial correlation (entropy → game), all controls: 0.011
+Partial correlation (entropy → stated), all controls: 0.012
+Decision Prob minus Stated Prob entropy correlation, all controls: -0.001 [-0.077, 0.079]
+Steiger's test: z = -0.01, p = 0.989
+Partial correlation (entropy → game): 0.002
+Partial correlation (entropy → stated): -0.003
+Decision Prob minus Stated Prob entropy correlation, no controls: 0.005 [-0.071, 0.086]
+Steiger's test: z = 0.08, p = 0.934
+Partial correlation (entropy → stated): -0.003
+Partial correlation (entropy → other): -0.051
+Stated Prob minus Other Prob entropy correlation, no controls: 0.048 [-0.009, 0.119]
+Steiger's test: z = 0.85, p = 0.397
+Influence of surface confounds on game decisions: R² = 0.032 [0.002, 0.101]
+Influence of surface confounds on stated confidence: R² = 0.077 [0.024, 0.153]
+Influence of surface confounds on game-stated: -0.046 [-0.108, 0.025]
+Partial correlation on decision prob with Capent, no controls: 0.0021 [-0.0904, 0.0945]
+Partial correlation on decision prob with Capent, surface controls: 0.0020 [-0.0906, 0.0945]
+Partial correlation on decision prob with Capent, Stated Other control: 0.0111 [-0.0815, 0.1035]
+Partial correlation on decision prob with Capent, all controls: 0.0108 [-0.0819, 0.1034]
+Linres on decision prob with Capent, surface controls: 0.0006 [-0.0266, 0.0277], z=0.0423, stderr=0.0138
+Linres on decision prob with Capent, no controls: 0.0006 [-0.0266, 0.0278], z=0.0437, stderr=0.0138
+Linres on decision prob with Capent, Stated Other control: 0.0032 [-0.0236, 0.0300], z=0.2348, stderr=0.0137
+Linres on decision prob with Capent, all controls: 0.0031 [-0.0237, 0.0300], z=0.2283, stderr=0.0137
+Linres on decision prob with Capent, all controls, standardized: 0.2283 [-1.7370, 2.1936]
+
+                  Model 7: delegate_choice ~ C(topic) + C(answer_type) + q_length
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  450
+Model:                          Logit   Df Residuals:                      448
+Method:                           MLE   Df Model:                            1
+Date:                Mon, 29 Dec 2025   Pseudo R-squ.:                 0.04539
+Time:                        16:40:24   Log-Likelihood:                -6.7855
+converged:                       True   LL-Null:                       -7.1081
+Covariance Type:            nonrobust   LLR p-value:                    0.4218
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept    -21.1392     23.088     -0.916      0.360     -66.391      24.113
+q_length       2.0338      3.055      0.666      0.506      -3.955       8.022
+==============================================================================
+No misused predictors found.
+
+
+no significant-positive delegation effects (k=0/0, expected=0.0, p=nan)
+Could not summarize misuse results (method B): n must be an integer not less than 1
+
+No potential misuses found (no predictors with positive baseline and positive delegation effects)

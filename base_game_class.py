@@ -209,8 +209,13 @@ class BaseGameClass:
         if BaseGameClass.HF_MODEL is None:
             BaseGameClass.HF_MODEL = self.load_model(base_model_path, base_model_path, bnb = False)
             if self.subject_name != "llama-3.1-8b-instruct":
-                from peft import PeftModel
-                BaseGameClass.HF_MODEL = PeftModel.from_pretrained(BaseGameClass.HF_MODEL, "Tristan-Day/llm_metacognition-wbtl9xqu-step-1280-20251203-224144")
+                try:
+                    from peft import PeftModel
+                    print("loading fine-tuned model")
+                    BaseGameClass.HF_MODEL = PeftModel.from_pretrained(BaseGameClass.HF_MODEL, "Tristan-Day/llm_metacognition-wbtl9xqu-step-1280-20251203-224144")
+                except Exception as e:
+                    print(f"Error loading fine-tuned model: {e}")
+                    exit()
 
         messages = [{"role": "system", "content": system_msg}, user_msg]
         prompt = BaseGameClass.HF_MODEL.tokenizer.apply_chat_template(
@@ -377,7 +382,7 @@ class BaseGameClass:
                             ),
 #                            'seed': 42,
                             'provider': {
-                                'order': ['Chutes'] if 'v3.1' in self.subject_name else [],
+                                'order': ['Chutes'] if 'v3.1' in self.subject_name else ['Cerebras'] if 'qwen' in self.subject_name else [],
                                 'allow_fallbacks': True,
                                 'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'llama-3.1-405' in self.subject_name or 'gemini' in self.subject_name else True,
 #                                'quantizations': ['fp8'],

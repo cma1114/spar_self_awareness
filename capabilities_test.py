@@ -619,7 +619,7 @@ def main(model_dataset_dict, temp):
             INCLUDE_TOTAL = False
             resume_from = None  # "capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847064_test_data.json"#
             RESAMPLE = False
-            NESTED = "Self" #values: None, "Self", "Other"
+            NESTED = "Other" #values: None, "Self", "Other"
             temp = temp
             seed = 42
 
@@ -706,6 +706,6 @@ def main(model_dataset_dict, temp):
 
 if __name__ == "__main__":
     model_dataset_dict = {
-        "llama-3.1-8b-instruct": ["SimpleMC"],
+        "llama-3.3-70b-instruct": ["MMLU"],
         }
     main(model_dataset_dict, temp=1.0)
