@@ -30,7 +30,7 @@ from collections import Counter
 from typing import List, Dict, Tuple
 
 def no_logprobs(model_name):
-    if model_name.startswith("o3") or 'claude' in model_name or 'gpt-5' in model_name or model_name in ['deepseek/deepseek-v3.1-base', 'deepseek/deepseek-r1']: return True
+    if model_name.startswith("o3") or 'claude' in model_name or 'gpt-5' in model_name or 'qwen' in model_name or model_name in ['deepseek/deepseek-v3.1-base', 'deepseek/deepseek-r1']: return True
     return False
 
 ################################################################################
@@ -230,11 +230,16 @@ class BaseGameClass:
         """Gets answer from LLM model"""
         # Prepare common data
         user_msg = {"role": "user", "content": q_text}
+        # Add /no_think for Qwen3 models when thinking mode is not requested
+        qwen_no_think = ""
+        if "qwen" in self.subject_name.lower() and "_think" not in self.subject_name and "_reasoning" not in self.subject_name:
+            qwen_no_think = " /no_think"
+        
         if options: 
             options_str = " or ".join(options) if len(options) == 2 else ", ".join(options[:-1]) + f", or {options[-1]}"
-            system_msg = f"{setup_text}"###\nOutput ONLY the letter of your choice: {options_str}.\n"
+            system_msg = f"{setup_text}{qwen_no_think}"
         else:
-            system_msg = f"{setup_text}"
+            system_msg = f"{setup_text}{qwen_no_think}"
             options = " " #just to have len(options) be 1 for number of logprobs to return in short answer case
         
         MAX_ATTEMPTS = 50 #for bad resp format
@@ -304,7 +309,7 @@ class BaseGameClass:
                         if system_msg != "": formatted_messages.append({"role": "system", "content": system_msg})
                         if self.provider == "OpenAI" and len (formatted_messages) > 0 and self.subject_name != "deepseek-chat" and "llama" not in self.subject_name: formatted_messages[-1]["content"] = [{"type": "text", "text": formatted_messages[-1]["content"], "cache_control": {"type": "ephemeral"}}]
                         formatted_messages.append(user_msg)
-                    if 'base' in model_name or self.subject_name=='llama-3.1-405b':
+                    if 'base' in model_name or 'llama' in model_name:
                         prompt = f"User: {formatted_messages[0]['content']}\n"
                         if len (formatted_messages) > 1: prompt += f"{formatted_messages[1]['content']}\n"
                         prompt += "Assistant: "
@@ -376,6 +381,7 @@ class BaseGameClass:
                                         )
                                     )
                                     and "_reasoning" not in self.subject_name
+                                    and "_think" not in self.subject_name
                                 )
                                 # 4) otherwise, no extra reasoning field
                                 else {}
@@ -384,7 +390,7 @@ class BaseGameClass:
                             'provider': {
                                 'order': ['Chutes'] if 'v3.1' in self.subject_name else ['Cerebras'] if 'qwen' in self.subject_name else [],
                                 'allow_fallbacks': True,
-                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'llama-3.1-405' in self.subject_name or 'gemini' in self.subject_name else True,
+                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'llama' in self.subject_name or 'gemini' in self.subject_name else True,
 #                                'quantizations': ['fp8'],
                             },
                         }} if self.provider == "OpenRouter" else {}
