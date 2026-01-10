@@ -364,7 +364,7 @@ class BaseGameClass:
                                     or "_reasoning" in self.subject_name
                                     or "-r1" in model_name
                                 )
-                                # 3) default-off bucket (your original rule)
+                                # 3) default-off bucket (original rule)
                                 else {
                                     "reasoning": {
                                         "enabled": False
