@@ -302,7 +302,7 @@ def process_file_groups(files_to_process, criteria_chain, model_name_for_log, gr
 # --- Main Analysis Logic ---
 if __name__ == "__main__":
 
-    dataset = "MMLU"#"TriviaMC"#"PopMC_0_difficulty_filtered"#"SimpleMC" #"SimpleQA" # "Garupanese"#
+    dataset = "SimpleMC" #"MMLU"#"TriviaMC"#"PopMC_0_difficulty_filtered"#SimpleQA" # "Garupanese"#
     game_type = "dg" #"aop"#
     output_entropy = False 
     USE_FILTERED_FOR_LOGRES = False #remove items where capabilites and game correctness disagree

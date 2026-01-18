@@ -185,7 +185,7 @@ class BaseGameClass:
         return model
 
     @staticmethod
-    def run_hf_forward_pass(model, prompts, device="cuda"):
+    def run_hf_forward_pass(model, prompts, device="cuda", num_options=4):
         
         enc = model.tokenizer(prompts, return_tensors="pt", padding=True).to(device)
 
@@ -194,7 +194,7 @@ class BaseGameClass:
 
         final_logits = out.logits[0, -1, :]  # [vocab] - first item in batch, last token
         probs = torch.softmax(final_logits, dim=-1)
-        top_probs, top_indices = torch.topk(probs, 4)
+        top_probs, top_indices = torch.topk(probs, num_options)
         top_tokens = model.tokenizer.convert_ids_to_tokens(top_indices.tolist())
         
         token_prob_dict = {tok: prob.item() for tok, prob in zip(top_tokens, top_probs)}
@@ -204,7 +204,8 @@ class BaseGameClass:
         return top_tokens[0], token_prob_dict
 
     HF_MODEL = None
-    def handle_hf_model(self, user_msg, system_msg, temp):
+    def handle_hf_model(self, user_msg, system_msg, temp, num_options):
+        print(f"SUBJECT NAME={self.subject_name}")
         base_model_path = "meta-llama/Meta-Llama-3.1-8B-Instruct"
         if BaseGameClass.HF_MODEL is None:
             BaseGameClass.HF_MODEL = self.load_model(base_model_path, base_model_path, bnb = False)
@@ -212,18 +213,17 @@ class BaseGameClass:
                 try:
                     from peft import PeftModel
                     print("loading fine-tuned model")
-                    BaseGameClass.HF_MODEL = PeftModel.from_pretrained(BaseGameClass.HF_MODEL, "Tristan-Day/llm_metacognition-wbtl9xqu-step-1280-20251203-224144")
+                    BaseGameClass.HF_MODEL = PeftModel.from_pretrained(BaseGameClass.HF_MODEL, "Tristan-Day/ect_20251222_215412_v0uei7y1_2000")
                 except Exception as e:
                     print(f"Error loading fine-tuned model: {e}")
-                    exit()
-
+                
         messages = [{"role": "system", "content": system_msg}, user_msg]
         prompt = BaseGameClass.HF_MODEL.tokenizer.apply_chat_template(
             messages,
             tokenize=False,
             add_generation_prompt=True
         )
-        return self.run_hf_forward_pass(BaseGameClass.HF_MODEL, prompt)
+        return self.run_hf_forward_pass(BaseGameClass.HF_MODEL, prompt, num_options=num_options)
 
 
     def _get_llm_answer(self, options, q_text, message_history, keep_appending=True, setup_text="", MAX_TOKENS=1, temp=0.0, accept_any=True, top_p=None, top_k=None):
@@ -273,7 +273,7 @@ class BaseGameClass:
                 elif self.provider == "OpenAI" or self.provider == "xAI" or self.provider == "DeepSeek" or self.provider == "OpenRouter":
                     if self.provider == "OpenRouter":
                         ###Special handling for HF models
-######                        if self.subject_name.startswith("llama-3.1-8b-instruct"): return self.handle_hf_model(user_msg, system_msg, temp)
+                        if self.subject_name.startswith("llama-3.1-8b-instruct"): return self.handle_hf_model(user_msg, system_msg, temp, len(options))
                         ###
                         if self.subject_name == "gpt-4.1-2025-04-14": model_name = "openai/gpt-4.1"
                         elif self.subject_name=='claude-3-5-sonnet-20241022': model_name = 'anthropic/claude-3.5-sonnet'
@@ -310,8 +310,9 @@ class BaseGameClass:
                         prompt += "Assistant: "
                         formatted_messages=[{'role': 'user', 'content': prompt}]
                     #print(f"formatted_messages={formatted_messages}")
+                    #exit()
                     reasoning_effort = None
-                    if "gpt-5" in self.subject_name:
+                    if "gpt-5-" in self.subject_name:
                         reasoning_effort = (
                             "high"
                             if ("_think" in self.subject_name or "_reasoning" in self.subject_name)
@@ -336,7 +337,7 @@ class BaseGameClass:
                                 }
                                 if (
                                     (
-                                        "openai/" in self.subject_name
+                                        "openai/gpt-5-" in self.subject_name
                                         or "gpt-4" in self.subject_name
                                         or self.subject_name.startswith("o4")
                                         or self.subject_name.startswith("o3")
@@ -369,6 +370,7 @@ class BaseGameClass:
                                     (
                                         "claude" in self.subject_name
                                         or "gpt-oss" in self.subject_name
+                                        or "gpt-5.2" in self.subject_name
                                         or (
                                             "deepseek" in self.subject_name
                                             and "v3.1" in self.subject_name
@@ -382,7 +384,7 @@ class BaseGameClass:
                             ),
 #                            'seed': 42,
                             'provider': {
-                                'order': ['Chutes'] if 'v3.1' in self.subject_name else ['Cerebras'] if 'qwen' in self.subject_name else [],
+                                'order': ['Chutes'] if 'v3.1' in self.subject_name else [],
                                 'allow_fallbacks': True,
                                 'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'llama-3.1-405' in self.subject_name or 'gemini' in self.subject_name else True,
 #                                'quantizations': ['fp8'],

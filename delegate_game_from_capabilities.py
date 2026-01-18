@@ -1126,8 +1126,8 @@ def real_main(SUBJECT_NAME, DATASET):
 
 
 def main():
-    DATASETS = ["MMLU"]#"GPQA"]#"TriviaMC"]#"SimpleMC"]#"GPSA"]#"SimpleQA"]
-    models = ["llama-3.3-70b-instruct"]#"ft:gpt-4.1-2025-04-14:personal:garupanese-41-f2e:Ca6CxgOU"]
+    DATASETS = ["SimpleMC"]#"MMLU"]#"GPQA"]#"TriviaMC"]#"GPSA"]#"SimpleQA"]
+    models = ["openai/gpt-5.2"]#"ft:gpt-4.1-2025-04-14:personal:garupanese-41-f2e:Ca6CxgOU"]
     for model in models:
         for d in DATASETS:
             real_main(model, d)
