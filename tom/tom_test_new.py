@@ -25,6 +25,33 @@ except ImportError:
     BaseGameClass = object  # Dummy base class
 import argparse
 
+# Game instructions template - defined once, used in play_game_cli and prompt_history
+GAME_SETUP_TEMPLATE = """
+Let's play a game! In this game you will be playing with a teammate against a team of opposing players. For simplicity, the players are referred to as A, B, C, and D. A and B are teammates on the Blue team, and C and D are teammates on the Red team. You are player A. The game is made up of turns, and each turn consists of a scenario, an action phase, and an answer phase. Players need to figure out the right action to take in each action phase, so that their team scores more points than their opponent's team.
+
+SCENARIO
+In each scenario, one or more of the players start inside a room. The room has one or more containers. Each scenario may include:
+- one or more players entering or leaving the room
+- one or more players putting objects into containers
+- one or more players removing objects from containers
+Players cannot see inside containers, but when a player is inside the room, they are aware of anything that happens in the room. When a player is outside the room they are unaware of anything that happens in the room, but do know if anyone enters or leaves the room. If an object is put or moved into a container while a player is outside the room, it will not be described to that player, but players leaving or entering the room will be described to that player.
+At the end of the scenario, I will reveal a question that I will ask in the answer phase.
+
+ACTION PHASE
+In the action phase, the player whose turn it is can take one action: Ask, Tell, or Pass.
+An Ask action entails asking any player the contents of one container. The format for an Ask action is: Ask(Player, Container); this will result in the player you ask answering your question. It costs your team 0.5 points to do this action.
+A Tell action entails telling any player the contents of one container. The format for a Tell action is: Tell(Player, Container, Contents); this will result in the player you tell hearing the answer you give. It costs your team 0.5 points to do this action.
+The format for a Pass action is simply "Pass". Nothing changes as a result of this action, and it costs 0 points.
+Ask and Tell actions are private between the two players involved; other players do not hear or see these actions or their results.
+Players do not have to tell the truth either in their Tell actions or in response to another player's Ask action. 
+A team's points can go negative.
+
+ANSWER PHASE
+In the answer phase, I will ask a target player (not necessarily the player whose turn it is) to name the contents of one container. When a player answers my question correctly, their team gets 1 point. The first team to {WINNING_SCORE} points wins.
+
+For the purpose of this study, we're going to repeatedly ask you to make the first move in different runs of this game. Each run is separate and in each run we want you to make the best move in that situation.
+"""
+
 class ActionType(Enum):
     ASK = "ask"
     TELL = "tell"
@@ -76,6 +103,9 @@ class TurnRecord:
     b_left_before_a: Optional[str] = None
     a_left_before_put: Optional[str] = None
     b_put_or_moved: Optional[str] = None
+    # History mode fields:
+    history_mode: Optional[str] = None
+    trial: Optional[int] = None
 
 
 class GameState:
@@ -256,7 +286,7 @@ class GameState:
             else:
                 answer = target.get_belief(container)
 
-            # Asking always updates the asker’s belief with whatever was answered.
+            # Asking always updates the asker's belief with whatever was answered.
             self.characters[actor_name].receive_info(container, answer, target, True)
 
             desc = f"Ask({action.target_char}, {container})"
@@ -320,19 +350,45 @@ def save_game_results(turn_records: List[TurnRecord], filename: str):
 
 if TORCH_AVAILABLE:
     class ToMTestLLM(BaseGameClass):
-        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs"):
+        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none"):
             super().__init__(subject_id, subject_name, is_human_player=False, log_dir=log_dir)
             self.specs = specs
             self.all_turn_records = []
+            self.history_mode = history_mode
+            # For history mode: track completed trials
+            self.completed_trials = []  # List of dicts: {trial, scenario_desc, question_desc, action, reasoning}
+            self.current_trial = 0
+            # Store the game setup text once it's formatted (set by play_game_cli on first trial)
+            self.game_setup_text = None
+            # Set up prompt history file path
+            if log_dir and self.log_base_name:
+                self.prompt_history_filename = f"{self.log_base_name}_prompt_history.txt"
+            else:
+                self.prompt_history_filename = None
 
         def run_test(self):
             self._log("--- Starting LLM ToM Test ---")
+            self._log(f"History mode: {self.history_mode}")
+            
             chartypes = [CharacterType.LIVE_PLAYER, CharacterType.HONEST_OPPONENT, CharacterType.DISHONEST_TEAMMATE, CharacterType.DISHONEST_OPPONENT]
             
-            for i, spec in enumerate(self.specs):
-                self._log(f"\n--- Running Spec {i+1}/{len(self.specs)}: {spec} ---")
-                outfile = f'scenarios_llm_test_{i}.json'
-                generate_scenarios_from_tuples([spec], outfile=outfile, seed=i, chartypes=chartypes)
+            # Determine trial order
+            if self.history_mode != "none":
+                # Randomize the order of specs
+                specs_with_indices = list(enumerate(self.specs))
+                random.shuffle(specs_with_indices)
+                ordered_specs = specs_with_indices
+                self._log(f"Randomized trial order for history_mode='{self.history_mode}'")
+            else:
+                # Keep original order
+                ordered_specs = list(enumerate(self.specs))
+            
+            for trial_num, (original_idx, spec) in enumerate(ordered_specs, start=1):
+                self.current_trial = trial_num if self.history_mode != "none" else 0
+                
+                self._log(f"\n--- Running Trial {trial_num}/{len(self.specs)} (Spec ID {original_idx+1}): {spec} ---")
+                outfile = f'scenarios_llm_test_{original_idx}.json'
+                generate_scenarios_from_tuples([spec], outfile=outfile, seed=original_idx, chartypes=chartypes)
                 
                 game_state = play_game_cli(scenario_file=outfile, llm_player=self)
                 if game_state:
@@ -351,6 +407,75 @@ if TORCH_AVAILABLE:
 
             save_game_results(self.all_turn_records, self.game_data_filename)
             self._log(f"\nGame results saved to {self.game_data_filename}")
+            
+            # Write prompt history file if in history mode
+            if self.history_mode != "none" and self.prompt_history_filename:
+                self._write_prompt_history()
+                self._log(f"Prompt history saved to {self.prompt_history_filename}")
+
+        def _write_prompt_history(self):
+            """Write the final cumulative prompt history to file."""
+            with open(self.prompt_history_filename, 'w', encoding='utf-8') as f:
+                # Write instructions once at the top (use stored game_setup_text if available)
+                f.write("=" * 70 + "\n")
+                f.write("GAME INSTRUCTIONS\n")
+                f.write("=" * 70 + "\n")
+                if self.game_setup_text:
+                    f.write(self.game_setup_text.strip() + "\n")
+                else:
+                    # Fallback if game_setup_text wasn't stored (shouldn't happen)
+                    f.write(GAME_SETUP_TEMPLATE.format(WINNING_SCORE="N/A").strip() + "\n")
+                f.write("=" * 70 + "\n\n")
+                
+                # Write all completed trials
+                for trial_data in self.completed_trials:
+                    f.write(f"SCENARIO {trial_data['trial']}\n")
+                    f.write("Here's what you see:\n")
+                    f.write("-----------------------------------------------\n")
+                    f.write(f"{trial_data['scenario_desc']}\n")
+                    f.write("----------------------------------------------\n")
+                    f.write(f"{trial_data['question_desc']}\n\n")
+                    f.write("ACTION PHASE\n")
+                    f.write("It is your turn.\n")
+                    f.write(f"Your action: {trial_data['action']}\n")
+                    if self.history_mode == "with_reasoning" and trial_data.get('reasoning'):
+                        f.write(f"Your reasoning: {trial_data['reasoning']}\n")
+                    f.write("\n")
+
+        def build_history_prompt(self, current_scenario_desc: str, current_question_desc: str, trial_num: int) -> str:
+            """Build the cumulative prompt including all previous trials."""
+            prompt_parts = []
+            
+            # Add all completed trials
+            for trial_data in self.completed_trials:
+                trial_prompt = f"""SCENARIO {trial_data['trial']}
+Here's what you see:
+-----------------------------------------------
+{trial_data['scenario_desc']}
+----------------------------------------------
+{trial_data['question_desc']}
+
+ACTION PHASE
+It is your turn.
+Your action: {trial_data['action']}"""
+                if self.history_mode == "with_reasoning" and trial_data.get('reasoning'):
+                    trial_prompt += f"\nYour reasoning: {trial_data['reasoning']}"
+                prompt_parts.append(trial_prompt)
+            
+            # Add current trial prompt
+            current_prompt = f"""SCENARIO {trial_num}
+Here's what you see:
+-----------------------------------------------
+{current_scenario_desc}
+----------------------------------------------
+{current_question_desc}
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text."""
+            prompt_parts.append(current_prompt)
+            
+            return "\n\n".join(prompt_parts)
 
 
 def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None):
@@ -358,35 +483,23 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
     game = GameState(scenario_file=scenario_file)
     log = llm_player._log if llm_player else print
     is_human = llm_player is None
+    
+    # Get history_mode from llm_player if available
+    history_mode = getattr(llm_player, 'history_mode', 'none') if llm_player else 'none'
+    current_trial = getattr(llm_player, 'current_trial', 0) if llm_player else 0
 
-    GAME_SETUP = """
-Let's play a game! In this game you will be playing with a teammate against a team of opposing players. For simplicity, the players are referred to as A, B, C, and D. A and B are teammates on the Blue team, and C and D are teammates on the Red team. You are player A. The game is made up of turns, and each turn consists of a scenario, an action phase, and an answer phase. Players need to figure out the right action to take in each action phase, so that their team scores more points than their opponent's team.
-
-SCENARIO
-In each scenario, one or more of the players start inside a room. The room has one or more containers. Each scenario may include:
-- one or more players entering or leaving the room
-- one or more players putting objects into containers
-- one or more players removing objects from containers
-Players cannot see inside containers, but when a player is inside the room, they are aware of anything that happens in the room. When a player is outside the room they are unaware of anything that happens in the room, but do know if anyone enters or leaves the room. If an object is put or moved into a container while a player is outside the room, it will not be described to that player, but players leaving or entering the room will be described to that player.
-At the end of the scenario, I will reveal a question that I will ask in the answer phase.
-
-ACTION PHASE
-In the action phase, the player whose turn it is can take one action: Ask, Tell, or Pass.
-An Ask action entails asking any player the contents of one container. The format for an Ask action is: Ask(Player, Container); this will result in the player you ask answering your question. It costs your team 0.5 points to do this action.
-A Tell action entails telling any player the contents of one container. The format for a Tell action is: Tell(Player, Container, Contents); this will result in the player you tell hearing the answer you give. It costs your team 0.5 points to do this action.
-The format for a Pass action is simply "Pass". Nothing changes as a result of this action, and it costs 0 points.
-Ask and Tell actions are private between the two players involved; other players do not hear or see these actions or their results.
-Players do not have to tell the truth either in their Tell actions or in response to another player's Ask action. 
-A team's points can go negative.
-
-ANSWER PHASE
-In the answer phase, I will ask a target player (not necessarily the player whose turn it is) to name the contents of one container. When a player answers my question correctly, their team gets 1 point. The first team to {WINNING_SCORE} points wins.
-    """
-
+    # Build game setup text from template
+    GAME_SETUP = GAME_SETUP_TEMPLATE
+    
     if 'N' in game.characters:
         GAME_SETUP += """The Neutral party does not get any turns, but will answer any question honestly."""
     
     game_setup_text = "=" * 70 + "\n" + GAME_SETUP.format(WINNING_SCORE=game.WINNING_SCORE) + "\n" + "=" * 70
+    
+    # Store the formatted game_setup_text on llm_player for use in prompt_history (only on first trial)
+    if llm_player and hasattr(llm_player, 'game_setup_text') and llm_player.game_setup_text is None:
+        llm_player.game_setup_text = GAME_SETUP.format(WINNING_SCORE=game.WINNING_SCORE)
+    
     if is_human:
         log(game_setup_text)
     
@@ -399,6 +512,11 @@ In the answer phase, I will ask a target player (not necessarily the player whos
         if not turn_char:
             break
         
+        # In LLM mode, we only process player A's turn
+        if llm_player and turn_char != 'A':
+            game.advance_turn()
+            continue
+        
         true_contents = game.process_scenario_events(scenario)
         scenario_desc = scenario.get_description_for(turn_char, game.characters)
         answerer = "you" if scenario.who_answers == turn_char else scenario.who_answers
@@ -407,7 +525,14 @@ In the answer phase, I will ask a target player (not necessarily the player whos
         preamble=f"\n***********************************\nSCORE\nBlue={game.scores[Team.BLUE]}, Red={game.scores[Team.RED]}\n"
         log(preamble)
 
-        prompt_text = f"""SCENARIO
+        # Build prompt text based on history_mode
+        if history_mode != "none" and llm_player:
+            # Use "SCENARIO [N]" format
+            scenario_header = f"SCENARIO {current_trial}"
+        else:
+            scenario_header = "SCENARIO"
+
+        prompt_text = f"""{scenario_header}
 Here's what you see:
 -----------------------------------------------
 {scenario_desc}
@@ -425,11 +550,23 @@ Respond ONLY with your action, and no other text."""
         
         action = None
         action_str = ""
+        reasoning_trace = None
+        
         if turn_char == 'A':
             prompt_for_action = "Your action (Ask(Player, Container), Tell(Player, Container, Contents), or Pass): "
             if llm_player:
-                llm_prompt_text = f"{game_setup_text}\n{preamble}\n{prompt_text}\n{prompt_for_action}"
-                action_str, _, _ = llm_player._get_llm_answer(
+                if history_mode != "none":
+                    # Build cumulative prompt with history
+                    history_prompt = llm_player.build_history_prompt(scenario_desc, question_desc, current_trial)
+                    llm_prompt_text = f"{game_setup_text}\n\n{history_prompt}\n{prompt_for_action}"
+                else:
+                    # Original behavior - single scenario
+                    llm_prompt_text = f"{game_setup_text}\n{preamble}\n{prompt_text}\n{prompt_for_action}"
+
+                # Logging for debugging
+                log(f"=== FULL LLM PROMPT ===\n{llm_prompt_text}\n=== END PROMPT ===")
+                
+                action_str, _, _, reasoning_trace = llm_player._get_llm_answer(
                     options=None,
                     q_text=llm_prompt_text,
                     message_history=[],
@@ -584,8 +721,20 @@ Respond ONLY with your action, and no other text."""
             b_left_before_a=b_left_before_a,
             a_left_before_put=a_left_before_put,
             b_put_or_moved=b_put_or_moved,
+            history_mode=history_mode if llm_player else None,
+            trial=current_trial if history_mode != "none" else None,
         )
         game.turn_records.append(turn_record)
+        
+        # Store completed trial data for history mode
+        if llm_player and history_mode != "none" and turn_char == 'A':
+            llm_player.completed_trials.append({
+                'trial': current_trial,
+                'scenario_desc': scenario_desc,
+                'question_desc': question_desc,
+                'action': action_str,
+                'reasoning': reasoning_trace
+            })
         
         if is_human:
             input("\n[Press Enter to continue]")
@@ -619,6 +768,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", type=str, default="human", choices=["human", "llm"])
     parser.add_argument("--model", type=str, default="kimi-k2")
+    parser.add_argument("--history_mode", type=str, default="none", choices=["none", "no_reasoning", "with_reasoning"],
+                        help="History mode: 'none' (default) for independent trials, 'no_reasoning' for cumulative context without reasoning, 'with_reasoning' for cumulative context with reasoning traces")
     args = parser.parse_args()
 
     specs = read_specs_from_csv('ToM - scenarios.csv')
@@ -627,7 +778,8 @@ if __name__ == "__main__":
             subject_id=args.model.replace("/", "-"),
             subject_name=args.model,
             specs=specs,
-            log_dir="tom_llm_logs"
+            log_dir="tom_llm_logs",
+            history_mode=args.history_mode
         )
         test_runner.run_test()
     else:

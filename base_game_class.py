@@ -201,7 +201,7 @@ class BaseGameClass:
         
         #entropy = -(probs * torch.log(probs + 1e-12)).sum().item()
         
-        return top_tokens[0], token_prob_dict
+        return top_tokens[0], token_prob_dict, None  # Added None for reasoning_trace
 
     HF_MODEL = None
     def handle_hf_model(self, user_msg, system_msg, temp, num_options):
@@ -227,7 +227,15 @@ class BaseGameClass:
 
 
     def _get_llm_answer(self, options, q_text, message_history, keep_appending=True, setup_text="", MAX_TOKENS=1, temp=0.0, accept_any=True, top_p=None, top_k=None):
-        """Gets answer from LLM model"""
+        """Gets answer from LLM model
+        
+        Returns:
+            tuple: (response, message_history, token_probs, reasoning_trace)
+                - response: The model's response text
+                - message_history: Updated message history
+                - token_probs: Token probabilities (if available)
+                - reasoning_trace: The model's reasoning/thinking trace (if available), else None
+        """
         # Prepare common data
         user_msg = {"role": "user", "content": q_text}
         # Add /no_think for Qwen3 models when thinking mode is not requested
@@ -249,10 +257,13 @@ class BaseGameClass:
         temp_inc = 0 if temp == 1.0 else 0.05### -0.05 if temp > 0.5 else 0.05
         resp = ""
         token_probs = None
+        reasoning_trace = None  # Initialize reasoning trace
         for callctr in range(MAX_CALL_ATTEMPTS):
             def model_call():
+                nonlocal reasoning_trace  # Allow inner function to set reasoning_trace
                 self._log(f"In model_call, provider={self.provider}, attempt={attempt + 1}")
                 resp = ""
+                local_reasoning = None  # Local variable for this call
                 if self.provider == "Anthropic":
                     if keep_appending:
                         message_history.append(user_msg)
@@ -273,8 +284,16 @@ class BaseGameClass:
                         **({"thinking": {"type": "enabled", "budget_tokens": 2000}} if '_think' in self.subject_name else {}),
                         messages=formatted_messages
                     )
-                    resp = message.content[0].text.strip() if '_think' not in self.subject_name else message.content[1].text.strip()
-                    return resp, None
+                    if '_think' in self.subject_name:
+                        # Extract thinking block (first content block) as reasoning trace
+                        if len(message.content) > 0 and hasattr(message.content[0], 'thinking'):
+                            local_reasoning = message.content[0].thinking
+                        elif len(message.content) > 0:
+                            local_reasoning = message.content[0].text.strip()
+                        resp = message.content[1].text.strip() if len(message.content) > 1 else message.content[0].text.strip()
+                    else:
+                        resp = message.content[0].text.strip()
+                    return resp, None, local_reasoning
                 elif self.provider == "OpenAI" or self.provider == "xAI" or self.provider == "DeepSeek" or self.provider == "OpenRouter":
                     if self.provider == "OpenRouter":
                         ###Special handling for HF models
@@ -406,17 +425,18 @@ class BaseGameClass:
                             if prov or backend:
                                 print(f"[OpenRouter] provider_used={prov} backend_model={backend}")
                     
-                    reasoning = getattr(completion.choices[0].message, "reasoning", None)
-                    if reasoning:
+                    # Capture reasoning trace from OpenRouter/OpenAI
+                    local_reasoning = getattr(completion.choices[0].message, "reasoning", None)
+                    if local_reasoning:
                         self._log("REASONING TRACE:")
-                        self._log(reasoning)
+                        self._log(local_reasoning)
                     #print(f"completion={completion}")
                     #exit()
                     resp = completion.choices[0].message.content.strip()
-                    if 'o3' in self.subject_name or 'gpt-5' in self.subject_name or self.subject_name=='deepseek-v3.1-base' or self.subject_name=='deepseek-r1' or no_logprobs(model_name): return resp, None
+                    if 'o3' in self.subject_name or 'gpt-5' in self.subject_name or self.subject_name=='deepseek-v3.1-base' or self.subject_name=='deepseek-r1' or no_logprobs(model_name): return resp, None, local_reasoning
                     if len(options) == 1: #short answer, just average
                         if completion.choices[0].logprobs is None:
-                            return resp, None
+                            return resp, None, local_reasoning
                         token_logprobs = completion.choices[0].logprobs.content  
                         top_probs = []
                         for token_logprob in token_logprobs:
@@ -429,7 +449,7 @@ class BaseGameClass:
                         token_probs = {resp: math.exp(sum(top_probs))}# / len(top_probs))}
                     else:
                         if completion.choices[0].logprobs is None:
-                            return resp, None
+                            return resp, None, local_reasoning
                         #entry = completion.choices[0].logprobs.content[0]
                         first_token = completion.choices[0].logprobs.content[0].token
                         if first_token.strip() == '':
@@ -449,9 +469,9 @@ class BaseGameClass:
                         #token_probs = dict(zip(tokens, prob_tensor.tolist()))
                         except Exception as e:
                             if callctr < MAX_CALL_ATTEMPTS - 1: raise ValueError(f"Error processing logprobs: {e}")
-                            else: return resp, None
+                            else: return resp, None, local_reasoning
                     #print(f"resp={resp}, token_probs={token_probs}")
-                    return resp, token_probs
+                    return resp, token_probs, local_reasoning
                 elif self.provider == "Hyperbolic":
                     if "Instruct" in self.subject_name:
                         if keep_appending:
@@ -526,7 +546,7 @@ class BaseGameClass:
                         tokens  = [alt['token'].strip() for alt in entry['top_logprobs']]
                         probs   = [math.exp(alt['logprob'])     for alt in entry['top_logprobs']]
                         token_probs = dict(zip(tokens, probs))
-                    return resp, token_probs
+                    return resp, token_probs, None  # Hyperbolic doesn't have reasoning traces
                 elif self.provider == "NDIF":
                     prompt = ""
                     # Build prompt from message history and current question
@@ -604,7 +624,7 @@ class BaseGameClass:
                     )
                     #print(f"message={message}")
                     #exit()
-                    if '1.5' in self.subject_name: return message.text.strip(), None
+                    if '1.5' in self.subject_name: return message.text.strip(), None, None
                     cand = message.candidates[0]
                     resp = cand.content.parts[0].text.strip()
                     logres = cand.logprobs_result  
@@ -625,13 +645,13 @@ class BaseGameClass:
                             probs  = [math.exp(alt.log_probability) for alt in first_step]
                             token_probs = dict(zip(tokens, probs))
                             resp = max(token_probs, key=token_probs.get)
-                    return resp, token_probs
+                    return resp, token_probs, None  # Google doesn't expose reasoning traces directly
                 else:
                     raise ValueError(f"Unsupported provider: {self.provider}")
             try:
-                resp, token_probs = self._call_with_timeout(model_call, timeout=150)
+                resp, token_probs, reasoning_trace = self._call_with_timeout(model_call, timeout=150)
             except TimeoutError:
-                self._log(f"Timeout on attempt {callctr+1}, retrying…")
+                self._log(f"Timeout on attempt {callctr+1}, retryingâ€¦")
                 attempt += 1
                 continue
             except Exception as e:
@@ -653,7 +673,7 @@ class BaseGameClass:
         if keep_appending: message_history.append({"role": "assistant", "content": resp})
         if resp.upper() not in options and options != " ":
             self._log(f"Failed to get valid response for text: {q_text}; response: ||{resp}||")
-        return resp, message_history, token_probs
+        return resp, message_history, token_probs, reasoning_trace
 
     def _get_subject_answer(self, options, prompt):
         """Gets the human subject's response."""
@@ -745,7 +765,7 @@ class BaseGameClass:
         # -------------------------------------------------------------------------
 
         while n < max_samples and not all_ci_within_tolerance():
-            choice, _, _ = self._get_llm_answer(options, prompt, message_history, keep_appending = False, setup_text=setup_text, MAX_TOKENS=1, accept_any=False, temp=1.0, top_p=1.0, top_k=0)
+            choice, _, _, _ = self._get_llm_answer(options, prompt, message_history, keep_appending = False, setup_text=setup_text, MAX_TOKENS=1, accept_any=False, temp=1.0, top_p=1.0, top_k=0)
             choice = choice.upper().rstrip(".")
             if choice not in options:
                 self._log(f"Invalid choice: {choice}. Options were: {options}, prompt: {prompt}")
