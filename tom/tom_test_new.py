@@ -564,7 +564,7 @@ Respond ONLY with your action, and no other text."""
                     llm_prompt_text = f"{game_setup_text}\n{preamble}\n{prompt_text}\n{prompt_for_action}"
 
                 # Logging for debugging
-                log(f"=== FULL LLM PROMPT ===\n{llm_prompt_text}\n=== END PROMPT ===")
+                # log(f"=== FULL LLM PROMPT ===\n{llm_prompt_text}\n=== END PROMPT ===")
                 
                 action_str, _, _, reasoning_trace = llm_player._get_llm_answer(
                     options=None,
