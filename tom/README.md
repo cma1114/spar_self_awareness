@@ -95,11 +95,23 @@ Key patterns:
 
 ```
 tom/
-├── tom_test_new.py           # Main game logic and CLI/LLM interface
-├── generate_tom_scenarios_new.py  # Scenario generation from specs
-├── tom_helpers.py            # Data structures and utilities
-├── ToM - scenarios.csv       # Scenario specifications
-└── README.md                 # This file
+├── tom_test_new.py               # Main game logic and CLI/LLM interface
+├── generate_tom_scenarios_new.py # Scenario generation from specs
+├── tom_helpers.py                # Data structures and utilities
+├── ToM - scenarios.csv           # Scenario specifications
+├── analyze_results.py            # ToM mastery category scoring
+├── analyze_errors.py             # Error analysis (action confusion, features)
+├── analyze_reasoning.py          # LLM reasoning analysis
+├── compare_old_new.py            # Pre/post bug-fix comparison
+├── README.md                     # This file
+├── OBSERVATIONS.md               # Analysis observations and insights
+├── EXTRA_EVENTS_FIX.md           # Documentation of Extra=1 scenario fix
+└── tom_llm_logs/                 # Test results and analysis outputs
+    ├── *_game_data.json          # Per-model test results
+    ├── *.log                     # Raw LLM interaction logs
+    ├── error_analysis.txt        # Combined error analysis
+    ├── error_analysis_thinking.txt    # Thinking models only
+    └── error_analysis_nonthinking.txt # Non-thinking models only
 ```
 
 ## Running the Test
@@ -159,3 +171,94 @@ If the question is "What's in the bag?" and B answers:
 - B believes: apple (false belief - B left before seeing the orange)
 - You know: orange (true - you saw everything)
 - Optimal action if B must answer: `Tell(B, bag, orange)`
+
+## Analysis Tools
+
+### ToM Mastery Categories (`analyze_results.py`)
+
+Beyond raw accuracy, the test evaluates performance across five ToM mastery categories that measure distinct cognitive capabilities:
+
+| Category | What It Measures | Key Scenarios |
+|----------|------------------|---------------|
+| **Self: Knowledge vs Belief** | Distinguishing what you know from what you merely believe | 7-9 (Pass), 12-13 (Ask) |
+| **Teammate: Knowledge vs Belief** | Recognizing when teammate knows vs believes | 20-22 (Pass), 17-19 (Tell) |
+| **Combined Uncertainty** | Handling situations where both self and teammate are uncertain | 10-11, 23-24 (Pass) |
+| **True vs False Belief** | Distinguishing teammate's true belief from false belief | 14-16 (Pass), 17-19 (Tell) |
+| **Teammate vs Opponent** | Treating teammate differently from opponent | 12-13 (Ask), 30-32, 37, 39 (Pass), 17-19 (Tell) |
+
+Mastery scores use weighted components to reflect the relative difficulty and importance of each sub-skill.
+
+### Error Analysis (`analyze_errors.py`)
+
+Analyzes WHY models fail on specific categories:
+
+1. **Action Confusion Matrix**: What action did failures choose instead of the optimal action?
+   ```
+   Expected: Ask | Failures chose:
+     Pass: 145 (99%)
+     Tell: 2 (1%)
+   ```
+
+2. **Feature Correlation**: What scenario features predict success vs failure?
+   ```
+   Feature comparison (% of correct vs incorrect trials with each feature):
+     Self never saw a put: 65% vs 13% (predicts success) ***
+     Teammate put/moved: 65% vs 44% (predicts success) ***
+   ```
+
+3. **Per-Scenario Breakdown**: Success rates with epistemic state context
+   ```
+   Scenario 12: 38.6% | Self=Believes X, Tm=Knows Truth, Opp=Unknown
+   Scenario 13: 15.8% | Self=Believes X, Tm=Knows Truth, Opp=Knows Truth
+   ```
+
+4. **Concrete Examples**: Full scenario text for failed trials
+
+The script generates three output files:
+- `error_analysis.txt` - All models combined
+- `error_analysis_thinking.txt` - Thinking models only (paired)
+- `error_analysis_nonthinking.txt` - Non-thinking models only (paired)
+
+"Paired" means only models that have both thinking and non-thinking versions are included in the comparison (e.g., `anthropic-claude-opus-4.5` and `anthropic-claude-opus-4.5_think`).
+
+### Thinking vs Non-Thinking Comparison
+
+Models with extended thinking capabilities (`_think` suffix) are compared against their non-thinking counterparts to measure the impact of deliberative reasoning on ToM tasks.
+
+**Paired models analyzed:**
+- anthropic-claude-opus-4.5 / anthropic-claude-opus-4.5_think
+- anthropic-claude-sonnet-4.5 / anthropic-claude-sonnet-4.5_think
+- openai-gpt-5 / openai-gpt-5_think
+- openai-gpt-5.2 / openai-gpt-5.2_think
+
+**Key findings:** Thinking models consistently outperform their non-thinking counterparts, with the largest gains in:
+- True vs False Belief (~94% vs ~61%)
+- Combined Uncertainty (~82% vs ~58%)
+- Teammate vs Opponent (~83% vs ~55%)
+
+### Pre/Post Bug Fix Comparison (`compare_old_new.py`)
+
+Compares results before and after fixing the Extra=1 scenario generation bug (see `EXTRA_EVENTS_FIX.md`). The bug caused Extra=1 scenarios to sometimes have incorrect optimal actions due to event sequencing issues.
+
+## Key Insights
+
+### Common Failure Patterns
+
+1. **Ask→Pass confusion**: Models often Pass when they should Ask their teammate, even when they only have a belief (not knowledge) and their teammate knows the truth. The model answers correctly but fails to recognize it doesn't *know* it's correct.
+
+2. **Unnecessary Telling**: Models Tell their teammate information the teammate already knows, especially in scenarios where Self knows and Teammate also knows.
+
+3. **Opponent knowledge interference**: When the opponent knows the truth (scenario 13, 19), models perform worse than when the opponent is uncertain—possibly confusing opponent knowledge with teammate knowledge.
+
+### Scenario Difficulty
+
+Hardest scenarios (lowest success rates):
+- **Scenario 13** (15.8%): Self Believes X, Teammate Knows Truth, Opponent Knows Truth → should Ask
+- **Scenario 12** (38.6%): Self Believes X, Teammate Knows Truth, Opponent Unknown → should Ask
+- **Scenario 15** (43.6%): Self Knows X, Teammate Believes Truth → should Pass (not Tell)
+
+### Feature Predictors
+
+- **"Self never saw a put" predicts success** on Ask scenarios: When the model left before any put action, it's more likely to correctly recognize uncertainty and Ask.
+- **"Teammate put/moved" predicts success** on Ask scenarios: Salient teammate actions make the model more likely to consider teammate knowledge.
+- **"Opponent Knows Truth" predicts failure**: Models struggle when opponents also have knowledge, possibly conflating opponent and teammate epistemic states.
