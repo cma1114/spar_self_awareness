@@ -53,7 +53,8 @@ class DelegateGameFromCapabilities(BaseGameClass):
         include_question_num=False,
         include_total_questions=False,
         decision_only=False,
-        alternate_decision_mapping=True
+        alternate_decision_mapping=True,
+        succinct=True,
     ):
         super().__init__(subject_id, subject_name, is_human_player, "delegate_game_logs")
 
@@ -82,6 +83,7 @@ class DelegateGameFromCapabilities(BaseGameClass):
         self.include_total_questions = include_total_questions
         self.decision_only = decision_only
         self.alternate_decision_mapping = alternate_decision_mapping
+        self.succinct = succinct
 
         # State
         self.results = []
@@ -122,9 +124,9 @@ class DelegateGameFromCapabilities(BaseGameClass):
             "llm_mc_sysprompt": "\nOutput ONLY the letter of your choice: A, B, C, D, or T. Do NOT output any other text. Do not offer any explanation or justification.\n",
 
             # Decision-only mode
-            "decision_only_sysprompt": f"Respond ONLY with '{self.decision_only_options[0]}' or '{self.decision_only_options[1]}'. Do NOT output any other text. Do not offer any explanation or justification.\n",
+            "decision_only_sysprompt": f"Respond ONLY with '{self.decision_only_options[0]}' or '{self.decision_only_options[1]}'. Do NOT output any other text. Do not offer any explanation or justification.\n" if self.succinct else "",
             #"decision_only_choice_line1": f"Choices:\n  {self.decision_only_options[0]}: {ONE_MEANING}\n  {self.decision_only_options[1]}: {TWO_MEANING}\nRespond ONLY with '{self.decision_only_options[0]}' or '{self.decision_only_options[1]}'.\nYour choice ('{self.decision_only_options[0]}' or '{self.decision_only_options[1]}'): ",
-            "decision_only_choice_line": f"Choices:\n  {self.decision_only_options[0]}: {{ONE_MEANING}}\n  {self.decision_only_options[1]}: {{TWO_MEANING}}\nRespond ONLY with '{self.decision_only_options[0]}' or '{self.decision_only_options[1]}'. Do NOT output any other text.\nYour choice ('{self.decision_only_options[0]}' or '{self.decision_only_options[1]}'): ",
+            "decision_only_choice_line": f"Choices:\n  {self.decision_only_options[0]}: {{ONE_MEANING}}\n  {self.decision_only_options[1]}: {{TWO_MEANING}}\nRespond ONLY with '{self.decision_only_options[0]}' or '{self.decision_only_options[1]}'. Do NOT output any other text.\nYour choice ('{self.decision_only_options[0]}' or '{self.decision_only_options[1]}'): " if self.succinct else f"Choices:\n  {self.decision_only_options[0]}: {{ONE_MEANING}}\n  {self.decision_only_options[1]}: {{TWO_MEANING}}\nYour choice: ",
 
             # Counters/feedback
             "feedback_teammate_delegation": "--> Delegating to teammate...",
@@ -162,7 +164,7 @@ class DelegateGameFromCapabilities(BaseGameClass):
             self.completed_results = None
 
         # Determine static call args for LLM path
-        max_tokens_used = None if ('opus-4' in self.subject_name or 'sonnet-4' in self.subject_name or '3-5-sonnet' in self.subject_name) else 1
+        max_tokens_used = None if ('opus-4' in self.subject_name or 'sonnet-4' in self.subject_name or '3-5-sonnet' in self.subject_name or (self.succinct and 'v3.2' in self.subject_name)) else 1
 
         self.get_llm_answer_static_args = {
             "keep_appending": (False if not self.feedback_config['phase2_teammate_feedback'] and not self.feedback_config['phase2_subject_feedback'] else True),
@@ -953,8 +955,9 @@ def real_main(SUBJECT_NAME, DATASET):
     TEAMMATE_ACCURACY_PHASE1 = 0.5
     TEAMMATE_ACCURACY_PHASE2 = 0.5
     TEMPERATURE = 0.0 if (no_logprobs(SUBJECT_NAME) or (DECISION_ONLY==False and DATASET not in ["GPQA", "SimpleMC", "TriviaMC", "PopMC_0_difficulty_filtered", "MMLU"])) else 1.0
-    SEED = 42
+    SEED = 16#42
     resume_from = None
+    succinct = True #False #True to output single token, false to see CoT
 
     # Optional controls
     OVERRIDE_SUBJECT_ACCURACY = None
@@ -995,7 +998,7 @@ def real_main(SUBJECT_NAME, DATASET):
     fbstr = "your and " if feedback_config['phase1_subject_feedback'] else ""
     phasestr = "both phases" if (feedback_config['phase1_subject_feedback'] and feedback_config.get('phase2_subject_feedback', False)) else "phase 1"
     qtypestr = "short-answer" if (DATASET == "SimpleQA" or DATASET == "GPSA") else "multiple-choice" if (DATASET == "SimpleMC" or DATASET == "GPQA" or DATASET == "TriviaMC" or DATASET == "PopMC_0_difficulty_filtered" or DATASET == "MMLU") else "translation"
-    use_examples = True
+    use_examples = False###True
     if DECISION_ONLY:
         initial_setup_explanation = f"""
         Let's play a game! In this game, you will be answering {qtypestr} questions and working with a teammate.
@@ -1111,7 +1114,8 @@ def real_main(SUBJECT_NAME, DATASET):
             include_question_num=False,
             include_total_questions=False,
             decision_only=DECISION_ONLY,
-            alternate_decision_mapping=ALT_DECISION_MAPPING
+            alternate_decision_mapping=ALT_DECISION_MAPPING,
+            succinct=succinct
         )
 
         results = game.run_delegate_game()
@@ -1127,7 +1131,7 @@ def real_main(SUBJECT_NAME, DATASET):
 
 def main():
     DATASETS = ["SimpleMC"]#"MMLU"]#"GPQA"]#"TriviaMC"]#"GPSA"]#"SimpleQA"]
-    models = ["openai/gpt-5.2"]#"ft:gpt-4.1-2025-04-14:personal:garupanese-41-f2e:Ca6CxgOU"]
+    models = ["deepseek-v3.2_think"]#"ft:gpt-4.1-2025-04-14:personal:garupanese-41-f2e:Ca6CxgOU"]
     for model in models:
         for d in DATASETS:
             real_main(model, d)
