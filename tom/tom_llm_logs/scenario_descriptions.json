@@ -1,0 +1,1328 @@
+{
+  "1_extra0": {
+    "scenario_id": "1",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a brick in the box. C leaves the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the bag. B leaves the room. D leaves the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a brick in the box. C leaves the room. B leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "1_extra1": {
+    "scenario_id": "1",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts a banana in the bag. D leaves the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You put a ball in the bag. B leaves the room. C leaves the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts an apple in the box. C leaves the room. B leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "2_extra0": {
+    "scenario_id": "2",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the bag. C leaves the room. B moves the apple to the box. B puts a stapler in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a ball in the bag. D leaves the room. You move the ball to the box. You put a brick in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the box. D leaves the room. B moves the apple to the bag. C puts a ball in the box. B leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "2_extra1": {
+    "scenario_id": "2",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. D leaves the room. You move the apple to the bag. You put a stapler in the box. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the bag. C leaves the room. You leave the room. You enter the room. B moves the brick to the box. B puts a banana in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the bag. C leaves the room. You leave the room. You enter the room. D moves the brick to the box. You put a ball in the bag. B leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "3_extra0": {
+    "scenario_id": "3",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the bag. B leaves the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put a brick in the box. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the bag. B leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "3_extra1": {
+    "scenario_id": "3",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts a banana in the box. B leaves the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You put a ball in the box. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts a ball in the bag. B leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "4_extra0": {
+    "scenario_id": "4",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a banana in the bag. B leaves the room. D moves the banana to the box. You put a stapler in the bag. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a stapler in the box. B leaves the room. D moves the stapler to the bag. D puts a banana in the box. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. B leaves the room. You move the banana to the bag. D puts a ball in the box. C leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "4_extra1": {
+    "scenario_id": "4",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the bag. B leaves the room. You leave the room. You enter the room. D moves the banana to the box. You put an apple in the bag. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You put an orange in the bag. B leaves the room. D moves the orange to the box. C puts a ball in the bag. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You put an apple in the bag. B leaves the room. You move the apple to the box. D puts a stapler in the bag. C leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "5_extra0": {
+    "scenario_id": "5",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a stapler in the bag. D leaves the room. B leaves the room. C moves the stapler to the box. C puts a banana in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the bag. B leaves the room. C leaves the room. D moves the banana to the box. D puts a brick in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a ball in the bag. C leaves the room. B leaves the room. You move the ball to the box. You put a stapler in the bag."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "5_extra1": {
+    "scenario_id": "5",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You put a ball in the bag. C leaves the room. B leaves the room. You move the ball to the box. You put a banana in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. D leaves the room. B leaves the room. You leave the room. You enter the room. C moves the stapler to the box. You put a ball in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the box. You leave the room. D leaves the room. B leaves the room. You enter the room. You move the banana to the bag. You put an orange in the box."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "6_extra0": {
+    "scenario_id": "6",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the box. B leaves the room. You move the stapler to the bag. D puts an orange in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the box. B leaves the room. D moves the stapler to the bag. You put a brick in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an orange in the bag. B leaves the room. You move the orange to the box. You put a stapler in the bag."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "6_extra1": {
+    "scenario_id": "6",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts an apple in the box. B leaves the room. C moves the apple to the bag. D puts a stapler in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the bag. B leaves the room. You leave the room. You enter the room. You move the apple to the box. C puts a stapler in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the bag. You leave the room. You enter the room. B leaves the room. You move the apple to the box. D puts a ball in the bag."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "7_extra0": {
+    "scenario_id": "7",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the bag. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the box. C leaves the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts an orange in the bag. C leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "7_extra1": {
+    "scenario_id": "7",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. D puts a brick in the box. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You put a banana in the bag. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. D puts an orange in the bag. D leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "8_extra0": {
+    "scenario_id": "8",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the box. C leaves the room. You move the apple to the bag. B puts a ball in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the bag. D leaves the room. B moves the apple to the box. C puts an orange in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. C leaves the room. B moves the banana to the bag. D puts a stapler in the box."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "8_extra1": {
+    "scenario_id": "8",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts an orange in the bag. D leaves the room. You move the orange to the box. You put a brick in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You put an apple in the box. C leaves the room. D moves the apple to the bag. B puts a stapler in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a ball in the box. You leave the room. C leaves the room. You enter the room. B moves the ball to the bag. D puts an orange in the box."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "9_extra0": {
+    "scenario_id": "9",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the bag.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "9_extra1": {
+    "scenario_id": "9",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You put an apple in the box.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. B puts a ball in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts an apple in the bag."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "10_extra0": {
+    "scenario_id": "10",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. C leaves the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. B leaves the room. You put a banana in the bag. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a brick in the bag. B leaves the room. You leave the room. C leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "10_extra1": {
+    "scenario_id": "10",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C leaves the room. You leave the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You leave the room. B leaves the room. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts an orange in the box. You leave the room. D leaves the room. B leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "11_extra0": {
+    "scenario_id": "11",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a stapler in the bag. You leave the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the box. You leave the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. B leaves the room. You leave the room."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "11_extra1": {
+    "scenario_id": "11",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. D puts an orange in the bag. You leave the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You leave the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. B leaves the room. C puts a brick in the box. You leave the room."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "12_extra0": {
+    "scenario_id": "12",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Ask(B, box)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. C leaves the room. B puts a stapler in the box. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. C puts an apple in the bag. C leaves the room. B moves the apple to the box. You put a stapler in the bag. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. D leaves the room. C leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "12_extra1": {
+    "scenario_id": "12",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Ask(B, box)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. You leave the room. You enter the room. You leave the room. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. B puts a ball in the bag. You leave the room. C leaves the room. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C leaves the room. You leave the room. D leaves the room."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "13_extra0": {
+    "scenario_id": "13",
+    "extra": 0,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Ask(B, box)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an orange in the bag. You leave the room."
+    ],
+    "question_format": "I am going to ask you what is in the box."
+  },
+  "13_extra1": {
+    "scenario_id": "13",
+    "extra": 1,
+    "metadata": {
+      "answerer": "A",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Ask(B, bag)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. B puts a ball in the bag. You leave the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You leave the room."
+    ],
+    "question_format": "I am going to ask you what is in the bag."
+  },
+  "14_extra0": {
+    "scenario_id": "14",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. D leaves the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. C leaves the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the box. C leaves the room. B leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "14_extra1": {
+    "scenario_id": "14",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put an apple in the box. C leaves the room. B leaves the room. You move the apple to the bag. You put a ball in the box. You remove the ball from the box. You move the apple to the box.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put a banana in the box. C leaves the room. B leaves the room. You move the banana to the bag. You put a brick in the box. You remove the brick from the box. You move the banana to the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the box. C leaves the room. B leaves the room. You move the stapler to the bag. You put a banana in the box. You remove the banana from the box. D moves the stapler to the box."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "15_extra0": {
+    "scenario_id": "15",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts an orange in the bag. C leaves the room. B moves the orange to the box. You put a stapler in the bag. B leaves the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the box. D leaves the room. You move the orange to the bag. You put a stapler in the box. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the box. C leaves the room. You move the apple to the bag. B puts a stapler in the box. B leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "15_extra1": {
+    "scenario_id": "15",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the bag. D leaves the room. C moves the stapler to the box. You put a brick in the bag. B leaves the room. You remove the stapler from the box. C moves the brick to the box. You put a ball in the bag. C removes the ball from the bag. C moves the brick to the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an apple in the box. C leaves the room. B moves the apple to the bag. D puts a banana in the box. B leaves the room. D removes the apple from the bag. D moves the banana to the bag. D puts a stapler in the box. You remove the stapler from the box. You move the banana to the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the bag. C leaves the room. B moves the brick to the box. D puts a ball in the bag. B leaves the room. You remove the brick from the box. You move the ball to the box. D puts a banana in the bag. D removes the banana from the bag. You move the ball to the bag."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "16_extra0": {
+    "scenario_id": "16",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the box. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a brick in the box. B leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "16_extra1": {
+    "scenario_id": "16",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You put a brick in the bag. B leaves the room. D moves the brick to the box. You put a stapler in the bag. You remove the stapler from the bag. You move the brick to the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a ball in the box. B leaves the room. D moves the ball to the bag. You put a brick in the box. D removes the brick from the box. D moves the ball to the box.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put an apple in the box. B leaves the room. You move the apple to the bag. C puts a ball in the box. C removes the ball from the box. C moves the apple to the box."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "17_extra0": {
+    "scenario_id": "17",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Tell(B, box, brick)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the box. B leaves the room. C moves the stapler to the bag. D puts a brick in the box. D leaves the room. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the bag. B leaves the room. C moves the brick to the box. D puts an apple in the bag. C leaves the room. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the box. B leaves the room. C moves the banana to the bag. D puts a ball in the box. C leaves the room. D leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "17_extra1": {
+    "scenario_id": "17",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Tell(B, bag, ball)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B puts a banana in the bag. B leaves the room. C moves the banana to the box. D puts a ball in the bag. D leaves the room. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B puts a stapler in the box. B leaves the room. D moves the stapler to the bag. D puts a banana in the box. C leaves the room. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. D puts a ball in the box. B leaves the room. D moves the ball to the bag. C puts an orange in the box. C leaves the room. D leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "18_extra0": {
+    "scenario_id": "18",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Tell(B, box, banana)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a brick in the box. B leaves the room. D leaves the room. C moves the brick to the bag. C puts a banana in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the bag. C leaves the room. B leaves the room. D moves the apple to the box. D puts a brick in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the box. B leaves the room. C leaves the room. D moves the orange to the bag. D puts a brick in the box."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "18_extra1": {
+    "scenario_id": "18",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Tell(B, bag, brick)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. You put a banana in the bag. B leaves the room. C leaves the room. D moves the banana to the box. D puts a brick in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. C puts an orange in the box. B leaves the room. C leaves the room. D moves the orange to the bag. D puts a stapler in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. D puts an orange in the box. B leaves the room. D leaves the room. C moves the orange to the bag. C puts a stapler in the box."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "19_extra0": {
+    "scenario_id": "19",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Tell(B, bag, apple)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the bag. B leaves the room. C moves the stapler to the box. D puts an apple in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the box. B leaves the room. D moves the stapler to the bag. C puts a banana in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an apple in the bag. B leaves the room. D moves the apple to the box. D puts a brick in the bag."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "19_extra1": {
+    "scenario_id": "19",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Tell(B, bag, banana)"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. D puts an orange in the bag. B leaves the room. C moves the orange to the box. C puts a banana in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B puts a stapler in the box. B leaves the room. D moves the stapler to the bag. C puts an orange in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B puts a ball in the bag. B leaves the room. C moves the ball to the box. D puts a brick in the bag."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "20_extra0": {
+    "scenario_id": "20",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. D leaves the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the bag. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a ball in the box. C leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "20_extra1": {
+    "scenario_id": "20",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. C puts a ball in the bag. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. You put a stapler in the box. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. You put a brick in the box. C leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "21_extra0": {
+    "scenario_id": "21",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the bag. D leaves the room. C leaves the room. You move the apple to the box. You put a banana in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the box. C leaves the room. D leaves the room. You move the apple to the bag. You put a stapler in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a banana in the bag. C leaves the room. D leaves the room. B moves the banana to the box. You put an apple in the bag."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "21_extra1": {
+    "scenario_id": "21",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the bag. D leaves the room. C leaves the room. B leaves the room. B enters the room. B moves the stapler to the box. B puts an apple in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B puts a stapler in the bag. D leaves the room. C leaves the room. You move the stapler to the box. You put a ball in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a banana in the bag. C leaves the room. D leaves the room. B leaves the room. B enters the room. B moves the banana to the box. B puts an orange in the bag."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "22_extra0": {
+    "scenario_id": "22",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a brick in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a brick in the bag."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "22_extra1": {
+    "scenario_id": "22",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B puts a banana in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B puts a brick in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. You put an orange in the bag."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "23_extra0": {
+    "scenario_id": "23",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a ball in the bag. D leaves the room. You leave the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. B puts a banana in the bag. B leaves the room. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room. C leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "23_extra1": {
+    "scenario_id": "23",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. B leaves the room. B enters the room. B puts an apple in the box. You leave the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. C leaves the room. B enters the room. B puts an orange in the bag. You leave the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B puts a brick in the box. You leave the room. B leaves the room. D leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "24_extra0": {
+    "scenario_id": "24",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a brick in the box. B leaves the room. You leave the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. B leaves the room. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the bag. You leave the room. B leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "24_extra1": {
+    "scenario_id": "24",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. C puts a brick in the bag. B leaves the room. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. C puts an apple in the bag. B leaves the room. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B leaves the room. You leave the room."
+    ],
+    "question_format": "I am going to ask B what is in the bag."
+  },
+  "25_extra0": {
+    "scenario_id": "25",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. You put an apple in the box. You leave the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. D leaves the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You put an orange in the bag. You leave the room. D leaves the room."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "25_extra1": {
+    "scenario_id": "25",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. C leaves the room. D puts a brick in the box. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. You leave the room. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. D leaves the room. B puts a banana in the box. You leave the room."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "26_extra0": {
+    "scenario_id": "26",
+    "extra": 0,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the bag. You leave the room."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "26_extra1": {
+    "scenario_id": "26",
+    "extra": 1,
+    "metadata": {
+      "answerer": "B",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. D puts an apple in the box. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. B puts a ball in the box. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. You put a brick in the bag. You leave the room."
+    ],
+    "question_format": "I am going to ask B what is in the box."
+  },
+  "27_extra0": {
+    "scenario_id": "27",
+    "extra": 0,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the bag. B leaves the room. C leaves the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You put an orange in the bag. C leaves the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a ball in the box. B leaves the room. D leaves the room."
+    ],
+    "question_format": "I am going to ask C what is in the bag."
+  },
+  "27_extra1": {
+    "scenario_id": "27",
+    "extra": 1,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. C puts a banana in the box. B leaves the room. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. C puts an apple in the bag. B leaves the room. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. C puts an apple in the box. C leaves the room. B leaves the room."
+    ],
+    "question_format": "I am going to ask D what is in the box."
+  },
+  "28_extra0": {
+    "scenario_id": "28",
+    "extra": 0,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the box. B leaves the room. C moves the apple to the bag. C puts a banana in the box. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. B leaves the room. C moves the orange to the box. D puts an apple in the bag. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the bag. B leaves the room. You move the banana to the box. D puts an orange in the bag. C leaves the room."
+    ],
+    "question_format": "I am going to ask D what is in the box."
+  },
+  "28_extra1": {
+    "scenario_id": "28",
+    "extra": 1,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. B puts a stapler in the box. C enters the room. B leaves the room. D moves the stapler to the bag. You put a brick in the box. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a ball in the bag. B leaves the room. D leaves the room. D enters the room. C moves the ball to the box. You put a brick in the bag. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an apple in the bag. C leaves the room. C enters the room. B leaves the room. You move the apple to the box. C puts a banana in the bag. C leaves the room."
+    ],
+    "question_format": "I am going to ask C what is in the box."
+  },
+  "29_extra0": {
+    "scenario_id": "29",
+    "extra": 0,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. C leaves the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You put a stapler in the bag. D leaves the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts a ball in the bag. D leaves the room."
+    ],
+    "question_format": "I am going to ask C what is in the bag."
+  },
+  "29_extra1": {
+    "scenario_id": "29",
+    "extra": 1,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. You put a brick in the bag. C leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. B puts a brick in the bag. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. D puts a brick in the box. D leaves the room."
+    ],
+    "question_format": "I am going to ask C what is in the bag."
+  },
+  "30_extra0": {
+    "scenario_id": "30",
+    "extra": 0,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the box. D leaves the room. C leaves the room. You move the orange to the bag. You put a stapler in the box. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. C leaves the room. D leaves the room. You move the banana to the bag. You put a brick in the box. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a brick in the bag. C leaves the room. D leaves the room. B moves the brick to the box. B puts a ball in the bag. B leaves the room."
+    ],
+    "question_format": "I am going to ask C what is in the box."
+  },
+  "30_extra1": {
+    "scenario_id": "30",
+    "extra": 1,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. C puts an orange in the bag. C leaves the room. D leaves the room. You move the orange to the box. You put a stapler in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. D puts a banana in the bag. D leaves the room. C leaves the room. You move the banana to the box. B puts a stapler in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. C puts an apple in the bag. D leaves the room. C leaves the room. B moves the apple to the box. B puts a brick in the bag. B leaves the room."
+    ],
+    "question_format": "I am going to ask D what is in the bag."
+  },
+  "31_extra0": {
+    "scenario_id": "31",
+    "extra": 0,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts a ball in the bag. D leaves the room. B leaves the room. You move the ball to the box. You put a stapler in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a banana in the bag. B leaves the room. C leaves the room. You move the banana to the box. You put an orange in the bag.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You put an apple in the box. D leaves the room. B leaves the room. You move the apple to the bag. You put a stapler in the box."
+    ],
+    "question_format": "I am going to ask D what is in the bag."
+  },
+  "31_extra1": {
+    "scenario_id": "31",
+    "extra": 1,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. B puts a brick in the bag. C leaves the room. B leaves the room. You move the brick to the box. You put a ball in the bag.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. B puts a ball in the box. C leaves the room. B leaves the room. You move the ball to the bag. You put a brick in the box.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. C puts a stapler in the bag. B leaves the room. C leaves the room. You move the stapler to the box. You put an orange in the bag."
+    ],
+    "question_format": "I am going to ask C what is in the bag."
+  },
+  "32_extra0": {
+    "scenario_id": "32",
+    "extra": 0,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the box. D leaves the room. C leaves the room. B moves the stapler to the bag. B puts an apple in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the bag. D leaves the room. C leaves the room. You move the stapler to the box. You put a brick in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a ball in the box. D leaves the room. C leaves the room. B moves the ball to the bag. You put a stapler in the box."
+    ],
+    "question_format": "I am going to ask C what is in the box."
+  },
+  "32_extra1": {
+    "scenario_id": "32",
+    "extra": 1,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes False",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. You put a brick in the box. D leaves the room. C leaves the room. B moves the brick to the bag. B puts an orange in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. B puts a brick in the bag. C leaves the room. D leaves the room. B moves the brick to the box. B puts an orange in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. D puts a stapler in the bag. D leaves the room. C leaves the room. You move the stapler to the box. You put an orange in the bag."
+    ],
+    "question_format": "I am going to ask C what is in the box."
+  },
+  "33_extra0": {
+    "scenario_id": "33",
+    "extra": 0,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a ball in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the box. B leaves the room."
+    ],
+    "question_format": "I am going to ask C what is in the bag."
+  },
+  "33_extra1": {
+    "scenario_id": "33",
+    "extra": 1,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. C puts a banana in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. C puts a banana in the bag. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. C puts an apple in the box. B leaves the room."
+    ],
+    "question_format": "I am going to ask D what is in the bag."
+  },
+  "34_extra0": {
+    "scenario_id": "34",
+    "extra": 0,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an orange in the bag. B leaves the room. You move the orange to the box. You put a banana in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the box. B leaves the room. C moves the stapler to the bag. You put a brick in the box.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You put an apple in the box. B leaves the room. D moves the apple to the bag. You put a ball in the box."
+    ],
+    "question_format": "I am going to ask C what is in the bag."
+  },
+  "34_extra1": {
+    "scenario_id": "34",
+    "extra": 1,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. B leaves the room. C leaves the room. C enters the room. You move the orange to the box. You put a banana in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the box. B leaves the room. D leaves the room. D enters the room. D moves the stapler to the bag. C puts a ball in the box.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. You put an orange in the bag. C enters the room. B leaves the room. You move the orange to the box. D puts a ball in the bag."
+    ],
+    "question_format": "I am going to ask C what is in the bag."
+  },
+  "35_extra0": {
+    "scenario_id": "35",
+    "extra": 0,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You put a ball in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an orange in the box.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the bag."
+    ],
+    "question_format": "I am going to ask D what is in the bag."
+  },
+  "35_extra1": {
+    "scenario_id": "35",
+    "extra": 1,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. C puts a stapler in the bag.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. B puts a banana in the bag.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. B puts a stapler in the bag."
+    ],
+    "question_format": "I am going to ask D what is in the bag."
+  },
+  "36_extra0": {
+    "scenario_id": "36",
+    "extra": 0,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a banana in the bag. B leaves the room. C moves the banana to the box. You put an orange in the bag. D leaves the room. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the box. B leaves the room. C leaves the room. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. B puts an apple in the box. You leave the room. B leaves the room."
+    ],
+    "question_format": "I am going to ask D what is in the bag."
+  },
+  "36_extra1": {
+    "scenario_id": "36",
+    "extra": 1,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. C leaves the room. You leave the room. B leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. D leaves the room. B leaves the room. C puts a brick in the bag. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. C leaves the room. D puts an orange in the box. You leave the room. B leaves the room."
+    ],
+    "question_format": "I am going to ask C what is in the box."
+  },
+  "37_extra0": {
+    "scenario_id": "37",
+    "extra": 0,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. You leave the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts a ball in the bag. B leaves the room. C moves the ball to the box. You put a banana in the bag. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. C puts an apple in the box. You leave the room."
+    ],
+    "question_format": "I am going to ask D what is in the bag."
+  },
+  "37_extra1": {
+    "scenario_id": "37",
+    "extra": 1,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. D leaves the room. D enters the room. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. B leaves the room. C enters the room. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. C leaves the room. C enters the room. You put a banana in the box. You leave the room."
+    ],
+    "question_format": "I am going to ask D what is in the box."
+  },
+  "38_extra0": {
+    "scenario_id": "38",
+    "extra": 0,
+    "metadata": {
+      "answerer": "C",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You leave the room. C leaves the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. D leaves the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a brick in the bag. You leave the room. D leaves the room."
+    ],
+    "question_format": "I am going to ask C what is in the bag."
+  },
+  "38_extra1": {
+    "scenario_id": "38",
+    "extra": 1,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Unknown",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. B puts a ball in the box. D leaves the room. You move the ball to the bag. You put a brick in the box. You leave the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. B puts a stapler in the box. You leave the room. C leaves the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. You leave the room. D leaves the room."
+    ],
+    "question_format": "I am going to ask D what is in the box."
+  },
+  "39_extra0": {
+    "scenario_id": "39",
+    "extra": 0,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put an orange in the box. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a brick in the bag. You leave the room.",
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a stapler in the bag. You leave the room."
+    ],
+    "question_format": "I am going to ask D what is in the box."
+  },
+  "39_extra1": {
+    "scenario_id": "39",
+    "extra": 1,
+    "metadata": {
+      "answerer": "D",
+      "ks_self": "Believes X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Knows Truth",
+      "optimal_action": "Pass"
+    },
+    "example_descriptions": [
+      "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. You leave the room.",
+      "You, B, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. You leave the room.",
+      "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C leaves the room. C enters the room. B puts an apple in the bag. You leave the room."
+    ],
+    "question_format": "I am going to ask D what is in the box."
+  }
+}

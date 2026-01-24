@@ -328,24 +328,40 @@ if TORCH_AVAILABLE:
         def run_test(self):
             self._log("--- Starting LLM ToM Test ---")
             chartypes = [CharacterType.LIVE_PLAYER, CharacterType.HONEST_OPPONENT, CharacterType.DISHONEST_TEAMMATE, CharacterType.DISHONEST_OPPONENT]
-            
+
+            # Use a single temp file that gets overwritten each iteration
+            outfile = f'{self.log_base_name}_scenario_tmp.json'
             for i, spec in enumerate(self.specs):
                 self._log(f"\n--- Running Spec {i+1}/{len(self.specs)}: {spec} ---")
-                outfile = f'scenarios_llm_test_{i}.json'
                 generate_scenarios_from_tuples([spec], outfile=outfile, seed=i, chartypes=chartypes)
-                
+
                 game_state = play_game_cli(scenario_file=outfile, llm_player=self)
                 if game_state:
                     self.all_turn_records.extend(game_state.turn_records)
 
+            # Clean up temp file
+            if os.path.exists(outfile):
+                os.remove(outfile)
+
             self._log("\n" + "=" * 70)
             self._log("LLM ToM Test Finished")
-            
+
             total_optimal = sum(1 for r in self.all_turn_records if r.character == 'A' and r.was_optimal)
             total_turns = sum(1 for r in self.all_turn_records if r.character == 'A')
-            
+
             if total_turns > 0:
                 self._log(f"LLM was optimal in {total_optimal}/{total_turns} turns ({(total_optimal/total_turns)*100:.2f}%).")
+
+                # Breakdown by Extra
+                extra0_records = [r for r in self.all_turn_records if r.character == 'A' and (r.extra is None or r.extra == 0)]
+                extra1_records = [r for r in self.all_turn_records if r.character == 'A' and r.extra == 1]
+
+                if extra0_records:
+                    extra0_optimal = sum(1 for r in extra0_records if r.was_optimal)
+                    self._log(f"  Extra=0: {extra0_optimal}/{len(extra0_records)} optimal ({(extra0_optimal/len(extra0_records))*100:.2f}%)")
+                if extra1_records:
+                    extra1_optimal = sum(1 for r in extra1_records if r.was_optimal)
+                    self._log(f"  Extra=1: {extra1_optimal}/{len(extra1_records)} optimal ({(extra1_optimal/len(extra1_records))*100:.2f}%)")
             else:
                 self._log("No turns were played by the LLM.")
 
@@ -353,11 +369,20 @@ if TORCH_AVAILABLE:
             self._log(f"\nGame results saved to {self.game_data_filename}")
 
 
-def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None):
-    """Play the game in CLI mode, for humans or LLMs."""
+def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None, run_all_scenarios: bool = False):
+    """Play the game in CLI mode, for humans or LLMs.
+
+    Args:
+        scenario_file: Path to the scenarios JSON file
+        llm_player: Optional LLM player instance
+        run_all_scenarios: If True, ignore winning score and run all scenarios (useful for testing)
+    """
     game = GameState(scenario_file=scenario_file)
     log = llm_player._log if llm_player else print
     is_human = llm_player is None
+
+    if run_all_scenarios:
+        game.WINNING_SCORE = float('inf')  # Disable early termination
 
     GAME_SETUP = """
 Let's play a game! In this game you will be playing with a teammate against a team of opposing players. For simplicity, the players are referred to as A, B, C, and D. A and B are teammates on the Blue team, and C and D are teammates on the Red team. You are player A. The game is made up of turns, and each turn consists of a scenario, an action phase, and an answer phase. Players need to figure out the right action to take in each action phase, so that their team scores more points than their opponent's team.
@@ -619,9 +644,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", type=str, default="human", choices=["human", "llm"])
     parser.add_argument("--model", type=str, default="kimi-k2")
+    parser.add_argument("--reps", type=int, default=1, help="Number of times to repeat the full scenario set (default: 1)")
     args = parser.parse_args()
 
     specs = read_specs_from_csv('ToM - scenarios.csv')
+    specs = specs * args.reps  # Repeat specs for multiple reps
     if args.mode == "llm":
         test_runner = ToMTestLLM(
             subject_id=args.model.replace("/", "-"),

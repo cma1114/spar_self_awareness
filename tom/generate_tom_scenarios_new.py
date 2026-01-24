@@ -378,35 +378,110 @@ def _find_extra_events_constraint(events: List[Event], answerer: str, player: st
 
 
 def insert_extra_events(scenario: Scenario, answerer: str, player: str,
-                        answerer_state: EpistemicState, rng: random.Random) -> None:
+                        answerer_state: EpistemicState, spec: dict, rng: random.Random) -> None:
     """
     Insert extra Leave and Enter events for the answerer to create an additional epistemic state.
     Modifies scenario.events in place.
+
+    Constraints:
+    1. If leaver has "Believes" or "Knows" state, a put must happen before their leave
+    2. At least one event must occur between leave and enter
+    3. If Self leaves, gap events must be leave/enter (not put/move, since Self wouldn't see them)
     """
     constraint_idx = _find_extra_events_constraint(
         scenario.events, answerer, player, answerer_state, scenario.question_container
     )
-    
+
     # If answerer does any put/move, constrain to before their first action
     first_answerer_action_idx = None
     for idx, event in enumerate(scenario.events):
         if event.event_type in ('put', 'move') and event.character == answerer:
             first_answerer_action_idx = idx
             break
-    
+
     if first_answerer_action_idx is not None:
         constraint_idx = min(constraint_idx, first_answerer_action_idx)
-    
+
     # Skip if no room to insert
     if constraint_idx < 0:
         return
-    
-    # Leave can be inserted at positions 0 through constraint_idx
-    leave_insert_pos = rng.randint(0, constraint_idx)
-    
-    # Enter must be after leave, so positions leave_insert_pos through constraint_idx
-    enter_insert_pos = rng.randint(leave_insert_pos, constraint_idx)
-    
+
+    # Determine leaver's epistemic state from CSV column
+    if spec['Answerer'] == 'Self':
+        leaver_csv_state = spec['KS_Self']
+    elif spec['Answerer'] == 'Teammate':
+        leaver_csv_state = spec['KS_Teammate']
+    else:  # 'Opponent'
+        leaver_csv_state = spec['KS_Opponent']
+
+    # Constraint 1: Put before leave required for Believes/Knows (not Unknown)
+    requires_put_before_leave = leaver_csv_state != EpistemicState.UNKNOWN
+
+    if requires_put_before_leave:
+        # Find first put to queried container
+        first_put_idx = None
+        for idx, event in enumerate(scenario.events):
+            if event.event_type == 'put' and event.container == scenario.question_container:
+                first_put_idx = idx
+                break
+
+        if first_put_idx is None:
+            return  # Can't insert meaningful leave/enter
+
+        min_leave_pos = first_put_idx + 1
+    else:
+        min_leave_pos = 0  # Can leave at any position
+
+    if min_leave_pos > constraint_idx:
+        return
+
+    # Constraint 2: Gap events between leave/enter
+    self_is_leaver = (answerer == player)
+
+    # Find valid leave positions that have appropriate gap events after them
+    valid_leave_positions = []
+    for leave_pos in range(min_leave_pos, constraint_idx + 1):
+        # Check events from leave_pos to constraint_idx for valid gap events
+        has_valid_gap = False
+        for gap_pos in range(leave_pos, constraint_idx):
+            event = scenario.events[gap_pos]
+            if self_is_leaver:
+                # Self needs leave/enter events (not put/move) as gap
+                if event.event_type in ('leave', 'enter'):
+                    has_valid_gap = True
+                    break
+            else:
+                # Others can have any event type as gap
+                has_valid_gap = True
+                break
+
+        if has_valid_gap:
+            valid_leave_positions.append(leave_pos)
+
+    if not valid_leave_positions:
+        return
+
+    leave_insert_pos = rng.choice(valid_leave_positions)
+
+    # Find valid enter positions (must have gap event between leave and enter)
+    valid_enter_positions = []
+    for enter_pos in range(leave_insert_pos + 1, constraint_idx + 1):
+        # Check if there's a valid gap event between leave_insert_pos and enter_pos
+        for gap_pos in range(leave_insert_pos, enter_pos):
+            event = scenario.events[gap_pos]
+            if self_is_leaver:
+                if event.event_type in ('leave', 'enter'):
+                    valid_enter_positions.append(enter_pos)
+                    break
+            else:
+                valid_enter_positions.append(enter_pos)
+                break
+
+    if not valid_enter_positions:
+        return
+
+    enter_insert_pos = rng.choice(valid_enter_positions)
+
     # Insert leave first, then enter (adjusting for the index shift)
     scenario.events.insert(leave_insert_pos, Event('leave', answerer))
     scenario.events.insert(enter_insert_pos + 1, Event('enter', answerer))
@@ -533,7 +608,7 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                 row['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
                 insert_extra_puts(scenario, answerer, rng)
             else:
-                insert_extra_events(scenario, answerer, actor, _get_answerer_state(row), rng)
+                insert_extra_events(scenario, answerer, actor, _get_answerer_state(row), row, rng)
 
         # Validate invariants
         _validate_invariants(scenario)
