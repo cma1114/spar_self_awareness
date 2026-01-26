@@ -116,6 +116,7 @@ class TurnRecord:
     trial: Optional[int] = None
     # Pause mode field:
     pause_mode: Optional[str] = None
+    rep: Optional[int] = None  # Track which rep this trial belongs to
 
 
 class GameState:
@@ -360,14 +361,16 @@ def save_game_results(turn_records: List[TurnRecord], filename: str):
 
 if TORCH_AVAILABLE:
     class ToMTestLLM(BaseGameClass):
-        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none"):
+        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none", reps=1):
             super().__init__(subject_id, subject_name, is_human_player=False, log_dir=log_dir)
-            self.specs = specs
+            self.specs = specs  # Base specs (not multiplied by reps)
+            self.reps = reps    # Number of reps
             self.all_turn_records = []
             self.history_mode = history_mode
             # For history mode: track completed trials
             self.completed_trials = []  # List of dicts: {trial, scenario_desc, question_desc, action, reasoning}
             self.current_trial = 0
+            self.current_rep = 1  # Track current rep number
             # Store the game setup text once it's formatted (set by play_game_cli on first trial)
             self.game_setup_text = None
             # Set up prompt history file path
@@ -379,6 +382,7 @@ if TORCH_AVAILABLE:
         def run_test(self):
             self._log("--- Starting LLM ToM Test ---")
             self._log(f"History mode: {self.history_mode}")
+            self._log(f"Reps: {self.reps}")
             
             chartypes = [CharacterType.LIVE_PLAYER, CharacterType.HONEST_OPPONENT, CharacterType.DISHONEST_TEAMMATE, CharacterType.DISHONEST_OPPONENT]
 
@@ -388,29 +392,13 @@ if TORCH_AVAILABLE:
 
             outfile_tmp = f"{self.log_base_name}_scenario_tmp.json"
 
-            # Determine trial order (other-branch behavior)
-            indexed_specs = list(enumerate(self.specs))
-            if self.history_mode != "none":
-                random.shuffle(indexed_specs)
-                self._log(f"Randomized trial order for history_mode='{self.history_mode}'")
-
-            for trial_num, (spec_idx, spec) in enumerate(indexed_specs, start=1):
-                self.current_trial = trial_num if self.history_mode != "none" else 0
-
-                self._log(f"\n--- Running Trial {trial_num}/{len(self.specs)} (Spec ID {spec_idx+1}): {spec} ---")
-
-                # Seed choice: use spec_idx so runs are reproducible even if order is shuffled.
-                # Note: if you use --reps, spec_idx differs across repeats (so repeats generate different scenarios).
-                generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=spec_idx, chartypes=chartypes)
-
-                if KEEP_SCENARIO_FILES:
-                    keep_name = f"scenarios_llm_test_{spec_idx}.json"
-                    with open(outfile_tmp, "r", encoding="utf-8") as src, open(keep_name, "w", encoding="utf-8") as dst:
-                        dst.write(src.read())
-
-                game_state = play_game_cli(scenario_file=outfile_tmp, llm_player=self)
-                if game_state:
-                    self.all_turn_records.extend(game_state.turn_records)
+            # Handle reps differently based on history_mode
+            if self.history_mode != "none" and self.reps > 1:
+                # Run separate sessions for each rep, resetting history between reps
+                self._run_with_separate_history_sessions(chartypes, outfile_tmp, KEEP_SCENARIO_FILES)
+            else:
+                # Original behavior: run all specs (possibly multiplied by reps) in one session
+                self._run_single_session(chartypes, outfile_tmp, KEEP_SCENARIO_FILES)
 
             # Clean up temp file
             if os.path.exists(outfile_tmp) and not KEEP_SCENARIO_FILES:
@@ -435,6 +423,15 @@ if TORCH_AVAILABLE:
                 if extra1_records:
                     extra1_optimal = sum(1 for r in extra1_records if r.was_optimal)
                     self._log(f"  Extra=1: {extra1_optimal}/{len(extra1_records)} optimal ({(extra1_optimal/len(extra1_records))*100:.2f}%)")
+                
+                # Breakdown by rep if multiple reps with history
+                if self.history_mode != "none" and self.reps > 1:
+                    self._log("\n  Breakdown by rep:")
+                    for rep_num in range(1, self.reps + 1):
+                        rep_records = [r for r in self.all_turn_records if r.character == 'A' and r.rep == rep_num]
+                        if rep_records:
+                            rep_optimal = sum(1 for r in rep_records if r.was_optimal)
+                            self._log(f"    Rep {rep_num}: {rep_optimal}/{len(rep_records)} optimal ({(rep_optimal/len(rep_records))*100:.2f}%)")
             else:
                 self._log("No turns were played by the LLM.")
 
@@ -442,23 +439,114 @@ if TORCH_AVAILABLE:
             self._log(f"\nGame results saved to {self.game_data_filename}")
             
             # Write prompt history file if in history mode
-            if self.history_mode != "none" and self.prompt_history_filename:
+            if self.history_mode != "none" and self.prompt_history_filename and not (self.reps > 1):
                 self._write_prompt_history()
                 self._log(f"Prompt history saved to {self.prompt_history_filename}")
 
-        def _write_prompt_history(self):
+        def _run_single_session(self, chartypes, outfile_tmp, KEEP_SCENARIO_FILES):
+            """Original behavior: run all specs in one session."""
+            # If history_mode is "none" and reps > 1, multiply specs here
+            specs_to_run = self.specs * self.reps if self.history_mode == "none" else self.specs
+            
+            # Determine trial order
+            indexed_specs = list(enumerate(specs_to_run))
+            if self.history_mode != "none":
+                random.shuffle(indexed_specs)
+                self._log(f"Randomized trial order for history_mode='{self.history_mode}'")
+
+            for trial_num, (spec_idx, spec) in enumerate(indexed_specs, start=1):
+                self.current_trial = trial_num if self.history_mode != "none" else 0
+
+                self._log(f"\n--- Running Trial {trial_num}/{len(specs_to_run)} (Spec ID {spec_idx+1}): {spec} ---")
+
+                # Seed choice: use spec_idx so runs are reproducible even if order is shuffled.
+                # Note: if you use --reps, spec_idx differs across repeats (so repeats generate different scenarios).
+                generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=spec_idx, chartypes=chartypes)
+
+                if KEEP_SCENARIO_FILES:
+                    keep_name = f"scenarios_llm_test_{spec_idx}.json"
+                    with open(outfile_tmp, "r", encoding="utf-8") as src, open(keep_name, "w", encoding="utf-8") as dst:
+                        dst.write(src.read())
+
+                game_state = play_game_cli(scenario_file=outfile_tmp, llm_player=self)
+                if game_state:
+                    self.all_turn_records.extend(game_state.turn_records)
+
+        def _run_with_separate_history_sessions(self, chartypes, outfile_tmp, KEEP_SCENARIO_FILES):
+            """Run multiple reps with separate history sessions for each."""
+            total_trials = len(self.specs) * self.reps
+            global_trial_counter = 0
+            
+            for rep_num in range(1, self.reps + 1):
+                self.current_rep = rep_num
+
+                # Reset history for this rep
+                self.completed_trials = []
+                self.current_trial = 0
+                
+                self._log(f"\n{'='*70}")
+                self._log(f"=== Starting Rep {rep_num} of {self.reps} ===")
+                self._log(f"{'='*70}")
+                
+                # Shuffle specs independently for this rep
+                indexed_specs = list(enumerate(self.specs))
+                random.shuffle(indexed_specs)
+                self._log(f"Randomized trial order for rep {rep_num}")
+
+                for trial_num_in_rep, (spec_idx, spec) in enumerate(indexed_specs, start=1):
+                    global_trial_counter += 1
+                    self.current_trial = trial_num_in_rep  # Trial number within this rep (1-78)
+
+                    self._log(f"\n--- Rep {rep_num}, Trial {trial_num_in_rep}/{len(self.specs)} (Global {global_trial_counter}/{total_trials}, Spec ID {spec_idx+1}): {spec} ---")
+
+                    # Seed: combine rep_num and spec_idx to ensure different scenarios across reps
+                    seed = rep_num * 1000 + spec_idx
+                    generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=seed, chartypes=chartypes)
+
+                    if KEEP_SCENARIO_FILES:
+                        keep_name = f"scenarios_llm_test_rep{rep_num}_{spec_idx}.json"
+                        with open(outfile_tmp, "r", encoding="utf-8") as src, open(keep_name, "w", encoding="utf-8") as dst:
+                            dst.write(src.read())
+
+                    game_state = play_game_cli(scenario_file=outfile_tmp, llm_player=self)
+                    if game_state:
+                        self.all_turn_records.extend(game_state.turn_records)
+                
+                # Log rep summary
+                rep_records = [r for r in self.all_turn_records if r.character == 'A' and r.rep == rep_num]
+                if rep_records:
+                    rep_optimal = sum(1 for r in rep_records if r.was_optimal)
+                    self._log(f"\nRep {rep_num} complete: {rep_optimal}/{len(rep_records)} optimal ({(rep_optimal/len(rep_records))*100:.2f}%)")
+
+                if self.prompt_history_filename:
+                    self._write_prompt_history(rep_num)
+
+        def _write_prompt_history(self, rep_num=None):
             """Write the final cumulative prompt history to file."""
-            with open(self.prompt_history_filename, 'w', encoding='utf-8') as f:
-                # Write instructions once at the top (use stored game_setup_text if available)
-                f.write("=" * 70 + "\n")
-                f.write("GAME INSTRUCTIONS\n")
-                f.write("=" * 70 + "\n")
-                if self.game_setup_text:
-                    f.write(self.game_setup_text.strip() + "\n")
-                else:
-                    # Fallback if game_setup_text wasn't stored (shouldn't happen)
-                    f.write(GAME_SETUP_TEMPLATE.format(WINNING_SCORE="N/A").strip() + "\n")
-                f.write("=" * 70 + "\n\n")
+            # Determine file mode: write for first rep or single-session, append for subsequent reps
+            if rep_num is None or rep_num == 1:
+                mode = 'w'
+            else:
+                mode = 'a'
+            
+            with open(self.prompt_history_filename, mode, encoding='utf-8') as f:
+                # Write header only on first write (rep 1 or single-session)
+                if rep_num is None or rep_num == 1:
+                    f.write("=" * 70 + "\n")
+                    f.write("GAME INSTRUCTIONS\n")
+                    f.write("=" * 70 + "\n")
+                    if self.game_setup_text:
+                        f.write(self.game_setup_text.strip() + "\n")
+                    else:
+                        # Fallback if game_setup_text wasn't stored (shouldn't happen)
+                        f.write(GAME_SETUP_TEMPLATE.format(WINNING_SCORE="N/A").strip() + "\n")
+                    f.write("=" * 70 + "\n\n")
+                
+                # Write rep separator if multi-rep mode
+                if rep_num is not None:
+                    f.write(f"{'='*70}\n")
+                    f.write(f"REP {rep_num}\n")
+                    f.write(f"{'='*70}\n\n")
                 
                 # Write all completed trials
                 for trial_data in self.completed_trials:
@@ -523,9 +611,10 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
     log = llm_player._log if llm_player else print
     is_human = llm_player is None
     
-    # Get history_mode from llm_player if available
+    # Get history_mode and current trial from llm_player if available
     history_mode = getattr(llm_player, 'history_mode', 'none') if llm_player else 'none'
     current_trial = getattr(llm_player, 'current_trial', 0) if llm_player else 0
+    current_rep = getattr(llm_player, 'current_rep', None) if llm_player else None
 
     if run_all_scenarios:
         game.WINNING_SCORE = float('inf')  # Disable early termination
@@ -766,6 +855,7 @@ Respond ONLY with your action, and no other text."""
             history_mode=history_mode if llm_player else None,
             trial=current_trial if history_mode != "none" else None,
             pause_mode=PAUSE_MODE,
+            rep=current_rep if llm_player and history_mode != "none" else None,
         )
         game.turn_records.append(turn_record)
         
@@ -822,17 +912,20 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     specs = read_specs_from_csv('ToM - scenarios.csv')
-    specs = specs * args.reps  # Repeat specs for multiple reps
+    # Don't multiply specs by reps here - let ToMTestLLM handle it based on history_mode
     if args.mode == "llm":
         test_runner = ToMTestLLM(
             subject_id=args.model.replace("/", "-"),
             subject_name=args.model,
             specs=specs,
             log_dir="tom_llm_logs",
-            history_mode=args.history_mode
+            history_mode=args.history_mode,
+            reps=args.reps
         )
         test_runner.run_test()
     else:
+        # For human mode, multiply specs by reps (original behavior)
+        specs = specs * args.reps
         for i, spec in enumerate(specs):
          #i=0
 #        while True:
