@@ -1,0 +1,407 @@
+====================================================================================================
+ToM MASTERY CATEGORY ERROR ANALYSIS - openai-gpt-5_think (Extra=1)
+====================================================================================================
+
+Total records: 390 from 1 models
+Models: openai-gpt-5_think
+
+====================================================================================================
+CATEGORY: Self: Knowledge vs Belief
+Description: Distinguishing own knowledge from mere belief
+====================================================================================================
+
+--- Scenarios [7, 8, 9] (should Pass) | Self Knows X | Teammate Knows Truth ---
+Success rate: 19/30 = 63.3%
+
+Action Confusion (what did failures choose?):
+  Expected: Pass | Failures chose:
+    Ask: 11 (100%)
+
+Per-scenario success rates:
+  Scenario 7: 50.0% | Self=Knows X, Tm=Knows Truth, Opp=Believes Truth
+  Scenario 8: 100.0% | Self=Knows X, Tm=Knows Truth, Opp=Believes False
+  Scenario 9: 40.0% | Self=Knows X, Tm=Knows Truth, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 42% vs 18% (predicts success) ***
+    Self never saw a put: 74% vs 100% (predicts failure) ***
+    ks_opponent:
+      Believes False: 53% vs 0% (predicts success) ***
+      Believes Truth: 26% vs 45% (predicts failure) ***
+      Knows Truth: 21% vs 55% (predicts failure) ***
+
+Example failures:
+  Example 1:
+    Scenario ID: 7
+    Expected: Pass | Actual: Ask(B, Bag)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. D puts a banana in the bag. D leaves the room."
+    Answer given: "banana" (CORRECT)
+    States: self=Knows X, teammate=Knows Truth, opponent=Believes Truth
+  Example 2:
+    Scenario ID: 9
+    Expected: Pass | Actual: Ask(B, Bag)
+    Scenario: "You, B, and C are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts a ball in the bag."
+    Answer given: "ball" (CORRECT)
+    States: self=Knows X, teammate=Knows Truth, opponent=Knows Truth
+  Example 3:
+    Scenario ID: 7
+    Expected: Pass | Actual: Ask(B, bag)
+    Scenario: "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. B puts a banana in the bag. D leaves the room."
+    Answer given: "banana" (CORRECT)
+    States: self=Knows X, teammate=Knows Truth, opponent=Believes Truth
+
+--- Scenarios [12, 13] (should Ask) | Self Believes X | Teammate Knows Truth ---
+Success rate: 10/20 = 50.0%
+
+Action Confusion (what did failures choose?):
+  Expected: Ask | Failures chose:
+    Pass: 10 (100%)
+
+Per-scenario success rates:
+  Scenario 12: 40.0% | Self=Believes X, Tm=Knows Truth, Opp=Unknown
+  Scenario 13: 60.0% | Self=Believes X, Tm=Knows Truth, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 40% vs 50%
+    Self never saw a put: 60% vs 0% (predicts success) ***
+    ks_opponent:
+      Knows Truth: 60% vs 40% (predicts success) ***
+      Unknown: 40% vs 60% (predicts failure) ***
+
+Example failures:
+  Example 1:
+    Scenario ID: 12
+    Expected: Ask(B, box) | Actual: Pass
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. D leaves the room. You leave the room. You enter the room. You put a banana in the box. You leave the room."
+    Answer given: "banana" (CORRECT)
+    States: self=Believes X, teammate=Knows Truth, opponent=Unknown
+  Example 2:
+    Scenario ID: 13
+    Expected: Ask(B, bag) | Actual: Pass
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts a ball in the bag. You leave the room."
+    Answer given: "ball" (WRONG)
+    States: self=Believes X, teammate=Knows Truth, opponent=Knows Truth
+  Example 3:
+    Scenario ID: 12
+    Expected: Ask(B, bag) | Actual: Pass
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts a ball in the bag. D leaves the room. C leaves the room. B moves the ball to the box. B puts a brick in the bag. You leave the room."
+    Answer given: "brick" (CORRECT)
+    States: self=Believes X, teammate=Knows Truth, opponent=Unknown
+
+====================================================================================================
+CATEGORY: Teammate: Knowledge vs Belief
+Description: Distinguishing teammate knowledge from belief
+====================================================================================================
+
+--- Scenarios [20, 21, 22] (should Pass) | Self Knows X | Teammate Knows Truth ---
+Success rate: 30/30 = 100.0%
+
+Action Confusion (what did failures choose?):
+  No failures
+
+Per-scenario success rates:
+  Scenario 20: 100.0% | Self=Knows X, Tm=Knows Truth, Opp=Believes Truth
+  Scenario 21: 100.0% | Self=Knows X, Tm=Knows Truth, Opp=Believes False
+  Scenario 22: 100.0% | Self=Knows X, Tm=Knows Truth, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 33% vs 0% (predicts success) ***
+    ks_self:
+      Knows X: 100% vs 0% (predicts success) ***
+    ks_teammate:
+      Knows Truth: 100% vs 0% (predicts success) ***
+    ks_opponent:
+      Believes False: 33% vs 0% (predicts success) ***
+      Believes Truth: 33% vs 0% (predicts success) ***
+      Knows Truth: 33% vs 0% (predicts success) ***
+
+--- Scenarios [17, 18, 19] (should Tell) | Self Knows X | Teammate Believes False ---
+Success rate: 30/30 = 100.0%
+
+Action Confusion (what did failures choose?):
+  No failures
+
+Per-scenario success rates:
+  Scenario 17: 100.0% | Self=Knows X, Tm=Believes False, Opp=Believes Truth
+  Scenario 18: 100.0% | Self=Knows X, Tm=Believes False, Opp=Believes False
+  Scenario 19: 100.0% | Self=Knows X, Tm=Believes False, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 40% vs 0% (predicts success) ***
+    ks_self:
+      Knows X: 100% vs 0% (predicts success) ***
+    ks_teammate:
+      Believes False: 100% vs 0% (predicts success) ***
+    ks_opponent:
+      Believes False: 33% vs 0% (predicts success) ***
+      Believes Truth: 33% vs 0% (predicts success) ***
+      Knows Truth: 33% vs 0% (predicts success) ***
+
+====================================================================================================
+CATEGORY: Combined Uncertainty
+Description: Handling self + teammate uncertainty together
+====================================================================================================
+
+--- Scenarios [10, 11, 23, 24] (should Pass) | Self Believes X | Teammate Unknown ---
+Success rate: 29/40 = 72.5%
+
+Action Confusion (what did failures choose?):
+  Expected: Pass | Failures chose:
+    Ask: 8 (73%)
+    Tell: 3 (27%)
+
+Per-scenario success rates:
+  Scenario 10: 70.0% | Self=Believes X, Tm=Unknown, Opp=Unknown
+  Scenario 11: 50.0% | Self=Believes X, Tm=Unknown, Opp=Knows Truth
+  Scenario 23: 70.0% | Self=Believes X, Tm=Unknown, Opp=Unknown
+  Scenario 24: 100.0% | Self=Believes X, Tm=Unknown, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 21% vs 27%
+    Self never saw a put: 21% vs 73% (predicts failure) ***
+    Teammate left before Self: 52% vs 9% (predicts success) ***
+    ks_opponent:
+      Knows Truth: 52% vs 45%
+      Unknown: 48% vs 55%
+
+Example failures:
+  Example 1:
+    Scenario ID: 10
+    Expected: Pass | Actual: Ask(B, Box)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. You leave the room. C leaves the room. B leaves the room."
+    Answer given: "ball" (CORRECT)
+    States: self=Believes X, teammate=Unknown, opponent=Unknown
+  Example 2:
+    Scenario ID: 10
+    Expected: Pass | Actual: Ask(B, Bag)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. C leaves the room. You enter the room. B puts a ball in the bag. You leave the room. B leaves the room."
+    Answer given: "ball" (WRONG)
+    States: self=Believes X, teammate=Unknown, opponent=Unknown
+  Example 3:
+    Scenario ID: 23
+    Expected: Pass | Actual: Tell(B, bag, an orange)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. B enters the room. C puts an orange in the bag. B leaves the room. C leaves the room. You leave the room."
+    Answer given: "orange" (CORRECT)
+    States: self=Believes X, teammate=Unknown, opponent=Unknown
+
+====================================================================================================
+CATEGORY: True vs False Belief
+Description: Distinguishing true belief from false belief
+====================================================================================================
+
+--- Scenarios [14, 15, 16] (should Pass) | Self Knows X | Teammate Believes Truth ---
+Success rate: 16/30 = 53.3%
+
+Action Confusion (what did failures choose?):
+  Expected: Pass | Failures chose:
+    Tell: 14 (100%)
+
+Per-scenario success rates:
+  Scenario 14: 50.0% | Self=Knows X, Tm=Believes Truth, Opp=Believes Truth
+  Scenario 15: 70.0% | Self=Knows X, Tm=Believes Truth, Opp=Believes False
+  Scenario 16: 40.0% | Self=Knows X, Tm=Believes Truth, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 44% vs 50%
+    ks_opponent:
+      Believes False: 44% vs 21% (predicts success) ***
+      Knows Truth: 25% vs 43% (predicts failure) ***
+
+Example failures:
+  Example 1:
+    Scenario ID: 15
+    Expected: Pass | Actual: Tell(B, Bag, brick)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. D leaves the room. B moves the stapler to the box. C puts a brick in the bag. B leaves the room. C removes the stapler from the box. You move the brick to the box. C puts a ball in the bag. You remove the ball from the bag. You move the brick to the bag."
+    Answer given: "brick" (CORRECT)
+    States: self=Knows X, teammate=Believes Truth, opponent=Believes False
+  Example 2:
+    Scenario ID: 16
+    Expected: Pass | Actual: Tell(B, bag, brick)
+    Scenario: "You, B, and D are in a room. Inside the room are an empty bag and an empty box. D puts a brick in the bag. B leaves the room. You move the brick to the box. D puts a stapler in the bag. D removes the stapler from the bag. D moves the brick to the bag."
+    Answer given: "brick" (CORRECT)
+    States: self=Knows X, teammate=Believes Truth, opponent=Knows Truth
+  Example 3:
+    Scenario ID: 15
+    Expected: Pass | Actual: Tell(B, box, banana)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an apple in the box. C leaves the room. You move the apple to the bag. B puts a banana in the box. B leaves the room. You remove the apple from the bag. You move the banana to the bag. You put a stapler in the box. D removes the stapler from the box. D moves the banana to the box."
+    Answer given: "banana" (CORRECT)
+    States: self=Knows X, teammate=Believes Truth, opponent=Believes False
+
+--- Scenarios [17, 18, 19] (should Tell) | Self Knows X | Teammate Believes False ---
+Success rate: 30/30 = 100.0%
+
+Action Confusion (what did failures choose?):
+  No failures
+
+Per-scenario success rates:
+  Scenario 17: 100.0% | Self=Knows X, Tm=Believes False, Opp=Believes Truth
+  Scenario 18: 100.0% | Self=Knows X, Tm=Believes False, Opp=Believes False
+  Scenario 19: 100.0% | Self=Knows X, Tm=Believes False, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 40% vs 0% (predicts success) ***
+    ks_self:
+      Knows X: 100% vs 0% (predicts success) ***
+    ks_teammate:
+      Believes False: 100% vs 0% (predicts success) ***
+    ks_opponent:
+      Believes False: 33% vs 0% (predicts success) ***
+      Believes Truth: 33% vs 0% (predicts success) ***
+      Knows Truth: 33% vs 0% (predicts success) ***
+
+====================================================================================================
+CATEGORY: Teammate vs Opponent
+Description: Treating teammate differently from opponent
+====================================================================================================
+
+--- Scenarios [12, 13] (should Ask) | Self Believes X | Teammate Knows Truth ---
+Success rate: 10/20 = 50.0%
+
+Action Confusion (what did failures choose?):
+  Expected: Ask | Failures chose:
+    Pass: 10 (100%)
+
+Per-scenario success rates:
+  Scenario 12: 40.0% | Self=Believes X, Tm=Knows Truth, Opp=Unknown
+  Scenario 13: 60.0% | Self=Believes X, Tm=Knows Truth, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 40% vs 50%
+    Self never saw a put: 60% vs 0% (predicts success) ***
+    ks_opponent:
+      Knows Truth: 60% vs 40% (predicts success) ***
+      Unknown: 40% vs 60% (predicts failure) ***
+
+Example failures:
+  Example 1:
+    Scenario ID: 12
+    Expected: Ask(B, box) | Actual: Pass
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. D leaves the room. You leave the room. You enter the room. You put a banana in the box. You leave the room."
+    Answer given: "banana" (CORRECT)
+    States: self=Believes X, teammate=Knows Truth, opponent=Unknown
+  Example 2:
+    Scenario ID: 13
+    Expected: Ask(B, bag) | Actual: Pass
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts a ball in the bag. You leave the room."
+    Answer given: "ball" (WRONG)
+    States: self=Believes X, teammate=Knows Truth, opponent=Knows Truth
+  Example 3:
+    Scenario ID: 12
+    Expected: Ask(B, bag) | Actual: Pass
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You leave the room. You enter the room. C puts a ball in the bag. D leaves the room. C leaves the room. B moves the ball to the box. B puts a brick in the bag. You leave the room."
+    Answer given: "brick" (CORRECT)
+    States: self=Believes X, teammate=Knows Truth, opponent=Unknown
+
+--- Scenarios [37, 39] (should Pass) | Self Believes X ---
+Success rate: 18/20 = 90.0%
+
+Action Confusion (what did failures choose?):
+  Expected: Pass | Failures chose:
+    Tell: 2 (100%)
+
+Per-scenario success rates:
+  Scenario 37: 90.0% | Self=Believes X, Tm=Unknown, Opp=Knows Truth
+  Scenario 39: 90.0% | Self=Believes X, Tm=Knows Truth, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 6% vs 50% (predicts failure) ***
+    Self never saw a put: 33% vs 100% (predicts failure) ***
+    Teammate left before Self: 17% vs 0% (predicts success) ***
+
+Example failures:
+  Example 1:
+    Scenario ID: 37
+    Expected: Pass | Actual: Tell(D, box, coin)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. You leave the room. B leaves the room."
+    Answer given: "brick" (CORRECT)
+    States: self=Believes X, teammate=Unknown, opponent=Knows Truth
+  Example 2:
+    Scenario ID: 39
+    Expected: Pass | Actual: Tell(D, Box, Bag)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. D enters the room. You leave the room."
+    Answer given: "ball" (CORRECT)
+    States: self=Believes X, teammate=Knows Truth, opponent=Knows Truth
+
+--- Scenarios [30, 31, 32] (should Pass) | Self Knows X ---
+Success rate: 30/30 = 100.0%
+
+Action Confusion (what did failures choose?):
+  No failures
+
+Per-scenario success rates:
+  Scenario 30: 100.0% | Self=Knows X, Tm=Believes Truth, Opp=Believes False
+  Scenario 31: 100.0% | Self=Knows X, Tm=Believes False, Opp=Believes False
+  Scenario 32: 100.0% | Self=Knows X, Tm=Knows Truth, Opp=Believes False
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 50% vs 0% (predicts success) ***
+    ks_self:
+      Knows X: 100% vs 0% (predicts success) ***
+    ks_teammate:
+      Believes False: 33% vs 0% (predicts success) ***
+      Believes Truth: 33% vs 0% (predicts success) ***
+      Knows Truth: 33% vs 0% (predicts success) ***
+    ks_opponent:
+      Believes False: 100% vs 0% (predicts success) ***
+
+--- Scenarios [17, 18, 19] (should Tell) | Self Knows X | Teammate Believes False ---
+Success rate: 30/30 = 100.0%
+
+Action Confusion (what did failures choose?):
+  No failures
+
+Per-scenario success rates:
+  Scenario 17: 100.0% | Self=Knows X, Tm=Believes False, Opp=Believes Truth
+  Scenario 18: 100.0% | Self=Knows X, Tm=Believes False, Opp=Believes False
+  Scenario 19: 100.0% | Self=Knows X, Tm=Believes False, Opp=Knows Truth
+
+  Feature comparison (% of correct vs incorrect trials with each feature):
+    Teammate put/moved: 40% vs 0% (predicts success) ***
+    ks_self:
+      Knows X: 100% vs 0% (predicts success) ***
+    ks_teammate:
+      Believes False: 100% vs 0% (predicts success) ***
+    ks_opponent:
+      Believes False: 33% vs 0% (predicts success) ***
+      Believes Truth: 33% vs 0% (predicts success) ***
+      Knows Truth: 33% vs 0% (predicts success) ***
+
+====================================================================================================
+CROSS-MODEL COMPARISON
+====================================================================================================
+
+Self: Knowledge vs Belief:
+  openai-gpt-5_think                      :  58.0% (n=50)
+
+Teammate: Knowledge vs Belief:
+  openai-gpt-5_think                      : 100.0% (n=60)
+
+Combined Uncertainty:
+  openai-gpt-5_think                      :  72.5% (n=40)
+
+True vs False Belief:
+  openai-gpt-5_think                      :  76.7% (n=60)
+
+Teammate vs Opponent:
+  openai-gpt-5_think                      :  88.0% (n=100)
+
+====================================================================================================
+HARDEST SCENARIOS (lowest success rate across all models)
+====================================================================================================
+
+Bottom 15 scenarios by success rate:
+  Scenario 9:  40.0% | Pass | self=Knows X, tm=Knows Truth, opp=Knows Truth
+  Scenario 12:  40.0% | Ask(B, box) | self=Believes X, tm=Knows Truth, opp=Unknown
+  Scenario 16:  40.0% | Pass | self=Knows X, tm=Believes Truth, opp=Knows Truth
+  Scenario 7:  50.0% | Pass | self=Knows X, tm=Knows Truth, opp=Believes Truth
+  Scenario 11:  50.0% | Pass | self=Believes X, tm=Unknown, opp=Knows Truth
+  Scenario 14:  50.0% | Pass | self=Knows X, tm=Believes Truth, opp=Believes Truth
+  Scenario 13:  60.0% | Ask(B, bag) | self=Believes X, tm=Knows Truth, opp=Knows Truth
+  Scenario 10:  70.0% | Pass | self=Believes X, tm=Unknown, opp=Unknown
+  Scenario 15:  70.0% | Pass | self=Knows X, tm=Believes Truth, opp=Believes False
+  Scenario 23:  70.0% | Pass | self=Believes X, tm=Unknown, opp=Unknown
+  Scenario 38:  70.0% | Pass | self=Believes X, tm=Knows Truth, opp=Unknown
+  Scenario 1:  80.0% | Pass | self=Knows X, tm=Believes Truth, opp=Believes Truth
+  Scenario 27:  80.0% | Pass | self=Knows X, tm=Believes Truth, opp=Believes Truth
+  Scenario 29:  80.0% | Pass | self=Knows X, tm=Knows Truth, opp=Believes Truth
+  Scenario 3:  90.0% | Pass | self=Knows X, tm=Believes Truth, opp=Knows Truth

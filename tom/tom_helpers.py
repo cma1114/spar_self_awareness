@@ -102,8 +102,20 @@ class Scenario:
     epistemic_type: Optional[EpistemicType] = None
     ask_constraint: Optional[AskConstraintType] = None
     
-    def get_description_for(self, character_name: str, characters: Dict[str, Character]) -> str:
-        """Generate scenario description from a character's perspective."""
+    def get_description_for(self, character_name: str, characters: Dict[str, Character],
+                            pause_mode: str = "none", ellipsis_mode: bool = False) -> str:
+        """Generate scenario description from a character's perspective.
+
+        Args:
+            character_name: The character whose perspective to use.
+            characters: Dict of all characters in the game.
+            pause_mode: "none" (default), "extra1" (Extra=1 only), or "all" (all scenarios).
+                       When active, adds "Time goes by." after "You leave the room."
+            ellipsis_mode: When True, adds "..." after every action. Overrides pause_mode to "none".
+        """
+        # Ellipsis mode overrides pause mode
+        if ellipsis_mode:
+            pause_mode = "none"
         char_map = {c: c for c in characters.keys()}
         if character_name in characters:
             char_map[character_name] = "You"
@@ -140,27 +152,43 @@ class Scenario:
                 if perspective_present:
                     verb_put = "put" if you_form else "puts"
                     lines.append(f"{actor} {verb_put} {article} {event.item} in the {event.container}.")
+                    if ellipsis_mode:
+                        lines.append("...")
 
             elif event.event_type == 'move':
                 if perspective_present:
                     verb_move = "move" if you_form else "moves"
-                    lines.append(f"{actor} {verb_move} the {event.item} to the {event.to_container}.")
+                    if event.from_container and event.to_container:
+                        lines.append(f"{actor} {verb_move} the {event.item} from the {event.from_container} to the {event.to_container}.")
+                    else:
+                        lines.append(f"{actor} {verb_move} the {event.item} to the {event.to_container}.")
+                    if ellipsis_mode:
+                        lines.append("...")
 
             elif event.event_type == 'remove':
                 if perspective_present:
                     verb_remove = "remove" if you_form else "removes"
                     lines.append(f"{actor} {verb_remove} the {event.item} from the {event.container}.")
+                    if ellipsis_mode:
+                        lines.append("...")
 
             elif event.event_type == 'leave':
                 verb_leave = "leave" if you_form else "leaves"
                 lines.append(f"{actor} {verb_leave} the room.")
+                if ellipsis_mode:
+                    lines.append("...")
                 present.discard(event.character)
                 if event.character == character_name:
                     perspective_present = False
-                    
+                    # Add pause text if configured (only when not in ellipsis mode)
+                    if pause_mode == "all" or (pause_mode == "extra1" and self.extra == 1):
+                        lines.append("Time goes by.")
+
             elif event.event_type == 'enter':
                 verb_enter = "enter" if you_form else "enters"
                 lines.append(f"{actor} {verb_enter} the room.")
+                if ellipsis_mode:
+                    lines.append("...")
                 present.add(event.character)
                 if event.character == character_name:
                     perspective_present = True

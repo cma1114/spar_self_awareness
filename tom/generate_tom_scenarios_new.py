@@ -37,6 +37,15 @@ def _other_container(c: str) -> str:
 def _pick_other_item(rng: random.Random, exclude: str) -> str:
     return rng.choice([x for x in ITEMS_GEN if x != exclude])
 
+def _choose_different_actor(present: set, last_actor: Optional[str], rng: random.Random) -> str:
+    """Choose actor, preferring someone different from last_actor if possible."""
+    present_list = list(present)
+    if len(present_list) == 1 or last_actor is None:
+        return rng.choice(present_list)
+    # Exclude last actor, pick from remaining
+    candidates = [c for c in present_list if c != last_actor]
+    return rng.choice(candidates) if candidates else rng.choice(present_list)
+
 @dataclass
 class Scenario_Builder:
     rng: random.Random
@@ -55,6 +64,10 @@ class Scenario_Builder:
         self.include: Set[str] = set()      # who must be present at end
         self.present_initially: Set[str] = set()  # who must be present initially
         self.must_leave_together: Tuple[Optional[str], Optional[str]] = (None, None)  # (char1, char2) must be in same group
+        # Character references (set in plan_availability)
+        self.self_char: Optional[str] = None
+        self.opponent1: Optional[str] = None
+        self.opponent2: Optional[str] = None
 
     def rand_actor(self, exclude: Optional[Set[str]] = None) -> str:
         pool = [p for p in self.present if not exclude or p not in exclude]
@@ -93,6 +106,10 @@ class Scenario_Builder:
     def plan_availability(self, spec: dict, answerer: str):
 
         actor, teammate, opponent1, opponent2 = _map_to_char_names(spec['Actor'])
+        # Store character references for use in build_scenario
+        self.self_char = actor
+        self.opponent1 = opponent1
+        self.opponent2 = opponent2
         if spec['KS_Self'] == EpistemicState.BELIEVES_X:
             self.exclude.add(actor) 
             if spec['KS_Teammate'] == EpistemicState.KNOWS_TRUTH and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
@@ -223,7 +240,13 @@ class Scenario_Builder:
                 self.exclude_true.add(who)
             else:
                 leave_immediately_group.add(who)
-        
+
+        # Self with "Believes X" must see a put before leaving to form their belief
+        # Move them out of leave_immediately_group to exclude_false
+        if self.self_char in leave_immediately_group and self.self_char in self.exclude:
+            leave_immediately_group.discard(self.self_char)
+            self.exclude_false.add(self.self_char)
+
         # Enforce constraint: ensure both characters are in the same group
         if self.must_leave_together[0] is not None:
             char1, char2 = self.must_leave_together
@@ -241,14 +264,58 @@ class Scenario_Builder:
                 self.exclude_true.discard(char2)
                 leave_immediately_group.add(char2)
 
+        # Ensure at least one opponent is present when Self leaves
+        # (Constraint: at least one opponent must leave at same phase as Self or later)
+        def get_phase(char):
+            if char in leave_immediately_group:
+                return 0
+            elif char in self.exclude_false:
+                return 1
+            elif char in self.exclude_true:
+                return 2
+            else:
+                return 3  # Not leaving (stays until end)
+
+        def set_phase(char, phase):
+            leave_immediately_group.discard(char)
+            self.exclude_false.discard(char)
+            self.exclude_true.discard(char)
+            if phase == 0:
+                leave_immediately_group.add(char)
+            elif phase == 1:
+                self.exclude_false.add(char)
+            elif phase == 2:
+                self.exclude_true.add(char)
+
+        if self.self_char is not None and self.opponent1 is not None and self.opponent2 is not None:
+            self_phase = get_phase(self.self_char)
+            opp1_phase = get_phase(self.opponent1)
+            opp2_phase = get_phase(self.opponent2)
+
+            # If both opponents leave before Self, move one to Self's phase
+            # Only apply when Self is actually leaving (phase < 3)
+            if self_phase < 3 and opp1_phase < self_phase and opp2_phase < self_phase:
+                opponent_to_move = self.rng.choice([self.opponent1, self.opponent2])
+                set_phase(opponent_to_move, self_phase)
+
+        # Helper to order characters so Self leaves first within a phase
+        # (ensures opponents are still present when Self leaves)
+        def order_self_first(chars):
+            chars_list = list(chars)
+            if self.self_char in chars_list:
+                chars_list.remove(self.self_char)
+                return [self.self_char] + self.rng.sample(chars_list, len(chars_list))
+            else:
+                return self.rng.sample(chars_list, len(chars_list))
+
         # Now execute the leave-immediately actions
-        for who in leave_immediately_group:
+        for who in order_self_first(leave_immediately_group):
             self.leave(who)
 
         if len(self.exclude_false) > 0:
             old_item = _pick_other_item(self.rng, self.queried_item)
             self.put(self.queried_container, old_item, exclude=None)
-            for who in self.rng.sample(list(self.exclude_false), len(self.exclude_false)):
+            for who in order_self_first(self.exclude_false):
                 self.leave(who)
 
         # Only exclude answerer's teammate if there's someone else available
@@ -262,7 +329,7 @@ class Scenario_Builder:
 
         #print(f"exclude_true: {self.exclude_true}, exclude_false: {self.exclude_false}, present_initially: {self.present_initially}, present: {self.present}, answerer: {answerer}")
         self.put(self.queried_container, self.queried_item, exclude=exclude_set)
-        for who in self.rng.sample(list(self.exclude_true), len(self.exclude_true)):
+        for who in order_self_first(self.exclude_true):
             self.leave(who)
 
         self.present_initially = self.present_initially | self.used
@@ -318,7 +385,7 @@ def _get_answerer_state(spec: dict) -> EpistemicState:
         if spec['KS_Self'] == EpistemicState.KNOWS_X:
             return EpistemicState.KNOWS_TRUTH
         else:  # BELIEVES_X
-            return EpistemicState.UNKNOWN
+            return EpistemicState.BELIEVES_X
     elif spec['Answerer'] == 'Teammate':
         return spec['KS_Teammate']
     else:  # 'Opponent'
@@ -487,6 +554,307 @@ def insert_extra_events(scenario: Scenario, answerer: str, player: str,
     scenario.events.insert(enter_insert_pos + 1, Event('enter', answerer))
 
 
+def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+    """
+    Insert extra events for KNOWS_TRUTH answerers using the "revelation" pattern:
+    1. Answerer sees initial put (already in events)
+    2. Answerer leaves
+    3. State changes while they're away (move to other container)
+    4. Answerer returns
+    5. Final move reveals truth to them (they witness the move back)
+
+    Epistemic model: Containers are opaque. You learn contents ONLY by witnessing put/move events.
+    """
+    queried = scenario.question_container
+    other = _other_container(queried)
+
+    # Find the initial put to queried container
+    initial_put_idx = None
+    initial_item = None
+    for idx, event in enumerate(scenario.events):
+        if event.event_type == 'put' and event.container == queried:
+            initial_put_idx = idx
+            initial_item = event.item
+            break
+
+    if initial_put_idx is None:
+        return  # Can't work without an initial put
+
+    # Track who is present after the initial put
+    present = set(scenario.present_initially)
+    for idx, event in enumerate(scenario.events):
+        if idx > initial_put_idx:
+            break
+        if event.event_type == 'leave':
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+
+    # Answerer must be present to leave
+    if answerer not in present:
+        return
+
+    # After answerer leaves, we need someone still present to do the moves
+    present_after_leave = present - {answerer}
+    if not present_after_leave:
+        return
+
+    # Build the extra events
+    leave_pos = initial_put_idx + 1
+
+    # 1. Answerer leaves
+    leave_event = Event('leave', answerer)
+
+    # 2. Someone moves item to other container while answerer is away
+    mover1 = rng.choice(list(present_after_leave))
+    move_away_event = Event('move', mover1, from_container=queried, to_container=other, item=initial_item)
+
+    # 3. Answerer returns
+    enter_event = Event('enter', answerer)
+
+    # 4. Someone moves item back to queried container (revelation!)
+    # Prefer different mover than mover1
+    mover2 = _choose_different_actor(present_after_leave, mover1, rng)
+    move_back_event = Event('move', mover2, from_container=other, to_container=queried, item=initial_item)
+
+    # Build list of events to insert
+    events_to_insert = [leave_event]
+
+    # 50% chance: have another character leave while answerer is away
+    # (must keep at least one person present for the moves)
+    # Also exclude any character who has events later in the base scenario
+    if rng.random() < 0.5 and len(present_after_leave) > 1:
+        # Find characters who act later in the base scenario (can't make them leave)
+        chars_acting_later = set()
+        for evt in scenario.events[leave_pos:]:
+            chars_acting_later.add(evt.character)
+
+        potential_leavers = [c for c in present_after_leave
+                            if c != mover1 and c != mover2 and c not in chars_acting_later]
+        if potential_leavers:
+            leaver = rng.choice(potential_leavers)
+            events_to_insert.append(Event('leave', leaver))
+
+    events_to_insert.append(move_away_event)
+    events_to_insert.append(enter_event)
+    events_to_insert.append(move_back_event)
+
+    # Insert all events at the correct position
+    for i, evt in enumerate(events_to_insert):
+        scenario.events.insert(leave_pos + i, evt)
+
+
+def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+    """
+    Insert extra events for BELIEVES_TRUE answerers.
+    Pattern: Answerer sees put, leaves, then state changes and reverts while they're away.
+    Result: Their belief (from before leaving) is still true.
+    """
+    queried = scenario.question_container
+    other = _other_container(queried)
+
+    # Find where answerer leaves
+    answerer_leave_idx = None
+    present = set(scenario.present_initially)
+    queried_item = None
+
+    for idx, event in enumerate(scenario.events):
+        if event.event_type == 'put' and event.container == queried:
+            queried_item = event.item
+        elif event.event_type == 'leave':
+            if event.character == answerer:
+                answerer_leave_idx = idx
+                break
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+
+    if answerer_leave_idx is None or queried_item is None:
+        return
+
+    # After answerer leaves, we need someone to do the moves
+    present.discard(answerer)
+    if not present:
+        return
+
+    # Insert events right after answerer leaves:
+    # 1. Move item to other container
+    # 2. Move item back to queried container
+    # Result: Truth unchanged, but more complex sequence
+    insert_pos = answerer_leave_idx + 1
+
+    mover1 = rng.choice(list(present))
+    move_away = Event('move', mover1, from_container=queried, to_container=other, item=queried_item)
+
+    # Prefer different mover than mover1
+    mover2 = _choose_different_actor(present, mover1, rng)
+    move_back = Event('move', mover2, from_container=other, to_container=queried, item=queried_item)
+
+    # Build list of events to insert
+    events_to_insert = []
+
+    # 50% chance: have another character leave while answerer is away
+    # (must keep at least one person present for the moves)
+    # Also exclude any character who has events later in the base scenario
+    if rng.random() < 0.5 and len(present) > 1:
+        # Find characters who act later in the base scenario (can't make them leave)
+        chars_acting_later = set()
+        for evt in scenario.events[insert_pos:]:
+            chars_acting_later.add(evt.character)
+
+        potential_leavers = [c for c in present
+                            if c != mover1 and c != mover2 and c not in chars_acting_later]
+        if potential_leavers:
+            leaver = rng.choice(potential_leavers)
+            events_to_insert.append(Event('leave', leaver))
+
+    events_to_insert.append(move_away)
+    events_to_insert.append(move_back)
+
+    # Insert all events at the correct position
+    for i, evt in enumerate(events_to_insert):
+        scenario.events.insert(insert_pos + i, evt)
+
+
+def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+    """
+    Insert extra events for BELIEVES_FALSE answerers.
+    Pattern: Answerer sees wrong item, leaves, then more events happen while they're away.
+    Result: Their belief is still false, but sequence is more complex.
+
+    We insert events right after the answerer leaves: move item to other container, then back.
+    """
+    queried = scenario.question_container
+    other = _other_container(queried)
+
+    # Find where answerer leaves and track container contents at that point
+    answerer_leave_idx = None
+    contents = {c: None for c in CONTAINERS_GEN}
+    present = set(scenario.present_initially)
+
+    for idx, event in enumerate(scenario.events):
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+        elif event.event_type == 'move':
+            contents[event.to_container] = event.item
+            contents[event.from_container] = None
+        elif event.event_type == 'remove':
+            contents[event.container] = None
+        elif event.event_type == 'leave':
+            if event.character == answerer:
+                answerer_leave_idx = idx
+                break
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+
+    if answerer_leave_idx is None:
+        return
+
+    # After answerer leaves, we need someone to do the moves
+    present.discard(answerer)
+    if not present:
+        return
+
+    # What's in the queried container when answerer left?
+    item_in_queried = contents[queried]
+    if item_in_queried is None:
+        return  # Nothing to move
+
+    # Insert events right after answerer leaves:
+    # Move item to other, then move back (adds complexity without changing outcome)
+    insert_pos = answerer_leave_idx + 1
+
+    mover1 = rng.choice(list(present))
+    move_away = Event('move', mover1, from_container=queried, to_container=other, item=item_in_queried)
+
+    # Prefer different mover than mover1
+    mover2 = _choose_different_actor(present, mover1, rng)
+    move_back = Event('move', mover2, from_container=other, to_container=queried, item=item_in_queried)
+
+    # Build list of events to insert
+    events_to_insert = []
+
+    # 50% chance: have another character leave while answerer is away
+    # (must keep at least one person present for the moves)
+    # Also exclude any character who has events later in the base scenario
+    if rng.random() < 0.5 and len(present) > 1:
+        # Find characters who act later in the base scenario (can't make them leave)
+        chars_acting_later = set()
+        for evt in scenario.events[insert_pos:]:
+            chars_acting_later.add(evt.character)
+
+        potential_leavers = [c for c in present
+                            if c != mover1 and c != mover2 and c not in chars_acting_later]
+        if potential_leavers:
+            leaver = rng.choice(potential_leavers)
+            events_to_insert.append(Event('leave', leaver))
+
+    events_to_insert.append(move_away)
+    events_to_insert.append(move_back)
+
+    # Insert all events at the correct position
+    for i, evt in enumerate(events_to_insert):
+        scenario.events.insert(insert_pos + i, evt)
+
+
+def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+    """
+    Insert extra events for BELIEVES_X answerers (Self who believes something uncertain).
+    Pattern: Answerer sees events, leaves, then more events happen after they leave.
+    Result: Their belief is unchanged (they left), but scenario has more complexity.
+    """
+    queried = scenario.question_container
+    other = _other_container(queried)
+
+    # Find where answerer leaves and track container contents
+    answerer_leave_idx = None
+    contents = {c: None for c in CONTAINERS_GEN}
+    present = set(scenario.present_initially)
+
+    for idx, event in enumerate(scenario.events):
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+        elif event.event_type == 'move':
+            contents[event.to_container] = event.item
+            contents[event.from_container] = None
+        elif event.event_type == 'remove':
+            contents[event.container] = None
+        elif event.event_type == 'leave':
+            if event.character == answerer:
+                answerer_leave_idx = idx
+                break
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+
+    if answerer_leave_idx is None:
+        return
+
+    # After answerer leaves, we need someone to do the moves
+    present.discard(answerer)
+    if not present:
+        return
+
+    # What's in the queried container when answerer left?
+    item_in_queried = contents[queried]
+    if item_in_queried is None:
+        return  # Nothing to move
+
+    # Insert move away/back events after answerer leaves
+    insert_pos = answerer_leave_idx + 1
+
+    mover1 = rng.choice(list(present))
+    move_away = Event('move', mover1, from_container=queried, to_container=other, item=item_in_queried)
+
+    mover2 = _choose_different_actor(present, mover1, rng)
+    move_back = Event('move', mover2, from_container=other, to_container=queried, item=item_in_queried)
+
+    # Insert the events
+    scenario.events.insert(insert_pos, move_away)
+    scenario.events.insert(insert_pos + 1, move_back)
+
+
 def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> None:
     """
     Insert extra put/move/remove events for scenarios where Answerer=Teammate,
@@ -536,28 +904,33 @@ def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> 
     if not present:
         return
     
-    # Build the extra events
+    # Build the extra events, alternating actors where possible
     extra_events = []
-    
+    last_actor = None
+
     # a. If X exists in other container: REMOVE X
     if X is not None:
-        actor = rng.choice(list(present))
+        actor = _choose_different_actor(present, last_actor, rng)
         extra_events.append(Event('remove', actor, container=other, item=X))
-    
+        last_actor = actor
+
     # b. MOVE Z from queried to other container
-    actor = rng.choice(list(present))
+    actor = _choose_different_actor(present, last_actor, rng)
     extra_events.append(Event('move', actor, from_container=queried, to_container=other, item=Z))
-    
+    last_actor = actor
+
     # c. PUT Y in queried container
-    actor = rng.choice(list(present))
+    actor = _choose_different_actor(present, last_actor, rng)
     extra_events.append(Event('put', actor, container=queried, item=Y))
-    
+    last_actor = actor
+
     # d. REMOVE Y from queried container
-    actor = rng.choice(list(present))
+    actor = _choose_different_actor(present, last_actor, rng)
     extra_events.append(Event('remove', actor, container=queried, item=Y))
-    
+    last_actor = actor
+
     # e. MOVE Z from other back to queried container
-    actor = rng.choice(list(present))
+    actor = _choose_different_actor(present, last_actor, rng)
     extra_events.append(Event('move', actor, from_container=other, to_container=queried, item=Z))
     
     # Insert all extra events right after answerer leaves
@@ -603,12 +976,25 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
 
         # Insert extra events if Extra=1
         if row.get('Extra', 0) == 1:
-            if (row['Answerer'] == 'Teammate' and 
-                row['KS_Self'] == EpistemicState.KNOWS_X and 
+            answerer_state = _get_answerer_state(row)
+            if (row['Answerer'] == 'Teammate' and
+                row['KS_Self'] == EpistemicState.KNOWS_X and
                 row['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
                 insert_extra_puts(scenario, answerer, rng)
+            elif answerer_state == EpistemicState.KNOWS_TRUTH:
+                # Use revelation pattern for KNOWS_TRUTH answerers
+                insert_extra_events_with_revelation(scenario, answerer, rng)
+            elif answerer_state == EpistemicState.BELIEVES_TRUTH:
+                # Answerer believes truth - add events that change and revert while away
+                insert_extra_events_believes_true(scenario, answerer, rng)
+            elif answerer_state == EpistemicState.BELIEVES_FALSE:
+                # Answerer believes false - add events while they're away
+                insert_extra_events_believes_false(scenario, answerer, rng)
+            elif answerer_state == EpistemicState.BELIEVES_X:
+                # Self believes something (uncertain) - add events after they leave
+                insert_extra_events_believes_x(scenario, answerer, rng)
             else:
-                insert_extra_events(scenario, answerer, actor, _get_answerer_state(row), row, rng)
+                insert_extra_events(scenario, answerer, actor, answerer_state, row, rng)
 
         # Validate invariants
         _validate_invariants(scenario)

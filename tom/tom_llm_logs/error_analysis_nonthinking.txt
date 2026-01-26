@@ -2,8 +2,8 @@
 ToM MASTERY CATEGORY ERROR ANALYSIS - NON-THINKING MODELS (paired only, Extra=0)
 ====================================================================================================
 
-Total records: 1638 from 4 models
-Models: anthropic-claude-opus-4.5, anthropic-claude-sonnet-4.5, openai-gpt-5, openai-gpt-5.2
+Total records: 1599 from 3 models
+Models: anthropic-claude-opus-4.5, anthropic-claude-sonnet-4.5, openai-gpt-5.2
 
 ====================================================================================================
 CATEGORY: Self: Knowledge vs Belief
@@ -71,23 +71,23 @@ Per-scenario success rates:
 
 Example failures:
   Example 1:
-    Scenario ID: 12
+    Scenario ID: 13
     Expected: Ask(B, box) | Actual: Pass
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. C leaves the room. B puts a stapler in the box. You leave the room."
-    Answer given: "stapler" (CORRECT)
-    States: self=Believes X, teammate=Knows Truth, opponent=Unknown
+    Scenario: "You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the box. You leave the room."
+    Answer given: "banana" (CORRECT)
+    States: self=Believes X, teammate=Knows Truth, opponent=Knows Truth
   Example 2:
     Scenario ID: 13
     Expected: Ask(B, box) | Actual: Pass
-    Scenario: "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. You leave the room."
+    Scenario: "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the box. You leave the room."
     Answer given: "banana" (CORRECT)
     States: self=Believes X, teammate=Knows Truth, opponent=Knows Truth
   Example 3:
-    Scenario ID: 12
-    Expected: Ask(B, bag) | Actual: Pass
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. B puts an apple in the bag. C leaves the room. B moves the apple to the box. You put a stapler in the bag. You leave the room."
-    Answer given: "stapler" (CORRECT)
-    States: self=Believes X, teammate=Knows Truth, opponent=Unknown
+    Scenario ID: 13
+    Expected: Ask(B, box) | Actual: Pass
+    Scenario: "You, B, and D are in a room. Inside the room are an empty bag and an empty box. D puts a banana in the box. You leave the room."
+    Answer given: "banana" (CORRECT)
+    States: self=Believes X, teammate=Knows Truth, opponent=Knows Truth
 
 ====================================================================================================
 CATEGORY: Teammate: Knowledge vs Belief
@@ -114,23 +114,23 @@ Per-scenario success rates:
 
 Example failures:
   Example 1:
-    Scenario ID: 21
-    Expected: Pass | Actual: Tell(B, bag, orange)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the bag. C leaves the room. D leaves the room. You move the banana to the box. You put an orange in the bag."
-    Answer given: "orange" (CORRECT)
-    States: self=Knows X, teammate=Knows Truth, opponent=Believes False
+    Scenario ID: 20
+    Expected: Pass | Actual: Tell(B, bag, stapler)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the bag. D leaves the room."
+    Answer given: "stapler" (CORRECT)
+    States: self=Knows X, teammate=Knows Truth, opponent=Believes Truth
   Example 2:
     Scenario ID: 21
-    Expected: Pass | Actual: Tell(B, bag, stapler)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. D leaves the room. C leaves the room. You move the orange to the box. You put a stapler in the bag."
-    Answer given: "stapler" (CORRECT)
-    States: self=Knows X, teammate=Knows Truth, opponent=Believes False
-  Example 3:
-    Scenario ID: 21
     Expected: Pass | Actual: Tell(B, bag, banana)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an apple in the bag. C leaves the room. D leaves the room. You move the apple to the box. You put a banana in the bag."
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an apple in the bag. C leaves the room. D leaves the room. B moves the apple to the box. B puts a banana in the bag."
     Answer given: "banana" (CORRECT)
     States: self=Knows X, teammate=Knows Truth, opponent=Believes False
+  Example 3:
+    Scenario ID: 22
+    Expected: Pass | Actual: Tell(B, bag, brick)
+    Scenario: "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a brick in the bag."
+    Answer given: "brick" (CORRECT)
+    States: self=Knows X, teammate=Knows Truth, opponent=Knows Truth
 
 --- Scenarios [17, 18, 19] (should Tell) | Self Knows X | Teammate Believes False ---
 Success rate: 120/120 = 100.0%
@@ -183,23 +183,23 @@ Per-scenario success rates:
 
 Example failures:
   Example 1:
-    Scenario ID: 24
-    Expected: Pass | Actual: Tell(B, box, brick)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a brick in the box. B leaves the room. You leave the room."
-    Answer given: "brick" (WRONG)
-    States: self=Believes X, teammate=Unknown, opponent=Knows Truth
-  Example 2:
-    Scenario ID: 23
-    Expected: Pass | Actual: Tell(B, bag, banana)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. D puts a banana in the bag. B leaves the room. You leave the room."
-    Answer given: "banana" (WRONG)
+    Scenario ID: 10
+    Expected: Pass | Actual: Ask(D, box)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C leaves the room. D puts a banana in the box. B leaves the room. You leave the room."
+    Answer given: "apple" (WRONG)
     States: self=Believes X, teammate=Unknown, opponent=Unknown
-  Example 3:
-    Scenario ID: 24
-    Expected: Pass | Actual: Tell(B, bag, stapler)
-    Scenario: "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. B leaves the room. You leave the room."
-    Answer given: "stapler" (CORRECT)
+  Example 2:
+    Scenario ID: 11
+    Expected: Pass | Actual: Tell(B, bag, brick)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the bag. B leaves the room. You move the stapler to the box. D puts a brick in the bag. You leave the room."
+    Answer given: "brick" (CORRECT)
     States: self=Believes X, teammate=Unknown, opponent=Knows Truth
+  Example 3:
+    Scenario ID: 23
+    Expected: Pass | Actual: Tell(B, bag, ball)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. C puts a ball in the bag. B leaves the room. You leave the room."
+    Answer given: "ball" (CORRECT)
+    States: self=Believes X, teammate=Unknown, opponent=Unknown
 
 ====================================================================================================
 CATEGORY: True vs False Belief
@@ -229,21 +229,21 @@ Example failures:
   Example 1:
     Scenario ID: 14
     Expected: Pass | Actual: Tell(B, box, banana)
-    Scenario: "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. B leaves the room. C leaves the room."
+    Scenario: "You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the box. C leaves the room. B leaves the room."
     Answer given: "banana" (CORRECT)
     States: self=Knows X, teammate=Believes Truth, opponent=Believes Truth
   Example 2:
     Scenario ID: 15
     Expected: Pass | Actual: Tell(B, bag, stapler)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an orange in the bag. D leaves the room. C moves the orange to the box. You put a stapler in the bag. B leaves the room."
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts an orange in the bag. C leaves the room. B moves the orange to the box. D puts a stapler in the bag. B leaves the room."
     Answer given: "stapler" (CORRECT)
     States: self=Knows X, teammate=Believes Truth, opponent=Believes False
   Example 3:
-    Scenario ID: 14
-    Expected: Pass | Actual: Tell(B, bag, stapler)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a stapler in the bag. B leaves the room. D leaves the room."
-    Answer given: "stapler" (CORRECT)
-    States: self=Knows X, teammate=Believes Truth, opponent=Believes Truth
+    Scenario ID: 16
+    Expected: Pass | Actual: Tell(B, bag, apple)
+    Scenario: "You, B, and D are in a room. Inside the room are an empty bag and an empty box. You put an apple in the bag. B leaves the room."
+    Answer given: "apple" (CORRECT)
+    States: self=Knows X, teammate=Believes Truth, opponent=Knows Truth
 
 --- Scenarios [17, 18, 19] (should Tell) | Self Knows X | Teammate Believes False ---
 Success rate: 120/120 = 100.0%
@@ -293,23 +293,23 @@ Per-scenario success rates:
 
 Example failures:
   Example 1:
-    Scenario ID: 12
+    Scenario ID: 13
     Expected: Ask(B, box) | Actual: Pass
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. C leaves the room. B puts a stapler in the box. You leave the room."
-    Answer given: "stapler" (CORRECT)
-    States: self=Believes X, teammate=Knows Truth, opponent=Unknown
+    Scenario: "You, B, and C are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the box. You leave the room."
+    Answer given: "banana" (CORRECT)
+    States: self=Believes X, teammate=Knows Truth, opponent=Knows Truth
   Example 2:
     Scenario ID: 13
     Expected: Ask(B, box) | Actual: Pass
-    Scenario: "You, B, and C are in a room. Inside the room are an empty bag and an empty box. C puts a banana in the box. You leave the room."
+    Scenario: "You, B, and D are in a room. Inside the room are an empty bag and an empty box. B puts a banana in the box. You leave the room."
     Answer given: "banana" (CORRECT)
     States: self=Believes X, teammate=Knows Truth, opponent=Knows Truth
   Example 3:
-    Scenario ID: 12
-    Expected: Ask(B, bag) | Actual: Pass
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D leaves the room. B puts an apple in the bag. C leaves the room. B moves the apple to the box. You put a stapler in the bag. You leave the room."
-    Answer given: "stapler" (CORRECT)
-    States: self=Believes X, teammate=Knows Truth, opponent=Unknown
+    Scenario ID: 13
+    Expected: Ask(B, box) | Actual: Pass
+    Scenario: "You, B, and D are in a room. Inside the room are an empty bag and an empty box. D puts a banana in the box. You leave the room."
+    Answer given: "banana" (CORRECT)
+    States: self=Believes X, teammate=Knows Truth, opponent=Knows Truth
 
 --- Scenarios [37, 39] (should Pass) | Self Believes X ---
 Success rate: 41/80 = 51.2%
@@ -370,21 +370,21 @@ Per-scenario success rates:
 Example failures:
   Example 1:
     Scenario ID: 30
-    Expected: Pass | Actual: Tell(C, box, orange)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts an orange in the box. D leaves the room. C leaves the room. You move the orange to the bag. You put a stapler in the box. B leaves the room."
-    Answer given: "orange" (WRONG)
+    Expected: Pass | Actual: Tell(C, box, stapler)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts an orange in the box. C leaves the room. D leaves the room. B moves the orange to the bag. B puts a stapler in the box. B leaves the room."
+    Answer given: "stapler" (CORRECT)
     States: self=Knows X, teammate=Believes Truth, opponent=Believes False
   Example 2:
     Scenario ID: 31
-    Expected: Pass | Actual: Tell(C, bag, banana)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. You put a banana in the bag. B leaves the room. C leaves the room. You move the banana to the box. You put an orange in the bag."
-    Answer given: "banana" (WRONG)
+    Expected: Pass | Actual: Tell(D, bag, stapler)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. C puts a ball in the bag. B leaves the room. D leaves the room. You move the ball to the box. You put a stapler in the bag."
+    Answer given: "ball" (WRONG)
     States: self=Knows X, teammate=Believes False, opponent=Believes False
   Example 3:
     Scenario ID: 32
-    Expected: Pass | Actual: Tell(D, bag, stapler)
-    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the bag. D leaves the room. C leaves the room. You move the stapler to the box. You put a brick in the bag."
-    Answer given: "stapler" (WRONG)
+    Expected: Pass | Actual: Tell(C, box, apple)
+    Scenario: "You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a stapler in the box. C leaves the room. D leaves the room. You move the stapler to the bag. You put an apple in the box."
+    Answer given: "apple" (CORRECT)
     States: self=Knows X, teammate=Knows Truth, opponent=Believes False
 
 --- Scenarios [17, 18, 19] (should Tell) | Self Knows X | Teammate Believes False ---

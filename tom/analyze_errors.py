@@ -7,7 +7,7 @@ Analyzes WHY models fail on specific categories by examining:
 2. Feature correlations (what scenario features correlate with failure?)
 3. Concrete examples (what do failed scenarios look like?)
 
-Focuses on Extra=0 scenarios only.
+Runs analysis for both Extra=0 and Extra=1 scenarios, generating separate output files.
 """
 
 import json
@@ -15,7 +15,11 @@ import glob
 import os
 import re
 from collections import defaultdict
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
+
+# Models to generate individual analysis for
+# Set to None to analyze ALL models, or specify a list of model names
+INDIVIDUAL_MODEL_ANALYSIS: Optional[List[str]] = ['openai-gpt-5', 'openai-gpt-5_think']#None 
 
 # ToM Mastery Categories (from analyze_results.py)
 TOM_MASTERY_CATEGORIES = {
@@ -91,11 +95,17 @@ def load_game_data(filepath: str) -> List[dict]:
         return json.load(f)
 
 
-def filter_extra0_player_a(records: List[dict]) -> List[dict]:
-    """Filter to only Extra=0, player A records."""
-    return [r for r in records
-            if r.get('character') == 'A'
-            and (r.get('extra') is None or r.get('extra') == 0)]
+def filter_player_a_by_extra(records: List[dict], extra: int) -> List[dict]:
+    """Filter to player A records with specified extra value."""
+    if extra == 0:
+        # Extra=0 includes records where extra is None (old format) or 0
+        return [r for r in records
+                if r.get('character') == 'A'
+                and (r.get('extra') is None or r.get('extra') == 0)]
+    else:
+        return [r for r in records
+                if r.get('character') == 'A'
+                and r.get('extra') == extra]
 
 
 def normalize_action(action: str) -> str:
@@ -381,7 +391,7 @@ def generate_analysis(model_records: Dict[str, List[dict]], all_records: List[di
         return
 
     print(f"\nGenerating {title}...")
-    print(f"Loaded {len(all_records)} Extra=0 records from {len(model_records)} models")
+    print(f"Loaded {len(all_records)} records from {len(model_records)} models")
     print(f"Models: {', '.join(sorted(model_records.keys()))}")
 
     output_lines = []
@@ -505,17 +515,67 @@ def generate_analysis(model_records: Dict[str, List[dict]], all_records: List[di
     print(f"\n\nAnalysis saved to: {output_path}")
 
 
-def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    logs_dir = os.path.join(script_dir, 'tom_llm_logs')
+def generate_scenario_matrix(model_records: Dict[str, List[dict]], logs_dir: str,
+                             output_filename: str = 'scenario_success_matrix.csv'):
+    """Generate CSV with per-scenario, per-model success rates (scenarios as rows, models as columns)."""
+    # Collect all scenario IDs (filter out None)
+    all_scenario_ids = sorted(set(
+        r.get('scenario_id') for records in model_records.values()
+        for r in records if r.get('scenario_id') is not None
+    ), key=lambda x: int(x))
 
-    if not os.path.exists(logs_dir):
-        print(f"Error: {logs_dir} not found")
-        return
+    # Get models that have scenario_id data (filter out old-format files)
+    models_with_data = sorted([
+        model for model, records in model_records.items()
+        if any(r.get('scenario_id') is not None for r in records)
+    ])
 
-    # Find all game data files
-    pattern = os.path.join(logs_dir, '*_game_data.json')
-    files = glob.glob(pattern)
+    # Build matrix: model -> scenario -> (correct, total)
+    matrix = {}
+    for model_name in models_with_data:
+        matrix[model_name] = defaultdict(lambda: {'correct': 0, 'total': 0})
+        for r in model_records[model_name]:
+            sid = r.get('scenario_id')
+            if sid is None:
+                continue
+            matrix[model_name][sid]['total'] += 1
+            if r.get('was_optimal'):
+                matrix[model_name][sid]['correct'] += 1
+
+    # Write CSV (scenarios as rows, models as columns)
+    output_path = os.path.join(logs_dir, output_filename)
+    with open(output_path, 'w') as f:
+        # Header: scenario column + model columns
+        f.write('scenario,' + ','.join(models_with_data) + '\n')
+        # Rows: one per scenario
+        for sid in all_scenario_ids:
+            row = [f'scenario_{sid}']
+            for model_name in models_with_data:
+                stats = matrix[model_name][sid]
+                if stats['total'] > 0:
+                    pct = 100.0 * stats['correct'] / stats['total']
+                    row.append(f'{pct:.1f}')
+                else:
+                    row.append('')  # No data
+            f.write(','.join(row) + '\n')
+
+    print(f"\nScenario matrix saved to: {output_path}")
+    print(f"Models included: {len(models_with_data)} (excludes {len(model_records) - len(models_with_data)} old-format files without scenario_id)")
+
+
+def run_analysis_for_extra(files: List[str], logs_dir: str, extra: int, suffix: str):
+    """Run the full analysis pipeline for a specific extra value.
+
+    Args:
+        files: List of game_data.json file paths
+        logs_dir: Directory to write output files
+        extra: Extra value to filter by (0 or 1)
+        suffix: Suffix for output filenames (e.g., '' for Extra=0, '_extra1' for Extra=1)
+    """
+    extra_label = f"Extra={extra}"
+    print(f"\n{'='*80}")
+    print(f"RUNNING ANALYSIS FOR {extra_label}")
+    print(f"{'='*80}")
 
     # Load and classify records by thinking vs non-thinking
     thinking_model_records: Dict[str, List[dict]] = defaultdict(list)
@@ -525,7 +585,7 @@ def main():
 
     for filepath in files:
         records = load_game_data(filepath)
-        filtered = filter_extra0_player_a(records)
+        filtered = filter_player_a_by_extra(records, extra)
 
         if len(filtered) == 0 or len(filtered) % 39 != 0:
             continue
@@ -542,11 +602,8 @@ def main():
     print(f"Found {len(thinking_model_records)} thinking models, {len(nonthinking_model_records)} non-thinking models")
 
     # Find models that have BOTH thinking and non-thinking versions
-    # Thinking model names end with _think, so strip that to get base name
     thinking_base_names = {name.replace('_think', '') for name in thinking_model_records.keys()}
     nonthinking_names = set(nonthinking_model_records.keys())
-
-    # Models with both versions
     paired_base_names = thinking_base_names & nonthinking_names
     print(f"Models with both thinking and non-thinking versions: {sorted(paired_base_names)}")
 
@@ -565,7 +622,7 @@ def main():
             paired_nonthinking_records[base_name] = nonthinking_model_records[base_name]
             paired_nonthinking_all.extend(nonthinking_model_records[base_name])
 
-    # Combine all records for the original combined analysis
+    # Combine all records
     all_model_records: Dict[str, List[dict]] = defaultdict(list)
     all_records = []
     for model_name, records in thinking_model_records.items():
@@ -575,31 +632,82 @@ def main():
         all_model_records[model_name].extend(records)
         all_records.extend(records)
 
+    if not all_records:
+        print(f"No records found for {extra_label}, skipping")
+        return
+
     # Generate combined analysis (all models)
     generate_analysis(
         all_model_records,
         all_records,
-        "ALL MODELS (Extra=0 only)",
+        f"ALL MODELS ({extra_label})",
         logs_dir,
-        'error_analysis.txt'
+        f'error_analysis{suffix}.txt'
     )
 
     # Generate separate analyses for PAIRED thinking and non-thinking models only
     generate_analysis(
         paired_thinking_records,
         paired_thinking_all,
-        "THINKING MODELS (paired only, Extra=0)",
+        f"THINKING MODELS (paired only, {extra_label})",
         logs_dir,
-        'error_analysis_thinking.txt'
+        f'error_analysis_thinking{suffix}.txt'
     )
 
     generate_analysis(
         paired_nonthinking_records,
         paired_nonthinking_all,
-        "NON-THINKING MODELS (paired only, Extra=0)",
+        f"NON-THINKING MODELS (paired only, {extra_label})",
         logs_dir,
-        'error_analysis_nonthinking.txt'
+        f'error_analysis_nonthinking{suffix}.txt'
     )
+
+    # Generate per-model analysis
+    models_to_analyze = (
+        list(all_model_records.keys())
+        if INDIVIDUAL_MODEL_ANALYSIS is None
+        else INDIVIDUAL_MODEL_ANALYSIS
+    )
+
+    for model_name in models_to_analyze:
+        if model_name not in all_model_records:
+            print(f"Warning: Model {model_name} not found for {extra_label}, skipping")
+            continue
+
+        model_records_single = {model_name: all_model_records[model_name]}
+        model_all_records = all_model_records[model_name]
+
+        safe_name = model_name.replace('/', '_').replace(':', '_')
+
+        generate_analysis(
+            model_records_single,
+            model_all_records,
+            f"{model_name} ({extra_label})",
+            logs_dir,
+            f'error_analysis_{safe_name}{suffix}.txt'
+        )
+
+    # Generate per-model, per-scenario matrix
+    generate_scenario_matrix(all_model_records, logs_dir, f'scenario_success_matrix{suffix}.csv')
+
+
+def main():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    logs_dir = os.path.join(script_dir, 'tom_llm_logs')
+
+    if not os.path.exists(logs_dir):
+        print(f"Error: {logs_dir} not found")
+        return
+
+    # Find all game data files
+    pattern = os.path.join(logs_dir, '*_game_data.json')
+    files = glob.glob(pattern)
+
+    # Run analysis for Extra=0 (existing, no suffix)
+    run_analysis_for_extra(files, logs_dir, extra=0, suffix='')
+
+    # Run analysis for Extra=1 (new, with _extra1 suffix)
+    run_analysis_for_extra(files, logs_dir, extra=1, suffix='_extra1')
 
 
 if __name__ == '__main__':

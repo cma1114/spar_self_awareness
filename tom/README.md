@@ -105,7 +105,7 @@ tom/
 ├── compare_old_new.py            # Pre/post bug-fix comparison
 ├── README.md                     # This file
 ├── OBSERVATIONS.md               # Analysis observations and insights
-├── EXTRA_EVENTS_FIX.md           # Documentation of Extra=1 scenario fix
+├── CHANGELOG.md                  # Change history and bug fixes
 └── tom_llm_logs/                 # Test results and analysis outputs
     ├── *_game_data.json          # Per-model test results
     ├── *.log                     # Raw LLM interaction logs
@@ -238,7 +238,7 @@ Models with extended thinking capabilities (`_think` suffix) are compared agains
 
 ### Pre/Post Bug Fix Comparison (`compare_old_new.py`)
 
-Compares results before and after fixing the Extra=1 scenario generation bug (see `EXTRA_EVENTS_FIX.md`). The bug caused Extra=1 scenarios to sometimes have incorrect optimal actions due to event sequencing issues.
+Compares results before and after fixing the Extra=1 scenario generation bug (see `CHANGELOG.md`). The bug caused Extra=1 scenarios to sometimes have incorrect optimal actions due to event sequencing issues.
 
 ## Key Insights
 

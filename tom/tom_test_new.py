@@ -52,6 +52,14 @@ In the answer phase, I will ask a target player (not necessarily the player whos
 For the purpose of this study, we're going to repeatedly ask you to make the first move in different runs of this game. Each run is separate and in each run we want you to make the best move in that situation.
 """
 
+# Pause mode controls whether "Time goes by." is added after "You leave the room."
+# Options: "none" (default - no change), "extra1" (Extra=1 scenarios only), "all" (all scenarios)
+PAUSE_MODE = "none"
+
+# Ellipsis mode adds "..." after every action (put/move/leave/enter).
+# When True, PAUSE_MODE is ignored (forced to "none").
+ELLIPSIS_MODE = True
+
 class ActionType(Enum):
     ASK = "ask"
     TELL = "tell"
@@ -106,6 +114,8 @@ class TurnRecord:
     # History mode fields:
     history_mode: Optional[str] = None
     trial: Optional[int] = None
+    # Pause mode field:
+    pause_mode: Optional[str] = None
 
 
 class GameState:
@@ -550,7 +560,7 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
             continue
         
         true_contents = game.process_scenario_events(scenario)
-        scenario_desc = scenario.get_description_for(turn_char, game.characters)
+        scenario_desc = scenario.get_description_for(turn_char, game.characters, pause_mode=PAUSE_MODE, ellipsis_mode=ELLIPSIS_MODE)
         answerer = "you" if scenario.who_answers == turn_char else scenario.who_answers
         question_desc = f"I am going to ask {answerer} what is in the {scenario.question_container}."
         
@@ -755,6 +765,7 @@ Respond ONLY with your action, and no other text."""
             b_put_or_moved=b_put_or_moved,
             history_mode=history_mode if llm_player else None,
             trial=current_trial if history_mode != "none" else None,
+            pause_mode=PAUSE_MODE,
         )
         game.turn_records.append(turn_record)
         

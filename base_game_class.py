@@ -317,7 +317,7 @@ class BaseGameClass:
                             elif 'olmo' in self.subject_name: prefix = 'allenai/'
                             elif 'glm-' in self.subject_name: prefix = 'z-ai/'
                             else: prefix = ''
-                            model_name = prefix + self.subject_name.replace("_reasoning","").replace("_think","").replace("_nothink","")
+                            model_name = prefix + self.subject_name.replace("_reasoning","").replace("_think","").replace("_lowthink","").replace("_nothink","")
                     else: model_name = self.subject_name
                     if keep_appending:
                         if system_msg != "": message_history.append({"role": "system", "content": system_msg})
@@ -335,17 +335,11 @@ class BaseGameClass:
                         formatted_messages=[{'role': 'user', 'content': prompt}]
                     #print(f"formatted_messages={formatted_messages}")
                     #exit()
-                    reasoning_effort = None
-                    if "gpt-5-" in self.subject_name:
-                        reasoning_effort = (
-                            "high"
-                            if ("_think" in self.subject_name or "_reasoning" in self.subject_name)
-                            else "low"
-                        )
-                        #self._log(f"GPT-5: SENDING reasoning_effort={reasoning_effort}")
+                    reasoning_effort = "high" if ("_think" in self.subject_name or "_reasoning" in self.subject_name) else "low" if "_lowthink" in self.subject_name else None
+                    self._log(f"SENDING reasoning_effort={reasoning_effort}")
                     completion = self.client.chat.completions.create(
                         model=model_name,
-                        **({"max_completion_tokens": MAX_TOKENS} if self.subject_name.startswith("o3") else {"max_tokens": (8000 if ("_think" in self.subject_name or "_reasoning" in self.subject_name) else (None if ('gpt-5' in self.subject_name or 'gpt-4.1' in self.subject_name or 'glm-' in self.subject_name or '-r1' in self.subject_name) else MAX_TOKENS))}),
+                        **({"max_completion_tokens": MAX_TOKENS} if self.subject_name.startswith("o3") else {"max_tokens": (8000 if ("think" in self.subject_name or "_reasoning" in self.subject_name) else (None if ('gpt-5' in self.subject_name or 'gpt-4.1' in self.subject_name or 'glm-' in self.subject_name or '-r1' in self.subject_name) else MAX_TOKENS))}),
                         **({"temperature": min(temp + attempt * temp_inc, max(temp,1.0))} if not self.subject_name.startswith("o3") else {}),
                         messages=formatted_messages,
                         **({"logprobs": True} if not no_logprobs(model_name) else {}),
@@ -357,17 +351,17 @@ class BaseGameClass:
                             **(
                                 # 1) OpenAI / GPT / o-series → use reasoning_effort
                                 {
-                                    "reasoning_effort": "high"
+                                    "reasoning_effort": reasoning_effort
                                 }
                                 if (
                                     (
-                                        "openai/gpt-5-" in self.subject_name
+                                        "openai/gpt-5" in self.subject_name
                                         or "gpt-4" in self.subject_name
                                         or self.subject_name.startswith("o4")
                                         or self.subject_name.startswith("o3")
                                     )
                                     and (
-                                        "_think" in self.subject_name
+                                        "think" in self.subject_name
                                         or "_reasoning" in self.subject_name
                                     )
                                 )
@@ -394,7 +388,7 @@ class BaseGameClass:
                                     (
                                         "claude" in self.subject_name
                                         or "gpt-oss" in self.subject_name
-                                        or "gpt-5.2" in self.subject_name
+                                        or "gpt-5" in self.subject_name
                                         or (
                                             "deepseek" in self.subject_name
                                             and "v3.1" in self.subject_name
@@ -402,7 +396,7 @@ class BaseGameClass:
                                         )
                                     )
                                     and "_reasoning" not in self.subject_name
-                                    and "_think" not in self.subject_name
+                                    and "think" not in self.subject_name
                                 )
                                 # 4) otherwise, no extra reasoning field
                                 else {}
@@ -595,11 +589,11 @@ class BaseGameClass:
                         message_history.append(user_msg)
                     #print(f"system_msg={system_msg}")                     
                     #print(f"formatted_messages={formatted_messages}")  
-                    if "_think" in self.subject_name: think=True
+                    if "think" in self.subject_name: think=True
                     elif "_nothink" in self.subject_name: think=False
                     else: think=None
                     message = self.client.models.generate_content(
-                        model=self.subject_name.replace("_think","").replace("_nothink",""),
+                        model=self.subject_name.replace("_think","").replace("_lowthink","").replace("_nothink",""),
                         contents=formatted_messages,
                         config=types.GenerateContentConfig(
                             **({"system_instruction": system_msg} if system_msg != "" else {}),

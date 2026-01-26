@@ -85,6 +85,43 @@ For scenarios 16, 20, 22, 26 (all Teammate-answers, optimal=Pass):
 
 **Key insight:** The common failure mode is models not trusting that the teammate already has correct knowledge. When events get more complex (Extra=1), models become more paranoid and want to "make sure" by telling, even when it's unnecessary and costly.
 
+### 6. "Time Goes By" Pause Cue Experiment
+
+**Hypothesis:** Adding "Time goes by." after "You leave the room." might help models recognize that events could have occurred while they were away, improving performance on scenarios where they should Ask.
+
+**Method:** Added configurable `PAUSE_MODE` parameter that inserts "Time goes by." after the player leaves. Tested on two models with scenarios 10-13 (all have Self=Believes X, vary by teammate knowledge).
+
+**Results:**
+
+| Model | Scenario | Old | New | Change | Optimal | Teammate State |
+|-------|----------|-----|-----|--------|---------|----------------|
+| openai-gpt-5-chat | 10 | 85% | 65% | **-20%** | Pass | Unknown |
+| openai-gpt-5-chat | 11 | 90% | 55% | **-35%** | Pass | Unknown |
+| openai-gpt-5-chat | 12 | 20% | 40% | **+20%** | Ask | Knows Truth |
+| openai-gpt-5-chat | 13 | 30% | 30% | 0% | Ask | Knows Truth |
+| **openai-gpt-5-chat** | **Total** | **56%** | **48%** | **-9%** | | |
+| openai-gpt-5.2_think | 10 | 83% | 39% | **-44%** | Pass | Unknown |
+| openai-gpt-5.2_think | 11 | 94% | 33% | **-61%** | Pass | Unknown |
+| openai-gpt-5.2_think | 12 | 33% | 72% | **+39%** | Ask | Knows Truth |
+| openai-gpt-5.2_think | 13 | 6% | 61% | **+56%** | Ask | Knows Truth |
+| **openai-gpt-5.2_think** | **Total** | **54%** | **51%** | **-3%** | | |
+
+**Key Findings:**
+
+1. **The pause cue shifts the model's prior toward "Ask"**: Models become more likely to Ask regardless of whether it's correct.
+
+2. **Dramatic improvements on Ask scenarios (12-13)**: +20-56% gains when the optimal action is Ask(B). The cue successfully signals "things may have changed."
+
+3. **Equally dramatic regressions on Pass scenarios (10-11)**: -20-61% losses when the optimal action is Pass. The cue makes models Ask even when their teammate doesn't know anything useful.
+
+4. **Thinking models show stronger effects in both directions**: GPT-5.2_think had larger swings than GPT-5-chat, suggesting extended reasoning amplifies the interpretation of the cue.
+
+5. **Net effect is negative**: The gains on Ask scenarios don't compensate for losses on Pass scenarios (-9% and -3% overall).
+
+**Interpretation:** The "Time goes by." cue is a blunt instrument. It successfully conveys uncertainty but doesn't help the model reason about *who* has information. The model interprets the cue as "something happened, I should ask someone" rather than "something happened, let me think about who saw what."
+
+**Implication:** Surface-level prompt modifications can dramatically shift model behavior but may not improve underlying epistemic reasoning. The model needs to reason about *what each agent observed*, not just *whether time passed*.
+
 ## Methodology Notes
 
 - **Valid trials:** Records where player A's count is a multiple of 78 (complete scenario sets)
