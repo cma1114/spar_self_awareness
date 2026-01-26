@@ -13,11 +13,6 @@ Overall correct action distribution:
 PERFECT/NEAR-PERFECT HEURISTICS (>=95%)
 ================================================================================
 
-has_enter:
-  Scenarios with feature: 19
-  Predicts: Pass (100.0%)
-    Pass: 19 (100.0%)
-
 has_remove:
   Scenarios with feature: 3
   Predicts: Pass (100.0%)
@@ -34,72 +29,87 @@ you_enters:
     Pass: 9 (100.0%)
 
 b_enters:
-  Scenarios with feature: 5
+  Scenarios with feature: 6
   Predicts: Pass (100.0%)
-    Pass: 5 (100.0%)
+    Pass: 6 (100.0%)
+
+you_leave_before_any_put:
+  Scenarios with feature: 1
+  Predicts: Pass (100.0%)
+    Pass: 1 (100.0%)
+
+has_pair_enter_put:
+  Scenarios with feature: 1
+  Predicts: Pass (100.0%)
+    Pass: 1 (100.0%)
 
 has_pair_enter_move:
-  Scenarios with feature: 19
-  Predicts: Pass (100.0%)
-    Pass: 19 (100.0%)
-
-b_put_then_leave:
-  Scenarios with feature: 8
-  Predicts: Pass (100.0%)
-    Pass: 8 (100.0%)
-
-has_pair_move_leave:
-  Scenarios with feature: 20
-  Predicts: Pass (95.0%)
-    Pass: 19 (95.0%)
-    Tell Teammate: 1 (5.0%)
+  Scenarios with feature: 21
+  Predicts: Pass (95.2%)
+    Pass: 20 (95.2%)
+    Tell Teammate: 1 (4.8%)
 
 ================================================================================
 STRONG HEURISTICS (80-95%)
 ================================================================================
 
-b_moves:
-  Scenarios with feature: 19
-  Predicts: Pass (94.7%)
-    Ask Teammate: 1 (5.3%)
-    Pass: 18 (94.7%)
+you_moves:
+  Scenarios with feature: 27
+  Predicts: Pass (92.6%)
+    Pass: 25 (92.6%)
+    Tell Teammate: 2 (7.4%)
+
+b_puts:
+  Scenarios with feature: 26
+  Predicts: Pass (92.3%)
+    Pass: 24 (92.3%)
+    Tell Teammate: 2 (7.7%)
 
 you_puts:
-  Scenarios with feature: 29
-  Predicts: Pass (93.1%)
-    Ask Teammate: 1 (3.4%)
-    Pass: 27 (93.1%)
-    Tell Teammate: 1 (3.4%)
+  Scenarios with feature: 35
+  Predicts: Pass (91.4%)
+    Ask Teammate: 1 (2.9%)
+    Pass: 32 (91.4%)
+    Tell Teammate: 2 (5.7%)
 
-b_put_or_moved:
-  Scenarios with feature: 39
-  Predicts: Pass (92.3%)
-    Ask Teammate: 3 (7.7%)
-    Pass: 36 (92.3%)
+has_enter:
+  Scenarios with feature: 23
+  Predicts: Pass (91.3%)
+    Ask Teammate: 1 (4.3%)
+    Pass: 21 (91.3%)
+    Tell Teammate: 1 (4.3%)
 
-move_to_queried:
-  Scenarios with feature: 31
-  Predicts: Pass (90.3%)
-    Pass: 28 (90.3%)
-    Tell Teammate: 3 (9.7%)
-
-you_moves:
-  Scenarios with feature: 20
-  Predicts: Pass (90.0%)
-    Pass: 18 (90.0%)
-    Tell Teammate: 2 (10.0%)
-
-you_leave_before_any_put:
-  Scenarios with feature: 10
-  Predicts: Pass (90.0%)
-    Ask Teammate: 1 (10.0%)
-    Pass: 9 (90.0%)
+b_moves:
+  Scenarios with feature: 23
+  Predicts: Pass (91.3%)
+    Ask Teammate: 2 (8.7%)
+    Pass: 21 (91.3%)
 
 you_put_then_leave:
-  Scenarios with feature: 10
+  Scenarios with feature: 11
+  Predicts: Pass (90.9%)
+    Ask Teammate: 1 (9.1%)
+    Pass: 10 (90.9%)
+
+b_put_then_leave:
+  Scenarios with feature: 11
+  Predicts: Pass (90.9%)
+    Pass: 10 (90.9%)
+    Tell Teammate: 1 (9.1%)
+
+last_is_leave:
+  Scenarios with feature: 43
+  Predicts: Pass (90.7%)
+    Ask Teammate: 2 (4.7%)
+    Pass: 39 (90.7%)
+    Tell Teammate: 2 (4.7%)
+
+b_put_or_moved:
+  Scenarios with feature: 40
   Predicts: Pass (90.0%)
-    Ask Teammate: 1 (10.0%)
-    Pass: 9 (90.0%)
+    Ask Teammate: 2 (5.0%)
+    Pass: 36 (90.0%)
+    Tell Teammate: 2 (5.0%)
 
 b_leaves:
   Scenarios with feature: 54
@@ -107,39 +117,19 @@ b_leaves:
     Pass: 48 (88.9%)
     Tell Teammate: 6 (11.1%)
 
-b_puts:
-  Scenarios with feature: 27
-  Predicts: Pass (88.9%)
-    Ask Teammate: 3 (11.1%)
-    Pass: 24 (88.9%)
-
-has_move:
-  Scenarios with feature: 56
-  Predicts: Pass (87.5%)
-    Ask Teammate: 1 (1.8%)
-    Pass: 49 (87.5%)
-    Tell Teammate: 6 (10.7%)
+has_pair_move_leave:
+  Scenarios with feature: 25
+  Predicts: Pass (88.0%)
+    Ask Teammate: 2 (8.0%)
+    Pass: 22 (88.0%)
+    Tell Teammate: 1 (4.0%)
 
 first_is_put:
-  Scenarios with feature: 64
-  Predicts: Pass (87.5%)
-    Ask Teammate: 2 (3.1%)
-    Pass: 56 (87.5%)
-    Tell Teammate: 6 (9.4%)
-
-move_from_queried:
-  Scenarios with feature: 56
-  Predicts: Pass (87.5%)
-    Ask Teammate: 1 (1.8%)
-    Pass: 49 (87.5%)
-    Tell Teammate: 6 (10.7%)
-
-has_pair_leave_move:
-  Scenarios with feature: 56
-  Predicts: Pass (87.5%)
-    Ask Teammate: 1 (1.8%)
-    Pass: 49 (87.5%)
-    Tell Teammate: 6 (10.7%)
+  Scenarios with feature: 73
+  Predicts: Pass (87.7%)
+    Ask Teammate: 3 (4.1%)
+    Pass: 64 (87.7%)
+    Tell Teammate: 6 (8.2%)
 
 has_put:
   Scenarios with feature: 78
@@ -155,19 +145,6 @@ put_to_queried:
     Pass: 68 (87.2%)
     Tell Teammate: 6 (7.7%)
 
-you_leave_before_b:
-  Scenarios with feature: 31
-  Predicts: Pass (87.1%)
-    Ask Teammate: 4 (12.9%)
-    Pass: 27 (87.1%)
-
-last_is_put:
-  Scenarios with feature: 38
-  Predicts: Pass (86.8%)
-    Ask Teammate: 1 (2.6%)
-    Pass: 33 (86.8%)
-    Tell Teammate: 4 (10.5%)
-
 has_leave:
   Scenarios with feature: 75
   Predicts: Pass (86.7%)
@@ -176,72 +153,103 @@ has_leave:
     Tell Teammate: 6 (8.0%)
 
 has_pair_put_leave:
-  Scenarios with feature: 71
-  Predicts: Pass (85.9%)
-    Ask Teammate: 4 (5.6%)
-    Pass: 61 (85.9%)
-    Tell Teammate: 6 (8.5%)
+  Scenarios with feature: 75
+  Predicts: Pass (86.7%)
+    Ask Teammate: 4 (5.3%)
+    Pass: 65 (86.7%)
+    Tell Teammate: 6 (8.0%)
 
-first_is_leave:
-  Scenarios with feature: 14
-  Predicts: Pass (85.7%)
-    Ask Teammate: 2 (14.3%)
-    Pass: 12 (85.7%)
+you_leave_before_b:
+  Scenarios with feature: 29
+  Predicts: Pass (86.2%)
+    Ask Teammate: 4 (13.8%)
+    Pass: 25 (86.2%)
 
 you_leaves:
+  Scenarios with feature: 36
+  Predicts: Pass (86.1%)
+    Ask Teammate: 4 (11.1%)
+    Pass: 31 (86.1%)
+    Tell Teammate: 1 (2.8%)
+
+you_leave_after_any_put:
   Scenarios with feature: 35
   Predicts: Pass (85.7%)
     Ask Teammate: 4 (11.4%)
     Pass: 30 (85.7%)
     Tell Teammate: 1 (2.9%)
 
-has_pair_leave_put:
-  Scenarios with feature: 14
+move_to_queried:
+  Scenarios with feature: 35
   Predicts: Pass (85.7%)
-    Ask Teammate: 2 (14.3%)
-    Pass: 12 (85.7%)
-
-has_pair_move_put:
-  Scenarios with feature: 45
-  Predicts: Pass (84.4%)
-    Ask Teammate: 1 (2.2%)
-    Pass: 38 (84.4%)
-    Tell Teammate: 6 (13.3%)
-
-last_is_leave:
-  Scenarios with feature: 32
-  Predicts: Pass (84.4%)
-    Ask Teammate: 3 (9.4%)
-    Pass: 27 (84.4%)
-    Tell Teammate: 2 (6.2%)
-
-you_leave_after_any_put:
-  Scenarios with feature: 25
-  Predicts: Pass (84.0%)
-    Ask Teammate: 3 (12.0%)
-    Pass: 21 (84.0%)
-    Tell Teammate: 1 (4.0%)
+    Ask Teammate: 2 (5.7%)
+    Pass: 30 (85.7%)
+    Tell Teammate: 3 (8.6%)
 
 b_leave_before_you:
-  Scenarios with feature: 36
+  Scenarios with feature: 38
+  Predicts: Pass (84.2%)
+    Pass: 32 (84.2%)
+    Tell Teammate: 6 (15.8%)
+
+has_move:
+  Scenarios with feature: 60
   Predicts: Pass (83.3%)
-    Pass: 30 (83.3%)
-    Tell Teammate: 6 (16.7%)
+    Ask Teammate: 4 (6.7%)
+    Pass: 50 (83.3%)
+    Tell Teammate: 6 (10.0%)
+
+move_from_queried:
+  Scenarios with feature: 60
+  Predicts: Pass (83.3%)
+    Ask Teammate: 4 (6.7%)
+    Pass: 50 (83.3%)
+    Tell Teammate: 6 (10.0%)
+
+has_pair_leave_move:
+  Scenarios with feature: 60
+  Predicts: Pass (83.3%)
+    Ask Teammate: 4 (6.7%)
+    Pass: 50 (83.3%)
+    Tell Teammate: 6 (10.0%)
 
 has_pair_leave_leave:
-  Scenarios with feature: 33
-  Predicts: Pass (81.8%)
-    Ask Teammate: 2 (6.1%)
-    Pass: 27 (81.8%)
-    Tell Teammate: 4 (12.1%)
+  Scenarios with feature: 30
+  Predicts: Pass (83.3%)
+    Pass: 25 (83.3%)
+    Tell Teammate: 5 (16.7%)
+
+last_is_put:
+  Scenarios with feature: 26
+  Predicts: Pass (80.8%)
+    Ask Teammate: 1 (3.8%)
+    Pass: 21 (80.8%)
+    Tell Teammate: 4 (15.4%)
+
+has_pair_move_put:
+  Scenarios with feature: 46
+  Predicts: Pass (80.4%)
+    Ask Teammate: 3 (6.5%)
+    Pass: 37 (80.4%)
+    Tell Teammate: 6 (13.0%)
+
+first_is_leave:
+  Scenarios with feature: 5
+  Predicts: Pass (80.0%)
+    Ask Teammate: 1 (20.0%)
+    Pass: 4 (80.0%)
 
 ================================================================================
 MODERATE HEURISTICS (60-80%)
 ================================================================================
 
+has_pair_leave_put:
+  Scenarios with feature: 4
+  Predicts: Pass (75.0%)
+
 has_pair_move_move:
-  Scenarios with feature: 9
-  Predicts: Pass (66.7%)
+  Scenarios with feature: 13
+  Predicts: Pass (61.5%)
 
 ================================================================================
 EVENT PAIR ANALYSIS
@@ -251,45 +259,49 @@ remove_move:
   Occurrences: 3
   Best predictor: Pass (100.0%)
 
+move_enter:
+  Occurrences: 19
+  Best predictor: Pass (100.0%)
+
 put_remove:
   Occurrences: 3
   Best predictor: Pass (100.0%)
 
 enter_move:
-  Occurrences: 19
-  Best predictor: Pass (100.0%)
-
-move_enter:
-  Occurrences: 19
-  Best predictor: Pass (100.0%)
+  Occurrences: 21
+  Best predictor: Pass (95.2%)
 
 move_leave:
-  Occurrences: 20
-  Best predictor: Pass (95.0%)
-
-leave_move:
-  Occurrences: 56
-  Best predictor: Pass (87.5%)
+  Occurrences: 25
+  Best predictor: Pass (88.0%)
 
 put_leave:
-  Occurrences: 71
-  Best predictor: Pass (85.9%)
-
-leave_put:
-  Occurrences: 14
-  Best predictor: Pass (85.7%)
-
-move_put:
-  Occurrences: 45
-  Best predictor: Pass (84.4%)
+  Occurrences: 75
+  Best predictor: Pass (86.7%)
 
 leave_leave:
-  Occurrences: 33
-  Best predictor: Pass (81.8%)
+  Occurrences: 30
+  Best predictor: Pass (83.3%)
+
+leave_move:
+  Occurrences: 60
+  Best predictor: Pass (83.3%)
+
+move_put:
+  Occurrences: 46
+  Best predictor: Pass (80.4%)
+
+leave_put:
+  Occurrences: 4
+  Best predictor: Pass (75.0%)
 
 move_move:
-  Occurrences: 9
-  Best predictor: Pass (66.7%)
+  Occurrences: 13
+  Best predictor: Pass (61.5%)
+
+leave_enter:
+  Occurrences: 4
+  Best predictor: Pass (50.0%)
 
 ================================================================================
 EPISTEMIC STATE CORRELATION
@@ -339,28 +351,28 @@ Baseline rates:
   Tell Teammate: 6/78 (7.7%)
 
 Features that predict 'Ask Teammate':
-  first_is_leave: 2/14 (14.3%) [lift=2.79x]
-  has_pair_leave_put: 2/14 (14.3%) [lift=2.79x]
-  you_leave_before_b: 4/31 (12.9%) [lift=2.52x]
-  you_leave_after_any_put: 3/25 (12.0%) [lift=2.34x]
-  you_leaves: 4/35 (11.4%) [lift=2.23x]
-  b_puts: 3/27 (11.1%) [lift=2.17x]
-  you_leave_before_any_put: 1/10 (10.0%) [lift=1.95x]
-  you_put_then_leave: 1/10 (10.0%) [lift=1.95x]
-  last_is_leave: 3/32 (9.4%) [lift=1.83x]
-  b_put_or_moved: 3/39 (7.7%) [lift=1.50x]
+  has_pair_leave_put: 1/4 (25.0%) [lift=4.88x]
+  has_pair_leave_enter: 1/4 (25.0%) [lift=4.88x]
+  first_is_leave: 1/5 (20.0%) [lift=3.90x]
+  has_pair_move_move: 2/13 (15.4%) [lift=3.00x]
+  you_leave_before_b: 4/29 (13.8%) [lift=2.69x]
+  you_leave_after_any_put: 4/35 (11.4%) [lift=2.23x]
+  you_leaves: 4/36 (11.1%) [lift=2.17x]
+  you_put_then_leave: 1/11 (9.1%) [lift=1.77x]
+  b_moves: 2/23 (8.7%) [lift=1.70x]
+  has_pair_move_leave: 2/25 (8.0%) [lift=1.56x]
 
 Features that predict 'Tell Teammate':
-  has_pair_move_move: 3/9 (33.3%) [lift=4.33x]
-  b_leave_before_you: 6/36 (16.7%) [lift=2.17x]
-  has_pair_move_put: 6/45 (13.3%) [lift=1.73x]
-  has_pair_leave_leave: 4/33 (12.1%) [lift=1.58x]
+  has_pair_leave_enter: 1/4 (25.0%) [lift=3.25x]
+  has_pair_move_move: 3/13 (23.1%) [lift=3.00x]
+  has_pair_leave_leave: 5/30 (16.7%) [lift=2.17x]
+  b_leave_before_you: 6/38 (15.8%) [lift=2.05x]
+  last_is_put: 4/26 (15.4%) [lift=2.00x]
+  has_pair_move_put: 6/46 (13.0%) [lift=1.70x]
   b_leaves: 6/54 (11.1%) [lift=1.44x]
-  has_move: 6/56 (10.7%) [lift=1.39x]
-  move_from_queried: 6/56 (10.7%) [lift=1.39x]
-  has_pair_leave_move: 6/56 (10.7%) [lift=1.39x]
-  last_is_put: 4/38 (10.5%) [lift=1.37x]
-  you_moves: 2/20 (10.0%) [lift=1.30x]
+  has_move: 6/60 (10.0%) [lift=1.30x]
+  move_from_queried: 6/60 (10.0%) [lift=1.30x]
+  has_pair_leave_move: 6/60 (10.0%) [lift=1.30x]
 
 ================================================================================
 KEY INSIGHTS
@@ -391,61 +403,68 @@ Overall correct action distribution:
 PERFECT/NEAR-PERFECT HEURISTICS (>=95%)
 ================================================================================
 
-you_puts:
-  Scenarios with feature: 13
-  Predicts: Pass (100.0%)
-    Pass: 13 (100.0%)
-
 you_moves:
+  Scenarios with feature: 7
+  Predicts: Pass (100.0%)
+    Pass: 7 (100.0%)
+
+b_moves:
+  Scenarios with feature: 5
+  Predicts: Pass (100.0%)
+    Pass: 5 (100.0%)
+
+you_leave_before_any_put:
+  Scenarios with feature: 1
+  Predicts: Pass (100.0%)
+    Pass: 1 (100.0%)
+
+b_put_then_leave:
   Scenarios with feature: 6
   Predicts: Pass (100.0%)
     Pass: 6 (100.0%)
-
-you_put_then_leave:
-  Scenarios with feature: 4
-  Predicts: Pass (100.0%)
-    Pass: 4 (100.0%)
-
-b_put_then_leave:
-  Scenarios with feature: 3
-  Predicts: Pass (100.0%)
-    Pass: 3 (100.0%)
 
 ================================================================================
 STRONG HEURISTICS (80-95%)
 ================================================================================
 
-you_leave_after_any_put:
-  Scenarios with feature: 9
-  Predicts: Pass (88.9%)
-    Ask Teammate: 1 (11.1%)
-    Pass: 8 (88.9%)
-
-last_is_leave:
+b_put_or_moved:
   Scenarios with feature: 17
-  Predicts: Pass (88.2%)
-    Ask Teammate: 1 (5.9%)
-    Pass: 15 (88.2%)
+  Predicts: Pass (94.1%)
+    Pass: 16 (94.1%)
     Tell Teammate: 1 (5.9%)
 
+b_puts:
+  Scenarios with feature: 15
+  Predicts: Pass (93.3%)
+    Pass: 14 (93.3%)
+    Tell Teammate: 1 (6.7%)
+
+last_is_leave:
+  Scenarios with feature: 24
+  Predicts: Pass (91.7%)
+    Ask Teammate: 1 (4.2%)
+    Pass: 22 (91.7%)
+    Tell Teammate: 1 (4.2%)
+
 first_is_put:
-  Scenarios with feature: 33
-  Predicts: Pass (87.9%)
-    Ask Teammate: 1 (3.0%)
-    Pass: 29 (87.9%)
-    Tell Teammate: 3 (9.1%)
+  Scenarios with feature: 37
+  Predicts: Pass (89.2%)
+    Ask Teammate: 1 (2.7%)
+    Pass: 33 (89.2%)
+    Tell Teammate: 3 (8.1%)
+
+you_puts:
+  Scenarios with feature: 16
+  Predicts: Pass (87.5%)
+    Ask Teammate: 1 (6.2%)
+    Pass: 14 (87.5%)
+    Tell Teammate: 1 (6.2%)
 
 b_leaves:
   Scenarios with feature: 24
   Predicts: Pass (87.5%)
     Pass: 21 (87.5%)
     Tell Teammate: 3 (12.5%)
-
-b_put_or_moved:
-  Scenarios with feature: 16
-  Predicts: Pass (87.5%)
-    Ask Teammate: 2 (12.5%)
-    Pass: 14 (87.5%)
 
 has_put:
   Scenarios with feature: 39
@@ -461,12 +480,11 @@ put_to_queried:
     Pass: 34 (87.2%)
     Tell Teammate: 3 (7.7%)
 
-last_is_put:
-  Scenarios with feature: 22
-  Predicts: Pass (86.4%)
-    Ask Teammate: 1 (4.5%)
-    Pass: 19 (86.4%)
-    Tell Teammate: 2 (9.1%)
+has_pair_leave_leave:
+  Scenarios with feature: 15
+  Predicts: Pass (86.7%)
+    Pass: 13 (86.7%)
+    Tell Teammate: 2 (13.3%)
 
 has_leave:
   Scenarios with feature: 36
@@ -475,18 +493,12 @@ has_leave:
     Pass: 31 (86.1%)
     Tell Teammate: 3 (8.3%)
 
-b_puts:
-  Scenarios with feature: 14
-  Predicts: Pass (85.7%)
-    Ask Teammate: 2 (14.3%)
-    Pass: 12 (85.7%)
-
 has_pair_put_leave:
-  Scenarios with feature: 34
-  Predicts: Pass (85.3%)
-    Ask Teammate: 2 (5.9%)
-    Pass: 29 (85.3%)
-    Tell Teammate: 3 (8.8%)
+  Scenarios with feature: 36
+  Predicts: Pass (86.1%)
+    Ask Teammate: 2 (5.6%)
+    Pass: 31 (86.1%)
+    Tell Teammate: 3 (8.3%)
 
 b_leave_before_you:
   Scenarios with feature: 19
@@ -494,58 +506,11 @@ b_leave_before_you:
     Pass: 16 (84.2%)
     Tell Teammate: 3 (15.8%)
 
-first_is_leave:
-  Scenarios with feature: 6
-  Predicts: Pass (83.3%)
-    Ask Teammate: 1 (16.7%)
-    Pass: 5 (83.3%)
-
 you_leaves:
   Scenarios with feature: 12
   Predicts: Pass (83.3%)
     Ask Teammate: 2 (16.7%)
     Pass: 10 (83.3%)
-
-has_pair_leave_put:
-  Scenarios with feature: 6
-  Predicts: Pass (83.3%)
-    Ask Teammate: 1 (16.7%)
-    Pass: 5 (83.3%)
-
-has_pair_leave_leave:
-  Scenarios with feature: 18
-  Predicts: Pass (83.3%)
-    Ask Teammate: 1 (5.6%)
-    Pass: 15 (83.3%)
-    Tell Teammate: 2 (11.1%)
-
-has_move:
-  Scenarios with feature: 23
-  Predicts: Pass (82.6%)
-    Ask Teammate: 1 (4.3%)
-    Pass: 19 (82.6%)
-    Tell Teammate: 3 (13.0%)
-
-move_from_queried:
-  Scenarios with feature: 23
-  Predicts: Pass (82.6%)
-    Ask Teammate: 1 (4.3%)
-    Pass: 19 (82.6%)
-    Tell Teammate: 3 (13.0%)
-
-has_pair_leave_move:
-  Scenarios with feature: 23
-  Predicts: Pass (82.6%)
-    Ask Teammate: 1 (4.3%)
-    Pass: 19 (82.6%)
-    Tell Teammate: 3 (13.0%)
-
-has_pair_move_put:
-  Scenarios with feature: 23
-  Predicts: Pass (82.6%)
-    Ask Teammate: 1 (4.3%)
-    Pass: 19 (82.6%)
-    Tell Teammate: 3 (13.0%)
 
 you_leave_before_b:
   Scenarios with feature: 11
@@ -553,41 +518,62 @@ you_leave_before_b:
     Ask Teammate: 2 (18.2%)
     Pass: 9 (81.8%)
 
+you_leave_after_any_put:
+  Scenarios with feature: 11
+  Predicts: Pass (81.8%)
+    Ask Teammate: 2 (18.2%)
+    Pass: 9 (81.8%)
+
+last_is_put:
+  Scenarios with feature: 15
+  Predicts: Pass (80.0%)
+    Ask Teammate: 1 (6.7%)
+    Pass: 12 (80.0%)
+    Tell Teammate: 2 (13.3%)
+
 ================================================================================
 MODERATE HEURISTICS (60-80%)
 ================================================================================
 
-b_moves:
+has_move:
+  Scenarios with feature: 23
+  Predicts: Pass (78.3%)
+
+move_from_queried:
+  Scenarios with feature: 23
+  Predicts: Pass (78.3%)
+
+has_pair_leave_move:
+  Scenarios with feature: 23
+  Predicts: Pass (78.3%)
+
+has_pair_move_put:
+  Scenarios with feature: 23
+  Predicts: Pass (78.3%)
+
+you_put_then_leave:
   Scenarios with feature: 4
   Predicts: Pass (75.0%)
-
-you_leave_before_any_put:
-  Scenarios with feature: 3
-  Predicts: Pass (66.7%)
 
 ================================================================================
 EVENT PAIR ANALYSIS
 ================================================================================
 
-put_leave:
-  Occurrences: 34
-  Best predictor: Pass (85.3%)
-
 leave_leave:
-  Occurrences: 18
-  Best predictor: Pass (83.3%)
+  Occurrences: 15
+  Best predictor: Pass (86.7%)
 
-leave_put:
-  Occurrences: 6
-  Best predictor: Pass (83.3%)
+put_leave:
+  Occurrences: 36
+  Best predictor: Pass (86.1%)
 
 leave_move:
   Occurrences: 23
-  Best predictor: Pass (82.6%)
+  Best predictor: Pass (78.3%)
 
 move_put:
   Occurrences: 23
-  Best predictor: Pass (82.6%)
+  Best predictor: Pass (78.3%)
 
 ================================================================================
 EPISTEMIC STATE CORRELATION
@@ -637,28 +623,28 @@ Baseline rates:
   Tell Teammate: 3/39 (7.7%)
 
 Features that predict 'Ask Teammate':
-  you_leave_before_any_put: 1/3 (33.3%) [lift=6.50x]
-  b_moves: 1/4 (25.0%) [lift=4.88x]
+  first_is_leave: 1/2 (50.0%) [lift=9.75x]
+  has_pair_leave_put: 1/2 (50.0%) [lift=9.75x]
+  you_put_then_leave: 1/4 (25.0%) [lift=4.88x]
   you_leave_before_b: 2/11 (18.2%) [lift=3.55x]
-  first_is_leave: 1/6 (16.7%) [lift=3.25x]
+  you_leave_after_any_put: 2/11 (18.2%) [lift=3.55x]
   you_leaves: 2/12 (16.7%) [lift=3.25x]
-  has_pair_leave_put: 1/6 (16.7%) [lift=3.25x]
-  b_puts: 2/14 (14.3%) [lift=2.79x]
-  b_put_or_moved: 2/16 (12.5%) [lift=2.44x]
-  you_leave_after_any_put: 1/9 (11.1%) [lift=2.17x]
-  last_is_leave: 1/17 (5.9%) [lift=1.15x]
+  has_move: 2/23 (8.7%) [lift=1.70x]
+  move_from_queried: 2/23 (8.7%) [lift=1.70x]
+  has_pair_leave_move: 2/23 (8.7%) [lift=1.70x]
+  has_pair_move_put: 2/23 (8.7%) [lift=1.70x]
 
 Features that predict 'Tell Teammate':
   b_leave_before_you: 3/19 (15.8%) [lift=2.05x]
+  last_is_put: 2/15 (13.3%) [lift=1.73x]
+  has_pair_leave_leave: 2/15 (13.3%) [lift=1.73x]
   has_move: 3/23 (13.0%) [lift=1.70x]
   move_from_queried: 3/23 (13.0%) [lift=1.70x]
   has_pair_leave_move: 3/23 (13.0%) [lift=1.70x]
   has_pair_move_put: 3/23 (13.0%) [lift=1.70x]
   b_leaves: 3/24 (12.5%) [lift=1.62x]
-  has_pair_leave_leave: 2/18 (11.1%) [lift=1.44x]
-  first_is_put: 3/33 (9.1%) [lift=1.18x]
-  last_is_put: 2/22 (9.1%) [lift=1.18x]
-  has_pair_put_leave: 3/34 (8.8%) [lift=1.15x]
+  has_leave: 3/36 (8.3%) [lift=1.08x]
+  has_pair_put_leave: 3/36 (8.3%) [lift=1.08x]
 
 ================================================================================
 KEY INSIGHTS
@@ -689,12 +675,12 @@ Overall correct action distribution:
 PERFECT/NEAR-PERFECT HEURISTICS (>=95%)
 ================================================================================
 
-has_enter:
-  Scenarios with feature: 19
-  Predicts: Pass (100.0%)
-    Pass: 19 (100.0%)
-
 has_remove:
+  Scenarios with feature: 3
+  Predicts: Pass (100.0%)
+    Pass: 3 (100.0%)
+
+first_is_leave:
   Scenarios with feature: 3
   Predicts: Pass (100.0%)
     Pass: 3 (100.0%)
@@ -710,75 +696,59 @@ you_enters:
     Pass: 9 (100.0%)
 
 b_enters:
-  Scenarios with feature: 5
+  Scenarios with feature: 6
   Predicts: Pass (100.0%)
-    Pass: 5 (100.0%)
+    Pass: 6 (100.0%)
 
-b_moves:
-  Scenarios with feature: 15
+has_pair_leave_put:
+  Scenarios with feature: 2
   Predicts: Pass (100.0%)
-    Pass: 15 (100.0%)
+    Pass: 2 (100.0%)
 
-you_leave_before_any_put:
+has_pair_enter_put:
+  Scenarios with feature: 1
+  Predicts: Pass (100.0%)
+    Pass: 1 (100.0%)
+
+you_put_then_leave:
   Scenarios with feature: 7
   Predicts: Pass (100.0%)
     Pass: 7 (100.0%)
 
 has_pair_enter_move:
-  Scenarios with feature: 19
-  Predicts: Pass (100.0%)
-    Pass: 19 (100.0%)
-
-b_put_then_leave:
-  Scenarios with feature: 5
-  Predicts: Pass (100.0%)
-    Pass: 5 (100.0%)
-
-b_put_or_moved:
-  Scenarios with feature: 23
-  Predicts: Pass (95.7%)
-    Ask Teammate: 1 (4.3%)
-    Pass: 22 (95.7%)
-
-has_pair_move_leave:
-  Scenarios with feature: 20
-  Predicts: Pass (95.0%)
-    Pass: 19 (95.0%)
-    Tell Teammate: 1 (5.0%)
+  Scenarios with feature: 21
+  Predicts: Pass (95.2%)
+    Pass: 20 (95.2%)
+    Tell Teammate: 1 (4.8%)
 
 ================================================================================
 STRONG HEURISTICS (80-95%)
 ================================================================================
 
+you_puts:
+  Scenarios with feature: 19
+  Predicts: Pass (94.7%)
+    Pass: 18 (94.7%)
+    Tell Teammate: 1 (5.3%)
+
+has_enter:
+  Scenarios with feature: 23
+  Predicts: Pass (91.3%)
+    Ask Teammate: 1 (4.3%)
+    Pass: 21 (91.3%)
+    Tell Teammate: 1 (4.3%)
+
 b_puts:
-  Scenarios with feature: 13
-  Predicts: Pass (92.3%)
-    Ask Teammate: 1 (7.7%)
-    Pass: 12 (92.3%)
-
-has_move:
-  Scenarios with feature: 33
+  Scenarios with feature: 11
   Predicts: Pass (90.9%)
-    Pass: 30 (90.9%)
-    Tell Teammate: 3 (9.1%)
+    Pass: 10 (90.9%)
+    Tell Teammate: 1 (9.1%)
 
-move_from_queried:
-  Scenarios with feature: 33
-  Predicts: Pass (90.9%)
-    Pass: 30 (90.9%)
-    Tell Teammate: 3 (9.1%)
-
-has_pair_leave_move:
-  Scenarios with feature: 33
-  Predicts: Pass (90.9%)
-    Pass: 30 (90.9%)
-    Tell Teammate: 3 (9.1%)
-
-move_to_queried:
-  Scenarios with feature: 31
-  Predicts: Pass (90.3%)
-    Pass: 28 (90.3%)
-    Tell Teammate: 3 (9.7%)
+you_moves:
+  Scenarios with feature: 20
+  Predicts: Pass (90.0%)
+    Pass: 18 (90.0%)
+    Tell Teammate: 2 (10.0%)
 
 b_leaves:
   Scenarios with feature: 30
@@ -786,36 +756,45 @@ b_leaves:
     Pass: 27 (90.0%)
     Tell Teammate: 3 (10.0%)
 
+last_is_leave:
+  Scenarios with feature: 19
+  Predicts: Pass (89.5%)
+    Ask Teammate: 1 (5.3%)
+    Pass: 17 (89.5%)
+    Tell Teammate: 1 (5.3%)
+
+b_moves:
+  Scenarios with feature: 18
+  Predicts: Pass (88.9%)
+    Ask Teammate: 2 (11.1%)
+    Pass: 16 (88.9%)
+
 you_leave_before_b:
-  Scenarios with feature: 20
-  Predicts: Pass (90.0%)
-    Ask Teammate: 2 (10.0%)
-    Pass: 18 (90.0%)
+  Scenarios with feature: 18
+  Predicts: Pass (88.9%)
+    Ask Teammate: 2 (11.1%)
+    Pass: 16 (88.9%)
 
-first_is_leave:
-  Scenarios with feature: 8
-  Predicts: Pass (87.5%)
-    Ask Teammate: 1 (12.5%)
-    Pass: 7 (87.5%)
+has_pair_move_leave:
+  Scenarios with feature: 25
+  Predicts: Pass (88.0%)
+    Ask Teammate: 2 (8.0%)
+    Pass: 22 (88.0%)
+    Tell Teammate: 1 (4.0%)
 
-last_is_put:
-  Scenarios with feature: 16
+you_leaves:
+  Scenarios with feature: 24
   Predicts: Pass (87.5%)
-    Pass: 14 (87.5%)
-    Tell Teammate: 2 (12.5%)
+    Ask Teammate: 2 (8.3%)
+    Pass: 21 (87.5%)
+    Tell Teammate: 1 (4.2%)
 
-you_puts:
-  Scenarios with feature: 16
+you_leave_after_any_put:
+  Scenarios with feature: 24
   Predicts: Pass (87.5%)
-    Ask Teammate: 1 (6.2%)
-    Pass: 14 (87.5%)
-    Tell Teammate: 1 (6.2%)
-
-has_pair_leave_put:
-  Scenarios with feature: 8
-  Predicts: Pass (87.5%)
-    Ask Teammate: 1 (12.5%)
-    Pass: 7 (87.5%)
+    Ask Teammate: 2 (8.3%)
+    Pass: 21 (87.5%)
+    Tell Teammate: 1 (4.2%)
 
 has_put:
   Scenarios with feature: 39
@@ -838,79 +817,93 @@ put_to_queried:
     Pass: 34 (87.2%)
     Tell Teammate: 3 (7.7%)
 
-first_is_put:
-  Scenarios with feature: 31
-  Predicts: Pass (87.1%)
-    Ask Teammate: 1 (3.2%)
-    Pass: 27 (87.1%)
-    Tell Teammate: 3 (9.7%)
+has_pair_put_leave:
+  Scenarios with feature: 39
+  Predicts: Pass (87.2%)
+    Ask Teammate: 2 (5.1%)
+    Pass: 34 (87.2%)
+    Tell Teammate: 3 (7.7%)
 
-you_leaves:
+b_put_or_moved:
   Scenarios with feature: 23
   Predicts: Pass (87.0%)
     Ask Teammate: 2 (8.7%)
     Pass: 20 (87.0%)
     Tell Teammate: 1 (4.3%)
 
-has_pair_put_leave:
+has_move:
   Scenarios with feature: 37
   Predicts: Pass (86.5%)
     Ask Teammate: 2 (5.4%)
     Pass: 32 (86.5%)
     Tell Teammate: 3 (8.1%)
 
-has_pair_move_put:
-  Scenarios with feature: 22
-  Predicts: Pass (86.4%)
-    Pass: 19 (86.4%)
-    Tell Teammate: 3 (13.6%)
+move_from_queried:
+  Scenarios with feature: 37
+  Predicts: Pass (86.5%)
+    Ask Teammate: 2 (5.4%)
+    Pass: 32 (86.5%)
+    Tell Teammate: 3 (8.1%)
 
-you_moves:
-  Scenarios with feature: 14
+has_pair_leave_move:
+  Scenarios with feature: 37
+  Predicts: Pass (86.5%)
+    Ask Teammate: 2 (5.4%)
+    Pass: 32 (86.5%)
+    Tell Teammate: 3 (8.1%)
+
+first_is_put:
+  Scenarios with feature: 36
+  Predicts: Pass (86.1%)
+    Ask Teammate: 2 (5.6%)
+    Pass: 31 (86.1%)
+    Tell Teammate: 3 (8.3%)
+
+move_to_queried:
+  Scenarios with feature: 35
   Predicts: Pass (85.7%)
-    Pass: 12 (85.7%)
-    Tell Teammate: 2 (14.3%)
-
-you_put_then_leave:
-  Scenarios with feature: 6
-  Predicts: Pass (83.3%)
-    Ask Teammate: 1 (16.7%)
-    Pass: 5 (83.3%)
+    Ask Teammate: 2 (5.7%)
+    Pass: 30 (85.7%)
+    Tell Teammate: 3 (8.6%)
 
 b_leave_before_you:
-  Scenarios with feature: 17
-  Predicts: Pass (82.4%)
-    Pass: 14 (82.4%)
-    Tell Teammate: 3 (17.6%)
+  Scenarios with feature: 19
+  Predicts: Pass (84.2%)
+    Pass: 16 (84.2%)
+    Tell Teammate: 3 (15.8%)
 
-you_leave_after_any_put:
-  Scenarios with feature: 16
-  Predicts: Pass (81.2%)
-    Ask Teammate: 2 (12.5%)
-    Pass: 13 (81.2%)
-    Tell Teammate: 1 (6.2%)
+has_pair_move_put:
+  Scenarios with feature: 23
+  Predicts: Pass (82.6%)
+    Ask Teammate: 1 (4.3%)
+    Pass: 19 (82.6%)
+    Tell Teammate: 3 (13.0%)
 
-last_is_leave:
-  Scenarios with feature: 15
-  Predicts: Pass (80.0%)
-    Ask Teammate: 2 (13.3%)
-    Pass: 12 (80.0%)
-    Tell Teammate: 1 (6.7%)
+last_is_put:
+  Scenarios with feature: 11
+  Predicts: Pass (81.8%)
+    Pass: 9 (81.8%)
+    Tell Teammate: 2 (18.2%)
 
 has_pair_leave_leave:
   Scenarios with feature: 15
   Predicts: Pass (80.0%)
-    Ask Teammate: 1 (6.7%)
     Pass: 12 (80.0%)
-    Tell Teammate: 2 (13.3%)
+    Tell Teammate: 3 (20.0%)
+
+b_put_then_leave:
+  Scenarios with feature: 5
+  Predicts: Pass (80.0%)
+    Pass: 4 (80.0%)
+    Tell Teammate: 1 (20.0%)
 
 ================================================================================
 MODERATE HEURISTICS (60-80%)
 ================================================================================
 
 has_pair_move_move:
-  Scenarios with feature: 9
-  Predicts: Pass (66.7%)
+  Scenarios with feature: 13
+  Predicts: Pass (61.5%)
 
 ================================================================================
 EVENT PAIR ANALYSIS
@@ -920,45 +913,45 @@ remove_move:
   Occurrences: 3
   Best predictor: Pass (100.0%)
 
+move_enter:
+  Occurrences: 19
+  Best predictor: Pass (100.0%)
+
 put_remove:
   Occurrences: 3
   Best predictor: Pass (100.0%)
 
 enter_move:
-  Occurrences: 19
-  Best predictor: Pass (100.0%)
-
-move_enter:
-  Occurrences: 19
-  Best predictor: Pass (100.0%)
+  Occurrences: 21
+  Best predictor: Pass (95.2%)
 
 move_leave:
-  Occurrences: 20
-  Best predictor: Pass (95.0%)
-
-leave_move:
-  Occurrences: 33
-  Best predictor: Pass (90.9%)
-
-leave_put:
-  Occurrences: 8
-  Best predictor: Pass (87.5%)
+  Occurrences: 25
+  Best predictor: Pass (88.0%)
 
 put_leave:
+  Occurrences: 39
+  Best predictor: Pass (87.2%)
+
+leave_move:
   Occurrences: 37
   Best predictor: Pass (86.5%)
 
 move_put:
-  Occurrences: 22
-  Best predictor: Pass (86.4%)
+  Occurrences: 23
+  Best predictor: Pass (82.6%)
 
 leave_leave:
   Occurrences: 15
   Best predictor: Pass (80.0%)
 
 move_move:
-  Occurrences: 9
-  Best predictor: Pass (66.7%)
+  Occurrences: 13
+  Best predictor: Pass (61.5%)
+
+leave_enter:
+  Occurrences: 4
+  Best predictor: Pass (50.0%)
 
 ================================================================================
 EPISTEMIC STATE CORRELATION
@@ -1008,28 +1001,28 @@ Baseline rates:
   Tell Teammate: 3/39 (7.7%)
 
 Features that predict 'Ask Teammate':
-  you_put_then_leave: 1/6 (16.7%) [lift=3.25x]
-  last_is_leave: 2/15 (13.3%) [lift=2.60x]
-  first_is_leave: 1/8 (12.5%) [lift=2.44x]
-  you_leave_after_any_put: 2/16 (12.5%) [lift=2.44x]
-  has_pair_leave_put: 1/8 (12.5%) [lift=2.44x]
-  you_leave_before_b: 2/20 (10.0%) [lift=1.95x]
-  you_leaves: 2/23 (8.7%) [lift=1.70x]
-  b_puts: 1/13 (7.7%) [lift=1.50x]
-  has_pair_leave_leave: 1/15 (6.7%) [lift=1.30x]
-  you_puts: 1/16 (6.2%) [lift=1.22x]
+  has_pair_leave_enter: 1/4 (25.0%) [lift=4.88x]
+  has_pair_move_move: 2/13 (15.4%) [lift=3.00x]
+  b_moves: 2/18 (11.1%) [lift=2.17x]
+  you_leave_before_b: 2/18 (11.1%) [lift=2.17x]
+  b_put_or_moved: 2/23 (8.7%) [lift=1.70x]
+  you_leaves: 2/24 (8.3%) [lift=1.62x]
+  you_leave_after_any_put: 2/24 (8.3%) [lift=1.62x]
+  has_pair_move_leave: 2/25 (8.0%) [lift=1.56x]
+  move_to_queried: 2/35 (5.7%) [lift=1.11x]
+  first_is_put: 2/36 (5.6%) [lift=1.08x]
 
 Features that predict 'Tell Teammate':
-  has_pair_move_move: 3/9 (33.3%) [lift=4.33x]
-  b_leave_before_you: 3/17 (17.6%) [lift=2.29x]
-  you_moves: 2/14 (14.3%) [lift=1.86x]
-  has_pair_move_put: 3/22 (13.6%) [lift=1.77x]
-  has_pair_leave_leave: 2/15 (13.3%) [lift=1.73x]
-  last_is_put: 2/16 (12.5%) [lift=1.62x]
+  has_pair_leave_enter: 1/4 (25.0%) [lift=3.25x]
+  has_pair_move_move: 3/13 (23.1%) [lift=3.00x]
+  has_pair_leave_leave: 3/15 (20.0%) [lift=2.60x]
+  b_put_then_leave: 1/5 (20.0%) [lift=2.60x]
+  last_is_put: 2/11 (18.2%) [lift=2.36x]
+  b_leave_before_you: 3/19 (15.8%) [lift=2.05x]
+  has_pair_move_put: 3/23 (13.0%) [lift=1.70x]
+  you_moves: 2/20 (10.0%) [lift=1.30x]
   b_leaves: 3/30 (10.0%) [lift=1.30x]
-  first_is_put: 3/31 (9.7%) [lift=1.26x]
-  move_to_queried: 3/31 (9.7%) [lift=1.26x]
-  has_move: 3/33 (9.1%) [lift=1.18x]
+  b_puts: 1/11 (9.1%) [lift=1.18x]
 
 ================================================================================
 KEY INSIGHTS

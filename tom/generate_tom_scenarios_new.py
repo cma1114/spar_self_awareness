@@ -793,6 +793,14 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
     events_to_insert.append(move_away)
     events_to_insert.append(move_back)
 
+    # 67% chance: add opponent leave/enter to break has_enter heuristic
+    if rng.random() < 0.67:
+        potential = [c for c in present if c not in ('A', 'B') and c != mover1 and c != mover2]
+        if potential:
+            opp = rng.choice(potential)
+            events_to_insert.append(Event('leave', opp))
+            events_to_insert.append(Event('enter', opp))
+
     # Insert all events at the correct position
     for i, evt in enumerate(events_to_insert):
         scenario.events.insert(insert_pos + i, evt)
@@ -853,6 +861,15 @@ def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: rando
     # Insert the events
     scenario.events.insert(insert_pos, move_away)
     scenario.events.insert(insert_pos + 1, move_back)
+
+    # 67% chance: add opponent leave/enter to break has_enter heuristic
+    if rng.random() < 0.67:
+        # Find an opponent who can leave/enter (not A or B, still present)
+        potential = [c for c in present if c not in ('A', 'B')]
+        if potential:
+            opp = rng.choice(potential)
+            scenario.events.insert(insert_pos + 2, Event('leave', opp))
+            scenario.events.insert(insert_pos + 3, Event('enter', opp))
 
 
 def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> None:
