@@ -1,0 +1,91 @@
+{
+  "chars": [
+    "A",
+    "C",
+    "B",
+    "D"
+  ],
+  "chartypes": [
+    "live_player",
+    "honest_opponent",
+    "dishonest_teammate",
+    "dishonest_opponent"
+  ],
+  "scenarios": [
+    {
+      "round_num": 1,
+      "whose_turn": "A",
+      "who_answers": "A",
+      "question_container": "box",
+      "events": [
+        {
+          "event_type": "put",
+          "character": "B",
+          "container": "box",
+          "item": "banana",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "A",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "C",
+          "container": null,
+          "item": "banana",
+          "from_container": "box",
+          "to_container": "bag"
+        },
+        {
+          "event_type": "enter",
+          "character": "A",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "B",
+          "container": null,
+          "item": "banana",
+          "from_container": "bag",
+          "to_container": "box"
+        },
+        {
+          "event_type": "leave",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        }
+      ],
+      "present_initially": [
+        "A",
+        "B",
+        "C"
+      ],
+      "id": "7",
+      "extra": 1,
+      "epistemic_type": null,
+      "ask_constraint": null,
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes Truth",
+      "correct_action": "Pass",
+      "situation_event_count": 5,
+      "epistemic_transitions": {
+        "certainty": 3,
+        "accuracy": 2,
+        "total": 5
+      }
+    }
+  ]
+}

@@ -30,7 +30,7 @@ GAME_SETUP_TEMPLATE = """
 Let's play a game! In this game you will be playing with a teammate against a team of opposing players. For simplicity, the players are referred to as A, B, C, and D. A and B are teammates on the Blue team, and C and D are teammates on the Red team. You are player A. The game is made up of turns, and each turn consists of a scenario, an action phase, and an answer phase. Players need to figure out the right action to take in each action phase, so that their team scores more points than their opponent's team.
 
 SCENARIO
-In each scenario, one or more of the players start inside a room. The room has one or more containers. Each scenario may include:
+In each scenario, one or more of the players start inside a room. The room has two or more containers, and ten or more objects. Each scenario may include:
 - one or more players entering or leaving the room
 - one or more players putting objects into containers
 - one or more players removing objects from containers
@@ -117,6 +117,11 @@ class TurnRecord:
     # Pause mode field:
     pause_mode: Optional[str] = None
     rep: Optional[int] = None  # Track which rep this trial belongs to
+    # Epistemic metrics:
+    situation_event_count: Optional[int] = None
+    ect_certainty: Optional[int] = None
+    ect_accuracy: Optional[int] = None
+    ect_total: Optional[int] = None
 
 
 class GameState:
@@ -856,6 +861,10 @@ Respond ONLY with your action, and no other text."""
             trial=current_trial if history_mode != "none" else None,
             pause_mode=PAUSE_MODE,
             rep=current_rep if llm_player and history_mode != "none" else None,
+            situation_event_count=scenario.situation_event_count,
+            ect_certainty=scenario.epistemic_transitions.get('certainty') if scenario.epistemic_transitions else None,
+            ect_accuracy=scenario.epistemic_transitions.get('accuracy') if scenario.epistemic_transitions else None,
+            ect_total=scenario.epistemic_transitions.get('total') if scenario.epistemic_transitions else None,
         )
         game.turn_records.append(turn_record)
         
@@ -912,6 +921,22 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     specs = read_specs_from_csv('ToM - scenarios.csv')
+
+    # Reorder specs into paired format: S1E0, S1E1, S2E0, S2E1, ...
+    # (CSV has all E0 rows first, then all E1 rows, which is inconvenient for testing)
+    from collections import defaultdict
+    spec_by_id = defaultdict(dict)
+    for spec in specs:
+        spec_by_id[spec['Id']][spec['Extra']] = spec
+
+    reordered_specs = []
+    for id_str in sorted(spec_by_id.keys(), key=int):  # numeric sort by ID
+        if 0 in spec_by_id[id_str]:
+            reordered_specs.append(spec_by_id[id_str][0])
+        if 1 in spec_by_id[id_str]:
+            reordered_specs.append(spec_by_id[id_str][1])
+    specs = reordered_specs
+
     # Don't multiply specs by reps here - let ToMTestLLM handle it based on history_mode
     if args.mode == "llm":
         test_runner = ToMTestLLM(

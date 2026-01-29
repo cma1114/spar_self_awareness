@@ -1,0 +1,59 @@
+Provider: OpenRouter
+--- Starting LLM ToM Test ---
+History mode: none
+Reps: 1
+
+--- Running Trial 1/78 (Spec ID 1): {'Id': '1', 'Extra': 0, 'Answerer': 'Self', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag, an empty box, and an empty basket. D puts a brick in the box. ... C leaves the room. ... B leaves the room. ... You put a ball in the bag. ... D puts an orange in the basket. ...
+----------------------------------------------
+I am going to ask you what is in the box.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+SENDING reasoning_effort=None
+OpenRouter provider that responded: Fireworks
+
+Action: Pass
+A answers: brick
+Correct! The box contains brick.
+
+Outcome: Blue +1.0, Red +0.0
+
+======================================================================
+GAME OVER
+Final Score: Blue 1.0 - Red 0.0
+Winner: Blue team
+======================================================================
+
+--- Running Trial 2/78 (Spec ID 2): {'Id': '2', 'Extra': 0, 'Answerer': 'Self', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_FALSE: 'Believes False'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag, an empty box, and an empty basket. D puts a brick in the bag. ... C leaves the room. ... B moves the brick from the bag to the box. ... D puts a stapler in the bag. ... B leaves the room. ... D moves the brick from the box to the basket. ... You put a ball in the box. ...
+----------------------------------------------
+I am going to ask you what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond ONLY with your action, and no other text.
+In model_call, provider=OpenRouter, attempt=1
+SENDING reasoning_effort=None
+Thread execution error: AttributeError: 'ChatCompletion' object has no attribute 'provider'
+Error in llm processing: 'ChatCompletion' object has no attribute 'provider'
+In model_call, provider=OpenRouter, attempt=2
+SENDING reasoning_effort=None

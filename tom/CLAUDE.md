@@ -1,5 +1,12 @@
 # ToM Test - Claude Context
 
+## IMPORTANT: Read First
+
+Before working on scenario generation or ECT logic, **always read `EPISTEMIC_METRICS.md`** to understand the correct definitions of:
+- Epistemic Category Transitions (ECTs) - the 4 transition types
+- Situation Tracking Events
+- Key rule: **Entering a room does NOT give knowledge of container contents** - you must WITNESS a put/move event
+
 ## Critical Architecture Rules
 
 ### One Spec = One Mini-Game (DO NOT CHANGE)

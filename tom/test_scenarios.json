@@ -16,12 +16,12 @@
       "round_num": 1,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "bag",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
           "character": "B",
-          "container": "bag",
+          "container": "basket",
           "item": "apple",
           "from_container": null,
           "to_container": null
@@ -45,15 +45,15 @@
         {
           "event_type": "put",
           "character": "A",
-          "container": "box",
-          "item": "ball",
+          "container": "bag",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "basket",
+          "character": "A",
+          "container": "box",
           "item": "orange",
           "from_container": null,
           "to_container": null
@@ -62,8 +62,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "1",
       "extra": 0,
@@ -84,13 +83,13 @@
       "round_num": 1,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
           "character": "B",
-          "container": "box",
-          "item": "stapler",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -106,8 +105,8 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "stapler",
-          "from_container": "box",
+          "item": "brick",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
@@ -120,11 +119,11 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "stapler",
+          "item": "brick",
           "from_container": "bag",
-          "to_container": "box"
+          "to_container": "basket"
         },
         {
           "event_type": "leave",
@@ -146,8 +145,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "1",
       "extra": 1,
@@ -168,19 +166,19 @@
       "round_num": 1,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "bag",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
-          "item": "brick",
+          "character": "A",
+          "container": "basket",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -188,17 +186,17 @@
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "A",
           "container": null,
-          "item": "brick",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "apple",
+          "from_container": "basket",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
           "character": "A",
-          "container": "bag",
-          "item": "banana",
+          "container": "basket",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -214,14 +212,14 @@
           "event_type": "move",
           "character": "A",
           "container": null,
-          "item": "brick",
-          "from_container": "box",
-          "to_container": "basket"
+          "item": "apple",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "C",
-          "container": "box",
+          "character": "A",
+          "container": "bag",
           "item": "banana",
           "from_container": null,
           "to_container": null
@@ -230,8 +228,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "2",
       "extra": 0,
@@ -252,13 +249,13 @@
       "round_num": 1,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "ball",
+          "character": "A",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -274,8 +271,8 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "ball",
-          "from_container": "box",
+          "item": "brick",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
@@ -288,15 +285,15 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "ball",
+          "item": "brick",
           "from_container": "bag",
-          "to_container": "box"
+          "to_container": "basket"
         },
         {
           "event_type": "leave",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -304,17 +301,17 @@
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "A",
           "container": null,
-          "item": "ball",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": "brick",
+          "from_container": "basket",
+          "to_container": "box"
         },
         {
           "event_type": "put",
           "character": "A",
-          "container": "box",
-          "item": "banana",
+          "container": "basket",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -330,8 +327,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "2",
       "extra": 1,
@@ -352,13 +348,13 @@
       "round_num": 2,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "box",
-          "item": "brick",
+          "character": "C",
+          "container": "basket",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -372,16 +368,16 @@
         },
         {
           "event_type": "put",
-          "character": "C",
+          "character": "A",
           "container": "bag",
-          "item": "banana",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "A",
-          "container": "basket",
+          "character": "D",
+          "container": "box",
           "item": "orange",
           "from_container": null,
           "to_container": null
@@ -412,13 +408,13 @@
       "round_num": 2,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "box",
-          "item": "ball",
+          "character": "C",
+          "container": "basket",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -432,10 +428,10 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "ball",
-          "from_container": "box",
+          "item": "banana",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
@@ -447,12 +443,12 @@
           "to_container": null
         },
         {
-          "event_type": "put",
-          "character": "C",
-          "container": "box",
-          "item": "brick",
-          "from_container": null,
-          "to_container": null
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "banana",
+          "from_container": "bag",
+          "to_container": "basket"
         },
         {
           "event_type": "leave",
@@ -488,13 +484,13 @@
       "round_num": 2,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "banana",
+          "character": "C",
+          "container": "basket",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -508,23 +504,23 @@
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "banana",
-          "from_container": "box",
+          "item": "ball",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
           "event_type": "put",
           "character": "C",
-          "container": "box",
-          "item": "apple",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -532,15 +528,15 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "A",
           "container": null,
-          "item": "banana",
+          "item": "ball",
           "from_container": "bag",
-          "to_container": "basket"
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "A",
+          "character": "C",
           "container": "bag",
           "item": "apple",
           "from_container": null,
@@ -572,13 +568,13 @@
       "round_num": 2,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "brick",
+          "character": "C",
+          "container": "basket",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -594,8 +590,8 @@
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "brick",
-          "from_container": "box",
+          "item": "banana",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
@@ -610,9 +606,9 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "brick",
+          "item": "banana",
           "from_container": "bag",
-          "to_container": "box"
+          "to_container": "basket"
         },
         {
           "event_type": "leave",
@@ -624,23 +620,23 @@
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "brick",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": "banana",
+          "from_container": "basket",
+          "to_container": "box"
         },
         {
           "event_type": "put",
           "character": "C",
-          "container": "box",
-          "item": "apple",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -672,19 +668,19 @@
       "round_num": 3,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "bag",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
-          "item": "stapler",
+          "character": "A",
+          "container": "box",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -700,32 +696,32 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "stapler",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "brick",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
-          "item": "brick",
+          "character": "C",
+          "container": "box",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "A",
           "container": null,
-          "item": "stapler",
-          "from_container": "box",
+          "item": "brick",
+          "from_container": "bag",
           "to_container": "basket"
         },
         {
           "event_type": "put",
-          "character": "A",
-          "container": "box",
+          "character": "C",
+          "container": "bag",
           "item": "apple",
           "from_container": null,
           "to_container": null
@@ -756,13 +752,13 @@
       "round_num": 3,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "brick",
+          "character": "A",
+          "container": "bag",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
@@ -776,11 +772,11 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "brick",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": "apple",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "enter",
@@ -791,16 +787,16 @@
           "to_container": null
         },
         {
-          "event_type": "put",
-          "character": "C",
-          "container": "box",
-          "item": "orange",
-          "from_container": null,
-          "to_container": null
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "apple",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -816,17 +812,17 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "brick",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": "apple",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "brick",
+          "character": "C",
+          "container": "bag",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         }
@@ -856,13 +852,13 @@
       "round_num": 3,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "orange",
+          "character": "A",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -878,31 +874,31 @@
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "orange",
-          "from_container": "box",
+          "item": "brick",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
           "event_type": "put",
           "character": "C",
-          "container": "box",
-          "item": "banana",
+          "container": "basket",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "orange",
+          "item": "brick",
           "from_container": "bag",
-          "to_container": "basket"
+          "to_container": "box"
         },
         {
           "event_type": "put",
           "character": "A",
           "container": "bag",
-          "item": "stapler",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         }
@@ -932,13 +928,13 @@
       "round_num": 3,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "ball",
+          "character": "A",
+          "container": "basket",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -954,8 +950,8 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "ball",
-          "from_container": "box",
+          "item": "orange",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
@@ -967,12 +963,12 @@
           "to_container": null
         },
         {
-          "event_type": "put",
+          "event_type": "move",
           "character": "D",
-          "container": "box",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
+          "container": null,
+          "item": "orange",
+          "from_container": "bag",
+          "to_container": "basket"
         },
         {
           "event_type": "leave",
@@ -986,15 +982,15 @@
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "ball",
-          "from_container": "box",
+          "item": "orange",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
           "event_type": "put",
           "character": "C",
-          "container": "box",
-          "item": "banana",
+          "container": "basket",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         }
@@ -1024,13 +1020,13 @@
       "round_num": 4,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "bag",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
-          "character": "B",
-          "container": "bag",
-          "item": "brick",
+          "character": "C",
+          "container": "box",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -1045,16 +1041,16 @@
         {
           "event_type": "put",
           "character": "A",
-          "container": "box",
-          "item": "orange",
+          "container": "bag",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "B",
+          "character": "C",
           "container": "basket",
-          "item": "stapler",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         }
@@ -1088,9 +1084,9 @@
       "events": [
         {
           "event_type": "put",
-          "character": "B",
+          "character": "C",
           "container": "box",
-          "item": "ball",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -1103,18 +1099,10 @@
           "to_container": null
         },
         {
-          "event_type": "leave",
-          "character": "B",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "ball",
+          "item": "banana",
           "from_container": "box",
           "to_container": "bag"
         },
@@ -1127,12 +1115,12 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "put",
           "character": "C",
-          "container": null,
+          "container": "box",
           "item": "ball",
-          "from_container": "bag",
-          "to_container": "box"
+          "from_container": null,
+          "to_container": null
         },
         {
           "event_type": "leave",
@@ -1157,11 +1145,11 @@
       "ks_teammate": "Knows Truth",
       "ks_opponent": "Believes Truth",
       "correct_action": "Pass",
-      "situation_event_count": 6,
+      "situation_event_count": 5,
       "epistemic_transitions": {
-        "certainty": 4,
-        "accuracy": 3,
-        "total": 7
+        "certainty": 3,
+        "accuracy": 2,
+        "total": 5
       }
     },
     {
@@ -1174,7 +1162,7 @@
           "event_type": "put",
           "character": "B",
           "container": "basket",
-          "item": "apple",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -1188,9 +1176,9 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "B",
           "container": null,
-          "item": "apple",
+          "item": "ball",
           "from_container": "basket",
           "to_container": "bag"
         },
@@ -1198,15 +1186,15 @@
           "event_type": "put",
           "character": "B",
           "container": "basket",
-          "item": "brick",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "B",
           "container": null,
-          "item": "apple",
+          "item": "ball",
           "from_container": "bag",
           "to_container": "box"
         },
@@ -1214,7 +1202,7 @@
           "event_type": "put",
           "character": "A",
           "container": "bag",
-          "item": "brick",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         }
@@ -1222,8 +1210,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "8",
       "extra": 0,
@@ -1280,9 +1267,9 @@
         },
         {
           "event_type": "put",
-          "character": "D",
+          "character": "C",
           "container": "basket",
-          "item": "apple",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -1296,17 +1283,17 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "B",
           "container": null,
           "item": "stapler",
           "from_container": "basket",
-          "to_container": "box"
+          "to_container": "bag"
         },
         {
           "event_type": "put",
           "character": "B",
           "container": "basket",
-          "item": "brick",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         }
@@ -1314,8 +1301,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "8",
       "extra": 1,
@@ -1336,29 +1322,29 @@
       "round_num": 5,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "box",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "put",
-          "character": "D",
-          "container": "bag",
-          "item": "banana",
+          "character": "A",
+          "container": "basket",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
           "character": "A",
-          "container": "basket",
-          "item": "brick",
+          "container": "bag",
+          "item": "orange",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "B",
+          "container": "box",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         }
@@ -1366,8 +1352,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "9",
       "extra": 0,
@@ -1388,12 +1373,12 @@
       "round_num": 5,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "box",
+          "character": "A",
+          "container": "basket",
           "item": "brick",
           "from_container": null,
           "to_container": null
@@ -1419,7 +1404,7 @@
           "character": "C",
           "container": null,
           "item": "brick",
-          "from_container": "box",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
@@ -1431,19 +1416,18 @@
           "to_container": null
         },
         {
-          "event_type": "move",
-          "character": "D",
-          "container": null,
-          "item": "brick",
-          "from_container": "bag",
-          "to_container": "box"
+          "event_type": "put",
+          "character": "C",
+          "container": "basket",
+          "item": "apple",
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "9",
       "extra": 1,
@@ -1464,20 +1448,28 @@
       "round_num": 5,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "basket",
+      "question_container": "bag",
       "events": [
         {
-          "event_type": "put",
+          "event_type": "leave",
           "character": "C",
-          "container": "basket",
-          "item": "banana",
+          "container": null,
+          "item": null,
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "B",
+          "character": "D",
           "container": "bag",
+          "item": "ball",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "A",
+          "container": "box",
           "item": "stapler",
           "from_container": null,
           "to_container": null
@@ -1485,7 +1477,7 @@
         {
           "event_type": "put",
           "character": "D",
-          "container": "box",
+          "container": "basket",
           "item": "brick",
           "from_container": null,
           "to_container": null
@@ -1507,26 +1499,18 @@
           "to_container": null
         },
         {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "banana",
-          "from_container": "basket",
-          "to_container": "bag"
+          "item": "ball",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
           "character": "D",
-          "container": "basket",
-          "item": "apple",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -1547,22 +1531,30 @@
       "correct_action": "Pass",
       "situation_event_count": 6,
       "epistemic_transitions": {
-        "certainty": 3,
-        "accuracy": 3,
-        "total": 6
+        "certainty": 2,
+        "accuracy": 2,
+        "total": 4
       }
     },
     {
       "round_num": 5,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "basket",
+      "question_container": "bag",
       "events": [
         {
-          "event_type": "put",
+          "event_type": "leave",
           "character": "C",
-          "container": "basket",
-          "item": "brick",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "D",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -1584,19 +1576,19 @@
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "brick",
-          "from_container": "basket",
-          "to_container": "bag"
+          "item": "banana",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "brick",
-          "from_container": "bag",
-          "to_container": "basket"
+          "item": "banana",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "leave",
@@ -1615,26 +1607,18 @@
           "to_container": null
         },
         {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "brick",
-          "from_container": "basket",
+          "item": "banana",
+          "from_container": "bag",
           "to_container": "box"
         },
         {
           "event_type": "put",
           "character": "D",
-          "container": "basket",
-          "item": "apple",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -1655,29 +1639,29 @@
       "correct_action": "Pass",
       "situation_event_count": 8,
       "epistemic_transitions": {
-        "certainty": 5,
-        "accuracy": 3,
-        "total": 8
+        "certainty": 4,
+        "accuracy": 2,
+        "total": 6
       }
     },
     {
       "round_num": 6,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "basket",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
           "character": "D",
-          "container": "basket",
+          "container": "bag",
           "item": "orange",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
+          "character": "C",
+          "container": "box",
           "item": "brick",
           "from_container": null,
           "to_container": null
@@ -1685,8 +1669,8 @@
         {
           "event_type": "put",
           "character": "B",
-          "container": "box",
-          "item": "ball",
+          "container": "basket",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
@@ -1703,14 +1687,14 @@
           "character": "D",
           "container": null,
           "item": "orange",
-          "from_container": "basket",
-          "to_container": "bag"
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
           "character": "D",
-          "container": "basket",
-          "item": "stapler",
+          "container": "bag",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -1748,13 +1732,13 @@
       "round_num": 6,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "basket",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
           "character": "D",
-          "container": "basket",
-          "item": "ball",
+          "container": "box",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -1776,19 +1760,19 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "ball",
-          "from_container": "basket",
+          "item": "brick",
+          "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "ball",
+          "item": "brick",
           "from_container": "bag",
-          "to_container": "basket"
+          "to_container": "box"
         },
         {
           "event_type": "leave",
@@ -1802,15 +1786,15 @@
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "ball",
-          "from_container": "basket",
-          "to_container": "box"
+          "item": "brick",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
           "character": "D",
-          "container": "basket",
-          "item": "stapler",
+          "container": "box",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -1848,28 +1832,28 @@
       "round_num": 6,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "box",
-          "item": "orange",
+          "character": "D",
+          "container": "basket",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "D",
+          "character": "A",
           "container": "bag",
-          "item": "orange",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
           "character": "B",
-          "container": "basket",
+          "container": "box",
           "item": "banana",
           "from_container": null,
           "to_container": null
@@ -1891,26 +1875,26 @@
           "to_container": null
         },
         {
-          "event_type": "move",
-          "character": "D",
-          "container": null,
-          "item": "orange",
-          "from_container": "box",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "stapler",
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "leave",
           "character": "D",
           "container": null,
           "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "B",
+          "container": null,
+          "item": "ball",
+          "from_container": "basket",
+          "to_container": "bag"
+        },
+        {
+          "event_type": "put",
+          "character": "B",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         }
@@ -1932,21 +1916,21 @@
       "situation_event_count": 6,
       "epistemic_transitions": {
         "certainty": 3,
-        "accuracy": 2,
-        "total": 5
+        "accuracy": 3,
+        "total": 6
       }
     },
     {
       "round_num": 6,
       "whose_turn": "A",
       "who_answers": "A",
-      "question_container": "bag",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "bag",
-          "item": "stapler",
+          "character": "D",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -1968,19 +1952,19 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "stapler",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "brick",
+          "from_container": "basket",
+          "to_container": "bag"
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "stapler",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": "brick",
+          "from_container": "bag",
+          "to_container": "basket"
         },
         {
           "event_type": "leave",
@@ -1999,26 +1983,26 @@
           "to_container": null
         },
         {
-          "event_type": "move",
-          "character": "D",
-          "container": null,
-          "item": "stapler",
-          "from_container": "bag",
-          "to_container": "box"
-        },
-        {
-          "event_type": "put",
-          "character": "D",
-          "container": "bag",
-          "item": "stapler",
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "leave",
           "character": "D",
           "container": null,
           "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "B",
+          "container": null,
+          "item": "brick",
+          "from_container": "basket",
+          "to_container": "bag"
+        },
+        {
+          "event_type": "put",
+          "character": "B",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         }
@@ -2040,8 +2024,8 @@
       "situation_event_count": 8,
       "epistemic_transitions": {
         "certainty": 5,
-        "accuracy": 2,
-        "total": 7
+        "accuracy": 3,
+        "total": 8
       }
     },
     {
@@ -2052,15 +2036,15 @@
       "events": [
         {
           "event_type": "put",
-          "character": "D",
+          "character": "C",
           "container": "basket",
-          "item": "stapler",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "C",
+          "character": "A",
           "container": "bag",
           "item": "banana",
           "from_container": null,
@@ -2068,9 +2052,9 @@
         },
         {
           "event_type": "put",
-          "character": "D",
+          "character": "B",
           "container": "box",
-          "item": "brick",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
@@ -2086,8 +2070,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "13",
       "extra": 0,
@@ -2112,9 +2095,9 @@
       "events": [
         {
           "event_type": "put",
-          "character": "D",
+          "character": "C",
           "container": "basket",
-          "item": "ball",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
@@ -2138,15 +2121,15 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "ball",
+          "item": "stapler",
           "from_container": "basket",
           "to_container": "bag"
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "ball",
+          "item": "stapler",
           "from_container": "bag",
           "to_container": "basket"
         },
@@ -2162,8 +2145,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "13",
       "extra": 1,
@@ -2184,13 +2166,13 @@
       "round_num": 7,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "basket",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "basket",
-          "item": "ball",
+          "character": "C",
+          "container": "bag",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -2212,17 +2194,17 @@
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
-          "item": "brick",
+          "character": "A",
+          "container": "box",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
           "character": "A",
-          "container": "box",
-          "item": "orange",
+          "container": "basket",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         }
@@ -2230,8 +2212,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "14",
       "extra": 0,
@@ -2252,13 +2233,13 @@
       "round_num": 7,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "basket",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "basket",
-          "item": "brick",
+          "character": "C",
+          "container": "box",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -2274,15 +2255,15 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "brick",
-          "from_container": "basket",
+          "item": "ball",
+          "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "basket",
-          "item": "ball",
+          "character": "C",
+          "container": "box",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -2290,17 +2271,17 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "ball",
-          "from_container": "basket",
-          "to_container": "box"
+          "item": "banana",
+          "from_container": "box",
+          "to_container": "basket"
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "brick",
+          "item": "ball",
           "from_container": "bag",
-          "to_container": "basket"
+          "to_container": "box"
         },
         {
           "event_type": "leave",
@@ -2314,8 +2295,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "14",
       "extra": 1,
@@ -2336,43 +2316,19 @@
       "round_num": 8,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "B",
-          "container": "box",
-          "item": "brick",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "D",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "brick",
-          "from_container": "box",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "put",
-          "character": "B",
-          "container": "box",
+          "character": "A",
+          "container": "basket",
           "item": "ball",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
-          "character": "B",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -2382,15 +2338,39 @@
           "event_type": "move",
           "character": "A",
           "container": null,
-          "item": "brick",
-          "from_container": "bag",
-          "to_container": "basket"
+          "item": "ball",
+          "from_container": "basket",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "C",
+          "character": "B",
+          "container": "basket",
+          "item": "stapler",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "ball",
+          "from_container": "bag",
+          "to_container": "box"
+        },
+        {
+          "event_type": "put",
+          "character": "A",
           "container": "bag",
-          "item": "banana",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         }
@@ -2420,87 +2400,79 @@
       "round_num": 8,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "bag",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "B",
-          "container": "bag",
-          "item": "apple",
+          "character": "A",
+          "container": "basket",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "A",
+          "container": null,
+          "item": "banana",
+          "from_container": "basket",
+          "to_container": "box"
+        },
+        {
+          "event_type": "put",
+          "character": "B",
+          "container": "basket",
+          "item": "stapler",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
           "character": "D",
           "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "apple",
-          "from_container": "bag",
-          "to_container": "box"
-        },
-        {
-          "event_type": "put",
-          "character": "B",
-          "container": "bag",
-          "item": "ball",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "B",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "apple",
-          "from_container": "box",
-          "to_container": "basket"
-        },
-        {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "ball",
-          "from_container": "bag",
-          "to_container": "box"
-        },
-        {
-          "event_type": "put",
-          "character": "C",
-          "container": "bag",
           "item": "stapler",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "stapler",
-          "from_container": "bag",
-          "to_container": "basket"
-        },
-        {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "ball",
-          "from_container": "box",
+          "from_container": "basket",
           "to_container": "bag"
+        },
+        {
+          "event_type": "put",
+          "character": "D",
+          "container": "basket",
+          "item": "apple",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "apple",
+          "from_container": "basket",
+          "to_container": "box"
+        },
+        {
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "stapler",
+          "from_container": "bag",
+          "to_container": "basket"
         }
       ],
       "present_initially": [
@@ -2517,7 +2489,7 @@
       "ks_teammate": "Believes Truth",
       "ks_opponent": "Believes False",
       "correct_action": "Pass",
-      "situation_event_count": 10,
+      "situation_event_count": 9,
       "epistemic_transitions": {
         "certainty": 2,
         "accuracy": 2,
@@ -2528,12 +2500,12 @@
       "round_num": 8,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "basket",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
           "character": "A",
-          "container": "basket",
+          "container": "box",
           "item": "ball",
           "from_container": null,
           "to_container": null
@@ -2548,17 +2520,17 @@
         },
         {
           "event_type": "put",
-          "character": "A",
+          "character": "C",
           "container": "bag",
-          "item": "banana",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "C",
-          "container": "box",
-          "item": "stapler",
+          "character": "A",
+          "container": "basket",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -2588,13 +2560,13 @@
       "round_num": 8,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "basket",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
           "character": "A",
-          "container": "basket",
-          "item": "stapler",
+          "container": "bag",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
@@ -2608,27 +2580,19 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "stapler",
-          "from_container": "basket",
-          "to_container": "bag"
+          "item": "apple",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "C",
-          "container": "basket",
-          "item": "ball",
+          "character": "D",
+          "container": "bag",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "D",
-          "container": null,
-          "item": "ball",
-          "from_container": "basket",
-          "to_container": "box"
         },
         {
           "event_type": "move",
@@ -2637,6 +2601,14 @@
           "item": "stapler",
           "from_container": "bag",
           "to_container": "basket"
+        },
+        {
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "apple",
+          "from_container": "box",
+          "to_container": "bag"
         }
       ],
       "present_initially": [
@@ -2664,13 +2636,13 @@
       "round_num": 9,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "basket",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "basket",
-          "item": "stapler",
+          "character": "B",
+          "container": "bag",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -2684,17 +2656,17 @@
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "stapler",
-          "from_container": "basket",
-          "to_container": "bag"
+          "item": "ball",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "basket",
-          "item": "orange",
+          "character": "C",
+          "container": "bag",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
@@ -2718,15 +2690,15 @@
           "event_type": "move",
           "character": "A",
           "container": null,
-          "item": "stapler",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "ball",
+          "from_container": "box",
+          "to_container": "basket"
         },
         {
           "event_type": "put",
           "character": "A",
-          "container": "bag",
-          "item": "apple",
+          "container": "box",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         }
@@ -2756,13 +2728,13 @@
       "round_num": 9,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "basket",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "basket",
-          "item": "brick",
+          "character": "B",
+          "container": "bag",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -2792,19 +2764,19 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "brick",
-          "from_container": "basket",
-          "to_container": "bag"
+          "item": "orange",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "brick",
-          "from_container": "bag",
-          "to_container": "basket"
+          "item": "orange",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "leave",
@@ -2816,17 +2788,17 @@
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "brick",
-          "from_container": "basket",
-          "to_container": "bag"
+          "item": "orange",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "basket",
-          "item": "orange",
+          "character": "C",
+          "container": "bag",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
@@ -2876,17 +2848,9 @@
       "events": [
         {
           "event_type": "put",
-          "character": "B",
+          "character": "D",
           "container": "basket",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "B",
-          "container": null,
-          "item": null,
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -2899,18 +2863,10 @@
           "to_container": null
         },
         {
-          "event_type": "move",
-          "character": "C",
+          "event_type": "leave",
+          "character": "B",
           "container": null,
-          "item": "apple",
-          "from_container": "basket",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "put",
-          "character": "C",
-          "container": "basket",
-          "item": "ball",
+          "item": null,
           "from_container": null,
           "to_container": null
         },
@@ -2918,7 +2874,23 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "apple",
+          "item": "brick",
+          "from_container": "basket",
+          "to_container": "bag"
+        },
+        {
+          "event_type": "put",
+          "character": "C",
+          "container": "basket",
+          "item": "banana",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "C",
+          "container": null,
+          "item": "brick",
           "from_container": "bag",
           "to_container": "box"
         },
@@ -2926,7 +2898,7 @@
           "event_type": "put",
           "character": "A",
           "container": "bag",
-          "item": "ball",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         }
@@ -2960,9 +2932,17 @@
       "events": [
         {
           "event_type": "put",
-          "character": "B",
+          "character": "D",
           "container": "basket",
-          "item": "ball",
+          "item": "orange",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "D",
+          "container": null,
+          "item": null,
           "from_container": null,
           "to_container": null
         },
@@ -2992,9 +2972,9 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "ball",
+          "item": "orange",
           "from_container": "basket",
           "to_container": "bag"
         },
@@ -3002,7 +2982,7 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "ball",
+          "item": "orange",
           "from_container": "bag",
           "to_container": "basket"
         },
@@ -3015,18 +2995,10 @@
           "to_container": null
         },
         {
-          "event_type": "leave",
-          "character": "D",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "ball",
+          "item": "orange",
           "from_container": "basket",
           "to_container": "bag"
         },
@@ -3034,7 +3006,7 @@
           "event_type": "put",
           "character": "C",
           "container": "basket",
-          "item": "ball",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -3056,21 +3028,21 @@
       "situation_event_count": 6,
       "epistemic_transitions": {
         "certainty": 5,
-        "accuracy": 4,
-        "total": 9
+        "accuracy": 5,
+        "total": 10
       }
     },
     {
       "round_num": 10,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "bag",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "stapler",
+          "character": "B",
+          "container": "box",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -3084,33 +3056,33 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "stapler",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "orange",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
+          "character": "C",
+          "container": "box",
           "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "stapler",
-          "from_container": "box",
+          "item": "orange",
+          "from_container": "bag",
           "to_container": "basket"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "brick",
+          "character": "C",
+          "container": "bag",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         }
@@ -3144,9 +3116,9 @@
       "events": [
         {
           "event_type": "put",
-          "character": "C",
+          "character": "B",
           "container": "box",
-          "item": "brick",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -3168,17 +3140,17 @@
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "brick",
+          "item": "banana",
           "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "brick",
+          "item": "banana",
           "from_container": "bag",
           "to_container": "box"
         },
@@ -3192,15 +3164,15 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "brick",
+          "item": "banana",
           "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "D",
+          "character": "C",
           "container": "box",
           "item": "apple",
           "from_container": null,
@@ -3238,13 +3210,13 @@
           "event_type": "put",
           "character": "A",
           "container": "bag",
-          "item": "brick",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -3252,7 +3224,7 @@
         },
         {
           "event_type": "put",
-          "character": "B",
+          "character": "A",
           "container": "box",
           "item": "stapler",
           "from_container": null,
@@ -3260,9 +3232,9 @@
         },
         {
           "event_type": "put",
-          "character": "C",
+          "character": "B",
           "container": "basket",
-          "item": "ball",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         }
@@ -3270,8 +3242,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "20",
       "extra": 0,
@@ -3311,6 +3282,14 @@
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "A",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
           "event_type": "move",
           "character": "C",
           "container": null,
@@ -3327,16 +3306,16 @@
           "to_container": null
         },
         {
-          "event_type": "move",
-          "character": "D",
-          "container": null,
-          "item": "orange",
-          "from_container": "box",
-          "to_container": "bag"
+          "event_type": "put",
+          "character": "C",
+          "container": "bag",
+          "item": "banana",
+          "from_container": null,
+          "to_container": null
         },
         {
           "event_type": "leave",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -3346,8 +3325,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "20",
       "extra": 1,
@@ -3357,32 +3335,24 @@
       "ks_teammate": "Knows Truth",
       "ks_opponent": "Believes Truth",
       "correct_action": "Pass",
-      "situation_event_count": 6,
+      "situation_event_count": 5,
       "epistemic_transitions": {
-        "certainty": 3,
-        "accuracy": 2,
-        "total": 5
+        "certainty": 4,
+        "accuracy": 3,
+        "total": 7
       }
     },
     {
       "round_num": 11,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "bag",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
+          "character": "B",
+          "container": "basket",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -3395,17 +3365,25 @@
           "to_container": null
         },
         {
-          "event_type": "move",
-          "character": "A",
+          "event_type": "leave",
+          "character": "C",
           "container": null,
-          "item": "apple",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "B",
+          "container": null,
+          "item": "ball",
+          "from_container": "basket",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
           "character": "B",
-          "container": "bag",
+          "container": "basket",
           "item": "brick",
           "from_container": null,
           "to_container": null
@@ -3414,15 +3392,15 @@
           "event_type": "move",
           "character": "A",
           "container": null,
-          "item": "apple",
-          "from_container": "box",
-          "to_container": "basket"
+          "item": "ball",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
           "character": "B",
-          "container": "box",
-          "item": "orange",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -3452,13 +3430,13 @@
       "round_num": 11,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "box",
-          "item": "stapler",
+          "character": "B",
+          "container": "basket",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -3474,8 +3452,8 @@
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "stapler",
-          "from_container": "box",
+          "item": "orange",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
@@ -3489,16 +3467,8 @@
         {
           "event_type": "put",
           "character": "C",
-          "container": "box",
+          "container": "basket",
           "item": "ball",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
           "from_container": null,
           "to_container": null
         },
@@ -3511,17 +3481,25 @@
           "to_container": null
         },
         {
-          "event_type": "move",
-          "character": "A",
+          "event_type": "leave",
+          "character": "C",
           "container": null,
-          "item": "stapler",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "B",
+          "container": null,
+          "item": "orange",
+          "from_container": "basket",
+          "to_container": "box"
         },
         {
           "event_type": "put",
           "character": "B",
-          "container": "box",
+          "container": "basket",
           "item": "brick",
           "from_container": null,
           "to_container": null
@@ -3552,29 +3530,29 @@
       "round_num": 11,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "box",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "box",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "put",
-          "character": "A",
+          "character": "D",
           "container": "bag",
-          "item": "stapler",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "B",
+          "character": "C",
+          "container": "box",
+          "item": "orange",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "D",
           "container": "basket",
-          "item": "apple",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         }
@@ -3582,6 +3560,7 @@
       "present_initially": [
         "A",
         "B",
+        "C",
         "D"
       ],
       "id": "22",
@@ -3603,13 +3582,13 @@
       "round_num": 11,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "box",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "box",
-          "item": "ball",
+          "character": "D",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -3622,20 +3601,12 @@
           "to_container": null
         },
         {
-          "event_type": "leave",
-          "character": "A",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "ball",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": "banana",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "enter",
@@ -3646,17 +3617,18 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "put",
           "character": "D",
-          "container": null,
+          "container": "bag",
           "item": "ball",
-          "from_container": "bag",
-          "to_container": "box"
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
         "A",
         "B",
+        "C",
         "D"
       ],
       "id": "22",
@@ -3667,11 +3639,11 @@
       "ks_teammate": "Knows Truth",
       "ks_opponent": "Knows Truth",
       "correct_action": "Pass",
-      "situation_event_count": 4,
+      "situation_event_count": 5,
       "epistemic_transitions": {
-        "certainty": 3,
-        "accuracy": 3,
-        "total": 6
+        "certainty": 2,
+        "accuracy": 2,
+        "total": 4
       }
     },
     {
@@ -3690,8 +3662,16 @@
         },
         {
           "event_type": "put",
-          "character": "C",
+          "character": "A",
           "container": "basket",
+          "item": "banana",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "C",
+          "container": "bag",
           "item": "stapler",
           "from_container": null,
           "to_container": null
@@ -3699,16 +3679,8 @@
         {
           "event_type": "put",
           "character": "B",
-          "container": "bag",
-          "item": "ball",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "put",
-          "character": "C",
           "container": "box",
-          "item": "apple",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -3732,7 +3704,7 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "stapler",
+          "item": "banana",
           "from_container": "basket",
           "to_container": "bag"
         },
@@ -3740,7 +3712,7 @@
           "event_type": "put",
           "character": "C",
           "container": "basket",
-          "item": "banana",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         }
@@ -3782,9 +3754,9 @@
         },
         {
           "event_type": "put",
-          "character": "C",
+          "character": "A",
           "container": "basket",
-          "item": "apple",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
@@ -3808,7 +3780,7 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "apple",
+          "item": "stapler",
           "from_container": "basket",
           "to_container": "bag"
         },
@@ -3816,7 +3788,7 @@
           "event_type": "put",
           "character": "C",
           "container": "basket",
-          "item": "banana",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
@@ -3824,7 +3796,7 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "banana",
+          "item": "apple",
           "from_container": "basket",
           "to_container": "bag"
         },
@@ -3832,7 +3804,7 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "banana",
+          "item": "apple",
           "from_container": "bag",
           "to_container": "basket"
         },
@@ -3878,27 +3850,27 @@
       "round_num": 12,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "box",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
           "character": "A",
-          "container": "box",
-          "item": "orange",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
           "character": "A",
-          "container": "bag",
-          "item": "apple",
+          "container": "box",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "C",
+          "character": "D",
           "container": "basket",
           "item": "orange",
           "from_container": null,
@@ -3924,7 +3896,8 @@
       "present_initially": [
         "A",
         "B",
-        "C"
+        "C",
+        "D"
       ],
       "id": "24",
       "extra": 0,
@@ -3951,7 +3924,7 @@
           "event_type": "put",
           "character": "A",
           "container": "box",
-          "item": "ball",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
@@ -3975,15 +3948,15 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "ball",
+          "item": "stapler",
           "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "ball",
+          "item": "stapler",
           "from_container": "bag",
           "to_container": "box"
         },
@@ -4007,7 +3980,8 @@
       "present_initially": [
         "A",
         "B",
-        "C"
+        "C",
+        "D"
       ],
       "id": "24",
       "extra": 1,
@@ -4031,14 +4005,6 @@
       "question_container": "bag",
       "events": [
         {
-          "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "orange",
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "leave",
           "character": "C",
           "container": null,
@@ -4047,34 +4013,26 @@
           "to_container": null
         },
         {
-          "event_type": "move",
-          "character": "B",
-          "container": null,
-          "item": "orange",
-          "from_container": "bag",
-          "to_container": "box"
-        },
-        {
           "event_type": "put",
-          "character": "B",
+          "character": "A",
           "container": "bag",
-          "item": "stapler",
+          "item": "ball",
           "from_container": null,
           "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "D",
-          "container": null,
-          "item": "orange",
-          "from_container": "box",
-          "to_container": "basket"
         },
         {
           "event_type": "put",
           "character": "B",
           "container": "box",
-          "item": "apple",
+          "item": "brick",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "A",
+          "container": "basket",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -4101,11 +4059,11 @@
       "ks_teammate": "Knows Truth",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 7,
+      "situation_event_count": 5,
       "epistemic_transitions": {
-        "certainty": 2,
-        "accuracy": 1,
-        "total": 3
+        "certainty": 1,
+        "accuracy": 0,
+        "total": 1
       }
     },
     {
@@ -4115,10 +4073,18 @@
       "question_container": "bag",
       "events": [
         {
-          "event_type": "put",
+          "event_type": "leave",
           "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "A",
           "container": "bag",
-          "item": "brick",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
@@ -4134,7 +4100,7 @@
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "brick",
+          "item": "stapler",
           "from_container": "bag",
           "to_container": "box"
         },
@@ -4147,36 +4113,12 @@
           "to_container": null
         },
         {
-          "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "banana",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "move",
-          "character": "B",
+          "character": "D",
           "container": null,
-          "item": "brick",
-          "from_container": "bag",
-          "to_container": "box"
-        },
-        {
-          "event_type": "put",
-          "character": "B",
-          "container": "bag",
           "item": "stapler",
-          "from_container": null,
-          "to_container": null
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "leave",
@@ -4201,32 +4143,32 @@
       "ks_teammate": "Knows Truth",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 9,
+      "situation_event_count": 7,
       "epistemic_transitions": {
-        "certainty": 4,
-        "accuracy": 3,
-        "total": 7
+        "certainty": 3,
+        "accuracy": 2,
+        "total": 5
       }
     },
     {
       "round_num": 13,
       "whose_turn": "A",
       "who_answers": "B",
-      "question_container": "box",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "box",
-          "item": "orange",
+          "character": "D",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "A",
-          "container": "bag",
-          "item": "ball",
+          "character": "B",
+          "container": "box",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -4234,7 +4176,7 @@
           "event_type": "put",
           "character": "D",
           "container": "basket",
-          "item": "apple",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
@@ -4250,15 +4192,15 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "orange",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": "banana",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "C",
-          "container": "box",
-          "item": "stapler",
+          "character": "D",
+          "container": "bag",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         }
@@ -4292,9 +4234,9 @@
       "events": [
         {
           "event_type": "put",
-          "character": "C",
+          "character": "D",
           "container": "bag",
-          "item": "brick",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
@@ -4308,9 +4250,9 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "brick",
+          "item": "stapler",
           "from_container": "bag",
           "to_container": "box"
         },
@@ -4323,12 +4265,12 @@
           "to_container": null
         },
         {
-          "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "orange",
-          "from_container": null,
-          "to_container": null
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "stapler",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "leave",
@@ -4342,15 +4284,15 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "brick",
+          "item": "stapler",
           "from_container": "bag",
           "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "C",
+          "character": "D",
           "container": "bag",
-          "item": "stapler",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         }
@@ -4379,20 +4321,20 @@
     {
       "round_num": 14,
       "whose_turn": "A",
-      "who_answers": "C",
-      "question_container": "basket",
+      "who_answers": "D",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "basket",
-          "item": "stapler",
+          "character": "A",
+          "container": "bag",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -4409,16 +4351,16 @@
         {
           "event_type": "put",
           "character": "A",
-          "container": "bag",
+          "container": "box",
           "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "ball",
+          "character": "A",
+          "container": "basket",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -4426,7 +4368,6 @@
       "present_initially": [
         "A",
         "B",
-        "C",
         "D"
       ],
       "id": "27",
@@ -4447,28 +4388,20 @@
     {
       "round_num": 14,
       "whose_turn": "A",
-      "who_answers": "C",
-      "question_container": "basket",
+      "who_answers": "D",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "basket",
-          "item": "brick",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
           "character": "A",
+          "container": "box",
+          "item": "orange",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -4476,7 +4409,7 @@
         },
         {
           "event_type": "enter",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -4486,21 +4419,21 @@
           "event_type": "move",
           "character": "B",
           "container": null,
-          "item": "brick",
-          "from_container": "basket",
+          "item": "orange",
+          "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "A",
           "container": null,
-          "item": "brick",
+          "item": "orange",
           "from_container": "bag",
-          "to_container": "basket"
+          "to_container": "box"
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -4518,7 +4451,6 @@
       "present_initially": [
         "A",
         "B",
-        "C",
         "D"
       ],
       "id": "27",
@@ -4529,24 +4461,24 @@
       "ks_teammate": "Believes Truth",
       "ks_opponent": "Believes Truth",
       "correct_action": "Pass",
-      "situation_event_count": 6,
+      "situation_event_count": 7,
       "epistemic_transitions": {
-        "certainty": 5,
-        "accuracy": 1,
-        "total": 6
+        "certainty": 4,
+        "accuracy": 0,
+        "total": 4
       }
     },
     {
       "round_num": 14,
       "whose_turn": "A",
-      "who_answers": "C",
+      "who_answers": "D",
       "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "B",
+          "character": "A",
           "container": "basket",
-          "item": "brick",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -4560,9 +4492,9 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "brick",
+          "item": "orange",
           "from_container": "basket",
           "to_container": "bag"
         },
@@ -4576,7 +4508,7 @@
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -4584,17 +4516,17 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "A",
           "container": null,
-          "item": "brick",
+          "item": "orange",
           "from_container": "bag",
           "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "A",
+          "character": "C",
           "container": "bag",
-          "item": "banana",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         }
@@ -4623,12 +4555,12 @@
     {
       "round_num": 14,
       "whose_turn": "A",
-      "who_answers": "C",
+      "who_answers": "D",
       "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "B",
+          "character": "A",
           "container": "basket",
           "item": "apple",
           "from_container": null,
@@ -4644,11 +4576,11 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": "apple",
           "from_container": "basket",
-          "to_container": "bag"
+          "to_container": "box"
         },
         {
           "event_type": "put",
@@ -4660,7 +4592,7 @@
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -4668,7 +4600,7 @@
         },
         {
           "event_type": "enter",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -4676,7 +4608,7 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": "stapler",
           "from_container": "basket",
@@ -4684,7 +4616,7 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": "stapler",
           "from_container": "bag",
@@ -4692,7 +4624,7 @@
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -4724,13 +4656,13 @@
       "round_num": 15,
       "whose_turn": "A",
       "who_answers": "C",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "B",
-          "container": "box",
-          "item": "stapler",
+          "character": "A",
+          "container": "basket",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -4746,15 +4678,15 @@
           "event_type": "put",
           "character": "B",
           "container": "bag",
-          "item": "brick",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
           "character": "A",
-          "container": "basket",
-          "item": "banana",
+          "container": "box",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         }
@@ -4762,8 +4694,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "29",
       "extra": 0,
@@ -4784,12 +4715,12 @@
       "round_num": 15,
       "whose_turn": "A",
       "who_answers": "C",
-      "question_container": "box",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "B",
-          "container": "box",
+          "character": "A",
+          "container": "basket",
           "item": "banana",
           "from_container": null,
           "to_container": null
@@ -4812,19 +4743,19 @@
         },
         {
           "event_type": "move",
-          "character": "A",
+          "character": "B",
           "container": null,
           "item": "banana",
-          "from_container": "box",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "A",
           "container": null,
           "item": "banana",
           "from_container": "bag",
-          "to_container": "box"
+          "to_container": "basket"
         },
         {
           "event_type": "leave",
@@ -4838,8 +4769,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "29",
       "extra": 1,
@@ -4860,13 +4790,13 @@
       "round_num": 15,
       "whose_turn": "A",
       "who_answers": "D",
-      "question_container": "bag",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "orange",
+          "character": "B",
+          "container": "box",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -4890,15 +4820,15 @@
           "event_type": "move",
           "character": "B",
           "container": null,
-          "item": "orange",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "brick",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "B",
-          "container": "bag",
-          "item": "banana",
+          "character": "A",
+          "container": "box",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -4914,15 +4844,15 @@
           "event_type": "move",
           "character": "A",
           "container": null,
-          "item": "orange",
-          "from_container": "box",
+          "item": "brick",
+          "from_container": "bag",
           "to_container": "basket"
         },
         {
           "event_type": "put",
           "character": "A",
-          "container": "box",
-          "item": "ball",
+          "container": "bag",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         }
@@ -4956,9 +4886,9 @@
       "events": [
         {
           "event_type": "put",
-          "character": "C",
+          "character": "B",
           "container": "box",
-          "item": "apple",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -4980,17 +4910,17 @@
         },
         {
           "event_type": "move",
-          "character": "A",
+          "character": "C",
           "container": null,
-          "item": "apple",
+          "item": "banana",
           "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "B",
           "container": null,
-          "item": "apple",
+          "item": "banana",
           "from_container": "bag",
           "to_container": "box"
         },
@@ -5014,15 +4944,15 @@
           "event_type": "move",
           "character": "B",
           "container": null,
-          "item": "apple",
+          "item": "banana",
           "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "B",
+          "character": "A",
           "container": "box",
-          "item": "banana",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -5064,9 +4994,9 @@
       "events": [
         {
           "event_type": "put",
-          "character": "D",
+          "character": "A",
           "container": "bag",
-          "item": "ball",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -5090,7 +5020,7 @@
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "ball",
+          "item": "orange",
           "from_container": "bag",
           "to_container": "box"
         },
@@ -5098,23 +5028,23 @@
           "event_type": "put",
           "character": "D",
           "container": "bag",
-          "item": "apple",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "move",
-          "character": "A",
+          "character": "D",
           "container": null,
-          "item": "ball",
+          "item": "orange",
           "from_container": "box",
           "to_container": "basket"
         },
         {
           "event_type": "put",
-          "character": "D",
+          "character": "A",
           "container": "box",
-          "item": "stapler",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         }
@@ -5144,19 +5074,211 @@
       "round_num": 16,
       "whose_turn": "A",
       "who_answers": "C",
-      "question_container": "box",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "stapler",
+          "character": "A",
+          "container": "bag",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
           "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "A",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "apple",
+          "from_container": "bag",
+          "to_container": "box"
+        },
+        {
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "apple",
+          "from_container": "box",
+          "to_container": "bag"
+        },
+        {
+          "event_type": "leave",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "apple",
+          "from_container": "bag",
+          "to_container": "box"
+        },
+        {
+          "event_type": "put",
+          "character": "D",
+          "container": "bag",
+          "item": "brick",
+          "from_container": null,
+          "to_container": null
+        }
+      ],
+      "present_initially": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "id": "31",
+      "extra": 1,
+      "epistemic_type": null,
+      "ask_constraint": null,
+      "ks_self": "Knows X",
+      "ks_teammate": "Believes False",
+      "ks_opponent": "Believes False",
+      "correct_action": "Pass",
+      "situation_event_count": 6,
+      "epistemic_transitions": {
+        "certainty": 5,
+        "accuracy": 5,
+        "total": 10
+      }
+    },
+    {
+      "round_num": 16,
+      "whose_turn": "A",
+      "who_answers": "C",
+      "question_container": "bag",
+      "events": [
+        {
+          "event_type": "put",
+          "character": "B",
+          "container": "bag",
+          "item": "brick",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "B",
+          "container": null,
+          "item": "brick",
+          "from_container": "bag",
+          "to_container": "box"
+        },
+        {
+          "event_type": "put",
+          "character": "A",
+          "container": "bag",
+          "item": "banana",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "A",
+          "container": null,
+          "item": "brick",
+          "from_container": "box",
+          "to_container": "basket"
+        },
+        {
+          "event_type": "put",
+          "character": "B",
+          "container": "box",
+          "item": "orange",
+          "from_container": null,
+          "to_container": null
+        }
+      ],
+      "present_initially": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "id": "32",
+      "extra": 0,
+      "epistemic_type": null,
+      "ask_constraint": null,
+      "ks_self": "Knows X",
+      "ks_teammate": "Knows Truth",
+      "ks_opponent": "Believes False",
+      "correct_action": "Pass",
+      "situation_event_count": 7,
+      "epistemic_transitions": {
+        "certainty": 2,
+        "accuracy": 2,
+        "total": 4
+      }
+    },
+    {
+      "round_num": 16,
+      "whose_turn": "A",
+      "who_answers": "C",
+      "question_container": "bag",
+      "events": [
+        {
+          "event_type": "put",
+          "character": "B",
+          "container": "bag",
+          "item": "orange",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -5180,19 +5302,19 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "B",
           "container": null,
-          "item": "stapler",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": "orange",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "A",
           "container": null,
-          "item": "stapler",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "orange",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "leave",
@@ -5204,17 +5326,17 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "B",
           "container": null,
-          "item": "stapler",
-          "from_container": "box",
-          "to_container": "bag"
+          "item": "orange",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "apple",
+          "character": "A",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -5225,12 +5347,12 @@
         "C",
         "D"
       ],
-      "id": "31",
+      "id": "32",
       "extra": 1,
       "epistemic_type": null,
       "ask_constraint": null,
       "ks_self": "Knows X",
-      "ks_teammate": "Believes False",
+      "ks_teammate": "Knows Truth",
       "ks_opponent": "Believes False",
       "correct_action": "Pass",
       "situation_event_count": 9,
@@ -5241,200 +5363,16 @@
       }
     },
     {
-      "round_num": 16,
-      "whose_turn": "A",
-      "who_answers": "C",
-      "question_container": "basket",
-      "events": [
-        {
-          "event_type": "put",
-          "character": "B",
-          "container": "basket",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "D",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "B",
-          "container": null,
-          "item": "apple",
-          "from_container": "basket",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "put",
-          "character": "A",
-          "container": "basket",
-          "item": "orange",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "A",
-          "container": null,
-          "item": "apple",
-          "from_container": "bag",
-          "to_container": "box"
-        },
-        {
-          "event_type": "put",
-          "character": "B",
-          "container": "bag",
-          "item": "stapler",
-          "from_container": null,
-          "to_container": null
-        }
-      ],
-      "present_initially": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "id": "32",
-      "extra": 0,
-      "epistemic_type": null,
-      "ask_constraint": null,
-      "ks_self": "Knows X",
-      "ks_teammate": "Knows Truth",
-      "ks_opponent": "Believes False",
-      "correct_action": "Pass",
-      "situation_event_count": 7,
-      "epistemic_transitions": {
-        "certainty": 2,
-        "accuracy": 2,
-        "total": 4
-      }
-    },
-    {
-      "round_num": 16,
-      "whose_turn": "A",
-      "who_answers": "C",
-      "question_container": "basket",
-      "events": [
-        {
-          "event_type": "put",
-          "character": "B",
-          "container": "basket",
-          "item": "ball",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "enter",
-          "character": "C",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "A",
-          "container": null,
-          "item": "ball",
-          "from_container": "basket",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "move",
-          "character": "D",
-          "container": null,
-          "item": "ball",
-          "from_container": "bag",
-          "to_container": "basket"
-        },
-        {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "D",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "B",
-          "container": null,
-          "item": "ball",
-          "from_container": "basket",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "put",
-          "character": "A",
-          "container": "basket",
-          "item": "orange",
-          "from_container": null,
-          "to_container": null
-        }
-      ],
-      "present_initially": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "id": "32",
-      "extra": 1,
-      "epistemic_type": null,
-      "ask_constraint": null,
-      "ks_self": "Knows X",
-      "ks_teammate": "Knows Truth",
-      "ks_opponent": "Believes False",
-      "correct_action": "Pass",
-      "situation_event_count": 9,
-      "epistemic_transitions": {
-        "certainty": 4,
-        "accuracy": 2,
-        "total": 6
-      }
-    },
-    {
       "round_num": 17,
       "whose_turn": "A",
-      "who_answers": "D",
-      "question_container": "bag",
+      "who_answers": "C",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "orange",
+          "character": "B",
+          "container": "box",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
@@ -5449,16 +5387,16 @@
         {
           "event_type": "put",
           "character": "A",
-          "container": "box",
-          "item": "ball",
+          "container": "bag",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "D",
+          "character": "C",
           "container": "basket",
-          "item": "stapler",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -5466,8 +5404,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "33",
       "extra": 0,
@@ -5487,22 +5424,14 @@
     {
       "round_num": 17,
       "whose_turn": "A",
-      "who_answers": "D",
+      "who_answers": "C",
       "question_container": "box",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
+          "character": "B",
           "container": "box",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "D",
-          "container": null,
-          "item": null,
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -5518,25 +5447,25 @@
           "event_type": "move",
           "character": "B",
           "container": null,
-          "item": "apple",
+          "item": "orange",
           "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "enter",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
           "to_container": null
         },
         {
-          "event_type": "put",
+          "event_type": "move",
           "character": "A",
-          "container": "box",
-          "item": "brick",
-          "from_container": null,
-          "to_container": null
+          "container": null,
+          "item": "orange",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "leave",
@@ -5550,8 +5479,7 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
       "id": "33",
       "extra": 1,
@@ -5561,24 +5489,24 @@
       "ks_teammate": "Believes Truth",
       "ks_opponent": "Knows Truth",
       "correct_action": "Pass",
-      "situation_event_count": 7,
+      "situation_event_count": 6,
       "epistemic_transitions": {
-        "certainty": 4,
-        "accuracy": 3,
-        "total": 7
+        "certainty": 3,
+        "accuracy": 2,
+        "total": 5
       }
     },
     {
       "round_num": 17,
       "whose_turn": "A",
-      "who_answers": "D",
-      "question_container": "bag",
+      "who_answers": "C",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "banana",
+          "character": "D",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -5592,17 +5520,17 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "banana",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "brick",
+          "from_container": "basket",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
-          "item": "brick",
+          "character": "C",
+          "container": "basket",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -5610,15 +5538,15 @@
           "event_type": "move",
           "character": "D",
           "container": null,
-          "item": "banana",
-          "from_container": "box",
-          "to_container": "basket"
+          "item": "brick",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "A",
-          "container": "box",
-          "item": "apple",
+          "character": "C",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -5647,22 +5575,14 @@
     {
       "round_num": 17,
       "whose_turn": "A",
-      "who_answers": "D",
-      "question_container": "bag",
+      "who_answers": "C",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "ball",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
           "character": "D",
-          "container": null,
-          "item": null,
+          "container": "basket",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         },
@@ -5678,25 +5598,25 @@
           "event_type": "move",
           "character": "A",
           "container": null,
-          "item": "ball",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "orange",
+          "from_container": "basket",
+          "to_container": "bag"
         },
         {
           "event_type": "enter",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "put",
           "character": "B",
-          "container": null,
+          "container": "basket",
           "item": "ball",
-          "from_container": "box",
-          "to_container": "bag"
+          "from_container": null,
+          "to_container": null
         },
         {
           "event_type": "leave",
@@ -5708,17 +5628,17 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "ball",
-          "from_container": "bag",
+          "item": "orange",
+          "from_container": "basket",
           "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
-          "item": "brick",
+          "character": "C",
+          "container": "basket",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         }
@@ -5737,40 +5657,40 @@
       "ks_teammate": "Believes False",
       "ks_opponent": "Knows Truth",
       "correct_action": "Pass",
-      "situation_event_count": 9,
+      "situation_event_count": 8,
       "epistemic_transitions": {
-        "certainty": 4,
-        "accuracy": 5,
-        "total": 9
+        "certainty": 3,
+        "accuracy": 3,
+        "total": 6
       }
     },
     {
       "round_num": 18,
       "whose_turn": "A",
       "who_answers": "D",
-      "question_container": "basket",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "basket",
-          "item": "brick",
+          "character": "B",
+          "container": "bag",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
           "character": "D",
-          "container": "bag",
-          "item": "orange",
+          "container": "box",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "C",
-          "container": "box",
-          "item": "ball",
+          "character": "A",
+          "container": "basket",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         }
@@ -5800,13 +5720,13 @@
       "round_num": 18,
       "whose_turn": "A",
       "who_answers": "D",
-      "question_container": "basket",
+      "question_container": "bag",
       "events": [
         {
           "event_type": "put",
-          "character": "A",
-          "container": "basket",
-          "item": "stapler",
+          "character": "B",
+          "container": "bag",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
@@ -5819,12 +5739,20 @@
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
           "event_type": "move",
           "character": "B",
           "container": null,
-          "item": "stapler",
-          "from_container": "basket",
-          "to_container": "bag"
+          "item": "banana",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "enter",
@@ -5835,12 +5763,12 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "put",
           "character": "A",
-          "container": null,
-          "item": "stapler",
-          "from_container": "bag",
-          "to_container": "basket"
+          "container": "bag",
+          "item": "apple",
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
@@ -5857,40 +5785,64 @@
       "ks_teammate": "Knows Truth",
       "ks_opponent": "Knows Truth",
       "correct_action": "Pass",
-      "situation_event_count": 5,
+      "situation_event_count": 6,
       "epistemic_transitions": {
-        "certainty": 2,
-        "accuracy": 2,
-        "total": 4
+        "certainty": 3,
+        "accuracy": 3,
+        "total": 6
       }
     },
     {
       "round_num": 18,
       "whose_turn": "A",
-      "who_answers": "D",
-      "question_container": "bag",
+      "who_answers": "C",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
-          "item": "orange",
+          "character": "B",
+          "container": "basket",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "apple",
+          "from_container": "basket",
+          "to_container": "bag"
+        },
+        {
           "event_type": "put",
           "character": "B",
-          "container": "box",
+          "container": "basket",
           "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
-          "event_type": "put",
-          "character": "D",
-          "container": "basket",
+          "event_type": "move",
+          "character": "B",
+          "container": null,
           "item": "apple",
+          "from_container": "bag",
+          "to_container": "box"
+        },
+        {
+          "event_type": "put",
+          "character": "A",
+          "container": "bag",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -5905,30 +5857,6 @@
         {
           "event_type": "leave",
           "character": "B",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "orange",
-          "from_container": "bag",
-          "to_container": "box"
-        },
-        {
-          "event_type": "put",
-          "character": "C",
-          "container": "bag",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -5949,24 +5877,48 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 6,
+      "situation_event_count": 8,
       "epistemic_transitions": {
         "certainty": 3,
-        "accuracy": 2,
-        "total": 5
+        "accuracy": 1,
+        "total": 4
       }
     },
     {
       "round_num": 18,
       "whose_turn": "A",
-      "who_answers": "D",
-      "question_container": "box",
+      "who_answers": "C",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
+          "character": "B",
+          "container": "basket",
+          "item": "banana",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
           "character": "D",
-          "container": "box",
-          "item": "stapler",
+          "container": null,
+          "item": "banana",
+          "from_container": "basket",
+          "to_container": "box"
+        },
+        {
+          "event_type": "put",
+          "character": "B",
+          "container": "basket",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
@@ -5988,19 +5940,19 @@
         },
         {
           "event_type": "move",
-          "character": "C",
+          "character": "D",
           "container": null,
-          "item": "stapler",
-          "from_container": "box",
+          "item": "brick",
+          "from_container": "basket",
           "to_container": "bag"
         },
         {
-          "event_type": "put",
-          "character": "C",
-          "container": "box",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
+          "event_type": "move",
+          "character": "D",
+          "container": null,
+          "item": "brick",
+          "from_container": "bag",
+          "to_container": "basket"
         },
         {
           "event_type": "leave",
@@ -6011,32 +5963,8 @@
           "to_container": null
         },
         {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "apple",
-          "from_container": "box",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "apple",
-          "from_container": "bag",
-          "to_container": "box"
-        },
-        {
-          "event_type": "leave",
-          "character": "C",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "enter",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -6057,7 +5985,7 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 6,
+      "situation_event_count": 8,
       "epistemic_transitions": {
         "certainty": 4,
         "accuracy": 3,
@@ -6067,14 +5995,14 @@
     {
       "round_num": 19,
       "whose_turn": "A",
-      "who_answers": "D",
-      "question_container": "basket",
+      "who_answers": "C",
+      "question_container": "bag",
       "events": [
         {
-          "event_type": "put",
-          "character": "A",
-          "container": "basket",
-          "item": "orange",
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
           "from_container": null,
           "to_container": null
         },
@@ -6082,14 +6010,22 @@
           "event_type": "put",
           "character": "A",
           "container": "bag",
-          "item": "orange",
+          "item": "brick",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "C",
+          "container": "box",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
           "character": "D",
-          "container": "box",
+          "container": "basket",
           "item": "ball",
           "from_container": null,
           "to_container": null
@@ -6103,25 +6039,17 @@
           "to_container": null
         },
         {
-          "event_type": "leave",
-          "character": "B",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "orange",
-          "from_container": "basket",
-          "to_container": "bag"
+          "item": "brick",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "basket",
+          "character": "C",
+          "container": "bag",
           "item": "banana",
           "from_container": null,
           "to_container": null
@@ -6143,28 +6071,36 @@
       "correct_action": "Pass",
       "situation_event_count": 5,
       "epistemic_transitions": {
-        "certainty": 2,
-        "accuracy": 2,
-        "total": 4
+        "certainty": 1,
+        "accuracy": 1,
+        "total": 2
       }
     },
     {
       "round_num": 19,
       "whose_turn": "A",
-      "who_answers": "D",
-      "question_container": "basket",
+      "who_answers": "C",
+      "question_container": "box",
       "events": [
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
         {
           "event_type": "put",
           "character": "A",
-          "container": "basket",
-          "item": "banana",
+          "container": "box",
+          "item": "stapler",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -6174,13 +6110,13 @@
           "event_type": "move",
           "character": "A",
           "container": null,
-          "item": "banana",
-          "from_container": "basket",
+          "item": "stapler",
+          "from_container": "box",
           "to_container": "bag"
         },
         {
           "event_type": "enter",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -6188,23 +6124,15 @@
         },
         {
           "event_type": "put",
-          "character": "B",
-          "container": "basket",
-          "item": "stapler",
+          "character": "A",
+          "container": "box",
+          "item": "banana",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "leave",
           "character": "A",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "B",
           "container": null,
           "item": null,
           "from_container": null,
@@ -6214,14 +6142,14 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "banana",
-          "from_container": "basket",
-          "to_container": "box"
+          "item": "stapler",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "basket",
+          "character": "C",
+          "container": "box",
           "item": "banana",
           "from_container": null,
           "to_container": null
@@ -6243,20 +6171,20 @@
       "correct_action": "Pass",
       "situation_event_count": 7,
       "epistemic_transitions": {
-        "certainty": 4,
-        "accuracy": 4,
-        "total": 8
+        "certainty": 3,
+        "accuracy": 3,
+        "total": 6
       }
     },
     {
       "round_num": 19,
       "whose_turn": "A",
-      "who_answers": "C",
+      "who_answers": "D",
       "question_container": "basket",
       "events": [
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -6266,23 +6194,23 @@
           "event_type": "put",
           "character": "A",
           "container": "basket",
-          "item": "ball",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "put",
-          "character": "B",
-          "container": "bag",
-          "item": "banana",
+          "item": "brick",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
           "character": "A",
+          "container": "bag",
+          "item": "orange",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "B",
           "container": "box",
-          "item": "stapler",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
@@ -6296,17 +6224,17 @@
         },
         {
           "event_type": "move",
-          "character": "D",
+          "character": "C",
           "container": null,
-          "item": "ball",
+          "item": "brick",
           "from_container": "basket",
           "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "D",
+          "character": "C",
           "container": "basket",
-          "item": "apple",
+          "item": "orange",
           "from_container": null,
           "to_container": null
         }
@@ -6335,9 +6263,65 @@
     {
       "round_num": 19,
       "whose_turn": "A",
-      "who_answers": "C",
+      "who_answers": "D",
       "question_container": "basket",
       "events": [
+        {
+          "event_type": "leave",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "A",
+          "container": "basket",
+          "item": "ball",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "A",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "C",
+          "container": null,
+          "item": "ball",
+          "from_container": "basket",
+          "to_container": "bag"
+        },
+        {
+          "event_type": "put",
+          "character": "C",
+          "container": "basket",
+          "item": "orange",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "C",
+          "container": null,
+          "item": "orange",
+          "from_container": "basket",
+          "to_container": "bag"
+        },
+        {
+          "event_type": "move",
+          "character": "B",
+          "container": null,
+          "item": "orange",
+          "from_container": "bag",
+          "to_container": "basket"
+        },
         {
           "event_type": "leave",
           "character": "C",
@@ -6347,64 +6331,8 @@
           "to_container": null
         },
         {
-          "event_type": "put",
-          "character": "A",
-          "container": "basket",
-          "item": "orange",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "A",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "D",
-          "container": null,
-          "item": "orange",
-          "from_container": "basket",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "put",
-          "character": "D",
-          "container": "basket",
-          "item": "apple",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "B",
-          "container": null,
-          "item": "apple",
-          "from_container": "basket",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "move",
-          "character": "D",
-          "container": null,
-          "item": "apple",
-          "from_container": "bag",
-          "to_container": "basket"
-        },
-        {
-          "event_type": "leave",
-          "character": "B",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
           "event_type": "enter",
-          "character": "B",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -6436,29 +6364,29 @@
       "round_num": 20,
       "whose_turn": "A",
       "who_answers": "C",
-      "question_container": "bag",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
           "character": "D",
-          "container": "bag",
-          "item": "banana",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "put",
-          "character": "A",
           "container": "box",
-          "item": "ball",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
         {
           "event_type": "put",
-          "character": "D",
+          "character": "C",
+          "container": "bag",
+          "item": "stapler",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "B",
           "container": "basket",
-          "item": "orange",
+          "item": "apple",
           "from_container": null,
           "to_container": null
         },
@@ -6474,14 +6402,14 @@
           "event_type": "move",
           "character": "C",
           "container": null,
-          "item": "banana",
-          "from_container": "bag",
-          "to_container": "box"
+          "item": "apple",
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
+          "character": "C",
+          "container": "box",
           "item": "ball",
           "from_container": null,
           "to_container": null
@@ -6512,12 +6440,12 @@
       "round_num": 20,
       "whose_turn": "A",
       "who_answers": "C",
-      "question_container": "bag",
+      "question_container": "box",
       "events": [
         {
           "event_type": "put",
           "character": "D",
-          "container": "bag",
+          "container": "box",
           "item": "stapler",
           "from_container": null,
           "to_container": null
@@ -6535,8 +6463,8 @@
           "character": "B",
           "container": null,
           "item": "stapler",
-          "from_container": "bag",
-          "to_container": "box"
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "enter",
@@ -6547,12 +6475,12 @@
           "to_container": null
         },
         {
-          "event_type": "put",
+          "event_type": "move",
           "character": "A",
-          "container": "bag",
-          "item": "brick",
-          "from_container": null,
-          "to_container": null
+          "container": null,
+          "item": "stapler",
+          "from_container": "bag",
+          "to_container": "box"
         },
         {
           "event_type": "leave",
@@ -6567,13 +6495,13 @@
           "character": "C",
           "container": null,
           "item": "stapler",
-          "from_container": "bag",
-          "to_container": "box"
+          "from_container": "box",
+          "to_container": "bag"
         },
         {
           "event_type": "put",
-          "character": "D",
-          "container": "bag",
+          "character": "C",
+          "container": "box",
           "item": "ball",
           "from_container": null,
           "to_container": null

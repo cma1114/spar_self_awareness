@@ -1,0 +1,301 @@
+================================================================================
+SCENARIO DESCRIPTION ANALYSIS
+================================================================================
+
+Files analyzed: 8
+  openai-gpt-5.2_1769525691_game_data.json
+  openai-gpt-5.2_1769524887_game_data.json
+  llama-3.1-70b-instruct_1769523960_game_data.json
+  openai-gpt-5.2_1769491973_game_data.json
+  openai-gpt-5.2_1769489662_game_data.json
+  openai-gpt-5.2_1769485263_game_data.json
+  openai-gpt-5.2_1769484991_game_data.json
+  openai-gpt-5.2_1769484785_game_data.json
+Total scenario records: 624
+  Extra=0: 312
+  Extra=1: 312
+
+================================================================================
+1. EVENT COUNT PER SCENARIO (across runs)
+================================================================================
+
+  ID Extra   Mean  StDev  Min  Max   N          Action         KS_Self
+------------------------------------------------------------------------
+   1     0    3.0   0.00    3    3   8            Pass         Knows X
+   1     1    6.0   0.00    6    6   8            Pass         Knows X
+   2     0    5.0   0.00    5    5   8            Pass         Knows X
+   2     1    8.0   0.00    8    8   8            Pass         Knows X
+   3     0    2.0   0.00    2    2   8            Pass         Knows X
+   3     1    5.0   0.00    5    5   8            Pass         Knows X
+   4     0    5.0   0.00    5    5   8            Pass         Knows X
+   4     1    8.1   0.35    8    9   8            Pass         Knows X
+   5     0    5.0   0.00    5    5   8            Pass         Knows X
+   5     1    8.0   0.00    8    8   8            Pass         Knows X
+   6     0    4.0   0.00    4    4   8            Pass         Knows X
+   6     1    7.0   0.00    7    7   8            Pass         Knows X
+   7     0    2.0   0.00    2    2   8            Pass         Knows X
+   7     1    5.9   0.35    5    6   8            Pass         Knows X
+   8     0    4.0   0.00    4    4   8            Pass         Knows X
+   8     1    7.1   0.35    7    8   8            Pass         Knows X
+   9     0    1.0   0.00    1    1   8            Pass         Knows X
+   9     1    5.0   0.00    5    5   8            Pass         Knows X
+  10     0    4.0   0.00    4    4   8            Pass      Believes X
+  10     1    6.0   0.00    6    6   8            Pass      Believes X
+  11     0    4.2   1.04    3    5   8            Pass      Believes X
+  11     1    5.0   0.00    5    5   8            Pass      Believes X
+  12     0    4.0   0.00    4    4   8     Ask(B, box)      Believes X
+  12     1    4.0   0.00    4    4   8     Ask(B, box)      Believes X
+  13     0    2.0   0.00    2    2   8     Ask(B, box)      Believes X
+  13     1    4.0   0.00    4    4   8     Ask(B, bag)      Believes X
+  14     0    3.0   0.00    3    3   8            Pass         Knows X
+  14     1    7.0   0.00    7    7   8            Pass         Knows X
+  15     0    5.0   0.00    5    5   8            Pass         Knows X
+  15     1   10.0   0.00   10   10   8            Pass         Knows X
+  16     0    2.0   0.00    2    2   8            Pass         Knows X
+  16     1    6.0   0.00    6    6   8            Pass         Knows X
+  17     0    6.0   0.00    6    6   8 Tell(B, box, brick)         Knows X
+  17     1    9.2   1.04    8   10   8 Tell(B, bag, ball)         Knows X
+  18     0    5.0   0.00    5    5   8 Tell(B, box, banana)         Knows X
+  18     1    7.2   0.71    7    9   8 Tell(B, bag, brick)         Knows X
+  19     0    4.0   0.00    4    4   8 Tell(B, bag, apple)         Knows X
+  19     1    6.0   0.00    6    6   8 Tell(B, bag, banana)         Knows X
+  20     0    2.0   0.00    2    2   8            Pass         Knows X
+  20     1    6.0   0.53    5    7   8            Pass         Knows X
+  21     0    5.0   0.00    5    5   8            Pass         Knows X
+  21     1    8.6   1.06    6    9   8            Pass         Knows X
+  22     0    1.0   0.00    1    1   8            Pass         Knows X
+  22     1    5.1   0.64    4    6   8            Pass         Knows X
+  23     0    4.0   0.00    4    4   8            Pass      Believes X
+  23     1    4.2   0.71    4    6   8            Pass      Believes X
+  24     0    3.0   0.00    3    3   8            Pass      Believes X
+  24     1    3.8   1.04    3    5   8            Pass      Believes X
+  25     0    3.0   0.00    3    3   8            Pass      Believes X
+  25     1    7.1   0.35    7    8   8            Pass      Believes X
+  26     0    2.0   0.00    2    2   8            Pass      Believes X
+  26     1    6.0   0.00    6    6   8            Pass      Believes X
+  27     0    3.0   0.00    3    3   8            Pass         Knows X
+  27     1    5.0   0.00    5    5   8            Pass         Knows X
+  28     0    5.0   0.00    5    5   8            Pass         Knows X
+  28     1    7.0   0.00    7    7   8            Pass         Knows X
+  29     0    2.0   0.00    2    2   8            Pass         Knows X
+  29     1    4.0   0.53    3    5   8            Pass         Knows X
+  30     0    6.0   0.00    6    6   8            Pass         Knows X
+  30     1    7.8   1.91    5   10   8            Pass         Knows X
+  31     0    5.0   0.00    5    5   8            Pass         Knows X
+  31     1    7.0   0.00    7    7   8            Pass         Knows X
+  32     0    5.0   0.00    5    5   8            Pass         Knows X
+  32     1    7.8   1.04    7    9   8            Pass         Knows X
+  33     0    2.0   0.00    2    2   8            Pass         Knows X
+  33     1    6.0   0.00    6    6   8            Pass         Knows X
+  34     0    4.0   0.00    4    4   8            Pass         Knows X
+  34     1    8.0   0.00    8    8   8            Pass         Knows X
+  35     0    1.0   0.00    1    1   8            Pass         Knows X
+  35     1    5.0   0.00    5    5   8            Pass         Knows X
+  36     0    5.0   1.07    4    6   8            Pass      Believes X
+  36     1    6.2   1.28    4    8   8            Pass      Believes X
+  37     0    3.0   0.00    3    3   8            Pass      Believes X
+  37     1    7.0   0.00    7    7   8            Pass      Believes X
+  38     0    3.0   0.00    3    3   8            Pass      Believes X
+  38     1    6.5   2.78    3    9   8            Pass      Believes X
+  39     0    2.0   0.00    2    2   8            Pass      Believes X
+  39     1    6.4   0.52    6    7   8            Pass      Believes X
+
+================================================================================
+2. EXTRA=0 vs EXTRA=1 COMPLEXITY
+================================================================================
+
+Extra=0: mean=3.49, stdev=1.43, min=1, max=6
+Extra=1: mean=6.39, stdev=1.63, min=3, max=10
+Delta (Extra=1 - Extra=0): 2.89 events on average
+
+  ID  E0 Mean  E1 Mean   Delta   Flag
+----------------------------------------
+   1      3.0      6.0     3.0       
+   2      5.0      8.0     3.0       
+   3      2.0      5.0     3.0       
+   4      5.0      8.1     3.1       
+   5      5.0      8.0     3.0       
+   6      4.0      7.0     3.0       
+   7      2.0      5.9     3.9       
+   8      4.0      7.1     3.1       
+   9      1.0      5.0     4.0       
+  10      4.0      6.0     2.0       
+  11      4.2      5.0     0.8       
+  12      4.0      4.0     0.0   WARN
+  13      2.0      4.0     2.0       
+  14      3.0      7.0     4.0       
+  15      5.0     10.0     5.0       
+  16      2.0      6.0     4.0       
+  17      6.0      9.2     3.2       
+  18      5.0      7.2     2.2       
+  19      4.0      6.0     2.0       
+  20      2.0      6.0     4.0       
+  21      5.0      8.6     3.6       
+  22      1.0      5.1     4.1       
+  23      4.0      4.2     0.2       
+  24      3.0      3.8     0.8       
+  25      3.0      7.1     4.1       
+  26      2.0      6.0     4.0       
+  27      3.0      5.0     2.0       
+  28      5.0      7.0     2.0       
+  29      2.0      4.0     2.0       
+  30      6.0      7.8     1.8       
+  31      5.0      7.0     2.0       
+  32      5.0      7.8     2.8       
+  33      2.0      6.0     4.0       
+  34      4.0      8.0     4.0       
+  35      1.0      5.0     4.0       
+  36      5.0      6.2     1.2       
+  37      3.0      7.0     4.0       
+  38      3.0      6.5     3.5       
+  39      2.0      6.4     4.4       
+
+WARNING: 1 scenario(s) where Extra=1 has ≤ events than Extra=0: ['12']
+
+Individual run failures (Extra=1 ≤ Extra=0): 33
+  ID 11, run 0: Extra=0=5, Extra=1=5
+  ID 11, run 1: Extra=0=5, Extra=1=5
+  ID 11, run 4: Extra=0=5, Extra=1=5
+  ID 11, run 6: Extra=0=5, Extra=1=5
+  ID 11, run 7: Extra=0=5, Extra=1=5
+  ID 12, run 0: Extra=0=4, Extra=1=4
+  ID 12, run 1: Extra=0=4, Extra=1=4
+  ID 12, run 2: Extra=0=4, Extra=1=4
+  ID 12, run 3: Extra=0=4, Extra=1=4
+  ID 12, run 4: Extra=0=4, Extra=1=4
+  ID 12, run 5: Extra=0=4, Extra=1=4
+  ID 12, run 6: Extra=0=4, Extra=1=4
+  ID 12, run 7: Extra=0=4, Extra=1=4
+  ID 23, run 0: Extra=0=4, Extra=1=4
+  ID 23, run 1: Extra=0=4, Extra=1=4
+  ID 23, run 2: Extra=0=4, Extra=1=4
+  ID 23, run 3: Extra=0=4, Extra=1=4
+  ID 23, run 4: Extra=0=4, Extra=1=4
+  ID 23, run 5: Extra=0=4, Extra=1=4
+  ID 23, run 7: Extra=0=4, Extra=1=4
+
+================================================================================
+3. EVENT TYPE DISTRIBUTION
+================================================================================
+
+      Type      ALL    Extra=0    Extra=1
+------------------------------------------
+     enter      198          0        198
+     leave     1269        520        749
+      move      676        129        547
+       put      906        441        465
+    remove       34          0         34
+     TOTAL     3083       1090       1993
+
+Proportions:
+      Type      ALL    Extra=0    Extra=1
+------------------------------------------
+     enter     6.4%       0.0%       9.9%
+     leave    41.2%      47.7%      37.6%
+      move    21.9%      11.8%      27.4%
+       put    29.4%      40.5%      23.3%
+    remove     1.1%       0.0%       1.7%
+
+================================================================================
+4. DESCRIPTION LENGTH
+================================================================================
+
+Extra=0 (N=312):
+  Words: mean=44.0, stdev=11.3, min=27, max=62
+  Chars: mean=185.5, stdev=48.9, min=109, max=268
+
+Extra=1 (N=312):
+  Words: mean=67.0, stdev=15.0, min=37, max=103
+  Chars: mean=287.9, stdev=64.9, min=158, max=446
+
+ALL (N=624):
+  Words: mean=55.5, stdev=17.6, min=27, max=103
+  Chars: mean=236.7, stdev=76.9, min=109, max=446
+
+================================================================================
+5. CROSS-RUN CONSISTENCY (Coefficient of Variation)
+================================================================================
+
+Note: seed=None means each run regenerates different events,
+so variance reflects how stable complexity is across regenerations.
+
+CV across all (id, extra) pairs:
+  Mean CV: 0.037
+  Max CV:  0.427
+  Pairs with CV > 0.3: 1/78
+
+High-variance scenarios (CV > 0.3):
+  ID Extra   Mean  StDev     CV                         Counts
+--------------------------------------------------------------
+  38     1    6.5   2.78  0.427       [5, 9, 9, 9, 9, 3, 5, 3]
+
+================================================================================
+6. EPISTEMIC STATE BREAKDOWN
+================================================================================
+
+Extra=0:
+          KS_Self     N   Mean  StDev  Min  Max
+  ----------------------------------------------
+       Believes X    96    3.3   1.03    2    6
+          Knows X   216    3.6   1.57    1    6
+
+Extra=1:
+          KS_Self     N   Mean  StDev  Min  Max
+  ----------------------------------------------
+       Believes X    96    5.5   1.51    3    9
+          Knows X   216    6.8   1.53    3   10
+
+================================================================================
+7. QUALITATIVE SAMPLES
+================================================================================
+
+A selection of scenario descriptions for manual review.
+
+--- Simple Extra=0 (ID=1, Extra=0) ---
+Events: 3, Words: 38
+KS: self=Knows X, teammate=Believes Truth, opponent=Believes Truth
+Action: Pass
+Description:
+  You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B puts a brick in the box. ... B leaves the room. ... D leaves the room. ...
+
+--- Complex Extra=1 (most events) (ID=15, Extra=1) ---
+Events: 10, Words: 102
+KS: self=Knows X, teammate=Believes Truth, opponent=Believes False
+Action: Pass
+Description:
+  You, B, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the bag. ... D leaves the room. ... You move the stapler from the bag to the box. ... B puts a brick in the bag. ... B leaves the room. ... You remove the stapler from the box. ... You move the brick from the bag to the box. ... You put a ball in the bag. ... You remove the ball from the bag. ... You move the brick from the box to the bag. ...
+
+--- UNKNOWN epistemic state (ID=10, Extra=0) ---
+Events: 4, Words: 43
+KS: self=Believes X, teammate=Unknown, opponent=Unknown
+Action: Pass
+Description:
+  You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. ... C puts an orange in the box. ... You leave the room. ... C leaves the room. ...
+
+--- Self=Believes X (ID=10, Extra=0) ---
+Events: 4, Words: 43
+KS: self=Believes X, teammate=Unknown, opponent=Unknown
+Action: Pass
+Description:
+  You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. B leaves the room. ... C puts an orange in the box. ... You leave the room. ... C leaves the room. ...
+
+--- Correct action=Tell Teammate (ID=17, Extra=0) ---
+Events: 6, Words: 62
+KS: self=Knows X, teammate=Believes False, opponent=Believes Truth
+Action: Tell(B, box, brick)
+Description:
+  You, B, C, and D are in a room. Inside the room are an empty bag and an empty box. D puts a stapler in the box. ... B leaves the room. ... D moves the stapler from the box to the bag. ... C puts a brick in the box. ... C leaves the room. ... D leaves the room. ...
+
+================================================================================
+8. SUMMARY
+================================================================================
+
+Overall: 624 scenarios across 8 runs.
+Extra=0 avg events: 3.5 (range 1-6)
+Extra=1 avg events: 6.4 (range 3-10)
+Average Extra delta: +2.9 events
+
+Generation issues:
+  1 scenario(s) with Extra=1 mean delta ≤ 0: IDs ['12']
+  33 individual run cases where Extra=1 ≤ Extra=0
+  1 scenario(s) with high event count variance (CV > 0.3)

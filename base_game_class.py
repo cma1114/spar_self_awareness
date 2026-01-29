@@ -411,13 +411,13 @@ class BaseGameClass:
                         }} if self.provider == "OpenRouter" else {}
                     ) 
                     if self.provider == "OpenRouter": 
-                        print(f"Provider that responded: {completion.provider}")
+                        self._log(f"OpenRouter provider that responded: {completion.provider}")
                         # Log additional provider details
                         if hasattr(completion, 'headers'):
                             prov = completion.headers.get('x-openrouter-provider')
                             backend = completion.headers.get('x-openrouter-model')
                             if prov or backend:
-                                print(f"[OpenRouter] provider_used={prov} backend_model={backend}")
+                                self._log(f"[OpenRouter] provider_used={prov} backend_model={backend}")
                     
                     # Capture reasoning trace from OpenRouter/OpenAI
                     local_reasoning = getattr(completion.choices[0].message, "reasoning", None)

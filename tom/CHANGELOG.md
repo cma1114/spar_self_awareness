@@ -1,5 +1,115 @@
 # ToM Test Changelog
 
+## 2026-01-26: GPT-5.2 Accuracy Jump — API-Side Reasoning Change
+
+### Summary
+GPT-5.2 non-think accuracy jumped from ~30% to ~75% between runs. Investigation shows this was caused by an API-side change in GPT-5.2's reasoning behavior (via OpenRouter), not by scenario generation code changes.
+
+### Evidence
+- **20+ pre-change runs**: 0 reasoning traces, 25-38% accuracy (consistent)
+- **2 post-change runs**: 38-40 reasoning traces, 72-80% accuracy (consistent)
+- **Scenario structure identical**: Pre-change run with B_puts=15, You_puts=38 scored 29.5%; post-change run with B_puts=15, You_puts=36 scored 79.5%
+- **Non-reasoning scenarios also improved**: 82.5% vs 37.5% — model likely reasons internally even when trace is not surfaced
+- **API parameters unchanged**: Both old and new runs send `reasoning_effort=None` and `reasoning.enabled=False` via `extra_body`
+- **`base_game_class.py` not modified** — the API call code is identical
+
+### Timing
+The API change coincided with scenario generation code edits (insert_extra_events_unknown, must_leave_together re-check), but scenario structure comparison rules out code changes as the cause.
+
+### Impact
+GPT-5.2 non-think now performs comparably to GPT-5.2 think (~75% vs ~70-85%), suggesting the model activates reasoning regardless of the `reasoning.enabled` parameter.
+
+---
+
+## 2026-01-26: Fix Extra=1 for UNKNOWN Answerer State
+
+### Summary
+Added dedicated `insert_extra_events_unknown()` function for scenarios where the answerer has UNKNOWN epistemic state. Previously, these scenarios fell through to the generic `insert_extra_events()` which silently failed 50-80% of the time, producing Extra=1 output identical to Extra=0.
+
+### Problem
+Extra=1 scenarios with UNKNOWN answerer state (IDs 23, 24, 36, 38) frequently had **no extra events inserted** — no moves, transitions, or added complexity. Multi-seed testing (10 seeds) showed failure rates:
+
+| ID | Fail rate | Answerer |
+|----|-----------|----------|
+| 23 | 6/10 | Teammate |
+| 24 | 8/10 | Teammate |
+| 36 | 5/10 | Opponent |
+| 38 | 8/10 | Opponent |
+
+### Root Cause
+The dispatch logic (lines 655-675) had handlers for KNOWS_TRUTH, BELIEVES_TRUE, BELIEVES_FALSE, and BELIEVES_X, but **not UNKNOWN**. UNKNOWN fell through to the generic `insert_extra_events()` at line 675.
+
+The generic function calls `_find_extra_events_constraint()` which for UNKNOWN returns:
+```python
+return min(player_leave_idx, answerer_leave_idx, first_put_idx)
+```
+This is typically index 0 or 1 (the very first event), leaving **no room to insert anything**. The function silently returns at one of its 5 early-exit points.
+
+All dedicated handlers work because they insert events **after** the answerer leaves. The generic function does the opposite — it tries to insert **before** a very early constraint point.
+
+### Solution
+
+1. **Added `insert_extra_events_unknown()` function** (~lines 859-933):
+   - Finds where the answerer leaves and tracks container contents up to that point
+   - Inserts events **after** the answerer leaves (matching the pattern of all working handlers)
+   - Three fallback branches:
+     - Item in queried container → move away + move back
+     - Item in other container → move to queried + move back
+     - Both empty → put + remove in other container
+   - 67% chance to also add a character leave/enter pair for variety
+
+2. **Added UNKNOWN dispatch case** (~line 675):
+   ```python
+   elif answerer_state == EpistemicState.UNKNOWN:
+       insert_extra_events_unknown(scenario, answerer, rng)
+   ```
+
+3. **Added post-insertion event count validation** (~lines 681-687):
+   ```python
+   if len(scenario.events) <= base_event_count:
+       warnings.warn(f"ID {row['Id']} Extra=1: insert function failed to add events ...")
+   ```
+   This catches any future silent failures across all insert functions, not just UNKNOWN.
+
+### How This Slipped Through
+- **Silent failures**: All insert functions return without warning on failure — no errors, no logs
+- **Seed-dependent**: The generic fallback sometimes works (20-50% of seeds), so spot checks didn't catch it
+- **No systematic validation**: No check that Extra=1 actually got more events than Extra=0
+
+### Files Modified
+- **generate_tom_scenarios_new.py**:
+  - Added `insert_extra_events_unknown()` function (lines 859-933)
+  - Added `EpistemicState.UNKNOWN` dispatch case (line 675)
+  - Added `base_event_count` tracking (line 657)
+  - Added post-insertion event count validation with `warnings.warn()` (lines 681-687)
+
+### Verification
+- **Multi-seed test (10 seeds)**: 0 warnings across seeds 42, 123, 456, 789, 1000, 9999, 12345, 54321, 111111, 999999
+- **All previously-failing IDs (23, 24, 36, 38)**: Now consistently get extra events
+- **Heuristic analysis**: No regressions — ALL: 1 perfect (>=95%), 10 strong (80-95%); Extra=0: 0 perfect, 9 strong; Extra=1: 1 perfect, 10 strong
+- **No `_validate_invariants` failures**
+
+---
+
+## 2026-01-26: Add must_leave_together Re-check for Self in leave_immediately_group
+
+### Summary
+Added a re-check after `must_leave_together` constraint processing to prevent Self from being moved back into `leave_immediately_group` when Self has a Believes X epistemic state and needs to see a put event.
+
+### Problem
+The `must_leave_together` constraint could move Self back into `leave_immediately_group` after they were already placed in `exclude_false`. This meant Self would leave before any put event, making their "Believes X" state logically impossible (they need to witness a put to form a belief).
+
+### Solution
+Added constraint at lines 252-264: if Self ends up in `leave_immediately_group` after must_leave_together processing and Self is in `self.exclude`, move both Self and their must_leave_together partner to `exclude_false`.
+
+### Files Modified
+- **generate_tom_scenarios_new.py**: Added re-check block (lines 252-264)
+
+### Note
+This fix is logically correct but addresses a different edge case than the UNKNOWN answerer fix above. It was identified and fixed while investigating the UNKNOWN issue.
+
+---
+
 ## 2026-01-26: Add Extra Events for Self=Believes X Scenarios
 
 ### Summary

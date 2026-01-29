@@ -101,6 +101,8 @@ class Scenario:
     correct_action: Optional[str] = None
     epistemic_type: Optional[EpistemicType] = None
     ask_constraint: Optional[AskConstraintType] = None
+    situation_event_count: Optional[int] = None
+    epistemic_transitions: Optional[Dict[str, int]] = None  # {'certainty': N, 'accuracy': N, 'total': N}
     
     def get_description_for(self, character_name: str, characters: Dict[str, Character],
                             pause_mode: str = "none", ellipsis_mode: bool = False) -> str:
@@ -138,7 +140,7 @@ class Scenario:
             if i>0 and name == "You": names[i] = "you"
         char_list = format_name_list(names)
         verb = "are" if (len(names) > 1 or names[0].lower() == "you") else "is"
-        lines.append(f"{char_list} {verb} in a room. Inside the room are an empty bag and an empty box.")
+        lines.append(f"{char_list} {verb} in a room. Inside the room are an empty bag, an empty box, and an empty basket.")
 
         # Narrate only while the perspective character is present
         perspective_present = character_name in present
@@ -204,14 +206,16 @@ class Scenario:
             'question_container': self.question_container,
             'events': [asdict(e) for e in self.events],
             'present_initially': self.present_initially,
-            'id': self.id if self.id else None, 
-            'extra': self.extra if self.extra else None,
+            'id': self.id if self.id else None,
+            'extra': self.extra if self.extra is not None else None,
             'epistemic_type': self.epistemic_type.value if self.epistemic_type else None,
             'ask_constraint': self.ask_constraint.value if self.ask_constraint else None,
             'ks_self': self.ks_self if self.ks_self else None,
             'ks_teammate': self.ks_teammate if self.ks_teammate else None,
             'ks_opponent': self.ks_opponent if self.ks_opponent else None,
             'correct_action': self.correct_action if self.correct_action else None,
+            'situation_event_count': self.situation_event_count,
+            'epistemic_transitions': self.epistemic_transitions,
         }
     
     @staticmethod
@@ -225,13 +229,15 @@ class Scenario:
             events=[Event(**e) for e in data['events']],
             present_initially=data['present_initially'],
             id=data.get('id') if data.get('id') else None,
-            extra=data.get('extra') if data.get('extra') else None,
+            extra=data.get('extra') if data.get('extra') is not None else None,
             epistemic_type=EpistemicType(data['epistemic_type']) if data.get('epistemic_type') else None,
             ask_constraint=AskConstraintType(data['ask_constraint']) if data.get('ask_constraint') else None,
             ks_self=data.get('ks_self') if data.get('ks_self') else None,
             ks_teammate=data.get('ks_teammate') if data.get('ks_teammate') else None,
             ks_opponent=data.get('ks_opponent') if data.get('ks_opponent') else None,
             correct_action=data.get('correct_action') if data.get('correct_action') else None,
+            situation_event_count=data.get('situation_event_count'),
+            epistemic_transitions=data.get('epistemic_transitions'),
         )
 
 def load_scenarios(filename: str) -> Tuple[List[Scenario], List[str], List[CharacterType]]:
