@@ -344,7 +344,7 @@ class BaseGameClass:
                         messages=formatted_messages,
                         **({"logprobs": True} if not no_logprobs(model_name) else {}),
                         **({"top_logprobs": len(options)} if not no_logprobs(model_name) else {}),
-                        **({"reasoning_effort": reasoning_effort} if reasoning_effort else {}),
+                        **({"reasoning_effort": reasoning_effort} if reasoning_effort and ("gpt" in self.subject_name or self.subject_name.startswith("o3") or self.subject_name.startswith("o4")) else {}),
                         **({"top_p": 1.0} if temp > 0.0 else {}),
 #                        seed=42,
                         **{'extra_body': {
