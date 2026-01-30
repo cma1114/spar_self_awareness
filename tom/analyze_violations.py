@@ -26,10 +26,10 @@ def analyze_violations(num_seeds=50):
     # Capture warnings
     violation_counts = defaultdict(lambda: {'count': 0, 'examples': []})
 
-    print(f"Analyzing {len(unique_ids)} scenario IDs x 2 (Extra=0,1) x {num_seeds} seeds for violations...\n")
+    print(f"Analyzing {len(unique_ids)} scenario IDs x 4 (Extra=0A,0B,1A,1B) x {num_seeds} seeds for violations...\n")
 
     for scenario_id in unique_ids:
-        for extra in [0, 1]:
+        for extra in ['0A', '0B', '1A', '1B']:
             key = (scenario_id, extra)
             if key not in spec_lookup:
                 continue

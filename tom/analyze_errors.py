@@ -95,17 +95,25 @@ def load_game_data(filepath: str) -> List[dict]:
         return json.load(f)
 
 
-def filter_player_a_by_extra(records: List[dict], extra: int) -> List[dict]:
-    """Filter to player A records with specified extra value."""
-    if extra == 0:
-        # Extra=0 includes records where extra is None (old format) or 0
-        return [r for r in records
-                if r.get('character') == 'A'
-                and (r.get('extra') is None or r.get('extra') == 0)]
-    else:
-        return [r for r in records
-                if r.get('character') == 'A'
-                and r.get('extra') == extra]
+def normalize_extra(val):
+    """Convert legacy Extra values to new string format. See EXTRA_MAPPING.md."""
+    if val is None or val == 0: return '1A'  # Legacy Extra=0 → 1A
+    if val == 1: return '1B'                  # Legacy Extra=1 → 1B
+    if val in ('0A', '0B', '1A', '1B'): return val
+    return str(val)
+
+
+def filter_player_a_by_extra(records: List[dict], extra: str) -> List[dict]:
+    """Filter to player A records with specified extra value.
+
+    Args:
+        records: List of game records
+        extra: Extra value to filter by ('0A', '0B', '1A', '1B')
+               See EXTRA_MAPPING.md for details.
+    """
+    return [r for r in records
+            if r.get('character') == 'A'
+            and normalize_extra(r.get('extra')) == extra]
 
 
 def normalize_action(action: str) -> str:
@@ -563,14 +571,14 @@ def generate_scenario_matrix(model_records: Dict[str, List[dict]], logs_dir: str
     print(f"Models included: {len(models_with_data)} (excludes {len(model_records) - len(models_with_data)} old-format files without scenario_id)")
 
 
-def run_analysis_for_extra(files: List[str], logs_dir: str, extra: int, suffix: str):
+def run_analysis_for_extra(files: List[str], logs_dir: str, extra: str, suffix: str):
     """Run the full analysis pipeline for a specific extra value.
 
     Args:
         files: List of game_data.json file paths
         logs_dir: Directory to write output files
-        extra: Extra value to filter by (0 or 1)
-        suffix: Suffix for output filenames (e.g., '' for Extra=0, '_extra1' for Extra=1)
+        extra: Extra value to filter by ('0A', '0B', '1A', '1B') - see EXTRA_MAPPING.md
+        suffix: Suffix for output filenames (e.g., '_extra1a' for Extra=1A)
     """
     extra_label = f"Extra={extra}"
     print(f"\n{'='*80}")
@@ -703,11 +711,11 @@ def main():
     pattern = os.path.join(logs_dir, '*_game_data.json')
     files = glob.glob(pattern)
 
-    # Run analysis for Extra=0 (existing, no suffix)
-    run_analysis_for_extra(files, logs_dir, extra=0, suffix='')
-
-    # Run analysis for Extra=1 (new, with _extra1 suffix)
-    run_analysis_for_extra(files, logs_dir, extra=1, suffix='_extra1')
+    # Run analysis for all Extra values (see EXTRA_MAPPING.md)
+    run_analysis_for_extra(files, logs_dir, extra='0A', suffix='_extra0a')
+    run_analysis_for_extra(files, logs_dir, extra='0B', suffix='_extra0b')
+    run_analysis_for_extra(files, logs_dir, extra='1A', suffix='_extra1a')
+    run_analysis_for_extra(files, logs_dir, extra='1B', suffix='_extra1b')
 
 
 if __name__ == '__main__':

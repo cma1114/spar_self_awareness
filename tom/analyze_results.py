@@ -52,35 +52,46 @@ def filter_player_a(records: List[dict]) -> List[dict]:
     return [r for r in records if r.get('character') == 'A']
 
 
+def normalize_extra(val):
+    """Convert legacy Extra values to new string format. See EXTRA_MAPPING.md."""
+    if val is None or val == 0: return '1A'  # Legacy Extra=0 → 1A
+    if val == 1: return '1B'                  # Legacy Extra=1 → 1B
+    if val in ('0A', '0B', '1A', '1B'): return val
+    return str(val)
+
+
 def compute_stats(records: List[dict]) -> dict:
     """Compute optimal rates and CIs for a set of records."""
     n_total = len(records)
     n_optimal = sum(1 for r in records if r.get('was_optimal'))
 
-    # Split by extra
-    extra0 = [r for r in records if r.get('extra') is None or r.get('extra') == 0]
-    extra1 = [r for r in records if r.get('extra') == 1]
+    # Split by extra (0A, 0B, 1A, 1B) - see EXTRA_MAPPING.md
+    extra0a = [r for r in records if normalize_extra(r.get('extra')) == '0A']
+    extra0b = [r for r in records if normalize_extra(r.get('extra')) == '0B']
+    extra1a = [r for r in records if normalize_extra(r.get('extra')) == '1A']
+    extra1b = [r for r in records if normalize_extra(r.get('extra')) == '1B']
 
-    n_extra0 = len(extra0)
-    n_extra1 = len(extra1)
-    n_opt_extra0 = sum(1 for r in extra0 if r.get('was_optimal'))
-    n_opt_extra1 = sum(1 for r in extra1 if r.get('was_optimal'))
+    def compute_extra_stats(recs):
+        n = len(recs)
+        k = sum(1 for r in recs if r.get('was_optimal'))
+        rate = k / n if n > 0 else 0
+        ci = wilson_ci(k, n)
+        return {'rate': rate, 'ci': ci, 'n': n, 'k': k}
 
     # Compute rates and CIs
     overall_rate = n_optimal / n_total if n_total > 0 else 0
     overall_ci = wilson_ci(n_optimal, n_total)
 
-    extra0_rate = n_opt_extra0 / n_extra0 if n_extra0 > 0 else 0
-    extra0_ci = wilson_ci(n_opt_extra0, n_extra0)
-
-    extra1_rate = n_opt_extra1 / n_extra1 if n_extra1 > 0 else 0
-    extra1_ci = wilson_ci(n_opt_extra1, n_extra1)
-
     return {
         'n': n_total,
         'overall': {'rate': overall_rate, 'ci': overall_ci, 'n': n_total, 'k': n_optimal},
-        'extra0': {'rate': extra0_rate, 'ci': extra0_ci, 'n': n_extra0, 'k': n_opt_extra0},
-        'extra1': {'rate': extra1_rate, 'ci': extra1_ci, 'n': n_extra1, 'k': n_opt_extra1},
+        'extra0a': compute_extra_stats(extra0a),
+        'extra0b': compute_extra_stats(extra0b),
+        'extra1a': compute_extra_stats(extra1a),
+        'extra1b': compute_extra_stats(extra1b),
+        # Legacy compatibility - combine for old scripts that expect extra0/extra1
+        'extra0': compute_extra_stats(extra0a + extra0b),
+        'extra1': compute_extra_stats(extra1a + extra1b),
     }
 
 
@@ -151,14 +162,15 @@ TOM_MASTERY_CATEGORIES = {
 }
 
 
-def compute_mastery_score(records: List[dict], category: dict, extra_filter: int = None) -> dict:
+def compute_mastery_score(records: List[dict], category: dict, extra_filter: str = None) -> dict:
     """
     Compute mastery score for a single ToM category.
 
     Args:
         records: List of game records
         category: Category definition with components
-        extra_filter: If specified, only include records with this Extra value (0 or 1)
+        extra_filter: If specified, only include records with this Extra value ('0A', '0B', '1A', '1B')
+                     See EXTRA_MAPPING.md for details.
 
     Returns dict with:
     - score: weighted accuracy (0-1)
@@ -168,7 +180,7 @@ def compute_mastery_score(records: List[dict], category: dict, extra_filter: int
     """
     # Apply extra filter if specified
     if extra_filter is not None:
-        records = [r for r in records if (r.get('extra') or 0) == extra_filter]
+        records = [r for r in records if normalize_extra(r.get('extra')) == extra_filter]
 
     total_weighted = 0
     correct_weighted = 0
@@ -223,11 +235,11 @@ def compute_all_mastery_scores(records: List[dict], extra_filter: int = None) ->
 
 
 def compute_mastery_with_extra_breakout(records: List[dict]) -> dict:
-    """Compute mastery scores with overall, Extra=0, and Extra=1 breakouts."""
+    """Compute mastery scores with overall, Extra=1A (legacy 0), and Extra=1B (legacy 1) breakouts."""
     return {
         'overall': compute_all_mastery_scores(records),
-        'extra0': compute_all_mastery_scores(records, extra_filter=0),
-        'extra1': compute_all_mastery_scores(records, extra_filter=1),
+        'extra0': compute_all_mastery_scores(records, extra_filter='1A'),  # Legacy Extra=0 → '1A'
+        'extra1': compute_all_mastery_scores(records, extra_filter='1B'),  # Legacy Extra=1 → '1B'
     }
 
 

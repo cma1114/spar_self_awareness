@@ -20,6 +20,19 @@ from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass
 
 
+def normalize_extra(val):
+    """Normalize Extra field to string format for backward compatibility.
+
+    Legacy int values are converted to new string format:
+    - None or 0 → '1A' (legacy Extra=0 behavior)
+    - 1 → '1B' (legacy Extra=1 behavior)
+    """
+    if val is None or val == 0: return '1A'  # Legacy Extra=0 → 1A
+    if val == 1: return '1B'                  # Legacy Extra=1 → 1B
+    if val in ('0A', '0B', '1A', '1B'): return val
+    return str(val)
+
+
 @dataclass
 class FeatureStats:
     """Statistics for a single feature's predictive power."""
@@ -46,7 +59,7 @@ def extract_features(scenario: dict, player: str = 'A', teammate: str = 'B') -> 
     events = scenario.get('events', [])
     correct_action = scenario.get('correct_action', 'Pass')
     queried = scenario.get('question_container', 'bag')
-    extra = scenario.get('extra', 0)
+    extra = normalize_extra(scenario.get('extra'))
 
     features = {
         'correct_action': correct_action,
@@ -512,19 +525,26 @@ def main():
     all_features = [extract_features(s) for s in scenarios]
 
     # Split by Extra value
-    extra0_features = [f for f in all_features if f.get('extra', 0) == 0 or f.get('extra') is None]
-    extra1_features = [f for f in all_features if f.get('extra') == 1]
+    extra0a_features = [f for f in all_features if f.get('extra') == '0A']
+    extra0b_features = [f for f in all_features if f.get('extra') == '0B']
+    extra1a_features = [f for f in all_features if f.get('extra') == '1A']
+    extra1b_features = [f for f in all_features if f.get('extra') == '1B']
 
-    print(f"Extra=0 scenarios: {len(extra0_features)}")
-    print(f"Extra=1 scenarios: {len(extra1_features)}")
+    print(f"Extra=0A scenarios: {len(extra0a_features)}")
+    print(f"Extra=0B scenarios: {len(extra0b_features)}")
+    print(f"Extra=1A scenarios: {len(extra1a_features)}")
+    print(f"Extra=1B scenarios: {len(extra1b_features)}")
 
     # Generate reports
     report_all = generate_report(all_features, "HEURISTIC ANALYSIS - ALL SCENARIOS")
-    report_extra0 = generate_report(extra0_features, "HEURISTIC ANALYSIS - EXTRA=0 (BASE)")
-    report_extra1 = generate_report(extra1_features, "HEURISTIC ANALYSIS - EXTRA=1 (COMPLEX)")
+    report_extra0a = generate_report(extra0a_features, "HEURISTIC ANALYSIS - EXTRA=0A (MINIMAL)")
+    report_extra0b = generate_report(extra0b_features, "HEURISTIC ANALYSIS - EXTRA=0B (EVENT LOAD)")
+    report_extra1a = generate_report(extra1a_features, "HEURISTIC ANALYSIS - EXTRA=1A (SIT PARITY)")
+    report_extra1b = generate_report(extra1b_features, "HEURISTIC ANALYSIS - EXTRA=1B (ECT)")
 
     # Combine into single report
-    full_report = report_all + "\n\n" + "=" * 80 + "\n" * 3 + report_extra0 + "\n\n" + "=" * 80 + "\n" * 3 + report_extra1
+    separator = "\n\n" + "=" * 80 + "\n" * 3
+    full_report = report_all + separator + report_extra0a + separator + report_extra0b + separator + report_extra1a + separator + report_extra1b
 
     # Save reports
     output_path = os.path.join(logs_dir, 'heuristic_analysis.txt')
@@ -539,7 +559,18 @@ def main():
     print("=" * 60)
 
     # Find perfect heuristics
-    for label, features in [("ALL", all_features), ("Extra=0", extra0_features), ("Extra=1", extra1_features)]:
+    feature_sets = [
+        ("ALL", all_features),
+        ("Extra=0A", extra0a_features),
+        ("Extra=0B", extra0b_features),
+        ("Extra=1A", extra1a_features),
+        ("Extra=1B", extra1b_features),
+    ]
+    for label, features in feature_sets:
+        if not features:
+            print(f"\n{label}: (no scenarios)")
+            continue
+
         bool_features = [
             'has_put', 'has_move', 'has_leave', 'has_enter',
             'you_leaves', 'you_enters', 'b_leaves', 'b_put_or_moved',

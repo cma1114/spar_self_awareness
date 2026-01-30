@@ -62,7 +62,7 @@ Scenarios are defined in `ToM - scenarios.csv` with these columns:
 | Column | Description |
 |--------|-------------|
 | Id | Unique scenario identifier |
-| Extra | 0 or 1 - whether to add complexity via extra events |
+| Extra | 0A/B or 1A/B - whether to add complexity via extra events/transitions |
 | Answerer | Who answers the question: Self, Teammate, or Opponent |
 | Self | Player A's epistemic state |
 | Teammate | Player B's epistemic state |

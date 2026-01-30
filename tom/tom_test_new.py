@@ -117,6 +117,7 @@ class TurnRecord:
     # Pause mode field:
     pause_mode: Optional[str] = None
     rep: Optional[int] = None  # Track which rep this trial belongs to
+    seed: Optional[int] = None  # Seed used for scenario generation (for reproducibility)
     # Epistemic metrics:
     situation_event_count: Optional[int] = None
     ect_certainty: Optional[int] = None
@@ -266,11 +267,11 @@ class GameState:
         if action_str.lower() == 'pass':
             return Action(ActionType.PASS)
         
-        ask_match = re.match(r'Ask\(([A-DN]),\s*(bag|box)\)', action_str, re.IGNORECASE)
+        ask_match = re.match(r'Ask\(([A-DN]),\s*(bag|box|basket)\)', action_str, re.IGNORECASE)
         if ask_match:
             return Action(ActionType.ASK, ask_match.group(1).upper(), ask_match.group(2).lower())
-        
-        tell_match = re.match(r'Tell\(([A-DN]),\s*(bag|box),\s*(?:an? |the )?(\w+)\)', action_str, re.IGNORECASE)
+
+        tell_match = re.match(r'Tell\(([A-DN]),\s*(bag|box|basket),\s*(?:an? |the )?(\w+)\)', action_str, re.IGNORECASE)
         if tell_match:
             return Action(ActionType.TELL, tell_match.group(1).upper(), 
                          tell_match.group(2).lower(), tell_match.group(3).lower())
@@ -366,10 +367,12 @@ def save_game_results(turn_records: List[TurnRecord], filename: str):
 
 if TORCH_AVAILABLE:
     class ToMTestLLM(BaseGameClass):
-        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none", reps=1):
+        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none", reps=1, seed=None):
             super().__init__(subject_id, subject_name, is_human_player=False, log_dir=log_dir)
             self.specs = specs  # Base specs (not multiplied by reps)
             self.reps = reps    # Number of reps
+            self.seed = seed    # Base seed for scenario generation (None = use spec_idx)
+            self.current_seed = None  # Seed used for the current trial (set before each play_game_cli call)
             self.all_turn_records = []
             self.history_mode = history_mode
             # For history mode: track completed trials
@@ -388,6 +391,8 @@ if TORCH_AVAILABLE:
             self._log("--- Starting LLM ToM Test ---")
             self._log(f"History mode: {self.history_mode}")
             self._log(f"Reps: {self.reps}")
+            if self.seed is not None:
+                self._log(f"Base seed: {self.seed}")
             
             chartypes = [CharacterType.LIVE_PLAYER, CharacterType.HONEST_OPPONENT, CharacterType.DISHONEST_TEAMMATE, CharacterType.DISHONEST_OPPONENT]
 
@@ -418,16 +423,30 @@ if TORCH_AVAILABLE:
             if total_turns > 0:
                 self._log(f"LLM was optimal in {total_optimal}/{total_turns} turns ({(total_optimal/total_turns)*100:.2f}%).")
 
-                # Breakdown by Extra
-                extra0_records = [r for r in self.all_turn_records if r.character == 'A' and (r.extra is None or r.extra == 0)]
-                extra1_records = [r for r in self.all_turn_records if r.character == 'A' and r.extra == 1]
+                # Breakdown by Extra (0A, 0B, 1A, 1B)
+                # See EXTRA_MAPPING.md: 0=1A (legacy), 1=1B (legacy)
+                def normalize_extra(val):
+                    if val is None or val == 0: return '1A'
+                    if val == 1: return '1B'
+                    return str(val) if val else '1A'
 
-                if extra0_records:
-                    extra0_optimal = sum(1 for r in extra0_records if r.was_optimal)
-                    self._log(f"  Extra=0: {extra0_optimal}/{len(extra0_records)} optimal ({(extra0_optimal/len(extra0_records))*100:.2f}%)")
-                if extra1_records:
-                    extra1_optimal = sum(1 for r in extra1_records if r.was_optimal)
-                    self._log(f"  Extra=1: {extra1_optimal}/{len(extra1_records)} optimal ({(extra1_optimal/len(extra1_records))*100:.2f}%)")
+                extra0a_records = [r for r in self.all_turn_records if r.character == 'A' and normalize_extra(r.extra) == '0A']
+                extra0b_records = [r for r in self.all_turn_records if r.character == 'A' and normalize_extra(r.extra) == '0B']
+                extra1a_records = [r for r in self.all_turn_records if r.character == 'A' and normalize_extra(r.extra) == '1A']
+                extra1b_records = [r for r in self.all_turn_records if r.character == 'A' and normalize_extra(r.extra) == '1B']
+
+                if extra0a_records:
+                    extra0a_optimal = sum(1 for r in extra0a_records if r.was_optimal)
+                    self._log(f"  Extra=0A: {extra0a_optimal}/{len(extra0a_records)} optimal ({(extra0a_optimal/len(extra0a_records))*100:.2f}%)")
+                if extra0b_records:
+                    extra0b_optimal = sum(1 for r in extra0b_records if r.was_optimal)
+                    self._log(f"  Extra=0B: {extra0b_optimal}/{len(extra0b_records)} optimal ({(extra0b_optimal/len(extra0b_records))*100:.2f}%)")
+                if extra1a_records:
+                    extra1a_optimal = sum(1 for r in extra1a_records if r.was_optimal)
+                    self._log(f"  Extra=1A: {extra1a_optimal}/{len(extra1a_records)} optimal ({(extra1a_optimal/len(extra1a_records))*100:.2f}%)")
+                if extra1b_records:
+                    extra1b_optimal = sum(1 for r in extra1b_records if r.was_optimal)
+                    self._log(f"  Extra=1B: {extra1b_optimal}/{len(extra1b_records)} optimal ({(extra1b_optimal/len(extra1b_records))*100:.2f}%)")
                 
                 # Breakdown by rep if multiple reps with history
                 if self.history_mode != "none" and self.reps > 1:
@@ -464,9 +483,13 @@ if TORCH_AVAILABLE:
 
                 self._log(f"\n--- Running Trial {trial_num}/{len(specs_to_run)} (Spec ID {spec_idx+1}): {spec} ---")
 
-                # Seed choice: use spec_idx so runs are reproducible even if order is shuffled.
+                # Seed choice: use base_seed + spec_idx so runs are reproducible even if order is shuffled.
+                # If --seed is provided, use it as base; otherwise default to 0.
                 # Note: if you use --reps, spec_idx differs across repeats (so repeats generate different scenarios).
-                generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=spec_idx, chartypes=chartypes)
+                base_seed = self.seed if self.seed is not None else 0
+                seed = base_seed + spec_idx
+                self.current_seed = seed  # Store for TurnRecord
+                generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=seed, chartypes=chartypes)
 
                 if KEEP_SCENARIO_FILES:
                     keep_name = f"scenarios_llm_test_{spec_idx}.json"
@@ -504,8 +527,11 @@ if TORCH_AVAILABLE:
 
                     self._log(f"\n--- Rep {rep_num}, Trial {trial_num_in_rep}/{len(self.specs)} (Global {global_trial_counter}/{total_trials}, Spec ID {spec_idx+1}): {spec} ---")
 
-                    # Seed: combine rep_num and spec_idx to ensure different scenarios across reps
-                    seed = rep_num * 1000 + spec_idx
+                    # Seed: combine base_seed, rep_num and spec_idx to ensure different scenarios across reps
+                    # If --seed is provided, use it as base; otherwise default to 0.
+                    base_seed = self.seed if self.seed is not None else 0
+                    seed = base_seed + rep_num * 1000 + spec_idx
+                    self.current_seed = seed  # Store for TurnRecord
                     generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=seed, chartypes=chartypes)
 
                     if KEEP_SCENARIO_FILES:
@@ -861,6 +887,7 @@ Respond ONLY with your action, and no other text."""
             trial=current_trial if history_mode != "none" else None,
             pause_mode=PAUSE_MODE,
             rep=current_rep if llm_player and history_mode != "none" else None,
+            seed=llm_player.current_seed if llm_player and hasattr(llm_player, 'current_seed') else None,
             situation_event_count=scenario.situation_event_count,
             ect_certainty=scenario.epistemic_transitions.get('certainty') if scenario.epistemic_transitions else None,
             ect_accuracy=scenario.epistemic_transitions.get('accuracy') if scenario.epistemic_transitions else None,
@@ -918,6 +945,13 @@ if __name__ == "__main__":
         choices=["none", "no_reasoning", "with_reasoning"],
         help="History mode: 'none' for independent trials; 'no_reasoning' for cumulative context; 'with_reasoning' for cumulative context + reasoning traces"
     )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Base seed for scenario generation. If not specified, uses spec_idx. "
+             "Use different seeds to get variety across separate runs (e.g., --seed=1000)."
+    )
     args = parser.parse_args()
 
     specs = read_specs_from_csv('ToM - scenarios.csv')
@@ -931,10 +965,9 @@ if __name__ == "__main__":
 
     reordered_specs = []
     for id_str in sorted(spec_by_id.keys(), key=int):  # numeric sort by ID
-        if 0 in spec_by_id[id_str]:
-            reordered_specs.append(spec_by_id[id_str][0])
-        if 1 in spec_by_id[id_str]:
-            reordered_specs.append(spec_by_id[id_str][1])
+        for extra_val in ['0A', '0B', '1A', '1B']:
+            if extra_val in spec_by_id[id_str]:
+                reordered_specs.append(spec_by_id[id_str][extra_val])
     specs = reordered_specs
 
     # Don't multiply specs by reps here - let ToMTestLLM handle it based on history_mode
@@ -945,7 +978,8 @@ if __name__ == "__main__":
             specs=specs,
             log_dir="tom_llm_logs",
             history_mode=args.history_mode,
-            reps=args.reps
+            reps=args.reps,
+            seed=args.seed
         )
         test_runner.run_test()
     else:

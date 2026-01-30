@@ -3,13 +3,26 @@
 Compare old vs new ToM test results.
 
 Compares accuracy and mastery scores between old (pre-fix) and new (post-fix)
-Extra=1 scenario results.
+Extra=1B scenario results.
 """
 
 import json
 import math
 import os
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional
+
+
+def normalize_extra(val):
+    """Normalize Extra field to string format for backward compatibility.
+
+    Legacy int values are converted to new string format:
+    - None or 0 → '1A' (legacy Extra=0 behavior)
+    - 1 → '1B' (legacy Extra=1 behavior)
+    """
+    if val is None or val == 0: return '1A'  # Legacy Extra=0 → 1A
+    if val == 1: return '1B'                  # Legacy Extra=1 → 1B
+    if val in ('0A', '0B', '1A', '1B'): return val
+    return str(val)
 
 # File pairs: (new_file, old_file)
 # Format: (new_timestamp, old_timestamp) - higher timestamp = newer
@@ -91,10 +104,10 @@ def filter_player_a(records: List[dict]) -> List[dict]:
     return [r for r in records if r.get('character') == 'A']
 
 
-def compute_accuracy(records: List[dict], extra_filter: int = None) -> Dict:
+def compute_accuracy(records: List[dict], extra_filter: Optional[str] = None) -> Dict:
     """Compute accuracy stats for records."""
     if extra_filter is not None:
-        records = [r for r in records if (r.get('extra') or 0) == extra_filter]
+        records = [r for r in records if normalize_extra(r.get('extra')) == extra_filter]
 
     n = len(records)
     k = sum(1 for r in records if r.get('was_optimal'))
@@ -104,10 +117,10 @@ def compute_accuracy(records: List[dict], extra_filter: int = None) -> Dict:
     return {'n': n, 'k': k, 'rate': rate, 'ci': ci}
 
 
-def compute_mastery_score(records: List[dict], category: dict, extra_filter: int = None) -> Dict:
+def compute_mastery_score(records: List[dict], category: dict, extra_filter: Optional[str] = None) -> Dict:
     """Compute mastery score for a single ToM category."""
     if extra_filter is not None:
-        records = [r for r in records if (r.get('extra') or 0) == extra_filter]
+        records = [r for r in records if normalize_extra(r.get('extra')) == extra_filter]
 
     total_weighted = 0
     correct_weighted = 0
@@ -141,7 +154,7 @@ def main():
     logs_dir = os.path.join(script_dir, 'tom_llm_logs')
 
     print("=" * 100)
-    print("COMPARISON: Old vs New Extra=1 Scenario Results")
+    print("COMPARISON: Old vs New Extra=1B Scenario Results")
     print("=" * 100)
 
     for new_file, old_file in FILE_PAIRS:
@@ -176,7 +189,7 @@ def main():
         print(f"{'Metric':<20} | {'Old':>12} | {'New':>12} | {'Diff':>10}")
         print("-" * 60)
 
-        for label, extra_val in [('Overall', None), ('Extra=0', 0), ('Extra=1', 1)]:
+        for label, extra_val in [('Overall', None), ('Extra=1A', '1A'), ('Extra=1B', '1B')]:
             old_stats = compute_accuracy(old_records, extra_val)
             new_stats = compute_accuracy(new_records, extra_val)
 
@@ -201,14 +214,14 @@ def main():
 
             print(f"{category['name']:<30} | {old_pct:>9.1f}% | {new_pct:>9.1f}% | {diff_str:>10}")
 
-        # Extra=1 mastery scores comparison (most relevant for the fix)
-        print("\n--- MASTERY SCORES COMPARISON (Extra=1 only) ---")
+        # Extra=1B mastery scores comparison (most relevant for the fix)
+        print("\n--- MASTERY SCORES COMPARISON (Extra=1B only) ---")
         print(f"{'Category':<30} | {'Old':>10} | {'New':>10} | {'Diff':>10}")
         print("-" * 70)
 
         for key, category in TOM_MASTERY_CATEGORIES.items():
-            old_mastery = compute_mastery_score(old_records, category, extra_filter=1)
-            new_mastery = compute_mastery_score(new_records, category, extra_filter=1)
+            old_mastery = compute_mastery_score(old_records, category, extra_filter='1B')
+            new_mastery = compute_mastery_score(new_records, category, extra_filter='1B')
 
             old_pct = old_mastery['score'] * 100
             new_pct = new_mastery['score'] * 100
@@ -216,8 +229,8 @@ def main():
 
             print(f"{category['name']:<30} | {old_pct:>9.1f}% | {new_pct:>9.1f}% | {diff_str:>10}")
 
-        # Per-scenario comparison for Extra=1
-        print("\n--- PER-SCENARIO ACCURACY (Extra=1 only) ---")
+        # Per-scenario comparison for Extra=1B
+        print("\n--- PER-SCENARIO ACCURACY (Extra=1B only) ---")
         print(f"{'Scenario':<10} | {'Old':>10} | {'New':>10} | {'Diff':>10}")
         print("-" * 50)
 
@@ -227,9 +240,9 @@ def main():
 
         for sid in scenario_ids:
             old_scenario = [r for r in old_records
-                          if r.get('scenario_id') == sid and (r.get('extra') or 0) == 1]
+                          if r.get('scenario_id') == sid and normalize_extra(r.get('extra')) == '1B']
             new_scenario = [r for r in new_records
-                          if r.get('scenario_id') == sid and (r.get('extra') or 0) == 1]
+                          if r.get('scenario_id') == sid and normalize_extra(r.get('extra')) == '1B']
 
             if not old_scenario or not new_scenario:
                 continue

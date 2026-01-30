@@ -31,10 +31,10 @@ def analyze_variance(num_seeds=100, output_file='tom/sit_variance_results.txt'):
 
     results = []
 
-    print(f"Analyzing {len(unique_ids)} scenario IDs x 2 (Extra=0,1) x {num_seeds} seeds...")
+    print(f"Analyzing {len(unique_ids)} scenario IDs x 4 (Extra=0A,0B,1A,1B) x {num_seeds} seeds...")
 
     for scenario_id in unique_ids:
-        for extra in [0, 1]:
+        for extra in ['0A', '0B', '1A', '1B']:
             key = (scenario_id, extra)
             if key not in spec_lookup:
                 continue

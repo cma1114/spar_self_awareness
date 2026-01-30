@@ -94,7 +94,7 @@ class Scenario:
     events: List[Event]
     present_initially: List[str]
     id: Optional[str] = None
-    extra: Optional[int] = None
+    extra: Optional[str] = None  # "0A", "0B", "1A", or "1B"
     ks_self: Optional[str] = None
     ks_teammate: Optional[str] = None
     ks_opponent: Optional[str] = None
@@ -183,7 +183,7 @@ class Scenario:
                 if event.character == character_name:
                     perspective_present = False
                     # Add pause text if configured (only when not in ellipsis mode)
-                    if pause_mode == "all" or (pause_mode == "extra1" and self.extra == 1):
+                    if pause_mode == "all" or (pause_mode == "extra1" and self.extra == '1B'):
                         lines.append("Time goes by.")
 
             elif event.event_type == 'enter':
@@ -273,7 +273,7 @@ def read_specs_from_csv(infile='ToM - scenarios.csv') -> List[SpecTuple]:
         for row in reader:
             specs.append({
                 'Id': row['Id'],
-                'Extra': int(row.get('Extra', 0)),
+                'Extra': row.get('Extra', '1A'),  # String: "0A", "0B", "1A", "1B"
                 'Answerer': row['Answerer'],
                 'KS_Self': EpistemicState(row['Self']),
                 'KS_Teammate': EpistemicState(row['Teammate']),

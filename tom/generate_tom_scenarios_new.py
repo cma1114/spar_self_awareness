@@ -11,6 +11,11 @@ from dataclasses import dataclass
 ITEMS_GEN = ['apple', 'ball', 'banana', 'brick', 'stapler', 'orange']
 CONTAINERS_GEN = ['bag', 'box', 'basket']
 
+# Configurable filler event counts for Extra=0A/0B (no ECT impact)
+# See EXTRA_MAPPING.md for full documentation
+EXTRA_0A_FILLER = 0   # Minimal load (no filler)
+EXTRA_0B_FILLER = 3   # Higher load (tweak as needed)
+
 def _map_chartypes_to_names(chartypes: List[CharacterType]) -> List[str]:
     chars = []
     for ct in chartypes:
@@ -220,14 +225,21 @@ class Scenario_Builder:
             if spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH and spec['KS_Opponent'] == EpistemicState.BELIEVES_TRUTH:
                 self.exclude_true.add(teammate)
                 if spec.get('Answerer') == 'Opponent':
-                    self.exclude_true.add(answerer) 
+                    self.exclude_true.add(answerer)
+                    # Include non-answerer opponent so someone can do Extra=1B events
+                    # (A is excluded from target moves because B left with belief)
+                    non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
+                    self.include.add(non_answerer_opp)
                 else:
                     self.exclude_true.add(self.rng.choice([opponent1, opponent2]))
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH and spec['KS_Opponent'] == EpistemicState.BELIEVES_FALSE:
                 self.exclude_true.add(teammate)
                 if spec['Answerer'] == 'Opponent':
-                    self.exclude_false.add(opponent1)
-                    self.exclude_false.add(opponent2)
+                    self.exclude_false.add(answerer)
+                    # Include non-answerer opponent so someone can do Extra=1B events
+                    # (A is excluded from target moves because B left with belief)
+                    non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
+                    self.include.add(non_answerer_opp)
                 else:
                     self.exclude_false.add(self.rng.choice([opponent1, opponent2]))
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
@@ -243,12 +255,20 @@ class Scenario_Builder:
                     self.exclude_true.add(opponent2)
                 elif spec.get('Answerer') == 'Opponent':
                     self.exclude_true.add(answerer)
+                    # Include non-answerer opponent so someone can do Extra=1B events
+                    # (A is excluded from target moves because B left with belief)
+                    non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
+                    self.include.add(non_answerer_opp)
                 else:
                     self.exclude_true.add(self.rng.choice([opponent1, opponent2]))
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_FALSE and spec['KS_Opponent'] == EpistemicState.BELIEVES_FALSE:
                 self.exclude_false.add(teammate)
                 if spec['Answerer'] == 'Opponent':
                     self.exclude_false.add(answerer)
+                    # Include non-answerer opponent so someone can do Extra=1B events
+                    # (A is excluded from target moves because B left with belief)
+                    non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
+                    self.include.add(non_answerer_opp)
                 else:
                     self.exclude_false.add(self.rng.choice([opponent1, opponent2])) #need to keep one around to do the move
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_FALSE and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
@@ -875,14 +895,23 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     queried = scenario.question_container
     other = _other_container(queried)
 
+    # Track container contents through events
+    contents = {c: None for c in CONTAINERS_GEN}
+
     # Find the initial put to queried container
     initial_put_idx = None
     initial_item = None
     for idx, event in enumerate(scenario.events):
-        if event.event_type == 'put' and event.container == queried:
-            initial_put_idx = idx
-            initial_item = event.item
-            break
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+            if event.container == queried and initial_put_idx is None:
+                initial_put_idx = idx
+                initial_item = event.item
+        elif event.event_type == 'move':
+            contents[event.to_container] = event.item
+            contents[event.from_container] = None
+        elif event.event_type == 'remove':
+            contents[event.container] = None
 
     if initial_put_idx is None:
         return  # Can't work without an initial put
@@ -937,8 +966,15 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     if rng.random() < 0.5:
         # Variation: put a different item in queried container
         # Original item stays in 'other', new item goes in 'queried'
-        new_item = rng.choice([i for i in ITEMS_GEN if i != initial_item])
-        revelation_event = Event('put', mover2, container=queried, item=new_item)
+        # Exclude all items currently in any container
+        used_items = {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
+        available_items = [i for i in ITEMS_GEN if i not in used_items]
+        if not available_items:
+            # Fall back to standard move if no unique items available
+            revelation_event = Event('move', mover2, from_container=other, to_container=queried, item=initial_item)
+        else:
+            new_item = rng.choice(available_items)
+            revelation_event = Event('put', mover2, container=queried, item=new_item)
     else:
         # Standard: move original item back
         revelation_event = Event('move', mover2, from_container=other, to_container=queried, item=initial_item)
@@ -983,21 +1019,33 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
 
 def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: random.Random) -> None:
     """
-    Insert extra events for BELIEVES_TRUE answerers.
-    Pattern: Answerer sees put, leaves, then state changes and reverts while they're away.
-    Result: Their belief (from before leaving) is still true.
+    Insert extra events for BELIEVES_TRUE answerers using ACCURACY load.
+
+    Pattern: While answerer is absent, cycle items through target container.
+    The answerer's belief about the target becomes false, then true again.
+    Result: Their belief (from before leaving) is still true, but accuracy ECTs added.
+
+    This creates accuracy ECTs:
+    - #3 (true→false): When target contents change while answerer absent with true belief
+    - #4 (false→true): When target contents revert while answerer still absent
     """
     queried = scenario.question_container
     other = _other_container(queried)
+    # Get the third container (not queried, not other)
+    non_targets = _non_target_containers(queried)
+    third = non_targets[1] if other == non_targets[0] else non_targets[0]
 
-    # Find where answerer leaves
+    # Find where answerer leaves and track container contents
     answerer_leave_idx = None
+    contents = {c: None for c in CONTAINERS_GEN}
     present = set(scenario.present_initially)
-    queried_item = None
 
     for idx, event in enumerate(scenario.events):
-        if event.event_type == 'put' and event.container == queried:
-            queried_item = event.item
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+        elif event.event_type == 'move':
+            contents[event.to_container] = event.item
+            contents[event.from_container] = None
         elif event.event_type == 'leave':
             if event.character == answerer:
                 answerer_leave_idx = idx
@@ -1006,98 +1054,88 @@ def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: ra
         elif event.event_type == 'enter':
             present.add(event.character)
 
-    if answerer_leave_idx is None or queried_item is None:
+    if answerer_leave_idx is None:
         return
+
+    # Z = what answerer believes (item in queried container when they left)
+    # X = item in other container (might be None)
+    Z = contents[queried]
+    X = contents[other]
+
+    if Z is None:
+        return  # Nothing to work with - answerer has no belief about target
+
+    # Pick a new item Y - exclude ALL items used in ANY event (including future events)
+    all_scenario_items = {e.item for e in scenario.events if e.item}
+    used_items = all_scenario_items | {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
+    available_items = [item for item in ITEMS_GEN if item not in used_items]
+    if not available_items:
+        return  # No unique items available
+    Y = rng.choice(available_items)
 
     # After answerer leaves, we need someone to do the moves
     present.discard(answerer)
     if not present:
         return
 
-    # Insert events right after answerer leaves:
-    # 1. Move item to other container
-    # 2. Move item back to queried container
-    # Result: Truth unchanged, but more complex sequence
-    insert_pos = answerer_leave_idx + 1
-
     # Exclude teammates of characters who left with beliefs about the target
+    insert_pos = answerer_leave_idx + 1
     teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, insert_pos)
-    valid_movers = [c for c in sorted(present) if c not in teammates_to_exclude]
-    if not valid_movers:
+    valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude]
+    if not valid_actors:
         return  # Cannot insert extra events without violating teammate beliefs
 
-    mover1 = rng.choice(valid_movers)
-    move_away = Event('move', mover1, from_container=queried, to_container=other, item=queried_item)
+    # Build the extra events, alternating actors where possible
+    extra_events = []
+    last_actor = None
 
-    # Prefer different mover than mover1, still respecting teammate exclusions
-    valid_movers2 = [c for c in valid_movers if c != mover1]
-    mover2 = rng.choice(valid_movers2) if valid_movers2 else mover1
-    move_back = Event('move', mover2, from_container=other, to_container=queried, item=queried_item)
+    def choose_actor():
+        nonlocal last_actor
+        candidates = [c for c in valid_actors if c != last_actor]
+        actor = rng.choice(candidates) if candidates else rng.choice(valid_actors)
+        last_actor = actor
+        return actor
 
-    # Build list of events to insert
-    events_to_insert = []
+    # a. If X exists in other container: MOVE X to third container (to make room)
+    if X is not None:
+        extra_events.append(Event('move', choose_actor(), from_container=other, to_container=third, item=X))
 
-    # Find characters who act later in the base scenario (can't make them leave)
-    # AND find characters who modify the target later (their teammates shouldn't leave with beliefs)
-    chars_acting_later = set()
-    chars_modifying_target_later = set()
-    for evt in scenario.events[insert_pos:]:
-        chars_acting_later.add(evt.character)
-        if evt.event_type == 'put' and evt.container == queried:
-            chars_modifying_target_later.add(evt.character)
-        elif evt.event_type == 'move' and (evt.from_container == queried or evt.to_container == queried):
-            chars_modifying_target_later.add(evt.character)
+    # b. MOVE Z from queried to other container (answerer's belief now FALSE - accuracy ECT #3)
+    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=other, item=Z))
 
-    # Teammates of target modifiers shouldn't leave (would form beliefs that get violated)
-    teammates_of_modifiers = {_teammate_of(c) for c in chars_modifying_target_later if c in {'A', 'B', 'C', 'D'}}
+    # c. PUT Y in queried container (target now has Y, not Z)
+    extra_events.append(Event('put', choose_actor(), container=queried, item=Y))
 
-    # 50% chance: have another character leave while answerer is away
-    # (must keep at least one person present for the moves)
-    if rng.random() < 0.5 and len(present) > 1:
-        potential_leavers = [c for c in sorted(present)
-                            if c != mover1 and c != mover2 and c not in chars_acting_later
-                            and c not in teammates_of_modifiers]
-        if potential_leavers:
-            leaver = rng.choice(potential_leavers)
-            events_to_insert.append(Event('leave', leaver))
-            present.discard(leaver)  # Track that they left for mandatory leave/enter below
+    # d. MOVE Y from queried to third container (target now empty)
+    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Y))
 
-    # CRITICAL: Answerer must WITNESS events on target container to gain knowledge.
-    # Per EPISTEMIC_METRICS.md, entering alone does NOT create ECT #2 (belief → knowledge).
-    # The answerer must SEE a put/move/remove on the target container.
-    #
-    # Correct order:
-    #   1. Answerer enters
-    #   2. Answerer WITNESSES moves on target container → ECT #2 (belief → knowledge)
-    #   3. Answerer leaves → ECT #1 (knowledge → belief)
-    events_to_insert.append(Event('enter', answerer))
-    events_to_insert.append(move_away)
-    events_to_insert.append(move_back)
+    # e. MOVE Z from other back to queried container (answerer's belief now TRUE - accuracy ECT #4)
+    extra_events.append(Event('move', choose_actor(), from_container=other, to_container=queried, item=Z))
 
-    # Optional: 50% chance for another character's leave/enter pair for visible complexity
-    potential = [c for c in sorted(present) if c != mover1 and c != mover2 and c not in chars_acting_later]
-    if potential and rng.random() < 0.5:
-        opp = rng.choice(potential)
-        events_to_insert.append(Event('leave', opp))
-        events_to_insert.append(Event('enter', opp))
-
-    events_to_insert.append(Event('leave', answerer))
-
-    # Insert all events at the correct position
-    for i, evt in enumerate(events_to_insert):
-        scenario.events.insert(insert_pos + i, evt)
+    # Insert all extra events right after answerer leaves
+    for i, event in enumerate(extra_events):
+        scenario.events.insert(insert_pos + i, event)
 
 
 def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: random.Random) -> None:
     """
-    Insert extra events for BELIEVES_FALSE answerers.
-    Pattern: Answerer sees wrong item, leaves, then more events happen while they're away.
-    Result: Their belief is still false, but sequence is more complex.
+    Insert extra events for BELIEVES_FALSE answerers using ACCURACY load.
 
-    We insert events right after the answerer leaves: move item to other container, then back.
+    Pattern: While answerer is absent, cycle items through target container.
+    This adds accuracy transitions by making the answerer's belief temporarily
+    false, then true, then false again.
+    Result: Their belief is still false, but accuracy ECTs added.
+
+    For BELIEVES_FALSE:
+    - Answerer believes W is in target (what they last saw)
+    - After subsequent base events, truth becomes X (different item) → false belief
+    - We insert extra item cycling right after answerer leaves
     """
     queried = scenario.question_container
     other = _other_container(queried)
+    # Get the third container (not queried, not other)
+    non_targets = _non_target_containers(queried)
+    third = non_targets[1] if other == non_targets[0] else non_targets[0]
 
     # Find where answerer leaves and track container contents at that point
     answerer_leave_idx = None
@@ -1123,90 +1161,74 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
     if answerer_leave_idx is None:
         return
 
+    # W = what answerer believes (item in queried container when they left)
+    # X = item in other container (might be None)
+    W = contents[queried]  # Answerer's belief
+    X = contents[other]
+
+    if W is None:
+        return  # Answerer has no belief about target
+
+    # Pick a new item Y - exclude ALL items used in ANY event (including future events)
+    all_scenario_items = {e.item for e in scenario.events if e.item}
+    used_items = all_scenario_items | {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
+    available_items = [item for item in ITEMS_GEN if item not in used_items]
+    if not available_items:
+        return  # No unique items available
+    Y = rng.choice(available_items)
+
     # After answerer leaves, we need someone to do the moves
     present.discard(answerer)
     if not present:
         return
 
-    # What's in the queried container when answerer left?
-    item_in_queried = contents[queried]
-    if item_in_queried is None:
-        return  # Nothing to move
-
-    # Insert events right after answerer leaves:
-    # Move item to other, then move back (adds complexity without changing outcome)
+    # Insert events right after answerer leaves
     insert_pos = answerer_leave_idx + 1
 
     # Exclude teammates of characters who left with beliefs about the target
-    # to prevent invalidating their beliefs
     teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, insert_pos)
-    valid_movers = [c for c in sorted(present) if c not in teammates_to_exclude]
-    if not valid_movers:
+    valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude]
+    if not valid_actors:
         return  # Cannot insert extra events without violating teammate beliefs
 
-    mover1 = rng.choice(valid_movers)
-    move_away = Event('move', mover1, from_container=queried, to_container=other, item=item_in_queried)
+    # Build the extra events, alternating actors where possible
+    extra_events = []
+    last_actor = None
 
-    # Prefer different mover than mover1, still respecting teammate exclusions
-    valid_movers2 = [c for c in valid_movers if c != mover1]
-    mover2 = rng.choice(valid_movers2) if valid_movers2 else mover1
-    move_back = Event('move', mover2, from_container=other, to_container=queried, item=item_in_queried)
+    def choose_actor():
+        nonlocal last_actor
+        candidates = [c for c in valid_actors if c != last_actor]
+        actor = rng.choice(candidates) if candidates else rng.choice(valid_actors)
+        last_actor = actor
+        return actor
 
-    # Build list of events to insert
-    events_to_insert = []
-
-    # 50% chance: have another character leave while answerer is away
-    # (must keep at least one person present for the moves)
-    # Also exclude any character who has events later in the base scenario
-    # AND exclude teammates of characters who modify the target later
-    if rng.random() < 0.5 and len(present) > 1:
-        # Find characters who act later in the base scenario (can't make them leave)
-        # AND find characters who modify the target later (their teammates shouldn't leave with beliefs)
-        chars_acting_later = set()
-        chars_modifying_target_later = set()
-        for evt in scenario.events[insert_pos:]:
-            chars_acting_later.add(evt.character)
-            if evt.event_type == 'put' and evt.container == queried:
-                chars_modifying_target_later.add(evt.character)
-            elif evt.event_type == 'move' and (evt.from_container == queried or evt.to_container == queried):
-                chars_modifying_target_later.add(evt.character)
-
-        # Teammates of target modifiers shouldn't leave (would form beliefs that get violated)
-        teammates_of_modifiers = {_teammate_of(c) for c in chars_modifying_target_later if c in {'A', 'B', 'C', 'D'}}
-
-        potential_leavers = [c for c in sorted(present)
-                            if c != mover1 and c != mover2 and c not in chars_acting_later
-                            and c not in teammates_of_modifiers]
-        if potential_leavers:
-            leaver = rng.choice(potential_leavers)
-            events_to_insert.append(Event('leave', leaver))
-            present.discard(leaver)  # Track that leaver is no longer present
-
-    # CRITICAL: Answerer must WITNESS events on target container to gain knowledge.
-    # Per EPISTEMIC_METRICS.md, entering alone does NOT create ECT #2 (belief → knowledge).
-    # The answerer must SEE a put/move/remove on the target container.
+    # ACCURACY LOAD: Cycle items through target while answerer is absent
+    # This happens right after answerer leaves, before base scenario events continue.
+    # We add a round-trip: W→out, Y→in, Y→out, W→back
+    # This adds accuracy transitions, then base events will change to final false state.
     #
-    # Correct order:
-    #   1. Answerer enters
-    #   2. Answerer WITNESSES moves on target container → ECT #2 (belief → knowledge)
-    #   3. Answerer leaves → ECT #1 (knowledge → belief)
-    events_to_insert.append(Event('enter', answerer))
-    events_to_insert.append(move_away)
-    events_to_insert.append(move_back)
+    # a. If X exists in other container: MOVE X to third container (to make room)
+    if X is not None:
+        extra_events.append(Event('move', choose_actor(), from_container=other, to_container=third, item=X))
 
-    # 67% chance: add opponent leave/enter to break has_enter heuristic
-    if rng.random() < 0.67:
-        potential = [c for c in sorted(present) if c not in ('A', 'B') and c != mover1 and c != mover2]
-        if potential:
-            opp = rng.choice(potential)
-            events_to_insert.append(Event('leave', opp))
-            events_to_insert.append(Event('enter', opp))
+    # b. MOVE W from target to other container (answerer's belief becomes FALSE - accuracy ECT #3)
+    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=other, item=W))
 
-    events_to_insert.append(Event('leave', answerer))
+    # c. PUT Y in target container (target now has Y, not W)
+    extra_events.append(Event('put', choose_actor(), container=queried, item=Y))
 
-    # Insert all events at the correct position
-    for i, evt in enumerate(events_to_insert):
-        scenario.events.insert(insert_pos + i, evt)
+    # d. MOVE Y from target to third container (target now empty)
+    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Y))
+
+    # e. MOVE W from other back to target container (answerer's belief becomes TRUE - accuracy ECT #4)
+    extra_events.append(Event('move', choose_actor(), from_container=other, to_container=queried, item=W))
+
+    # Now the base scenario events will continue and eventually change W to something else,
+    # making the final belief false as required.
+
+    # Insert all extra events right after answerer leaves
+    for i, event in enumerate(extra_events):
+        scenario.events.insert(insert_pos + i, event)
 
 
 def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: random.Random) -> None:
@@ -1374,9 +1396,14 @@ def insert_extra_events_unknown(scenario: Scenario, answerer: str, rng: random.R
     else:
         # Both containers empty — add put to TARGET, then move to non-target
         # (using target ensures ECT impact; move instead of remove)
+        # Exclude all items currently in any container (third container may have an item)
+        used_items = {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
+        available_items = [i for i in ITEMS_GEN if i not in used_items]
+        if not available_items:
+            return  # No unique items available
         non_targets = _non_target_containers(queried)
         third = non_targets[1] if other == non_targets[0] else non_targets[0]
-        item = rng.choice(ITEMS_GEN)
+        item = rng.choice(available_items)
         actor1 = rng.choice(valid_movers)
         events_to_insert.append(Event('put', actor1, container=queried, item=item))
         actor2 = _choose_different_actor(set(valid_movers), actor1, rng)
@@ -1435,8 +1462,13 @@ def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> 
     if Z is None:
         return  # Nothing to work with
 
-    # Pick a new item Y different from Z and X
-    Y = rng.choice([item for item in ITEMS_GEN if item != Z and item != X])
+    # Pick a new item Y - exclude ALL items used in ANY event (including future events)
+    all_scenario_items = {e.item for e in scenario.events if e.item}
+    used_items = all_scenario_items | {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
+    available_items = [item for item in ITEMS_GEN if item not in used_items]
+    if not available_items:
+        return  # No unique items available
+    Y = rng.choice(available_items)
 
     # Pick random present characters to perform actions
     # (answerer just left, so use remaining present characters)
@@ -1536,8 +1568,12 @@ def insert_filler_events(scenario: Scenario, rng: random.Random) -> None:
     item0 = contents[nt0]
     item1 = contents[nt1]
 
-    # Pick two different items for variety
-    available_items = [i for i in ITEMS_GEN if i != item0 and i != item1]
+    # Pick two different items for variety - exclude ALL items used in ANY event
+    all_scenario_items = {e.item for e in scenario.events if e.item}
+    used_items = all_scenario_items | {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
+    available_items = [i for i in ITEMS_GEN if i not in used_items]
+    if len(available_items) < 2:
+        return  # Not enough unique items available
     new_item1 = rng.choice(available_items)
     new_item2 = rng.choice([i for i in available_items if i != new_item1])
 
@@ -1569,6 +1605,96 @@ def insert_filler_events(scenario: Scenario, rng: random.Random) -> None:
         scenario.events.insert(insert_idx + i, evt)
 
 
+def insert_n_filler_events(scenario: Scenario, rng: random.Random, n: int) -> None:
+    """Insert exactly n neutral filler events for Extra=0A/0B scenarios.
+
+    If n=0, does nothing (minimal scenario for 0A).
+    If n>0, generates n moves/puts on non-target containers.
+
+    Unlike insert_filler_events() which aims for SIT parity with 1B,
+    this function adds a fixed number of filler events.
+
+    Uses same insertion logic as insert_filler_events() - events are
+    inserted before player A leaves (last position where A is present).
+    """
+    if n <= 0:
+        return  # Extra=0A: minimal scenario with no filler
+
+    target = scenario.question_container
+    non_targets = _non_target_containers(target)
+
+    # Find the last position where A is present
+    a_present = 'A' in scenario.present_initially
+    insert_idx = len(scenario.events)
+    present = set(scenario.present_initially)
+    contents = {c: None for c in CONTAINERS_GEN}
+
+    for idx, event in enumerate(scenario.events):
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+        elif event.event_type == 'move':
+            contents[event.to_container] = event.item
+            contents[event.from_container] = None
+        elif event.event_type == 'leave':
+            if event.character == 'A' and a_present:
+                insert_idx = idx
+                break
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+            if event.character == 'A':
+                a_present = True
+
+    if not present:
+        return  # No one present to do filler events
+
+    events_to_add = []
+    present_list = sorted(present)
+    nt0, nt1 = non_targets[0], non_targets[1]
+
+    # Generate n filler events (puts/moves on non-target containers)
+    # Exclude ALL items used in ANY event (including future events in base scenario)
+    all_scenario_items = {e.item for e in scenario.events if e.item}
+    used_items = all_scenario_items | {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
+    available_items = [i for i in ITEMS_GEN if i not in used_items]
+    last_actor = None
+
+    for _ in range(n):
+        actor = _choose_different_actor(present, last_actor, rng)
+        last_actor = actor
+
+        # Alternate between puts and moves on non-target containers
+        if contents[nt0] is None and contents[nt1] is None:
+            # Both empty: put an item
+            item = rng.choice(available_items)
+            target_container = rng.choice([nt0, nt1])
+            events_to_add.append(Event('put', actor, container=target_container, item=item))
+            contents[target_container] = item
+        elif contents[nt0] is not None and contents[nt1] is None:
+            # nt0 has item, nt1 empty: move to nt1
+            events_to_add.append(Event('move', actor, from_container=nt0, to_container=nt1, item=contents[nt0]))
+            contents[nt1] = contents[nt0]
+            contents[nt0] = None
+        elif contents[nt0] is None and contents[nt1] is not None:
+            # nt1 has item, nt0 empty: move to nt0
+            events_to_add.append(Event('move', actor, from_container=nt1, to_container=nt0, item=contents[nt1]))
+            contents[nt0] = contents[nt1]
+            contents[nt1] = None
+        else:
+            # Both have items: move one to the other (overwrite)
+            if rng.random() < 0.5:
+                events_to_add.append(Event('move', actor, from_container=nt0, to_container=nt1, item=contents[nt0]))
+                contents[nt1] = contents[nt0]
+                contents[nt0] = None
+            else:
+                events_to_add.append(Event('move', actor, from_container=nt1, to_container=nt0, item=contents[nt1]))
+                contents[nt0] = contents[nt1]
+                contents[nt1] = None
+
+    for i, evt in enumerate(events_to_add):
+        scenario.events.insert(insert_idx + i, evt)
+
+
 def apply_name_variation(scenario: Scenario, rng: random.Random) -> None:
     """Apply cosmetic variations to differentiate Extra=1 from its paired Extra=0.
 
@@ -1591,45 +1717,53 @@ def apply_name_variation(scenario: Scenario, rng: random.Random) -> None:
                 event.to_container = swap_map.get(event.to_container, event.to_container)
 
     # Always: change the queried item to a different item
-    # Find the item currently in the queried container
+    # Find all items currently used in the scenario and the queried item
+    all_items_used = set()
     old_item = None
     for event in scenario.events:
-        if event.event_type == 'put' and event.container == scenario.question_container:
-            old_item = event.item
-            break
-        elif event.event_type == 'move' and event.to_container == scenario.question_container:
-            old_item = event.item
-            break
+        if event.item:
+            all_items_used.add(event.item)
+        if old_item is None:
+            if event.event_type == 'put' and event.container == scenario.question_container:
+                old_item = event.item
+            elif event.event_type == 'move' and event.to_container == scenario.question_container:
+                old_item = event.item
 
     if old_item is not None:
-        new_item = rng.choice([i for i in ITEMS_GEN if i != old_item])
-        for event in scenario.events:
-            if event.item == old_item:
-                event.item = new_item
+        # Exclude all items already in use to avoid duplicates
+        available_items = [i for i in ITEMS_GEN if i not in all_items_used]
+        if available_items:
+            new_item = rng.choice(available_items)
+            for event in scenario.events:
+                if event.item == old_item:
+                    event.item = new_item
 
 
 def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: Optional[int] = None, chartypes: List[CharacterType] = [CharacterType.LIVE_PLAYER, CharacterType.HONEST_OPPONENT, CharacterType.DISHONEST_TEAMMATE, CharacterType.DISHONEST_OPPONENT, CharacterType.NEUTRAL]) -> None:
-    """Generate scenarios using shared-base approach for ECT/SIT parity.
+    """Generate scenarios using shared-base approach.
 
-    For each scenario ID, Extra=0 and Extra=1 are generated from the SAME base:
-    1. Generate base scenario
-    2. Deep-copy base for Extra=1
-    3. Apply filler to Extra=0 (adds SIT without ECT)
-    4. Apply name variation + extra events to Extra=1 (adds ECT)
+    For each scenario ID, all Extra variants (0A, 0B, 1A, 1B) are generated from the SAME base:
+    1. Generate base scenario from 0A spec (or first available)
+    2. Deep-copy base for each Extra variant
+    3. Apply appropriate filler/extra events:
+       - 0A: insert_n_filler_events(n=EXTRA_0A_FILLER) - minimal
+       - 0B: insert_n_filler_events(n=EXTRA_0B_FILLER) - higher load
+       - 1A: insert_filler_events() - SIT parity with 1B
+       - 1B: apply_name_variation() + insert_extra_events_*() - adds ECT
 
-    This guarantees Extra=1 ECT > Extra=0 ECT for all scenarios.
+    See EXTRA_MAPPING.md for full documentation.
 
-    Output order: ID1-E0, ID1-E1, ID2-E0, ID2-E1, ...
+    Output order: ID1-0A, ID1-0B, ID1-1A, ID1-1B, ID2-0A, ...
     """
     rng = random.Random(seed)
     scenarios: List[Scenario] = []
     chars = _map_chartypes_to_names(chartypes)
     acting_chars = [c for c in chars if c != 'N']
 
-    # Group specs by ID (Extra=0 and Extra=1 for same ID should share base)
-    spec_by_id: Dict[str, Dict[int, dict]] = defaultdict(dict)
+    # Group specs by ID and Extra value (string keys: '0A', '0B', '1A', '1B')
+    spec_by_id: Dict[str, Dict[str, dict]] = defaultdict(dict)
     for spec in specs:
-        spec_by_id[spec['Id']][spec['Extra']] = spec
+        spec_by_id[spec['Id']][str(spec['Extra'])] = spec
 
     # Preserve original ID order (as they first appear in the CSV)
     seen_ids: List[str] = []
@@ -1639,13 +1773,15 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
 
     scenario_idx = 0
     for scenario_id in seen_ids:
-        e0_spec = spec_by_id[scenario_id].get(0)
-        e1_spec = spec_by_id[scenario_id].get(1)
+        e0a_spec = spec_by_id[scenario_id].get('0A')
+        e0b_spec = spec_by_id[scenario_id].get('0B')
+        e1a_spec = spec_by_id[scenario_id].get('1A')
+        e1b_spec = spec_by_id[scenario_id].get('1B')
 
-        # --- Case: Only E1 spec (single-spec mode from test runner) ---
-        # Generate E1 independently without shared base
-        if e0_spec is None and e1_spec is not None:
-            row = e1_spec
+        # --- Case: Only 1B spec (single-spec mode from test runner) ---
+        # Generate 1B independently without shared base
+        if e0a_spec is None and e0b_spec is None and e1a_spec is None and e1b_spec is not None:
+            row = e1b_spec
             actor = _map_chartypes_to_names([row['Actor']])[0]
             answerer = actor if row['Answerer'] == 'Self' else (_teammate_of(actor) if row['Answerer'] == 'Teammate' else _opponent_of(actor, rng))
             available: Set[str] = set(acting_chars)
@@ -1658,7 +1794,7 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
 
             present_initially = sorted(list(sb.present_initially))
 
-            scenario_e1 = Scenario(
+            scenario_e1b = Scenario(
                 round_num=(scenario_idx // len(acting_chars)) + 1,
                 whose_turn=actor,
                 who_answers=answerer,
@@ -1670,48 +1806,58 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                 events=sb.events,
                 present_initially=present_initially,
                 id=row['Id'],
-                extra=1,
+                extra='1B',
             )
 
-            # Insert extra events
+            # Insert extra events (1B behavior - was Extra=1)
             extra_rng = random.Random(rng.randint(0, 2**31))
-            answerer_state = _get_answerer_state(e1_spec)
+            base_event_count = len(scenario_e1b.events)
+            answerer_state = _get_answerer_state(e1b_spec)
 
-            if (e1_spec['Answerer'] == 'Teammate' and
-                e1_spec['KS_Self'] == EpistemicState.KNOWS_X and
-                e1_spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
-                insert_extra_puts(scenario_e1, answerer, extra_rng)
+            if (e1b_spec['Answerer'] == 'Teammate' and
+                e1b_spec['KS_Self'] == EpistemicState.KNOWS_X and
+                e1b_spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
+                insert_extra_puts(scenario_e1b, answerer, extra_rng)
             elif answerer_state == EpistemicState.KNOWS_TRUTH:
-                insert_extra_events_with_revelation(scenario_e1, answerer, extra_rng)
+                insert_extra_events_with_revelation(scenario_e1b, answerer, extra_rng)
             elif answerer_state == EpistemicState.BELIEVES_TRUTH:
-                insert_extra_events_believes_true(scenario_e1, answerer, extra_rng)
+                insert_extra_events_believes_true(scenario_e1b, answerer, extra_rng)
             elif answerer_state == EpistemicState.BELIEVES_FALSE:
-                insert_extra_events_believes_false(scenario_e1, answerer, extra_rng)
+                insert_extra_events_believes_false(scenario_e1b, answerer, extra_rng)
             elif answerer_state == EpistemicState.BELIEVES_X:
-                insert_extra_events_believes_x(scenario_e1, answerer, extra_rng)
+                insert_extra_events_believes_x(scenario_e1b, answerer, extra_rng)
             elif answerer_state == EpistemicState.UNKNOWN:
-                insert_extra_events_unknown(scenario_e1, answerer, extra_rng)
+                insert_extra_events_unknown(scenario_e1b, answerer, extra_rng)
             else:
-                insert_extra_events(scenario_e1, answerer, actor, answerer_state, e1_spec, extra_rng)
+                insert_extra_events(scenario_e1b, answerer, actor, answerer_state, e1b_spec, extra_rng)
 
-            _validate_invariants(scenario_e1)
-            _validate_teammate_belief_integrity(scenario_e1)
-            scenario_e1.situation_event_count = _count_visible_events(scenario_e1)
-            scenario_e1.epistemic_transitions = count_epistemic_category_transitions(scenario_e1)
+            # Validate: extra events were actually added
+            if len(scenario_e1b.events) <= base_event_count:
+                raise ValueError(
+                    f"ID {row['Id']} Extra=1B: insert function failed to add events "
+                    f"(answerer_state={answerer_state}, before={base_event_count}, after={len(scenario_e1b.events)}). "
+                    f"This indicates a scenario generation bug - no valid actors for extra events."
+                )
 
-            if not scenario_e1.events:
-                raise ValueError(f"Generated scenario {scenario_e1.id} Extra={scenario_e1.extra} has no events")
+            _validate_invariants(scenario_e1b)
+            _validate_teammate_belief_integrity(scenario_e1b)
+            scenario_e1b.situation_event_count = _count_visible_events(scenario_e1b)
+            scenario_e1b.epistemic_transitions = count_epistemic_category_transitions(scenario_e1b)
 
-            scenarios.append(scenario_e1)
+            if not scenario_e1b.events:
+                raise ValueError(f"Generated scenario {scenario_e1b.id} Extra={scenario_e1b.extra} has no events")
+
+            scenarios.append(scenario_e1b)
             scenario_idx += 1
             continue
 
-        # --- Case: No E0 spec and no E1 spec (shouldn't happen) ---
-        if e0_spec is None:
+        # --- Case: No specs at all (shouldn't happen) ---
+        base_spec = e0a_spec or e0b_spec or e1a_spec or e1b_spec
+        if base_spec is None:
             continue
 
-        # --- Case: E0 spec exists (generate E0, optionally E1 via shared base) ---
-        row = e0_spec
+        # --- Case: At least one spec exists (generate via shared base) ---
+        row = base_spec
         actor = _map_chartypes_to_names([row['Actor']])[0]
         answerer = actor if row['Answerer'] == 'Self' else (_teammate_of(actor) if row['Answerer'] == 'Teammate' else _opponent_of(actor, rng))
         available: Set[str] = set(acting_chars)
@@ -1737,94 +1883,150 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             events=sb.events,
             present_initially=present_initially,
             id=row['Id'],
-            extra=0,
+            extra='0A',  # Will be overwritten per-variant
         )
 
-        # --- Extra=0: Add filler events ---
-        scenario_e0 = copy.deepcopy(base_scenario)
-        filler_seed = int(f"{seed or 0}{scenario_idx:03d}{int(row['Id']):04d}")
-        filler_rng = random.Random(filler_seed)
-        insert_filler_events(scenario_e0, filler_rng)
+        # --- Extra=0A: Minimal filler (n=EXTRA_0A_FILLER) ---
+        if e0a_spec is not None:
+            scenario_e0a = copy.deepcopy(base_scenario)
+            scenario_e0a.extra = '0A'
+            filler_seed = int(f"{seed or 0}{scenario_idx:03d}{int(row['Id']):04d}0")
+            filler_rng = random.Random(filler_seed)
+            insert_n_filler_events(scenario_e0a, filler_rng, EXTRA_0A_FILLER)
 
-        # Validate and compute metrics for Extra=0
-        _validate_invariants(scenario_e0)
-        _validate_teammate_belief_integrity(scenario_e0)
-        scenario_e0.situation_event_count = _count_visible_events(scenario_e0)
-        scenario_e0.epistemic_transitions = count_epistemic_category_transitions(scenario_e0)
+            _validate_invariants(scenario_e0a)
+            _validate_teammate_belief_integrity(scenario_e0a)
+            scenario_e0a.situation_event_count = _count_visible_events(scenario_e0a)
+            scenario_e0a.epistemic_transitions = count_epistemic_category_transitions(scenario_e0a)
 
-        if not scenario_e0.events:
-            raise ValueError(f"Generated scenario {scenario_e0.id} Extra={scenario_e0.extra} has no events")
+            if not scenario_e0a.events:
+                raise ValueError(f"Generated scenario {scenario_e0a.id} Extra={scenario_e0a.extra} has no events")
 
-        scenarios.append(scenario_e0)
-        scenario_idx += 1
+            scenarios.append(scenario_e0a)
+            scenario_idx += 1
 
-        # --- Extra=1: Deep-copy base, apply variation, add extra events ---
-        # Use rejection sampling to ensure SIT gap <= 3
-        if e1_spec is not None:
+        # --- Extra=0B: Higher load filler (n=EXTRA_0B_FILLER) ---
+        if e0b_spec is not None:
+            scenario_e0b = copy.deepcopy(base_scenario)
+            scenario_e0b.extra = '0B'
+            scenario_e0b.round_num = (scenario_idx // len(acting_chars)) + 1
+            filler_seed = int(f"{seed or 0}{scenario_idx:03d}{int(row['Id']):04d}1")
+            filler_rng = random.Random(filler_seed)
+            insert_n_filler_events(scenario_e0b, filler_rng, EXTRA_0B_FILLER)
+
+            _validate_invariants(scenario_e0b)
+            _validate_teammate_belief_integrity(scenario_e0b)
+            scenario_e0b.situation_event_count = _count_visible_events(scenario_e0b)
+            scenario_e0b.epistemic_transitions = count_epistemic_category_transitions(scenario_e0b)
+
+            if not scenario_e0b.events:
+                raise ValueError(f"Generated scenario {scenario_e0b.id} Extra={scenario_e0b.extra} has no events")
+
+            scenarios.append(scenario_e0b)
+            scenario_idx += 1
+
+        # --- Extra=1A: Was Extra=0 - filler for SIT parity with 1B ---
+        if e1a_spec is not None:
+            scenario_e1a = copy.deepcopy(base_scenario)
+            scenario_e1a.extra = '1A'
+            scenario_e1a.round_num = (scenario_idx // len(acting_chars)) + 1
+            filler_seed = int(f"{seed or 0}{scenario_idx:03d}{int(row['Id']):04d}2")
+            filler_rng = random.Random(filler_seed)
+            insert_filler_events(scenario_e1a, filler_rng)  # Existing function (unchanged behavior)
+
+            _validate_invariants(scenario_e1a)
+            _validate_teammate_belief_integrity(scenario_e1a)
+            scenario_e1a.situation_event_count = _count_visible_events(scenario_e1a)
+            scenario_e1a.epistemic_transitions = count_epistemic_category_transitions(scenario_e1a)
+
+            if not scenario_e1a.events:
+                raise ValueError(f"Generated scenario {scenario_e1a.id} Extra={scenario_e1a.extra} has no events")
+
+            scenarios.append(scenario_e1a)
+            e1a_sit = scenario_e1a.situation_event_count  # For SIT gap check with 1B
+            e1a_ect = scenario_e1a.epistemic_transitions['total']  # For ECT validation with 1B
+            scenario_idx += 1
+        else:
+            e1a_sit = None
+            e1a_ect = None
+
+        # --- Extra=1B: Was Extra=1 - apply variation + extra events (adds ECT) ---
+        # Use rejection sampling to ensure SIT gap <= 3 with 1A
+        if e1b_spec is not None:
             MAX_SIT_GAP = 3
             MAX_RETRIES = 10
-            e0_sit = scenario_e0.situation_event_count
+            sit_gap = 0
 
             for retry in range(MAX_RETRIES):
-                scenario_e1 = copy.deepcopy(base_scenario)
-                scenario_e1.extra = 1
-                scenario_e1.round_num = (scenario_idx // len(acting_chars)) + 1
+                scenario_e1b = copy.deepcopy(base_scenario)
+                scenario_e1b.extra = '1B'
+                scenario_e1b.round_num = (scenario_idx // len(acting_chars)) + 1
 
                 # Apply cosmetic name variation (container swap, item change)
                 variation_seed = int(f"{seed or 0}{scenario_idx:03d}{int(row['Id']):04d}99")
                 variation_rng = random.Random(variation_seed)
-                apply_name_variation(scenario_e1, variation_rng)
+                apply_name_variation(scenario_e1b, variation_rng)
 
-                # Insert extra events (adds ECT)
-                # Use retry counter to vary RNG for retries
+                # Insert extra events (adds ECT) - unchanged behavior from old Extra=1
                 retry_rng = random.Random(rng.randint(0, 2**31) + retry)
-                base_event_count = len(scenario_e1.events)
-                answerer_state = _get_answerer_state(e1_spec)
+                base_event_count = len(scenario_e1b.events)
+                answerer_state = _get_answerer_state(e1b_spec)
 
-                if (e1_spec['Answerer'] == 'Teammate' and
-                    e1_spec['KS_Self'] == EpistemicState.KNOWS_X and
-                    e1_spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
-                    insert_extra_puts(scenario_e1, answerer, retry_rng)
+                if (e1b_spec['Answerer'] == 'Teammate' and
+                    e1b_spec['KS_Self'] == EpistemicState.KNOWS_X and
+                    e1b_spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
+                    insert_extra_puts(scenario_e1b, answerer, retry_rng)
                 elif answerer_state == EpistemicState.KNOWS_TRUTH:
-                    insert_extra_events_with_revelation(scenario_e1, answerer, retry_rng)
+                    insert_extra_events_with_revelation(scenario_e1b, answerer, retry_rng)
                 elif answerer_state == EpistemicState.BELIEVES_TRUTH:
-                    insert_extra_events_believes_true(scenario_e1, answerer, retry_rng)
+                    insert_extra_events_believes_true(scenario_e1b, answerer, retry_rng)
                 elif answerer_state == EpistemicState.BELIEVES_FALSE:
-                    insert_extra_events_believes_false(scenario_e1, answerer, retry_rng)
+                    insert_extra_events_believes_false(scenario_e1b, answerer, retry_rng)
                 elif answerer_state == EpistemicState.BELIEVES_X:
-                    insert_extra_events_believes_x(scenario_e1, answerer, retry_rng)
+                    insert_extra_events_believes_x(scenario_e1b, answerer, retry_rng)
                 elif answerer_state == EpistemicState.UNKNOWN:
-                    insert_extra_events_unknown(scenario_e1, answerer, retry_rng)
+                    insert_extra_events_unknown(scenario_e1b, answerer, retry_rng)
                 else:
-                    insert_extra_events(scenario_e1, answerer, actor, answerer_state, e1_spec, retry_rng)
+                    insert_extra_events(scenario_e1b, answerer, actor, answerer_state, e1b_spec, retry_rng)
 
                 # Validate: extra events were actually added
-                if len(scenario_e1.events) <= base_event_count:
-                    import warnings
-                    warnings.warn(
-                        f"ID {row['Id']} Extra=1: insert function failed to add events "
-                        f"(answerer_state={answerer_state}, before={base_event_count}, after={len(scenario_e1.events)})"
+                if len(scenario_e1b.events) <= base_event_count:
+                    raise ValueError(
+                        f"ID {row['Id']} Extra=1B: insert function failed to add events "
+                        f"(answerer_state={answerer_state}, before={base_event_count}, after={len(scenario_e1b.events)}). "
+                        f"This indicates a scenario generation bug - no valid actors for extra events."
                     )
 
-                # Validate and compute metrics for Extra=1
-                _validate_invariants(scenario_e1)
-                _validate_teammate_belief_integrity(scenario_e1)
-                scenario_e1.situation_event_count = _count_visible_events(scenario_e1)
-                scenario_e1.epistemic_transitions = count_epistemic_category_transitions(scenario_e1)
+                _validate_invariants(scenario_e1b)
+                _validate_teammate_belief_integrity(scenario_e1b)
+                scenario_e1b.situation_event_count = _count_visible_events(scenario_e1b)
+                scenario_e1b.epistemic_transitions = count_epistemic_category_transitions(scenario_e1b)
 
-                # Check SIT gap - accept if within threshold
-                sit_gap = abs(scenario_e1.situation_event_count - e0_sit)
-                if sit_gap <= MAX_SIT_GAP:
-                    break
+                # Check SIT gap with 1A (if 1A was generated)
+                if e1a_sit is not None:
+                    sit_gap = abs(scenario_e1b.situation_event_count - e1a_sit)
+                    if sit_gap <= MAX_SIT_GAP:
+                        break
+                else:
+                    break  # No 1A to compare with
 
             # Warn if max retries reached without satisfying SIT constraint
-            if sit_gap > MAX_SIT_GAP:
+            if e1a_sit is not None and sit_gap > MAX_SIT_GAP:
                 import warnings
                 warnings.warn(
-                    f"ID {row['Id']} Extra=1: SIT gap {sit_gap} exceeds threshold after {MAX_RETRIES} retries"
+                    f"ID {row['Id']} Extra=1B: SIT gap {sit_gap} exceeds threshold after {MAX_RETRIES} retries"
                 )
 
-            scenarios.append(scenario_e1)
+            # Validate: Extra=1B must have more ECTs than Extra=1A
+            if e1a_ect is not None:
+                e1b_ect = scenario_e1b.epistemic_transitions['total']
+                if e1b_ect <= e1a_ect:
+                    raise ValueError(
+                        f"ID {row['Id']} Extra=1B has ECT={e1b_ect} which is not greater than "
+                        f"Extra=1A ECT={e1a_ect}. Extra=1B must add epistemic complexity."
+                    )
+
+            scenarios.append(scenario_e1b)
             scenario_idx += 1
 
     # Final safeguard: ensure we generated scenarios if specs were provided

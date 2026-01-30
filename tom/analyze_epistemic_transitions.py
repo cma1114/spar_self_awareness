@@ -7,7 +7,13 @@ Uses the category-based ECT model (see EPISTEMIC_METRICS.md):
   - Accuracy axis: true ↔ false belief (#3 and #4)
 
 Also reports situation tracking (visible events from A's perspective) to
-verify that Extra=0 and Extra=1 have been equalized by filler events.
+verify that Extra=1A and Extra=1B have been equalized by filler events.
+
+Extra values:
+  - '0A': Minimal events, no ECTs (new)
+  - '0B': Higher event load, no ECTs (new)
+  - '1A': Filler for SIT parity (was Extra=0)
+  - '1B': Extra events with ECT addition (was Extra=1)
 """
 
 import sys, os
@@ -23,6 +29,19 @@ import json
 import tempfile
 from collections import defaultdict
 from typing import Dict, Tuple
+
+
+def normalize_extra(val):
+    """Normalize Extra field to string format for backward compatibility.
+
+    Legacy int values are converted to new string format:
+    - None or 0 → '1A' (legacy Extra=0 behavior)
+    - 1 → '1B' (legacy Extra=1 behavior)
+    """
+    if val is None or val == 0: return '1A'  # Legacy Extra=0 → 1A
+    if val == 1: return '1B'                  # Legacy Extra=1 → 1B
+    if val in ('0A', '0B', '1A', '1B'): return val
+    return str(val)
 
 
 def main():
@@ -67,7 +86,7 @@ def main():
 
         for sc in scenarios:
             sid = sc.id
-            extra = sc.extra if sc.extra else 0
+            extra = normalize_extra(sc.extra)
             ect = count_epistemic_category_transitions(sc)
             vis = _count_visible_events(sc)
             ect_results[sid][(extra, seed)] = ect
@@ -93,38 +112,38 @@ def main():
     lines.append(f"Scenarios: {len(unique_ids)} unique IDs")
     lines.append("")
 
-    # === TABLE 1: ECT comparison ===
-    lines.append("TABLE 1: ECT COMPARISON (Extra=0 vs Extra=1)")
+    # === TABLE 1: ECT comparison (1A vs 1B) ===
+    lines.append("TABLE 1: ECT COMPARISON (Extra=1A vs Extra=1B)")
     lines.append("-" * 90)
-    header1 = (f"{'ID':>4s}  {'E0 ECT':>8s}  {'E1 ECT':>8s}  {'Delta':>8s}  "
-               f"{'E0 cert':>8s}  {'E0 acc':>8s}  {'E1 cert':>8s}  {'E1 acc':>8s}  {'Flag':>6s}")
+    header1 = (f"{'ID':>4s}  {'1A ECT':>8s}  {'1B ECT':>8s}  {'Delta':>8s}  "
+               f"{'1A cert':>8s}  {'1A acc':>8s}  {'1B cert':>8s}  {'1B acc':>8s}  {'Flag':>6s}")
     lines.append(header1)
     lines.append("-" * len(header1))
 
     ect_flagged = []
     for sid in unique_ids:
-        has_extra1 = any(s['Extra'] == 1 for s in spec_by_id[sid])
-        if not has_extra1:
-            e0_total = [ect_results[sid].get((0, s), {}).get('total', None) for s in seeds]
-            e0_total = [t for t in e0_total if t is not None]
-            lines.append(f"{sid:>4s}  {range_str(e0_total):>8s}  {'--':>8s}  {'--':>8s}  "
+        has_extra1b = any(s['Extra'] == '1B' for s in spec_by_id[sid])
+        if not has_extra1b:
+            e1a_total = [ect_results[sid].get(('1A', s), {}).get('total', None) for s in seeds]
+            e1a_total = [t for t in e1a_total if t is not None]
+            lines.append(f"{sid:>4s}  {range_str(e1a_total):>8s}  {'--':>8s}  {'--':>8s}  "
                          f"{'--':>8s}  {'--':>8s}  {'--':>8s}  {'--':>8s}  {'':>6s}")
             continue
 
         deltas = []
-        e0_totals, e1_totals = [], []
-        e0_certs, e0_accs, e1_certs, e1_accs = [], [], [], []
+        e1a_totals, e1b_totals = [], []
+        e1a_certs, e1a_accs, e1b_certs, e1b_accs = [], [], [], []
         for s in seeds:
-            t0 = ect_results[sid].get((0, s))
-            t1 = ect_results[sid].get((1, s))
-            if t0 is not None and t1 is not None:
-                deltas.append(t1['total'] - t0['total'])
-                e0_totals.append(t0['total'])
-                e1_totals.append(t1['total'])
-                e0_certs.append(t0['certainty'])
-                e0_accs.append(t0['accuracy'])
-                e1_certs.append(t1['certainty'])
-                e1_accs.append(t1['accuracy'])
+            t1a = ect_results[sid].get(('1A', s))
+            t1b = ect_results[sid].get(('1B', s))
+            if t1a is not None and t1b is not None:
+                deltas.append(t1b['total'] - t1a['total'])
+                e1a_totals.append(t1a['total'])
+                e1b_totals.append(t1b['total'])
+                e1a_certs.append(t1a['certainty'])
+                e1a_accs.append(t1a['accuracy'])
+                e1b_certs.append(t1b['certainty'])
+                e1b_accs.append(t1b['accuracy'])
 
         if not deltas:
             lines.append(f"{sid:>4s}  {'N/A':>8s}  {'N/A':>8s}  {'N/A':>8s}  "
@@ -136,48 +155,48 @@ def main():
             flag = "FAIL"
             ect_flagged.append((sid, min(deltas), max(deltas)))
 
-        lines.append(f"{sid:>4s}  {range_str(e0_totals):>8s}  {range_str(e1_totals):>8s}  "
-                     f"{range_str(deltas):>8s}  {range_str(e0_certs):>8s}  {range_str(e0_accs):>8s}  "
-                     f"{range_str(e1_certs):>8s}  {range_str(e1_accs):>8s}  {flag:>6s}")
+        lines.append(f"{sid:>4s}  {range_str(e1a_totals):>8s}  {range_str(e1b_totals):>8s}  "
+                     f"{range_str(deltas):>8s}  {range_str(e1a_certs):>8s}  {range_str(e1a_accs):>8s}  "
+                     f"{range_str(e1b_certs):>8s}  {range_str(e1b_accs):>8s}  {flag:>6s}")
 
-    # === TABLE 2: Situation tracking comparison ===
+    # === TABLE 2: Situation tracking comparison (1A vs 1B) ===
     lines.append("")
     lines.append("")
-    lines.append("TABLE 2: SITUATION TRACKING COMPARISON (Extra=0 vs Extra=1)")
+    lines.append("TABLE 2: SITUATION TRACKING COMPARISON (Extra=1A vs Extra=1B)")
     lines.append("-" * 70)
-    header2 = (f"{'ID':>4s}  {'E0 SIT':>8s}  {'E1 SIT':>8s}  {'Delta':>8s}  "
-               f"{'E0 RAW':>8s}  {'E1 RAW':>8s}  {'Flag':>6s}")
+    header2 = (f"{'ID':>4s}  {'1A SIT':>8s}  {'1B SIT':>8s}  {'Delta':>8s}  "
+               f"{'1A RAW':>8s}  {'1B RAW':>8s}  {'Flag':>6s}")
     lines.append(header2)
     lines.append("-" * len(header2))
 
     sit_flagged = []
     for sid in unique_ids:
-        has_extra1 = any(s['Extra'] == 1 for s in spec_by_id[sid])
-        if not has_extra1:
-            e0_sit = [sit_results[sid].get((0, s), None) for s in seeds]
-            e0_sit = [v for v in e0_sit if v is not None]
-            e0_raw = [raw_event_counts[sid].get((0, s), None) for s in seeds]
-            e0_raw = [v for v in e0_raw if v is not None]
-            lines.append(f"{sid:>4s}  {range_str(e0_sit):>8s}  {'--':>8s}  {'--':>8s}  "
-                         f"{range_str(e0_raw):>8s}  {'--':>8s}  {'':>6s}")
+        has_extra1b = any(s['Extra'] == '1B' for s in spec_by_id[sid])
+        if not has_extra1b:
+            e1a_sit = [sit_results[sid].get(('1A', s), None) for s in seeds]
+            e1a_sit = [v for v in e1a_sit if v is not None]
+            e1a_raw = [raw_event_counts[sid].get(('1A', s), None) for s in seeds]
+            e1a_raw = [v for v in e1a_raw if v is not None]
+            lines.append(f"{sid:>4s}  {range_str(e1a_sit):>8s}  {'--':>8s}  {'--':>8s}  "
+                         f"{range_str(e1a_raw):>8s}  {'--':>8s}  {'':>6s}")
             continue
 
         deltas = []
-        e0_sits, e1_sits = [], []
-        e0_raws, e1_raws = [], []
+        e1a_sits, e1b_sits = [], []
+        e1a_raws, e1b_raws = [], []
         for s in seeds:
-            s0 = sit_results[sid].get((0, s))
-            s1 = sit_results[sid].get((1, s))
-            r0 = raw_event_counts[sid].get((0, s))
-            r1 = raw_event_counts[sid].get((1, s))
-            if s0 is not None and s1 is not None:
-                deltas.append(s1 - s0)
-                e0_sits.append(s0)
-                e1_sits.append(s1)
-            if r0 is not None:
-                e0_raws.append(r0)
-            if r1 is not None:
-                e1_raws.append(r1)
+            s1a = sit_results[sid].get(('1A', s))
+            s1b = sit_results[sid].get(('1B', s))
+            r1a = raw_event_counts[sid].get(('1A', s))
+            r1b = raw_event_counts[sid].get(('1B', s))
+            if s1a is not None and s1b is not None:
+                deltas.append(s1b - s1a)
+                e1a_sits.append(s1a)
+                e1b_sits.append(s1b)
+            if r1a is not None:
+                e1a_raws.append(r1a)
+            if r1b is not None:
+                e1b_raws.append(r1b)
 
         if not deltas:
             lines.append(f"{sid:>4s}  {'N/A':>8s}  {'N/A':>8s}  {'N/A':>8s}  "
@@ -190,8 +209,8 @@ def main():
             flag = "GAP"
             sit_flagged.append((sid, min(deltas), max(deltas)))
 
-        lines.append(f"{sid:>4s}  {range_str(e0_sits):>8s}  {range_str(e1_sits):>8s}  "
-                     f"{range_str(deltas):>8s}  {range_str(e0_raws):>8s}  {range_str(e1_raws):>8s}  "
+        lines.append(f"{sid:>4s}  {range_str(e1a_sits):>8s}  {range_str(e1b_sits):>8s}  "
+                     f"{range_str(deltas):>8s}  {range_str(e1a_raws):>8s}  {range_str(e1b_raws):>8s}  "
                      f"{flag:>6s}")
 
     # === SUMMARY ===
@@ -201,22 +220,22 @@ def main():
     lines.append("SUMMARY")
     lines.append("")
 
-    lines.append("--- ECT (Extra=1 should always have more ECTs than Extra=0) ---")
+    lines.append("--- ECT (Extra=1B should always have more ECTs than Extra=1A) ---")
     if ect_flagged:
-        lines.append(f"FLAGGED: {len(ect_flagged)} scenario(s) where Extra=1 ECT <= Extra=0:")
+        lines.append(f"FLAGGED: {len(ect_flagged)} scenario(s) where Extra=1B ECT <= Extra=1A:")
         for sid, dmin, dmax in ect_flagged:
             lines.append(f"  ID {sid}: ECT delta range [{dmin}, {dmax}]")
     else:
-        lines.append("PASS: All scenarios have Extra=1 ECT > Extra=0 for every seed.")
+        lines.append("PASS: All scenarios have Extra=1B ECT > Extra=1A for every seed.")
     lines.append("")
 
-    lines.append("--- Situation Tracking (Extra=0 and Extra=1 should be similar) ---")
+    lines.append("--- Situation Tracking (Extra=1A and Extra=1B should be similar) ---")
     if sit_flagged:
         lines.append(f"FLAGGED: {len(sit_flagged)} scenario(s) with visible event gap > 3:")
         for sid, dmin, dmax in sit_flagged:
             lines.append(f"  ID {sid}: SIT delta range [{dmin}, {dmax}]")
     else:
-        lines.append("PASS: All scenarios have Extra=0 and Extra=1 visible events within ±3.")
+        lines.append("PASS: All scenarios have Extra=1A and Extra=1B visible events within ±3.")
     lines.append("")
 
     # === FLAGGED ECT DETAIL ===
@@ -227,23 +246,23 @@ def main():
         for sid, dmin, dmax in ect_flagged:
             lines.append("")
             lines.append(f"--- ID {sid} ---")
-            seed_header = (f"  {'Seed':>4s}  {'E0 tot':>6s}  {'E1 tot':>6s}  {'Delta':>6s}  "
-                           f"{'E0 cer':>6s}  {'E0 acc':>6s}  {'E1 cer':>6s}  {'E1 acc':>6s}  "
-                           f"{'E0 SIT':>6s}  {'E1 SIT':>6s}")
+            seed_header = (f"  {'Seed':>4s}  {'1A tot':>6s}  {'1B tot':>6s}  {'Delta':>6s}  "
+                           f"{'1A cer':>6s}  {'1A acc':>6s}  {'1B cer':>6s}  {'1B acc':>6s}  "
+                           f"{'1A SIT':>6s}  {'1B SIT':>6s}")
             lines.append(seed_header)
             for s in seeds:
-                t0 = ect_results[sid].get((0, s))
-                t1 = ect_results[sid].get((1, s))
-                s0 = sit_results[sid].get((0, s))
-                s1 = sit_results[sid].get((1, s))
-                if t0 is not None and t1 is not None:
-                    delta = t1['total'] - t0['total']
+                t1a = ect_results[sid].get(('1A', s))
+                t1b = ect_results[sid].get(('1B', s))
+                s1a = sit_results[sid].get(('1A', s))
+                s1b = sit_results[sid].get(('1B', s))
+                if t1a is not None and t1b is not None:
+                    delta = t1b['total'] - t1a['total']
                     flag_mark = " <--" if delta <= 0 else ""
                     lines.append(
-                        f"  {s:>4d}  {t0['total']:>6d}  {t1['total']:>6d}  {delta:>6d}  "
-                        f"{t0['certainty']:>6d}  {t0['accuracy']:>6d}  "
-                        f"{t1['certainty']:>6d}  {t1['accuracy']:>6d}  "
-                        f"{s0 or 0:>6d}  {s1 or 0:>6d}{flag_mark}"
+                        f"  {s:>4d}  {t1a['total']:>6d}  {t1b['total']:>6d}  {delta:>6d}  "
+                        f"{t1a['certainty']:>6d}  {t1a['accuracy']:>6d}  "
+                        f"{t1b['certainty']:>6d}  {t1b['accuracy']:>6d}  "
+                        f"{s1a or 0:>6d}  {s1b or 0:>6d}{flag_mark}"
                     )
 
     # === Column legend ===
@@ -256,9 +275,15 @@ def main():
     lines.append("  acc     = accuracy transitions (#3 + #4)")
     lines.append("  SIT     = visible events from A's perspective")
     lines.append("  RAW     = total raw event count")
-    lines.append("  Delta   = Extra=1 value - Extra=0 value")
-    lines.append("  FAIL    = Extra=1 ECT <= Extra=0 for some seed")
+    lines.append("  Delta   = Extra=1B value - Extra=1A value")
+    lines.append("  FAIL    = Extra=1B ECT <= Extra=1A for some seed")
     lines.append("  GAP     = |SIT delta| > 3 for some seed")
+    lines.append("")
+    lines.append("Extra field meanings:")
+    lines.append("  0A = minimal events, no ECTs (new)")
+    lines.append("  0B = higher event load, no ECTs (new)")
+    lines.append("  1A = filler for SIT parity (was Extra=0)")
+    lines.append("  1B = extra events with ECT addition (was Extra=1)")
 
     report = "\n".join(lines)
 

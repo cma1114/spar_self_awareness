@@ -15,6 +15,19 @@ from collections import defaultdict
 from typing import Dict, List, Tuple, Optional
 
 
+def normalize_extra(val):
+    """Normalize Extra field to string format for backward compatibility.
+
+    Legacy int values are converted to new string format:
+    - None or 0 → '1A' (legacy Extra=0 behavior)
+    - 1 → '1B' (legacy Extra=1 behavior)
+    """
+    if val is None or val == 0: return '1A'  # Legacy Extra=0 → 1A
+    if val == 1: return '1B'                  # Legacy Extra=1 → 1B
+    if val in ('0A', '0B', '1A', '1B'): return val
+    return str(val)
+
+
 def find_recent_game_data(logs_dir: str, n: int = 8) -> List[str]:
     """Find the N most recent game_data.json files by modification time."""
     pattern = os.path.join(logs_dir, '*_game_data.json')
@@ -84,7 +97,7 @@ def load_and_parse_all(file_paths: List[str]) -> List[dict]:
             extra_val = rec.get('extra')
             parsed.update({
                 'scenario_id': rec.get('scenario_id', ''),
-                'extra': 0 if extra_val is None else int(extra_val),
+                'extra': normalize_extra(extra_val),
                 'ks_self': rec.get('ks_self', ''),
                 'ks_teammate': rec.get('ks_teammate', ''),
                 'ks_opponent': rec.get('ks_opponent', ''),
@@ -146,10 +159,14 @@ def generate_report(parsed_data: List[dict],
         lines.append(f"  {os.path.basename(fp)}")
     lines.append(f"Total scenario records: {len(parsed_data)}")
 
-    extra0 = [p for p in parsed_data if p['extra'] == 0]
-    extra1 = [p for p in parsed_data if p['extra'] == 1]
-    lines.append(f"  Extra=0: {len(extra0)}")
-    lines.append(f"  Extra=1: {len(extra1)}")
+    extra0a = [p for p in parsed_data if p['extra'] == '0A']
+    extra0b = [p for p in parsed_data if p['extra'] == '0B']
+    extra1a = [p for p in parsed_data if p['extra'] == '1A']
+    extra1b = [p for p in parsed_data if p['extra'] == '1B']
+    lines.append(f"  Extra=0A: {len(extra0a)}")
+    lines.append(f"  Extra=0B: {len(extra0b)}")
+    lines.append(f"  Extra=1A: {len(extra1a)}")
+    lines.append(f"  Extra=1B: {len(extra1b)}")
 
     # =========================================================================
     # 1. Event Count Summary Table
@@ -160,7 +177,9 @@ def generate_report(parsed_data: List[dict],
     lines.append(f"\n{'ID':>4} {'Extra':>5} {'Mean':>6} {'StDev':>6} {'Min':>4} {'Max':>4} {'N':>3} {'Action':>15} {'KS_Self':>15}")
     lines.append("-" * 72)
 
-    sorted_keys = sorted(stats.keys(), key=lambda k: (int(k[0]), k[1]))
+    # Sort by scenario ID (numeric) then extra (0A, 0B, 1A, 1B)
+    extra_order = {'0A': 0, '0B': 1, '1A': 2, '1B': 3}
+    sorted_keys = sorted(stats.keys(), key=lambda k: (int(k[0]), extra_order.get(k[1], 99)))
     for key in sorted_keys:
         s = stats[key]
         sid, extra = key
@@ -171,62 +190,87 @@ def generate_report(parsed_data: List[dict],
         )
 
     # =========================================================================
-    # 2. Extra=0 vs Extra=1 Complexity Comparison
+    # 2. Extra=1A vs Extra=1B Complexity Comparison (ECT effect)
     # =========================================================================
     lines.append("\n" + "=" * 80)
-    lines.append("2. EXTRA=0 vs EXTRA=1 COMPLEXITY")
+    lines.append("2. EXTRA=1A vs EXTRA=1B COMPLEXITY (ECT effect)")
     lines.append("=" * 80)
 
-    e0_counts = [p['event_count'] for p in extra0]
-    e1_counts = [p['event_count'] for p in extra1]
-    lines.append(f"\nExtra=0: mean={statistics.mean(e0_counts):.2f}, "
-                 f"stdev={statistics.stdev(e0_counts):.2f}, "
-                 f"min={min(e0_counts)}, max={max(e0_counts)}")
-    lines.append(f"Extra=1: mean={statistics.mean(e1_counts):.2f}, "
-                 f"stdev={statistics.stdev(e1_counts):.2f}, "
-                 f"min={min(e1_counts)}, max={max(e1_counts)}")
-    lines.append(f"Delta (Extra=1 - Extra=0): {statistics.mean(e1_counts) - statistics.mean(e0_counts):.2f} events on average")
+    e1a_counts = [p['event_count'] for p in extra1a]
+    e1b_counts = [p['event_count'] for p in extra1b]
 
-    # Per-scenario delta
-    lines.append(f"\n{'ID':>4} {'E0 Mean':>8} {'E1 Mean':>8} {'Delta':>7} {'Flag':>6}")
+    if e1a_counts and e1b_counts:
+        lines.append(f"\nExtra=1A: mean={statistics.mean(e1a_counts):.2f}, "
+                     f"stdev={statistics.stdev(e1a_counts):.2f}, "
+                     f"min={min(e1a_counts)}, max={max(e1a_counts)}")
+        lines.append(f"Extra=1B: mean={statistics.mean(e1b_counts):.2f}, "
+                     f"stdev={statistics.stdev(e1b_counts):.2f}, "
+                     f"min={min(e1b_counts)}, max={max(e1b_counts)}")
+        lines.append(f"Delta (Extra=1B - Extra=1A): {statistics.mean(e1b_counts) - statistics.mean(e1a_counts):.2f} events on average")
+    else:
+        lines.append("\nInsufficient data for 1A vs 1B comparison.")
+
+    # Per-scenario delta for 1A vs 1B
+    lines.append(f"\n{'ID':>4} {'1A Mean':>8} {'1B Mean':>8} {'Delta':>7} {'Flag':>6}")
     lines.append("-" * 40)
 
     failures = []
     for sid in sorted(set(k[0] for k in stats.keys()), key=int):
-        e0_key = (sid, 0)
-        e1_key = (sid, 1)
-        if e0_key in stats and e1_key in stats:
-            e0_mean = stats[e0_key]['event_mean']
-            e1_mean = stats[e1_key]['event_mean']
-            delta = e1_mean - e0_mean
+        e1a_key = (sid, '1A')
+        e1b_key = (sid, '1B')
+        if e1a_key in stats and e1b_key in stats:
+            e1a_mean = stats[e1a_key]['event_mean']
+            e1b_mean = stats[e1b_key]['event_mean']
+            delta = e1b_mean - e1a_mean
             flag = "WARN" if delta <= 0 else ""
-            lines.append(f"{sid:>4} {e0_mean:>8.1f} {e1_mean:>8.1f} {delta:>7.1f} {flag:>6}")
+            lines.append(f"{sid:>4} {e1a_mean:>8.1f} {e1b_mean:>8.1f} {delta:>7.1f} {flag:>6}")
             if delta <= 0:
                 failures.append(sid)
 
     if failures:
-        lines.append(f"\nWARNING: {len(failures)} scenario(s) where Extra=1 has ≤ events than Extra=0: {failures}")
-    else:
-        lines.append("\nAll scenarios have more events in Extra=1 than Extra=0.")
+        lines.append(f"\nWARNING: {len(failures)} scenario(s) where Extra=1B has ≤ events than Extra=1A: {failures}")
+    elif e1a_counts and e1b_counts:
+        lines.append("\nAll scenarios have more events in Extra=1B than Extra=1A.")
 
-    # Check individual runs for any Extra=1 <= Extra=0
+    # Check individual runs for any Extra=1B <= Extra=1A
     run_failures = []
     for sid in sorted(set(k[0] for k in stats.keys()), key=int):
-        e0_key = (sid, 0)
-        e1_key = (sid, 1)
-        if e0_key in stats and e1_key in stats:
-            e0_counts_list = stats[e0_key]['event_counts']
-            e1_counts_list = stats[e1_key]['event_counts']
-            for i, (e0c, e1c) in enumerate(zip(e0_counts_list, e1_counts_list)):
-                if e1c <= e0c:
-                    run_failures.append((sid, i, e0c, e1c))
+        e1a_key = (sid, '1A')
+        e1b_key = (sid, '1B')
+        if e1a_key in stats and e1b_key in stats:
+            e1a_counts_list = stats[e1a_key]['event_counts']
+            e1b_counts_list = stats[e1b_key]['event_counts']
+            for i, (e1a_c, e1b_c) in enumerate(zip(e1a_counts_list, e1b_counts_list)):
+                if e1b_c <= e1a_c:
+                    run_failures.append((sid, i, e1a_c, e1b_c))
 
     if run_failures:
-        lines.append(f"\nIndividual run failures (Extra=1 ≤ Extra=0): {len(run_failures)}")
-        for sid, run_idx, e0c, e1c in run_failures[:20]:
-            lines.append(f"  ID {sid}, run {run_idx}: Extra=0={e0c}, Extra=1={e1c}")
+        lines.append(f"\nIndividual run failures (Extra=1B ≤ Extra=1A): {len(run_failures)}")
+        for sid, run_idx, e1a_c, e1b_c in run_failures[:20]:
+            lines.append(f"  ID {sid}, run {run_idx}: Extra=1A={e1a_c}, Extra=1B={e1b_c}")
+    elif e1a_counts and e1b_counts:
+        lines.append("No individual run failures (Extra=1B always > Extra=1A in every run).")
+
+    # =========================================================================
+    # 2b. Extra=0A vs Extra=0B Complexity Comparison (SIT effect)
+    # =========================================================================
+    lines.append("\n" + "-" * 80)
+    lines.append("2b. EXTRA=0A vs EXTRA=0B COMPLEXITY (SIT effect)")
+    lines.append("-" * 80)
+
+    e0a_counts = [p['event_count'] for p in extra0a]
+    e0b_counts = [p['event_count'] for p in extra0b]
+
+    if e0a_counts and e0b_counts:
+        lines.append(f"\nExtra=0A: mean={statistics.mean(e0a_counts):.2f}, "
+                     f"stdev={statistics.stdev(e0a_counts):.2f}, "
+                     f"min={min(e0a_counts)}, max={max(e0a_counts)}")
+        lines.append(f"Extra=0B: mean={statistics.mean(e0b_counts):.2f}, "
+                     f"stdev={statistics.stdev(e0b_counts):.2f}, "
+                     f"min={min(e0b_counts)}, max={max(e0b_counts)}")
+        lines.append(f"Delta (Extra=0B - Extra=0A): {statistics.mean(e0b_counts) - statistics.mean(e0a_counts):.2f} events on average")
     else:
-        lines.append("No individual run failures (Extra=1 always > Extra=0 in every run).")
+        lines.append("\nNo Extra=0A/0B data found (new scenario type).")
 
     # =========================================================================
     # 3. Event Type Distribution
@@ -235,36 +279,49 @@ def generate_report(parsed_data: List[dict],
     lines.append("3. EVENT TYPE DISTRIBUTION")
     lines.append("=" * 80)
 
-    type_totals = {'ALL': defaultdict(int), 'Extra=0': defaultdict(int), 'Extra=1': defaultdict(int)}
+    type_totals = {
+        'ALL': defaultdict(int),
+        'Extra=0A': defaultdict(int),
+        'Extra=0B': defaultdict(int),
+        'Extra=1A': defaultdict(int),
+        'Extra=1B': defaultdict(int)
+    }
     for p in parsed_data:
-        group = 'Extra=0' if p['extra'] == 0 else 'Extra=1'
+        group = f"Extra={p['extra']}"
         for etype, count in p['event_types'].items():
             type_totals['ALL'][etype] += count
-            type_totals[group][etype] += count
+            if group in type_totals:
+                type_totals[group][etype] += count
 
     all_types = sorted(set().union(*[t.keys() for t in type_totals.values()]))
-    lines.append(f"\n{'Type':>10} {'ALL':>8} {'Extra=0':>10} {'Extra=1':>10}")
-    lines.append("-" * 42)
+    lines.append(f"\n{'Type':>10} {'ALL':>8} {'0A':>8} {'0B':>8} {'1A':>8} {'1B':>8}")
+    lines.append("-" * 54)
     for etype in all_types:
         all_c = type_totals['ALL'].get(etype, 0)
-        e0_c = type_totals['Extra=0'].get(etype, 0)
-        e1_c = type_totals['Extra=1'].get(etype, 0)
-        lines.append(f"{etype:>10} {all_c:>8} {e0_c:>10} {e1_c:>10}")
+        e0a_c = type_totals['Extra=0A'].get(etype, 0)
+        e0b_c = type_totals['Extra=0B'].get(etype, 0)
+        e1a_c = type_totals['Extra=1A'].get(etype, 0)
+        e1b_c = type_totals['Extra=1B'].get(etype, 0)
+        lines.append(f"{etype:>10} {all_c:>8} {e0a_c:>8} {e0b_c:>8} {e1a_c:>8} {e1b_c:>8}")
 
     total_all = sum(type_totals['ALL'].values())
-    total_e0 = sum(type_totals['Extra=0'].values())
-    total_e1 = sum(type_totals['Extra=1'].values())
-    lines.append(f"{'TOTAL':>10} {total_all:>8} {total_e0:>10} {total_e1:>10}")
+    total_e0a = sum(type_totals['Extra=0A'].values())
+    total_e0b = sum(type_totals['Extra=0B'].values())
+    total_e1a = sum(type_totals['Extra=1A'].values())
+    total_e1b = sum(type_totals['Extra=1B'].values())
+    lines.append(f"{'TOTAL':>10} {total_all:>8} {total_e0a:>8} {total_e0b:>8} {total_e1a:>8} {total_e1b:>8}")
 
     # Proportions
     lines.append(f"\nProportions:")
-    lines.append(f"{'Type':>10} {'ALL':>8} {'Extra=0':>10} {'Extra=1':>10}")
-    lines.append("-" * 42)
+    lines.append(f"{'Type':>10} {'ALL':>8} {'0A':>8} {'0B':>8} {'1A':>8} {'1B':>8}")
+    lines.append("-" * 54)
     for etype in all_types:
         all_pct = type_totals['ALL'].get(etype, 0) / total_all * 100 if total_all else 0
-        e0_pct = type_totals['Extra=0'].get(etype, 0) / total_e0 * 100 if total_e0 else 0
-        e1_pct = type_totals['Extra=1'].get(etype, 0) / total_e1 * 100 if total_e1 else 0
-        lines.append(f"{etype:>10} {all_pct:>7.1f}% {e0_pct:>9.1f}% {e1_pct:>9.1f}%")
+        e0a_pct = type_totals['Extra=0A'].get(etype, 0) / total_e0a * 100 if total_e0a else 0
+        e0b_pct = type_totals['Extra=0B'].get(etype, 0) / total_e0b * 100 if total_e0b else 0
+        e1a_pct = type_totals['Extra=1A'].get(etype, 0) / total_e1a * 100 if total_e1a else 0
+        e1b_pct = type_totals['Extra=1B'].get(etype, 0) / total_e1b * 100 if total_e1b else 0
+        lines.append(f"{etype:>10} {all_pct:>7.1f}% {e0a_pct:>7.1f}% {e0b_pct:>7.1f}% {e1a_pct:>7.1f}% {e1b_pct:>7.1f}%")
 
     # =========================================================================
     # 4. Description Length
@@ -273,7 +330,7 @@ def generate_report(parsed_data: List[dict],
     lines.append("4. DESCRIPTION LENGTH")
     lines.append("=" * 80)
 
-    for label, subset in [("Extra=0", extra0), ("Extra=1", extra1), ("ALL", parsed_data)]:
+    for label, subset in [("Extra=0A", extra0a), ("Extra=0B", extra0b), ("Extra=1A", extra1a), ("Extra=1B", extra1b), ("ALL", parsed_data)]:
         words = [p['word_count'] for p in subset]
         chars = [p['char_count'] for p in subset]
         lines.append(f"\n{label} (N={len(subset)}):")
@@ -324,7 +381,7 @@ def generate_report(parsed_data: List[dict],
     lines.append("6. EPISTEMIC STATE BREAKDOWN")
     lines.append("=" * 80)
 
-    for extra_level in [0, 1]:
+    for extra_level in ['0A', '0B', '1A', '1B']:
         lines.append(f"\nExtra={extra_level}:")
         ks_groups = defaultdict(list)
         for p in parsed_data:
@@ -353,15 +410,20 @@ def generate_report(parsed_data: List[dict],
 
     samples = []
 
-    # Simple Extra=0
-    simple = [p for p in recent if p['extra'] == 0 and p['event_count'] <= 3]
-    if simple:
-        samples.append(("Simple Extra=0", simple[0]))
+    # Simple Extra=0A (minimal filler)
+    simple_0a = [p for p in recent if p['extra'] == '0A' and p['event_count'] <= 3]
+    if simple_0a:
+        samples.append(("Simple Extra=0A", simple_0a[0]))
 
-    # Complex Extra=1
-    complex_ = sorted([p for p in recent if p['extra'] == 1], key=lambda x: -x['event_count'])
+    # Simple Extra=1A (filler for SIT parity)
+    simple_1a = [p for p in recent if p['extra'] == '1A' and p['event_count'] <= 3]
+    if simple_1a:
+        samples.append(("Simple Extra=1A", simple_1a[0]))
+
+    # Complex Extra=1B (ECT events)
+    complex_ = sorted([p for p in recent if p['extra'] == '1B'], key=lambda x: -x['event_count'])
     if complex_:
-        samples.append(("Complex Extra=1 (most events)", complex_[0]))
+        samples.append(("Complex Extra=1B (most events)", complex_[0]))
 
     # UNKNOWN epistemic
     unknown = [p for p in recent if 'Unknown' in p['ks_self'] or 'Unknown' in p['ks_teammate']]
@@ -395,9 +457,16 @@ def generate_report(parsed_data: List[dict],
     lines.append("=" * 80)
 
     lines.append(f"\nOverall: {len(parsed_data)} scenarios across {len(file_paths)} runs.")
-    lines.append(f"Extra=0 avg events: {statistics.mean(e0_counts):.1f} (range {min(e0_counts)}-{max(e0_counts)})")
-    lines.append(f"Extra=1 avg events: {statistics.mean(e1_counts):.1f} (range {min(e1_counts)}-{max(e1_counts)})")
-    lines.append(f"Average Extra delta: +{statistics.mean(e1_counts) - statistics.mean(e0_counts):.1f} events")
+    if e1a_counts:
+        lines.append(f"Extra=1A avg events: {statistics.mean(e1a_counts):.1f} (range {min(e1a_counts)}-{max(e1a_counts)})")
+    if e1b_counts:
+        lines.append(f"Extra=1B avg events: {statistics.mean(e1b_counts):.1f} (range {min(e1b_counts)}-{max(e1b_counts)})")
+    if e1a_counts and e1b_counts:
+        lines.append(f"Average 1A→1B delta: +{statistics.mean(e1b_counts) - statistics.mean(e1a_counts):.1f} events (ECT effect)")
+    if e0a_counts and e0b_counts:
+        lines.append(f"Extra=0A avg events: {statistics.mean(e0a_counts):.1f} (range {min(e0a_counts)}-{max(e0a_counts)})")
+        lines.append(f"Extra=0B avg events: {statistics.mean(e0b_counts):.1f} (range {min(e0b_counts)}-{max(e0b_counts)})")
+        lines.append(f"Average 0A→0B delta: +{statistics.mean(e0b_counts) - statistics.mean(e0a_counts):.1f} events (SIT effect)")
 
     if failures:
         lines.append(f"\nGeneration issues:")

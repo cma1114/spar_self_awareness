@@ -11,7 +11,7 @@ from generate_tom_scenarios_new import generate_scenarios_from_tuples
 import tempfile
 import json
 
-def debug_scenario(scenario_id='29', extra=1, seed=0, verbose=True):
+def debug_scenario(scenario_id='29', extra='1B', seed=0, verbose=True):
     """Generate and inspect a specific scenario. Returns True if violation found."""
     specs = read_specs_from_csv('tom/ToM - scenarios.csv')
 
@@ -74,9 +74,9 @@ def debug_scenario(scenario_id='29', extra=1, seed=0, verbose=True):
 
 if __name__ == '__main__':
     # Find first seed with violation for ID 29
-    print("Searching for violation in ID 29, Extra=1...")
+    print("Searching for violation in ID 29, Extra=1B...")
     for seed in range(100):
-        if debug_scenario(scenario_id='29', extra=1, seed=seed, verbose=True):
+        if debug_scenario(scenario_id='29', extra='1B', seed=seed, verbose=True):
             break
     else:
         print("No violations found in first 100 seeds")
