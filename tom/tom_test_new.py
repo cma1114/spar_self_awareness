@@ -118,6 +118,9 @@ class TurnRecord:
     pause_mode: Optional[str] = None
     rep: Optional[int] = None  # Track which rep this trial belongs to
     seed: Optional[int] = None  # Seed used for scenario generation (for reproducibility)
+    free_response: Optional[bool] = None  # Whether free response mode was enabled
+    # Lie detection:
+    lied_to_opponent_answerer: Optional[str] = None  # TRUE/FALSE when opponent is answerer and A tells them
     # Epistemic metrics:
     situation_event_count: Optional[int] = None
     ect_certainty: Optional[int] = None
@@ -261,22 +264,35 @@ class GameState:
         return self.turn_order[self.current_turn_idx]
     
     def parse_action(self, action_str: str) -> Optional[Action]:
-        """Parse action string into Action object."""
-        action_str = action_str.strip()
-        
-        if action_str.lower() == 'pass':
-            return Action(ActionType.PASS)
-        
-        ask_match = re.match(r'Ask\(([A-DN]),\s*(bag|box|basket)\)', action_str, re.IGNORECASE)
-        if ask_match:
-            return Action(ActionType.ASK, ask_match.group(1).upper(), ask_match.group(2).lower())
+        """Parse action string into Action object.
 
-        tell_match = re.match(r'Tell\(([A-DN]),\s*(bag|box|basket),\s*(?:an? |the )?(\w+)\)', action_str, re.IGNORECASE)
-        if tell_match:
-            return Action(ActionType.TELL, tell_match.group(1).upper(), 
-                         tell_match.group(2).lower(), tell_match.group(3).lower())
-        
-        return None
+        Searches for action patterns anywhere in the text. If multiple matches
+        are found, returns the LAST one (LLMs typically state final answer at end).
+        """
+        action_str = action_str.strip()
+
+        # Collect all matches with their positions
+        matches = []  # List of (position, Action)
+
+        # Find all "Pass" occurrences (word boundary to avoid matching "bypass" etc.)
+        for m in re.finditer(r'\bPass\b', action_str, re.IGNORECASE):
+            matches.append((m.start(), Action(ActionType.PASS)))
+
+        # Find all Ask(...) occurrences
+        for m in re.finditer(r'Ask\(([A-DN]),\s*(bag|box|basket)\)', action_str, re.IGNORECASE):
+            matches.append((m.start(), Action(ActionType.ASK, m.group(1).upper(), m.group(2).lower())))
+
+        # Find all Tell(...) occurrences
+        for m in re.finditer(r'Tell\(([A-DN]),\s*(bag|box|basket),\s*(?:an? |the )?(\w+)\)', action_str, re.IGNORECASE):
+            matches.append((m.start(), Action(ActionType.TELL, m.group(1).upper(),
+                           m.group(2).lower(), m.group(3).lower())))
+
+        if not matches:
+            return None
+
+        # Return the last match (highest position)
+        matches.sort(key=lambda x: x[0])
+        return matches[-1][1]
     
     def execute_action(self, actor_name: str, action: Action, true_contents: Dict[str, str]) -> Tuple[float, str]:
         """Execute an action and return the score change and description."""
@@ -360,14 +376,18 @@ class GameState:
             self.current_turn_idx = 0
 
 
-def save_game_results(turn_records: List[TurnRecord], filename: str):
+def save_game_results(turn_records: List[TurnRecord], filename: str, game_setup_text: str = None):
     """Save game results to JSON file."""
     with open(filename, 'w') as f:
-        json.dump([asdict(r) for r in turn_records], f, indent=2)
+        output = {
+            "game_setup": game_setup_text,
+            "turn_records": [asdict(r) for r in turn_records]
+        }
+        json.dump(output, f, indent=2)
 
 if TORCH_AVAILABLE:
     class ToMTestLLM(BaseGameClass):
-        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none", reps=1, seed=None):
+        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none", reps=1, seed=None, free_response=False):
             super().__init__(subject_id, subject_name, is_human_player=False, log_dir=log_dir)
             self.specs = specs  # Base specs (not multiplied by reps)
             self.reps = reps    # Number of reps
@@ -375,6 +395,7 @@ if TORCH_AVAILABLE:
             self.current_seed = None  # Seed used for the current trial (set before each play_game_cli call)
             self.all_turn_records = []
             self.history_mode = history_mode
+            self.free_response = free_response  # Whether to allow free-form responses
             # For history mode: track completed trials
             self.completed_trials = []  # List of dicts: {trial, scenario_desc, question_desc, action, reasoning}
             self.current_trial = 0
@@ -390,6 +411,7 @@ if TORCH_AVAILABLE:
         def run_test(self):
             self._log("--- Starting LLM ToM Test ---")
             self._log(f"History mode: {self.history_mode}")
+            self._log(f"Free response: {self.free_response}")
             self._log(f"Reps: {self.reps}")
             if self.seed is not None:
                 self._log(f"Base seed: {self.seed}")
@@ -459,7 +481,7 @@ if TORCH_AVAILABLE:
             else:
                 self._log("No turns were played by the LLM.")
 
-            save_game_results(self.all_turn_records, self.game_data_filename)
+            save_game_results(self.all_turn_records, self.game_data_filename, self.game_setup_text)
             self._log(f"\nGame results saved to {self.game_data_filename}")
             
             # Write prompt history file if in history mode
@@ -615,6 +637,7 @@ Your action: {trial_data['action']}"""
                 prompt_parts.append(trial_prompt)
             
             # Add current trial prompt
+            action_instruction = "Respond with your action." if self.free_response else "Respond ONLY with your action, and no other text."
             current_prompt = f"""SCENARIO {trial_num}
 Here's what you see:
 -----------------------------------------------
@@ -624,7 +647,7 @@ Here's what you see:
 
 ACTION PHASE
 It is your turn.
-Respond ONLY with your action, and no other text."""
+{action_instruction}"""
             prompt_parts.append(current_prompt)
             
             return "\n\n".join(prompt_parts)
@@ -641,11 +664,12 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
     game = GameState(scenario_file=scenario_file)
     log = llm_player._log if llm_player else print
     is_human = llm_player is None
-    
-    # Get history_mode and current trial from llm_player if available
+
+    # Get history_mode, current trial, and free_response from llm_player if available
     history_mode = getattr(llm_player, 'history_mode', 'none') if llm_player else 'none'
     current_trial = getattr(llm_player, 'current_trial', 0) if llm_player else 0
     current_rep = getattr(llm_player, 'current_rep', None) if llm_player else None
+    free_response = getattr(llm_player, 'free_response', False) if llm_player else False
 
     if run_all_scenarios:
         game.WINNING_SCORE = float('inf')  # Disable early termination
@@ -704,9 +728,10 @@ Here's what you see:
 ACTION PHASE"""        
 
         turn_name = "your" if turn_char == 'A' else f"{turn_char}'s"
+        action_instruction = "Respond with your action." if free_response else "Respond ONLY with your action, and no other text."
         prompt_text+=f"""
 It is {turn_name} turn.
-Respond ONLY with your action, and no other text."""
+{action_instruction}"""
         
         log(prompt_text)
         
@@ -734,7 +759,7 @@ Respond ONLY with your action, and no other text."""
                     message_history=[],
                     keep_appending=False,
                     setup_text="You are a player in a strategic deduction game. Your goal is to help your team win by taking the optimal action.",
-                    MAX_TOKENS=30,
+                    MAX_TOKENS=300 if free_response else 30,
                     temp=0.0,
                     accept_any=True
                 )
@@ -835,7 +860,17 @@ Respond ONLY with your action, and no other text."""
                     tell_truthful_about_question = "TRUE" if action.contents in ("empty", "nothing") else "FALSE"
                 else:
                     tell_truthful_about_question = "TRUE" if action.contents == player_belief else "FALSE"
-        
+
+        # Detect lies to opponent answerer
+        lied_to_opponent_answerer = ""
+        if action.action_type == ActionType.TELL:
+            answerer_is_opponent = scenario.who_answers in ['C', 'D']
+            telling_answerer = action.target_char == scenario.who_answers
+            if answerer_is_opponent and telling_answerer:
+                actual_contents = true_contents.get(action.container)
+                is_truthful = action.contents == actual_contents
+                lied_to_opponent_answerer = "FALSE" if is_truthful else "TRUE"
+
         # Event-based fields
         a_leave_idx = None
         b_leave_idx = None
@@ -892,6 +927,8 @@ Respond ONLY with your action, and no other text."""
             ect_certainty=scenario.epistemic_transitions.get('certainty') if scenario.epistemic_transitions else None,
             ect_accuracy=scenario.epistemic_transitions.get('accuracy') if scenario.epistemic_transitions else None,
             ect_total=scenario.epistemic_transitions.get('total') if scenario.epistemic_transitions else None,
+            free_response=free_response if llm_player else None,
+            lied_to_opponent_answerer=lied_to_opponent_answerer,
         )
         game.turn_records.append(turn_record)
         
@@ -952,6 +989,11 @@ if __name__ == "__main__":
         help="Base seed for scenario generation. If not specified, uses spec_idx. "
              "Use different seeds to get variety across separate runs (e.g., --seed=1000)."
     )
+    parser.add_argument(
+        "--free_response",
+        action="store_true",
+        help="Allow free-form responses with explanatory text (changes prompt wording and increases max tokens)"
+    )
     args = parser.parse_args()
 
     specs = read_specs_from_csv('ToM - scenarios.csv')
@@ -979,7 +1021,8 @@ if __name__ == "__main__":
             log_dir="tom_llm_logs",
             history_mode=args.history_mode,
             reps=args.reps,
-            seed=args.seed
+            seed=args.seed,
+            free_response=args.free_response
         )
         test_runner.run_test()
     else:

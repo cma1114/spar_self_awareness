@@ -1,0 +1,28 @@
+Detailed Mastery Category Breakdown (All Models, Overall)
+--------------------------------------------------------------------------------
+
+Self: Knowledge vs Belief: 58.2%
+  Distinguishing own knowledge from mere belief
+  - Scenarios [7, 8, 9] → Pass: 115/291 = 39.5% (weight=2)
+  - Scenarios [12, 13] → Ask: 149/194 = 76.8% (weight=3)
+
+Teammate: Knowledge vs Belief: 9.3%
+  Distinguishing teammate knowledge from belief
+  - Scenarios [20, 21, 22] → Pass: 8/291 = 2.7% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 46/291 = 15.8% (weight=1)
+
+Combined Uncertainty: 17.3%
+  Handling self + teammate uncertainty together
+  - Scenarios [10, 11, 23, 24] → Pass: 67/388 = 17.3% (weight=1)
+
+True vs False Belief: 8.1%
+  Distinguishing true belief from false belief
+  - Scenarios [14, 15, 16] → Pass: 1/291 = 0.3% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 46/291 = 15.8% (weight=1)
+
+Teammate vs Opponent: 25.2%
+  Treating teammate differently from opponent
+  - Scenarios [12, 13] → Ask: 149/194 = 76.8% (weight=1)
+  - Scenarios [37, 39] → Pass: 10/194 = 5.2% (weight=1)
+  - Scenarios [30, 31, 32] → Pass: 39/291 = 13.4% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 46/291 = 15.8% (weight=1)

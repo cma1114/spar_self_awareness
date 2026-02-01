@@ -33,9 +33,22 @@ def normalize_extra(val):
     return str(val)
 ```
 
-## Summary
+## Summary - Category Names
 
-- **0A**: NEW - Minimal event load (no filler)
-- **0B**: NEW - Higher event load (+3 filler)
-- **1A**: Was Extra=0 - filler for SIT parity
-- **1B**: Was Extra=1 - extra events with ECT
+| Code | Display Name | Description |
+|------|--------------|-------------|
+| 0A | **Minimal Events** | NEW - No filler events, no ECT |
+| 0B | **Event Load** | NEW - Higher event load (+3 filler), no ECT |
+| 1A | **Minimal ECT** | Was Extra=0 - Filler events for SIT parity, has ECT |
+| 1B | **ECT Load** | Was Extra=1 - Extra events with ECT and more complexity |
+
+## Color Coding (for charts)
+
+```python
+EXTRA_CATEGORIES = {
+    '0A': {'name': 'Minimal Events', 'short': 'Min Events', 'color': '#9b59b6'},  # Purple
+    '0B': {'name': 'Event Load', 'short': 'Event Load', 'color': '#f39c12'},      # Orange
+    '1A': {'name': 'Minimal ECT', 'short': 'Min ECT', 'color': '#3498db'},        # Blue
+    '1B': {'name': 'ECT Load', 'short': 'ECT Load', 'color': '#e74c3c'},          # Red
+}
+```

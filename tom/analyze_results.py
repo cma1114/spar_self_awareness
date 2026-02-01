@@ -15,7 +15,17 @@ from collections import defaultdict
 from typing import Dict, List, Tuple
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
 import numpy as np
+
+
+# Extra category metadata - see EXTRA_MAPPING.md
+EXTRA_CATEGORIES = {
+    '0A': {'name': 'Minimal Events', 'short': 'Min Events', 'color': '#9b59b6'},
+    '0B': {'name': 'Event Load', 'short': 'Event Load', 'color': '#f39c12'},
+    '1A': {'name': 'Minimal ECT', 'short': 'Min ECT', 'color': '#3498db'},
+    '1B': {'name': 'ECT Load', 'short': 'ECT Load', 'color': '#e74c3c'},
+}
 
 
 def wilson_ci(successes: int, n: int, z: float = 1.96) -> Tuple[float, float]:
@@ -44,7 +54,13 @@ def extract_model_name(filepath: str) -> str:
 def load_game_data(filepath: str) -> List[dict]:
     """Load and return records from a game_data.json file."""
     with open(filepath, 'r') as f:
-        return json.load(f)
+        data = json.load(f)
+    # Handle both old (flat list) and new (wrapper object) formats
+    if isinstance(data, list):
+        return data
+    elif isinstance(data, dict) and 'turn_records' in data:
+        return data['turn_records']
+    return data
 
 
 def filter_player_a(records: List[dict]) -> List[dict]:
@@ -60,10 +76,27 @@ def normalize_extra(val):
     return str(val)
 
 
-def compute_stats(records: List[dict]) -> dict:
+def is_success(record: dict, lies_okay: bool = False) -> bool:
+    """Check if a record counts as a success.
+
+    Args:
+        record: A turn record dict
+        lies_okay: If True, lying to opponent answerer also counts as success
+
+    Returns:
+        True if was_optimal, or (lies_okay and lied_to_opponent_answerer=="TRUE")
+    """
+    if record.get('was_optimal'):
+        return True
+    if lies_okay and record.get('lied_to_opponent_answerer') == "TRUE":
+        return True
+    return False
+
+
+def compute_stats(records: List[dict], lies_okay: bool = False) -> dict:
     """Compute optimal rates and CIs for a set of records."""
     n_total = len(records)
-    n_optimal = sum(1 for r in records if r.get('was_optimal'))
+    n_optimal = sum(1 for r in records if is_success(r, lies_okay))
 
     # Split by extra (0A, 0B, 1A, 1B) - see EXTRA_MAPPING.md
     extra0a = [r for r in records if normalize_extra(r.get('extra')) == '0A']
@@ -73,7 +106,7 @@ def compute_stats(records: List[dict]) -> dict:
 
     def compute_extra_stats(recs):
         n = len(recs)
-        k = sum(1 for r in recs if r.get('was_optimal'))
+        k = sum(1 for r in recs if is_success(r, lies_okay))
         rate = k / n if n > 0 else 0
         ci = wilson_ci(k, n)
         return {'rate': rate, 'ci': ci, 'n': n, 'k': k}
@@ -89,9 +122,6 @@ def compute_stats(records: List[dict]) -> dict:
         'extra0b': compute_extra_stats(extra0b),
         'extra1a': compute_extra_stats(extra1a),
         'extra1b': compute_extra_stats(extra1b),
-        # Legacy compatibility - combine for old scripts that expect extra0/extra1
-        'extra0': compute_extra_stats(extra0a + extra0b),
-        'extra1': compute_extra_stats(extra1a + extra1b),
     }
 
 
@@ -162,15 +192,17 @@ TOM_MASTERY_CATEGORIES = {
 }
 
 
-def compute_mastery_score(records: List[dict], category: dict, extra_filter: str = None) -> dict:
+def compute_mastery_score(records: List[dict], category: dict, extra_filter = None, lies_okay: bool = False) -> dict:
     """
     Compute mastery score for a single ToM category.
 
     Args:
         records: List of game records
         category: Category definition with components
-        extra_filter: If specified, only include records with this Extra value ('0A', '0B', '1A', '1B')
+        extra_filter: If specified, only include records with this Extra value.
+                     Can be a single string ('0A', '0B', '1A', '1B') or tuple of strings.
                      See EXTRA_MAPPING.md for details.
+        lies_okay: If True, lying to opponent answerer also counts as success
 
     Returns dict with:
     - score: weighted accuracy (0-1)
@@ -180,7 +212,10 @@ def compute_mastery_score(records: List[dict], category: dict, extra_filter: str
     """
     # Apply extra filter if specified
     if extra_filter is not None:
-        records = [r for r in records if normalize_extra(r.get('extra')) == extra_filter]
+        if isinstance(extra_filter, tuple):
+            records = [r for r in records if normalize_extra(r.get('extra')) in extra_filter]
+        else:
+            records = [r for r in records if normalize_extra(r.get('extra')) == extra_filter]
 
     total_weighted = 0
     correct_weighted = 0
@@ -196,7 +231,7 @@ def compute_mastery_score(records: List[dict], category: dict, extra_filter: str
                            if r.get('scenario_id') in [str(s) for s in scenarios]]
 
         n_total = len(component_records)
-        n_correct = sum(1 for r in component_records if r.get('was_optimal'))
+        n_correct = sum(1 for r in component_records if is_success(r, lies_okay))
 
         weighted_total = n_total * weight
         weighted_correct = n_correct * weight
@@ -224,22 +259,37 @@ def compute_mastery_score(records: List[dict], category: dict, extra_filter: str
     }
 
 
-def compute_all_mastery_scores(records: List[dict], extra_filter: int = None) -> dict:
-    """Compute all ToM mastery scores for a set of records."""
+def compute_all_mastery_scores(records: List[dict], extra_filter = None, lies_okay: bool = False) -> dict:
+    """Compute all ToM mastery scores for a set of records.
+
+    Args:
+        extra_filter: Single string ('0A', '0B', '1A', '1B') or tuple of strings to filter by.
+    """
     results = {}
     for key, category in TOM_MASTERY_CATEGORIES.items():
-        results[key] = compute_mastery_score(records, category, extra_filter)
+        results[key] = compute_mastery_score(records, category, extra_filter, lies_okay)
         results[key]['name'] = category['name']
         results[key]['description'] = category['description']
     return results
 
 
-def compute_mastery_with_extra_breakout(records: List[dict]) -> dict:
-    """Compute mastery scores with overall, Extra=1A (legacy 0), and Extra=1B (legacy 1) breakouts."""
+def compute_mastery_with_extra_breakout(records: List[dict], lies_okay: bool = False) -> dict:
+    """Compute mastery scores with overall and all Extra category breakouts.
+
+    Returns dict with keys:
+        overall: All records
+        extra0a: Minimal Events (0A)
+        extra0b: Event Load (0B)
+        extra1a: Minimal ECT (1A)
+        extra1b: ECT Load (1B)
+    """
     return {
-        'overall': compute_all_mastery_scores(records),
-        'extra0': compute_all_mastery_scores(records, extra_filter='1A'),  # Legacy Extra=0 → '1A'
-        'extra1': compute_all_mastery_scores(records, extra_filter='1B'),  # Legacy Extra=1 → '1B'
+        'overall': compute_all_mastery_scores(records, lies_okay=lies_okay),
+        # All 4 individual categories
+        'extra0a': compute_all_mastery_scores(records, extra_filter='0A', lies_okay=lies_okay),
+        'extra0b': compute_all_mastery_scores(records, extra_filter='0B', lies_okay=lies_okay),
+        'extra1a': compute_all_mastery_scores(records, extra_filter='1A', lies_okay=lies_okay),
+        'extra1b': compute_all_mastery_scores(records, extra_filter='1B', lies_okay=lies_okay),
     }
 
 
@@ -256,6 +306,12 @@ def find_game_data_files(base_dir: str) -> List[str]:
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description='Analyze ToM test results')
+    parser.add_argument('--lies_okay', action='store_true',
+                        help='Count lying to opponent answerer as success')
+    args = parser.parse_args()
+
     # Find the tom_llm_logs directory
     script_dir = os.path.dirname(os.path.abspath(__file__))
     logs_dir = os.path.join(script_dir, 'tom_llm_logs')
@@ -264,9 +320,11 @@ def main():
         print(f"Error: {logs_dir} not found")
         return
 
+    if args.lies_okay:
+        print("*** lies_okay mode: counting lies to opponent answerer as success ***")
+
     # Find all game data files
     files = find_game_data_files(logs_dir)
-    print(f"Found {len(files)} game_data.json files")
 
     # Aggregate records by model
     model_records: Dict[str, List[dict]] = defaultdict(list)
@@ -275,53 +333,86 @@ def main():
         records = load_game_data(filepath)
         a_records = filter_player_a(records)
 
-        # Only include files where record count is multiple of 78
-        if len(a_records) == 0 or len(a_records) % 78 != 0:
+        if not a_records:
             continue
 
         model_name = extract_model_name(filepath)
         model_records[model_name].extend(a_records)
 
     if not model_records:
-        print("No valid game data files found (need multiples of 78 records)")
+        print("No valid game data files found")
         return
 
     # Compute stats for each model
     model_stats = {}
     for model_name, records in model_records.items():
-        model_stats[model_name] = compute_stats(records)
+        model_stats[model_name] = compute_stats(records, lies_okay=args.lies_okay)
 
     # Sort by overall rate (descending)
     sorted_models = sorted(model_stats.keys(),
                           key=lambda m: model_stats[m]['overall']['rate'],
                           reverse=True)
 
-    # Print table
-    print("\n" + "=" * 90)
-    print(f"{'Model':<35} | {'N':>6} | {'Overall':>14} | {'Extra=0':>14} | {'Extra=1':>14}")
-    print("-" * 90)
-
-    for model in sorted_models:
-        stats = model_stats[model]
-        overall_str = format_rate_ci(stats['overall']['rate'], stats['overall']['ci'])
-        extra0_str = format_rate_ci(stats['extra0']['rate'], stats['extra0']['ci'])
-        extra1_str = format_rate_ci(stats['extra1']['rate'], stats['extra1']['ci'])
-
-        print(f"{model:<35} | {stats['n']:>6} | {overall_str:>14} | {extra0_str:>14} | {extra1_str:>14}")
-
-    print("=" * 90)
-
     # Aggregate all records for cross-model analysis
     all_records = []
     for records in model_records.values():
         all_records.extend(records)
 
-    # Compute ToM Mastery scores for each model with Extra breakouts
-    print("\n" + "=" * 140)
-    print("ToM MASTERY SCORES BY CATEGORY (Overall)")
-    print("=" * 140)
+    # Group records by (model, free_response)
+    fr_model_records = {}
+    for fr_mode in [True, False]:
+        fr_model_records[fr_mode] = {}
+        for model, recs in model_records.items():
+            filtered = [r for r in recs if r.get('free_response') == fr_mode]
+            if filtered:
+                fr_model_records[fr_mode][model] = filtered
 
-    # Build category short names
+    # Build detailed output for file
+    output_lines = []
+
+    # Main table
+    output_lines.append("=" * 120)
+    output_lines.append(f"{'Model':<30} | {'N':>5} | {'Overall':>12} | {'Min Events':>12} | {'Event Load':>12} | {'Min ECT':>12} | {'ECT Load':>12}")
+    output_lines.append("-" * 120)
+
+    for model in sorted_models:
+        stats = model_stats[model]
+        overall_str = format_rate_ci(stats['overall']['rate'], stats['overall']['ci'])
+        extra0a_str = format_rate_ci(stats['extra0a']['rate'], stats['extra0a']['ci'])
+        extra0b_str = format_rate_ci(stats['extra0b']['rate'], stats['extra0b']['ci'])
+        extra1a_str = format_rate_ci(stats['extra1a']['rate'], stats['extra1a']['ci'])
+        extra1b_str = format_rate_ci(stats['extra1b']['rate'], stats['extra1b']['ci'])
+        output_lines.append(f"{model:<30} | {stats['n']:>5} | {overall_str:>12} | {extra0a_str:>12} | {extra0b_str:>12} | {extra1a_str:>12} | {extra1b_str:>12}")
+
+    output_lines.append("=" * 120)
+
+    # Free response breakdown
+    output_lines.append("\nBREAKDOWN BY FREE_RESPONSE MODE")
+    output_lines.append("=" * 120)
+
+    for fr_mode in [True, False]:
+        if not fr_model_records[fr_mode]:
+            continue
+
+        mode_label = "Free Response" if fr_mode else "Multiple Choice"
+        output_lines.append(f"\n{mode_label} (free_response={fr_mode})")
+        output_lines.append(f"{'Model':<30} | {'N':>5} | {'Overall':>12} | {'Min Events':>12} | {'Event Load':>12} | {'Min ECT':>12} | {'ECT Load':>12}")
+        output_lines.append("-" * 120)
+
+        for model in sorted_models:
+            if model not in fr_model_records[fr_mode]:
+                continue
+            stats = compute_stats(fr_model_records[fr_mode][model], lies_okay=args.lies_okay)
+            overall_str = format_rate_ci(stats['overall']['rate'], stats['overall']['ci'])
+            extra0a_str = format_rate_ci(stats['extra0a']['rate'], stats['extra0a']['ci'])
+            extra0b_str = format_rate_ci(stats['extra0b']['rate'], stats['extra0b']['ci'])
+            extra1a_str = format_rate_ci(stats['extra1a']['rate'], stats['extra1a']['ci'])
+            extra1b_str = format_rate_ci(stats['extra1b']['rate'], stats['extra1b']['ci'])
+            output_lines.append(f"{model:<30} | {stats['n']:>5} | {overall_str:>12} | {extra0a_str:>12} | {extra0b_str:>12} | {extra1a_str:>12} | {extra1b_str:>12}")
+
+    output_lines.append("=" * 120)
+
+    # Compute ToM Mastery scores for each model with Extra breakouts
     cat_keys = list(TOM_MASTERY_CATEGORIES.keys())
     cat_short_names = []
     for k in cat_keys:
@@ -329,117 +420,78 @@ def main():
         short_name = name[:15] if len(name) > 15 else name
         cat_short_names.append(short_name)
 
-    # Header
     header = f"{'Model':<35}"
     for short_name in cat_short_names:
         header += f" | {short_name:>15}"
-    print(header)
-    print("-" * 140)
 
     # Compute and store mastery scores for each model
     model_mastery = {}
-    mastery_table_lines = [header, "-" * 140]
+    mastery_table_lines = ["ToM MASTERY SCORES BY CATEGORY (Overall)", "=" * 140, header, "-" * 140]
 
     for model in sorted_models:
         records = model_records[model]
-        mastery = compute_mastery_with_extra_breakout(records)
+        mastery = compute_mastery_with_extra_breakout(records, lies_okay=args.lies_okay)
         model_mastery[model] = mastery
 
         row = f"{model:<35}"
         for key in cat_keys:
             score = mastery['overall'][key]['score'] * 100
             row += f" | {score:>14.1f}%"
-        print(row)
         mastery_table_lines.append(row)
 
-    print("-" * 140)
     mastery_table_lines.append("-" * 140)
 
     # Compute aggregate mastery scores across all models
-    all_mastery = compute_mastery_with_extra_breakout(all_records)
+    all_mastery = compute_mastery_with_extra_breakout(all_records, lies_okay=args.lies_okay)
     row = f"{'ALL MODELS':<35}"
     for key in cat_keys:
         score = all_mastery['overall'][key]['score'] * 100
         row += f" | {score:>14.1f}%"
-    print(row)
     mastery_table_lines.append(row)
-    print("=" * 140)
     mastery_table_lines.append("=" * 140)
 
-    # Print Extra=0 breakdown
-    print("\n" + "=" * 140)
-    print("ToM MASTERY SCORES BY CATEGORY (Extra=0 - Base Scenarios)")
-    print("=" * 140)
-    print(header)
-    print("-" * 140)
+    # Build breakdown for each Extra category (no screen output)
+    extra_table_data = {}
+    for extra_key, extra_info in EXTRA_CATEGORIES.items():
+        mastery_key = f'extra{extra_key.lower()}'
+        title = f"ToM MASTERY SCORES BY CATEGORY ({extra_info['name']} - {extra_key})"
 
-    extra0_table_lines = [header, "-" * 140]
-    for model in sorted_models:
-        mastery = model_mastery[model]
-        row = f"{model:<35}"
+        table_lines = [header, "-" * 140]
+        for model in sorted_models:
+            mastery = model_mastery[model]
+            row = f"{model:<35}"
+            for key in cat_keys:
+                score = mastery[mastery_key][key]['score'] * 100
+                row += f" | {score:>14.1f}%"
+            table_lines.append(row)
+
+        table_lines.append("-" * 140)
+        row = f"{'ALL MODELS':<35}"
         for key in cat_keys:
-            score = mastery['extra0'][key]['score'] * 100
+            score = all_mastery[mastery_key][key]['score'] * 100
             row += f" | {score:>14.1f}%"
-        print(row)
-        extra0_table_lines.append(row)
+        table_lines.append(row)
+        table_lines.append("=" * 140)
 
-    print("-" * 140)
-    extra0_table_lines.append("-" * 140)
-    row = f"{'ALL MODELS':<35}"
-    for key in cat_keys:
-        score = all_mastery['extra0'][key]['score'] * 100
-        row += f" | {score:>14.1f}%"
-    print(row)
-    extra0_table_lines.append(row)
-    print("=" * 140)
-    extra0_table_lines.append("=" * 140)
-
-    # Print Extra=1 breakdown
-    print("\n" + "=" * 140)
-    print("ToM MASTERY SCORES BY CATEGORY (Extra=1 - Complex Scenarios)")
-    print("=" * 140)
-    print(header)
-    print("-" * 140)
-
-    extra1_table_lines = [header, "-" * 140]
-    for model in sorted_models:
-        mastery = model_mastery[model]
-        row = f"{model:<35}"
-        for key in cat_keys:
-            score = mastery['extra1'][key]['score'] * 100
-            row += f" | {score:>14.1f}%"
-        print(row)
-        extra1_table_lines.append(row)
-
-    print("-" * 140)
-    extra1_table_lines.append("-" * 140)
-    row = f"{'ALL MODELS':<35}"
-    for key in cat_keys:
-        score = all_mastery['extra1'][key]['score'] * 100
-        row += f" | {score:>14.1f}%"
-    print(row)
-    extra1_table_lines.append(row)
-    print("=" * 140)
-    extra1_table_lines.append("=" * 140)
+        extra_table_data[extra_key] = {'title': title, 'lines': table_lines}
 
     # Save mastery tables to files
     mastery_overall_path = os.path.join(logs_dir, 'mastery_overall.txt')
     with open(mastery_overall_path, 'w') as f:
-        f.write("ToM MASTERY SCORES BY CATEGORY (Overall)\n")
         f.write("\n".join(mastery_table_lines))
-    print(f"\nMastery table (overall) saved to: {mastery_overall_path}")
 
-    mastery_extra0_path = os.path.join(logs_dir, 'mastery_extra0.txt')
-    with open(mastery_extra0_path, 'w') as f:
-        f.write("ToM MASTERY SCORES BY CATEGORY (Extra=0 - Base Scenarios)\n")
-        f.write("\n".join(extra0_table_lines))
-    print(f"Mastery table (Extra=0) saved to: {mastery_extra0_path}")
-
-    mastery_extra1_path = os.path.join(logs_dir, 'mastery_extra1.txt')
-    with open(mastery_extra1_path, 'w') as f:
-        f.write("ToM MASTERY SCORES BY CATEGORY (Extra=1 - Complex Scenarios)\n")
-        f.write("\n".join(extra1_table_lines))
-    print(f"Mastery table (Extra=1) saved to: {mastery_extra1_path}")
+    # Save each extra category table
+    extra_file_names = {
+        '0A': 'mastery_minimal_events.txt',
+        '0B': 'mastery_event_load.txt',
+        '1A': 'mastery_minimal_ect.txt',
+        '1B': 'mastery_ect_load.txt',
+    }
+    for extra_key, filename in extra_file_names.items():
+        filepath = os.path.join(logs_dir, filename)
+        with open(filepath, 'w') as f:
+            f.write(extra_table_data[extra_key]['title'] + "\n")
+            f.write("\n".join(extra_table_data[extra_key]['lines']))
 
     # Save combined CSV for easy analysis
     mastery_csv_path = os.path.join(logs_dir, 'mastery_scores.csv')
@@ -450,10 +502,19 @@ def main():
             csv_header += f",{TOM_MASTERY_CATEGORIES[key]['name']}"
         f.write(csv_header + "\n")
 
+        # Define extra categories for CSV
+        csv_extra_mapping = [
+            ('Overall', 'overall'),
+            ('Minimal Events', 'extra0a'),
+            ('Event Load', 'extra0b'),
+            ('Minimal ECT', 'extra1a'),
+            ('ECT Load', 'extra1b'),
+        ]
+
         # Data rows
         for model in sorted_models:
             mastery = model_mastery[model]
-            for extra_label, extra_key in [('Overall', 'overall'), ('0', 'extra0'), ('1', 'extra1')]:
+            for extra_label, extra_key in csv_extra_mapping:
                 row = f"{model},{extra_label}"
                 for key in cat_keys:
                     score = mastery[extra_key][key]['score'] * 100
@@ -461,153 +522,226 @@ def main():
                 f.write(row + "\n")
 
         # All models aggregate
-        for extra_label, extra_key in [('Overall', 'overall'), ('0', 'extra0'), ('1', 'extra1')]:
+        for extra_label, extra_key in csv_extra_mapping:
             row = f"ALL MODELS,{extra_label}"
             for key in cat_keys:
                 score = all_mastery[extra_key][key]['score'] * 100
                 row += f",{score:.1f}"
             f.write(row + "\n")
 
-    print(f"Mastery CSV saved to: {mastery_csv_path}")
-
-    # Print detailed breakdown for each category (using overall)
-    print("\nDetailed Mastery Category Breakdown (All Models, Overall):")
-    print("-" * 80)
+    # Build detailed breakdown for each category (save to file, not screen)
+    detail_lines = ["Detailed Mastery Category Breakdown (All Models, Overall)", "-" * 80]
     for key, category in TOM_MASTERY_CATEGORIES.items():
         mastery = all_mastery['overall'][key]
-        print(f"\n{category['name']}: {mastery['score']*100:.1f}%")
-        print(f"  {category['description']}")
+        detail_lines.append(f"\n{category['name']}: {mastery['score']*100:.1f}%")
+        detail_lines.append(f"  {category['description']}")
         for comp in mastery['by_component']:
             scenarios_str = ', '.join(str(s) for s in comp['scenarios'])
-            print(f"  - Scenarios [{scenarios_str}] → {comp['action']}: "
+            detail_lines.append(f"  - Scenarios [{scenarios_str}] → {comp['action']}: "
                   f"{comp['k']}/{comp['n']} = {comp['rate']*100:.1f}% (weight={comp['weight']})")
 
-    # Compute per-scenario stats across all models
-    scenario_stats = defaultdict(lambda: {'correct': 0, 'total': 0})
-    for r in all_records:
-        key = (r.get('scenario_id'), r.get('extra', 0) or 0)
-        scenario_stats[key]['total'] += 1
-        if r.get('was_optimal'):
-            scenario_stats[key]['correct'] += 1
+    mastery_detail_path = os.path.join(logs_dir, 'mastery_detail.txt')
+    with open(mastery_detail_path, 'w') as f:
+        f.write("\n".join(detail_lines))
 
-    # Sort by accuracy (ascending = hardest first)
-    sorted_scenarios = sorted(
-        scenario_stats.items(),
-        key=lambda x: x[1]['correct'] / x[1]['total'] if x[1]['total'] > 0 else 0
-    )
+    # Save main summary table to file
+    summary_path = os.path.join(logs_dir, 'summary_table.txt')
+    with open(summary_path, 'w') as f:
+        f.write("\n".join(output_lines))
 
-    print(f"\n{'Scenario':<10} | {'Extra':>5} | {'N':>6} | {'Accuracy':>10}")
-    print("-" * 40)
-    for (scenario_id, extra), stats in sorted_scenarios:
-        acc = stats['correct'] / stats['total'] if stats['total'] > 0 else 0
-        print(f"{scenario_id:<10} | {extra:>5} | {stats['total']:>6} | {acc*100:>9.1f}%")
-    print("-" * 40)
+    # Track saved files for summary
+    saved_files = [
+        summary_path,
+        mastery_overall_path,
+        mastery_detail_path,
+        mastery_csv_path,
+    ]
+    saved_files.extend([os.path.join(logs_dir, fn) for fn in extra_file_names.values()])
 
-    # Generate scenario difficulty chart
-    scenario_labels = []
-    scenario_accs = []
-    scenario_colors = []
-    for (scenario_id, extra), stats in sorted_scenarios:
-        acc = stats['correct'] / stats['total'] if stats['total'] > 0 else 0
-        scenario_labels.append(f"{scenario_id}" + ("*" if extra else ""))
-        scenario_accs.append(acc * 100)
-        scenario_colors.append('#e74c3c' if extra else '#3498db')
+    # Generate charts for each free_response mode
+    # Define modes: None = all data, True = free response only, False = multiple choice only
+    chart_modes = [(None, '', 'All Data')]
+    for fr_mode in [True, False]:
+        if fr_model_records.get(fr_mode):
+            suffix = '_fr_true' if fr_mode else '_fr_false'
+            label = 'Free Response' if fr_mode else 'Multiple Choice'
+            chart_modes.append((fr_mode, suffix, label))
 
-    fig2, ax2 = plt.subplots(figsize=(16, 8))
-    x2 = np.arange(len(scenario_labels))
-    ax2.bar(x2, scenario_accs, color=scenario_colors, edgecolor='white', linewidth=0.5)
-    ax2.axhline(y=50, color='gray', linestyle='--', alpha=0.7)
-    ax2.axhline(y=np.mean(scenario_accs), color='green', linestyle='-', alpha=0.7)
-    ax2.set_xlabel('Scenario ID (* = Extra=1)', fontsize=12)
-    ax2.set_ylabel('Accuracy (%)', fontsize=12)
-    ax2.set_title('Per-Scenario Accuracy Across All Models (sorted by difficulty)', fontsize=14, fontweight='bold')
-    ax2.set_xticks(x2)
-    ax2.set_xticklabels(scenario_labels, rotation=90, fontsize=8)
-    ax2.set_ylim(0, 105)
-    ax2.grid(axis='y', alpha=0.3)
-    from matplotlib.patches import Patch
-    ax2.legend(handles=[
-        Patch(facecolor='#3498db', label='Extra=0 (Base)'),
-        Patch(facecolor='#e74c3c', label='Extra=1 (Complex)'),
-    ], loc='lower right')
-    plt.tight_layout()
-    scenario_chart_path = os.path.join(logs_dir, 'scenario_difficulty.png')
-    plt.savefig(scenario_chart_path, dpi=150, bbox_inches='tight')
-    print(f"\nScenario chart saved to: {scenario_chart_path}")
-    plt.close(fig2)
+    for fr_mode, file_suffix, mode_label in chart_modes:
+        # Filter records for this mode
+        if fr_mode is None:
+            chart_records = all_records
+            chart_model_stats = model_stats
+        else:
+            chart_records = [r for r in all_records if r.get('free_response') == fr_mode]
+            if not chart_records:
+                continue
+            # Recompute model stats for filtered records
+            chart_model_stats = {}
+            for model in sorted_models:
+                model_recs = [r for r in chart_records if r in model_records.get(model, [])]
+                if model_recs:
+                    chart_model_stats[model] = compute_stats(model_recs, lies_okay=args.lies_okay)
 
-    # Generate paired Extra=0 vs Extra=1 comparison chart
-    scenario_ids = sorted(set(k[0] for k in scenario_stats.keys()), key=lambda x: int(x))
-    extra0_accs = []
-    extra1_accs = []
-    for sid in scenario_ids:
-        acc0 = scenario_stats[(sid, 0)]['correct'] / scenario_stats[(sid, 0)]['total'] * 100 if scenario_stats[(sid, 0)]['total'] > 0 else 0
-        acc1 = scenario_stats[(sid, 1)]['correct'] / scenario_stats[(sid, 1)]['total'] * 100 if scenario_stats[(sid, 1)]['total'] > 0 else 0
-        extra0_accs.append(acc0)
-        extra1_accs.append(acc1)
+        # Compute per-scenario stats
+        scenario_stats = defaultdict(lambda: {'correct': 0, 'total': 0})
+        for r in chart_records:
+            extra_str = normalize_extra(r.get('extra'))
+            key = (r.get('scenario_id'), extra_str)
+            scenario_stats[key]['total'] += 1
+            if is_success(r, lies_okay=args.lies_okay):
+                scenario_stats[key]['correct'] += 1
 
-    fig3, ax3 = plt.subplots(figsize=(16, 8))
-    x3 = np.arange(len(scenario_ids))
-    width = 0.35
-    bars_e0 = ax3.bar(x3 - width/2, extra0_accs, width, label='Extra=0 (Base)', color='#3498db')
-    bars_e1 = ax3.bar(x3 + width/2, extra1_accs, width, label='Extra=1 (Complex)', color='#e74c3c')
-    ax3.axhline(y=50, color='gray', linestyle='--', alpha=0.7)
-    ax3.set_xlabel('Scenario ID', fontsize=12)
-    ax3.set_ylabel('Accuracy (%)', fontsize=12)
-    ax3.set_title('Extra=0 vs Extra=1 Accuracy by Scenario (All Models)', fontsize=14, fontweight='bold')
-    ax3.set_xticks(x3)
-    ax3.set_xticklabels(scenario_ids, fontsize=8)
-    ax3.set_ylim(0, 105)
-    ax3.legend(loc='lower right')
-    ax3.grid(axis='y', alpha=0.3)
-    plt.tight_layout()
-    paired_chart_path = os.path.join(logs_dir, 'extra_comparison.png')
-    plt.savefig(paired_chart_path, dpi=150, bbox_inches='tight')
-    print(f"Paired comparison chart saved to: {paired_chart_path}")
-    plt.close(fig3)
+        # Sort by accuracy (ascending = hardest first)
+        sorted_scenarios = sorted(
+            scenario_stats.items(),
+            key=lambda x: x[1]['correct'] / x[1]['total'] if x[1]['total'] > 0 else 0
+        )
 
-    # Generate model performance bar chart
-    fig, ax = plt.subplots(figsize=(14, 8))
+        # Save per-scenario stats to file (not screen)
+        if fr_mode is None:
+            scenario_lines = [f"{'Scenario':<10} | {'Extra':>12} | {'N':>6} | {'Accuracy':>10}", "-" * 50]
+            for (scenario_id, extra), stats in sorted_scenarios:
+                acc = stats['correct'] / stats['total'] if stats['total'] > 0 else 0
+                extra_name = EXTRA_CATEGORIES.get(extra, {}).get('short', extra)
+                scenario_lines.append(f"{scenario_id:<10} | {extra_name:>12} | {stats['total']:>6} | {acc*100:>9.1f}%")
+            scenario_lines.append("-" * 50)
+            scenario_stats_path = os.path.join(logs_dir, 'per_scenario_stats.txt')
+            with open(scenario_stats_path, 'w') as f:
+                f.write("\n".join(scenario_lines))
+            saved_files.append(scenario_stats_path)
 
-    x = np.arange(len(sorted_models))
-    width = 0.25
+        # Generate scenario difficulty chart
+        scenario_labels = []
+        scenario_accs = []
+        scenario_colors = []
+        for (scenario_id, extra), stats in sorted_scenarios:
+            acc = stats['correct'] / stats['total'] if stats['total'] > 0 else 0
+            scenario_labels.append(f"{scenario_id}-{extra}")
+            scenario_accs.append(acc * 100)
+            scenario_colors.append(EXTRA_CATEGORIES.get(extra, {}).get('color', '#999999'))
 
-    # Extract data for plotting
-    overall_rates = [model_stats[m]['overall']['rate'] * 100 for m in sorted_models]
-    extra0_rates = [model_stats[m]['extra0']['rate'] * 100 for m in sorted_models]
-    extra1_rates = [model_stats[m]['extra1']['rate'] * 100 for m in sorted_models]
+        if scenario_accs:
+            fig2, ax2 = plt.subplots(figsize=(16, 8))
+            x2 = np.arange(len(scenario_labels))
+            ax2.bar(x2, scenario_accs, color=scenario_colors, edgecolor='white', linewidth=0.5)
+            ax2.axhline(y=50, color='gray', linestyle='--', alpha=0.7)
+            ax2.axhline(y=np.mean(scenario_accs), color='green', linestyle='-', alpha=0.7)
+            ax2.set_xlabel('Scenario ID - Extra Category', fontsize=12)
+            ax2.set_ylabel('Accuracy (%)', fontsize=12)
+            ax2.set_title(f'Per-Scenario Accuracy ({mode_label})', fontsize=14, fontweight='bold')
+            ax2.set_xticks(x2)
+            ax2.set_xticklabels(scenario_labels, rotation=90, fontsize=8)
+            ax2.set_ylim(0, 105)
+            ax2.grid(axis='y', alpha=0.3)
+            ax2.legend(handles=[
+                Patch(facecolor=EXTRA_CATEGORIES['0A']['color'], label=f"0A: {EXTRA_CATEGORIES['0A']['name']}"),
+                Patch(facecolor=EXTRA_CATEGORIES['0B']['color'], label=f"0B: {EXTRA_CATEGORIES['0B']['name']}"),
+                Patch(facecolor=EXTRA_CATEGORIES['1A']['color'], label=f"1A: {EXTRA_CATEGORIES['1A']['name']}"),
+                Patch(facecolor=EXTRA_CATEGORIES['1B']['color'], label=f"1B: {EXTRA_CATEGORIES['1B']['name']}"),
+            ], loc='lower right')
+            plt.tight_layout()
+            scenario_chart_path = os.path.join(logs_dir, f'scenario_difficulty{file_suffix}.png')
+            plt.savefig(scenario_chart_path, dpi=150, bbox_inches='tight')
+            saved_files.append(scenario_chart_path)
+            plt.close(fig2)
 
-    # Error bars (half-width of CI)
-    overall_errs = [(model_stats[m]['overall']['ci'][1] - model_stats[m]['overall']['ci'][0]) / 2 * 100
-                    for m in sorted_models]
-    extra0_errs = [(model_stats[m]['extra0']['ci'][1] - model_stats[m]['extra0']['ci'][0]) / 2 * 100
-                   for m in sorted_models]
-    extra1_errs = [(model_stats[m]['extra1']['ci'][1] - model_stats[m]['extra1']['ci'][0]) / 2 * 100
-                   for m in sorted_models]
+        # Generate Extra category comparison chart
+        scenario_ids = sorted(set(k[0] for k in scenario_stats.keys()), key=lambda x: int(x))
+        if scenario_ids:
+            extra_accs = {cat: [] for cat in EXTRA_CATEGORIES.keys()}
+            for sid in scenario_ids:
+                for cat in EXTRA_CATEGORIES.keys():
+                    stats = scenario_stats.get((sid, cat), {'correct': 0, 'total': 0})
+                    acc = stats['correct'] / stats['total'] * 100 if stats['total'] > 0 else 0
+                    extra_accs[cat].append(acc)
 
-    # Create bars
-    bars1 = ax.bar(x - width, overall_rates, width, label='Overall',
-                   yerr=overall_errs, capsize=3, color='#2ecc71')
-    bars2 = ax.bar(x, extra0_rates, width, label='Extra=0 (Base)',
-                   yerr=extra0_errs, capsize=3, color='#3498db')
-    bars3 = ax.bar(x + width, extra1_rates, width, label='Extra=1 (Complex)',
-                   yerr=extra1_errs, capsize=3, color='#e74c3c')
+            fig3, ax3 = plt.subplots(figsize=(18, 8))
+            x3 = np.arange(len(scenario_ids))
+            width = 0.2
+            offsets = {'0A': -1.5, '0B': -0.5, '1A': 0.5, '1B': 1.5}
 
-    ax.set_ylabel('Optimal Action Rate (%)', fontsize=12)
-    ax.set_title('ToM Test Performance by Model', fontsize=14, fontweight='bold')
-    ax.set_xticks(x)
-    ax.set_xticklabels(sorted_models, rotation=45, ha='right', fontsize=9)
-    ax.legend(loc='lower right')
-    ax.set_ylim(0, 105)
-    ax.axhline(y=50, color='gray', linestyle='--', alpha=0.5, label='Chance')
-    ax.grid(axis='y', alpha=0.3)
+            for cat, offset in offsets.items():
+                ax3.bar(x3 + offset * width, extra_accs[cat], width,
+                        label=f"{cat}: {EXTRA_CATEGORIES[cat]['name']}",
+                        color=EXTRA_CATEGORIES[cat]['color'])
 
-    plt.tight_layout()
+            ax3.axhline(y=50, color='gray', linestyle='--', alpha=0.7)
+            ax3.set_xlabel('Scenario ID', fontsize=12)
+            ax3.set_ylabel('Accuracy (%)', fontsize=12)
+            ax3.set_title(f'Accuracy by Scenario and Extra Category ({mode_label})', fontsize=14, fontweight='bold')
+            ax3.set_xticks(x3)
+            ax3.set_xticklabels(scenario_ids, fontsize=8)
+            ax3.set_ylim(0, 105)
+            ax3.legend(loc='lower right')
+            ax3.grid(axis='y', alpha=0.3)
+            plt.tight_layout()
+            paired_chart_path = os.path.join(logs_dir, f'extra_comparison{file_suffix}.png')
+            plt.savefig(paired_chart_path, dpi=150, bbox_inches='tight')
+            saved_files.append(paired_chart_path)
+            plt.close(fig3)
 
-    # Save chart
-    chart_path = os.path.join(logs_dir, 'performance_comparison.png')
-    plt.savefig(chart_path, dpi=150, bbox_inches='tight')
-    print(f"\nChart saved to: {chart_path}")
+        # Generate model performance bar chart
+        chart_models = [m for m in sorted_models if m in chart_model_stats]
+        if chart_models:
+            fig, ax = plt.subplots(figsize=(16, 8))
+            x = np.arange(len(chart_models))
+            width = 0.15
+
+            overall_rates = [chart_model_stats[m]['overall']['rate'] * 100 for m in chart_models]
+            extra0a_rates = [chart_model_stats[m]['extra0a']['rate'] * 100 for m in chart_models]
+            extra0b_rates = [chart_model_stats[m]['extra0b']['rate'] * 100 for m in chart_models]
+            extra1a_rates = [chart_model_stats[m]['extra1a']['rate'] * 100 for m in chart_models]
+            extra1b_rates = [chart_model_stats[m]['extra1b']['rate'] * 100 for m in chart_models]
+
+            overall_errs = [(chart_model_stats[m]['overall']['ci'][1] - chart_model_stats[m]['overall']['ci'][0]) / 2 * 100 for m in chart_models]
+            extra0a_errs = [(chart_model_stats[m]['extra0a']['ci'][1] - chart_model_stats[m]['extra0a']['ci'][0]) / 2 * 100 for m in chart_models]
+            extra0b_errs = [(chart_model_stats[m]['extra0b']['ci'][1] - chart_model_stats[m]['extra0b']['ci'][0]) / 2 * 100 for m in chart_models]
+            extra1a_errs = [(chart_model_stats[m]['extra1a']['ci'][1] - chart_model_stats[m]['extra1a']['ci'][0]) / 2 * 100 for m in chart_models]
+            extra1b_errs = [(chart_model_stats[m]['extra1b']['ci'][1] - chart_model_stats[m]['extra1b']['ci'][0]) / 2 * 100 for m in chart_models]
+
+            ax.bar(x - 2*width, overall_rates, width, label='Overall', yerr=overall_errs, capsize=2, color='#2ecc71')
+            ax.bar(x - width, extra0a_rates, width, label=f"0A: {EXTRA_CATEGORIES['0A']['name']}", yerr=extra0a_errs, capsize=2, color=EXTRA_CATEGORIES['0A']['color'])
+            ax.bar(x, extra0b_rates, width, label=f"0B: {EXTRA_CATEGORIES['0B']['name']}", yerr=extra0b_errs, capsize=2, color=EXTRA_CATEGORIES['0B']['color'])
+            ax.bar(x + width, extra1a_rates, width, label=f"1A: {EXTRA_CATEGORIES['1A']['name']}", yerr=extra1a_errs, capsize=2, color=EXTRA_CATEGORIES['1A']['color'])
+            ax.bar(x + 2*width, extra1b_rates, width, label=f"1B: {EXTRA_CATEGORIES['1B']['name']}", yerr=extra1b_errs, capsize=2, color=EXTRA_CATEGORIES['1B']['color'])
+
+            ax.set_ylabel('Optimal Action Rate (%)', fontsize=12)
+            ax.set_title(f'ToM Test Performance by Model ({mode_label})', fontsize=14, fontweight='bold')
+            ax.set_xticks(x)
+            ax.set_xticklabels(chart_models, rotation=45, ha='right', fontsize=9)
+            ax.legend(loc='lower right', fontsize=8)
+            ax.set_ylim(0, 105)
+            ax.axhline(y=50, color='gray', linestyle='--', alpha=0.5)
+            ax.grid(axis='y', alpha=0.3)
+
+            plt.tight_layout()
+            chart_path = os.path.join(logs_dir, f'performance_comparison{file_suffix}.png')
+            plt.savefig(chart_path, dpi=150, bbox_inches='tight')
+            saved_files.append(chart_path)
+            plt.close(fig)
+
+    # Print high-level summary
+    print("\n" + "=" * 60)
+    print("ToM ANALYSIS SUMMARY")
+    print("=" * 60)
+    print(f"Models analyzed: {len(sorted_models)}")
+    print(f"Total records: {len(all_records)}")
+    print()
+
+    # Show top-level results per model
+    print(f"{'Model':<30} | {'Records':>7} | {'Accuracy':>10}")
+    print("-" * 55)
+    for model in sorted_models:
+        stats = model_stats[model]
+        print(f"{model:<30} | {stats['n']:>7} | {stats['overall']['rate']*100:>9.1f}%")
+    print("-" * 55)
+
+    # Show files saved
+    print(f"\nSaved {len(saved_files)} files to {logs_dir}/")
+    print("  Tables: summary_table.txt, per_scenario_stats.txt")
+    print("  Mastery: mastery_*.txt, mastery_scores.csv")
+    print("  Charts: performance_comparison*.png, scenario_difficulty*.png, extra_comparison*.png")
 
     plt.show()
 

@@ -120,9 +120,10 @@ class Scenario_Builder:
         self.events: List[Event] = []
         self.contents = {c: None for c in CONTAINERS_GEN} 
         self.used: Set[str] = set()  # anyone who acts or leaves
-        self.exclude: Set[str] = set()      # who must leave
+        self.exclude: Set[str] = set()      # who must leave (random: may or may not see target)
         self.exclude_true: Set[str] = set() # who must leave believing something that matches the end queried_item/container state
-        self.exclude_false: Set[str] = set() # who must leave believing something that matches the end queried_item/container state
+        self.exclude_false: Set[str] = set() # who must leave believing something that does NOT match the end state
+        self.exclude_unknown: Set[str] = set()  # who must leave BEFORE seeing target (UNKNOWN state)
         self.include: Set[str] = set()      # who must be present at end
         self.present_initially: Set[str] = set()  # who must be present initially
         self.must_leave_together: Tuple[Optional[str], Optional[str]] = (None, None)  # (char1, char2) must be in same group
@@ -185,18 +186,27 @@ class Scenario_Builder:
             elif spec['KS_Teammate'] == EpistemicState.KNOWS_TRUTH and spec['KS_Opponent'] == EpistemicState.UNKNOWN:
                 self.include.add(teammate)
                 if spec['Answerer'] == 'Self':
-                    self.exclude.add(opponent1)
-                    self.exclude.add(opponent2)
+                    self.exclude_unknown.add(opponent1)
+                    self.exclude_unknown.add(opponent2)
                 elif spec.get('Answerer') == 'Opponent':
-                    # ensure the chosen opponent (the one who must answer) is exclu
-                    self.exclude.add(answerer)
+                    # ensure the chosen opponent (the one who must answer) is excluded (UNKNOWN)
+                    self.exclude_unknown.add(answerer)
+                    # Include non-answerer opponent so someone can do Extra=1B events
+                    # (B is excluded from target moves because A left with belief)
+                    non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
+                    self.include.add(non_answerer_opp)
                 else:
-                    self.exclude.add(self.rng.choice([opponent1, opponent2]))
+                    # One opponent leaves (UNKNOWN), the other stays for Extra=1B events
+                    # (B is excluded from target moves because A left with belief)
+                    excluded_opp = self.rng.choice([opponent1, opponent2])
+                    self.exclude_unknown.add(excluded_opp)
+                    staying_opp = opponent1 if excluded_opp == opponent2 else opponent2
+                    self.include.add(staying_opp)
 
             elif spec['KS_Teammate'] == EpistemicState.UNKNOWN and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
-                self.exclude.add(teammate)
-                if spec['Answerer'] == 'Teammate':
-                    self.must_leave_together = (teammate, actor)
+                self.exclude_unknown.add(teammate)
+                # Note: don't set must_leave_together here because Teammate must leave before
+                # any put (UNKNOWN) while Self must see a put first (BELIEVES_X) - conflicting requirements
                 if spec['Answerer'] == 'Self':
                     self.include.add(opponent1)
                     self.include.add(opponent2)
@@ -207,10 +217,10 @@ class Scenario_Builder:
                     self.include.add(self.rng.choice([opponent1, opponent2])) 
 
             elif spec['KS_Teammate'] == EpistemicState.UNKNOWN and spec['KS_Opponent'] == EpistemicState.UNKNOWN:
-                self.exclude.add(teammate)
-                if spec['Answerer'] == 'Teammate':
-                    self.must_leave_together = (teammate, actor)
-                # Ensure one opponent stays, one leaves
+                self.exclude_unknown.add(teammate)
+                # Note: don't set must_leave_together here because Teammate must leave before
+                # any put (UNKNOWN) while Self must see a put first (BELIEVES_X) - conflicting requirements
+                # Ensure one opponent stays, one leaves (UNKNOWN)
                 if spec.get('Answerer') == 'Opponent':
                     leave_opponent = answerer
                     stay_opponent = opponent1 if leave_opponent == opponent2 else opponent2
@@ -218,7 +228,7 @@ class Scenario_Builder:
                     stay_opponent = self.rng.choice([opponent1, opponent2])
                     leave_opponent = opponent2 if stay_opponent == opponent1 else opponent1
                 self.include.add(stay_opponent)  # This opponent must stay until end
-                self.exclude.add(leave_opponent)  # This opponent must leave
+                self.exclude_unknown.add(leave_opponent)  # This opponent must leave (UNKNOWN)
 
         else: # spec['KS_Self'] == EpistemicState.KNOWS_X:
             self.include.add(actor) 
@@ -231,7 +241,13 @@ class Scenario_Builder:
                     non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
                     self.include.add(non_answerer_opp)
                 else:
-                    self.exclude_true.add(self.rng.choice([opponent1, opponent2]))
+                    # One opponent leaves with true belief, the other stays
+                    # Need to include the staying opponent for Extra=1B events
+                    # (A is excluded from target moves because B left with belief)
+                    excluded_opp = self.rng.choice([opponent1, opponent2])
+                    self.exclude_true.add(excluded_opp)
+                    staying_opp = opponent1 if excluded_opp == opponent2 else opponent2
+                    self.include.add(staying_opp)
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH and spec['KS_Opponent'] == EpistemicState.BELIEVES_FALSE:
                 self.exclude_true.add(teammate)
                 if spec['Answerer'] == 'Opponent':
@@ -241,7 +257,13 @@ class Scenario_Builder:
                     non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
                     self.include.add(non_answerer_opp)
                 else:
-                    self.exclude_false.add(self.rng.choice([opponent1, opponent2]))
+                    # One opponent leaves with false belief, the other stays
+                    # Need to include the staying opponent for Extra=1B events
+                    # (A is excluded from target moves because B left with belief)
+                    excluded_opp = self.rng.choice([opponent1, opponent2])
+                    self.exclude_false.add(excluded_opp)
+                    staying_opp = opponent1 if excluded_opp == opponent2 else opponent2
+                    self.include.add(staying_opp)
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
                 self.exclude_true.add(teammate)
                 if spec.get('Answerer') == 'Opponent':
@@ -251,8 +273,13 @@ class Scenario_Builder:
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_FALSE and spec['KS_Opponent'] == EpistemicState.BELIEVES_TRUTH:
                 self.exclude_false.add(teammate)
                 if spec['Answerer'] == 'Teammate':
-                    self.exclude_true.add(opponent1)
-                    self.exclude_true.add(opponent2)
+                    # Both opponents leave with true belief, but need one to stay for Extra=1B events
+                    # (A is excluded from target moves because B left with belief)
+                    # One leaves with true belief, the other stays (will also get true belief before leaving)
+                    excluded_opp = self.rng.choice([opponent1, opponent2])
+                    self.exclude_true.add(excluded_opp)
+                    staying_opp = opponent1 if excluded_opp == opponent2 else opponent2
+                    self.include.add(staying_opp)
                 elif spec.get('Answerer') == 'Opponent':
                     self.exclude_true.add(answerer)
                     # Include non-answerer opponent so someone can do Extra=1B events
@@ -260,7 +287,13 @@ class Scenario_Builder:
                     non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
                     self.include.add(non_answerer_opp)
                 else:
-                    self.exclude_true.add(self.rng.choice([opponent1, opponent2]))
+                    # One opponent leaves with true belief, the other stays
+                    # Need to include the staying opponent for Extra=1B events
+                    # (A is excluded from target moves because B left with belief)
+                    excluded_opp = self.rng.choice([opponent1, opponent2])
+                    self.exclude_true.add(excluded_opp)
+                    staying_opp = opponent1 if excluded_opp == opponent2 else opponent2
+                    self.include.add(staying_opp)
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_FALSE and spec['KS_Opponent'] == EpistemicState.BELIEVES_FALSE:
                 self.exclude_false.add(teammate)
                 if spec['Answerer'] == 'Opponent':
@@ -270,7 +303,13 @@ class Scenario_Builder:
                     non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
                     self.include.add(non_answerer_opp)
                 else:
-                    self.exclude_false.add(self.rng.choice([opponent1, opponent2])) #need to keep one around to do the move
+                    # One opponent leaves with false belief, the other stays
+                    # Need to include the staying opponent for Extra=1B events
+                    # (A is excluded from target moves because B left with belief)
+                    excluded_opp = self.rng.choice([opponent1, opponent2])
+                    self.exclude_false.add(excluded_opp)
+                    staying_opp = opponent1 if excluded_opp == opponent2 else opponent2
+                    self.include.add(staying_opp)
             elif spec['KS_Teammate'] == EpistemicState.BELIEVES_FALSE and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
                 self.exclude_false.add(teammate)
                 if spec['Answerer'] == 'Teammate':
@@ -300,7 +339,7 @@ class Scenario_Builder:
                 else:
                     self.include.add(self.rng.choice([opponent1, opponent2])) 
 
-        self.present_initially = self.exclude | self.exclude_true | self.exclude_false | self.include # who must be present initially
+        self.present_initially = self.exclude | self.exclude_true | self.exclude_false | self.exclude_unknown | self.include # who must be present initially
 
     def build_scenario(self, answerer: str):
         #randomly add anyone who is in available but not in present_initially to present_initially
@@ -317,6 +356,9 @@ class Scenario_Builder:
                 self.exclude_true.add(who)
             else:
                 leave_immediately_group.add(who)
+
+        # Characters who must be UNKNOWN always go to leave_immediately_group
+        leave_immediately_group |= self.exclude_unknown
 
         # Self with "Believes X" must see a put before leaving to form their belief
         # Move them out of leave_immediately_group to exclude_false
@@ -881,7 +923,7 @@ def insert_extra_events(scenario: Scenario, answerer: str, player: str,
     scenario.events.insert(enter_insert_pos + 1, Event('enter', answerer))
 
 
-def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: random.Random, spec: dict = None) -> None:
     """
     Insert extra events for KNOWS_TRUTH answerers using the "revelation" pattern:
     1. Answerer sees initial put (already in events)
@@ -944,8 +986,9 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     # Exclude teammates of characters who left with beliefs about the target
     # Note: we use leave_pos + 1 because the answerer's leave will be inserted first
     teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, leave_pos)
-    # Also need to add answerer's teammate since answerer is about to leave with a belief
-    teammates_to_exclude.add(_teammate_of(answerer))
+    # Note: We do NOT exclude the answerer's teammate here because in the revelation
+    # pattern, the answerer re-enters and witnesses the changes, so their final
+    # belief is updated (not invalidated).
     valid_movers = [c for c in sorted(present_after_leave) if c not in teammates_to_exclude]
     if not valid_movers:
         return  # Cannot insert extra events without violating teammate beliefs
@@ -1001,9 +1044,17 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
         # Teammates of target modifiers shouldn't leave (would form beliefs that get violated)
         teammates_of_modifiers = {_teammate_of(c) for c in chars_modifying_target_later if c in {'A', 'B', 'C', 'D'}}
 
+        # Characters who need KNOWS_TRUTH should not leave (they must be present at end)
+        must_stay = set()
+        if spec:
+            if spec.get('KS_Teammate') == EpistemicState.KNOWS_TRUTH:
+                must_stay.add('B')  # Teammate must stay
+            if spec.get('KS_Self') == EpistemicState.KNOWS_X:
+                must_stay.add('A')  # Self must stay (or re-enter, but answerer already handles that)
+
         potential_leavers = [c for c in sorted(present_after_leave)
                             if c != mover1 and c != mover2 and c not in chars_acting_later
-                            and c not in teammates_of_modifiers]
+                            and c not in teammates_of_modifiers and c not in must_stay]
         if potential_leavers:
             leaver = rng.choice(potential_leavers)
             events_to_insert.append(Event('leave', leaver))
@@ -1819,7 +1870,7 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                 e1b_spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
                 insert_extra_puts(scenario_e1b, answerer, extra_rng)
             elif answerer_state == EpistemicState.KNOWS_TRUTH:
-                insert_extra_events_with_revelation(scenario_e1b, answerer, extra_rng)
+                insert_extra_events_with_revelation(scenario_e1b, answerer, extra_rng, spec=e1b_spec)
             elif answerer_state == EpistemicState.BELIEVES_TRUTH:
                 insert_extra_events_believes_true(scenario_e1b, answerer, extra_rng)
             elif answerer_state == EpistemicState.BELIEVES_FALSE:
@@ -1977,7 +2028,7 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                     e1b_spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
                     insert_extra_puts(scenario_e1b, answerer, retry_rng)
                 elif answerer_state == EpistemicState.KNOWS_TRUTH:
-                    insert_extra_events_with_revelation(scenario_e1b, answerer, retry_rng)
+                    insert_extra_events_with_revelation(scenario_e1b, answerer, retry_rng, spec=e1b_spec)
                 elif answerer_state == EpistemicState.BELIEVES_TRUTH:
                     insert_extra_events_believes_true(scenario_e1b, answerer, retry_rng)
                 elif answerer_state == EpistemicState.BELIEVES_FALSE:
