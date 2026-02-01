@@ -154,12 +154,13 @@ TOM_MASTERY_CATEGORIES = {
     },
 
     # 3. Self + Teammate Uncertainty: Combined uncertainty handling
-    # Pass in 10, 11, 23, 24 (all involve uncertainty - self believes or teammate unknown)
+    # Pass in 10, 11 (self believes, teammate believes), 23, 24 (self knows, teammate unknown)
     'combined_uncertainty': {
         'name': 'Combined Uncertainty',
         'description': 'Handling self + teammate uncertainty together',
         'components': [
-            {'scenarios': [10, 11, 23, 24], 'action': 'Pass', 'weight': 1},
+            {'scenarios': [10, 11], 'action': 'Pass', 'weight': 1},  # Self believes, teammate believes
+            {'scenarios': [23, 24], 'action': 'Pass', 'weight': 1},  # Self knows, teammate unknown
         ],
     },
 
@@ -291,6 +292,56 @@ def compute_mastery_with_extra_breakout(records: List[dict], lies_okay: bool = F
         'extra1a': compute_all_mastery_scores(records, extra_filter='1A', lies_okay=lies_okay),
         'extra1b': compute_all_mastery_scores(records, extra_filter='1B', lies_okay=lies_okay),
     }
+
+
+def build_mastery_detail_lines(all_records: List[dict], model_records: dict, sorted_models: List[str], title: str, lies_okay: bool = False) -> List[str]:
+    """Build detailed mastery breakdown lines for a set of records.
+
+    Args:
+        all_records: All records to analyze (for overall stats)
+        model_records: Dict mapping model name to its records
+        sorted_models: List of model names in display order
+        title: Title for this section
+        lies_okay: Whether to count lies to opponent as success
+
+    Returns:
+        List of formatted lines
+    """
+    lines = [title, "=" * 80]
+
+    # Overall stats
+    all_mastery = compute_all_mastery_scores(all_records, lies_okay=lies_okay)
+    lines.append("\nOVERALL (All Models)")
+    lines.append("-" * 40)
+    for key, category in TOM_MASTERY_CATEGORIES.items():
+        mastery = all_mastery[key]
+        lines.append(f"\n{category['name']}: {mastery['score']*100:.1f}%")
+        lines.append(f"  {category['description']}")
+        for comp in mastery['by_component']:
+            scenarios_str = ', '.join(str(s) for s in comp['scenarios'])
+            lines.append(f"  - Scenarios [{scenarios_str}] → {comp['action']}: "
+                  f"{comp['k']}/{comp['n']} = {comp['rate']*100:.1f}% (weight={comp['weight']})")
+
+    # Per-model stats
+    lines.append("\n" + "=" * 80)
+    lines.append("PER-MODEL BREAKDOWN")
+    lines.append("=" * 80)
+
+    for model in sorted_models:
+        if model not in model_records or not model_records[model]:
+            continue
+        model_mastery = compute_all_mastery_scores(model_records[model], lies_okay=lies_okay)
+        n_records = len(model_records[model])
+        lines.append(f"\n=== {model} ({n_records} records) ===")
+        for key, category in TOM_MASTERY_CATEGORIES.items():
+            mastery = model_mastery[key]
+            lines.append(f"\n{category['name']}: {mastery['score']*100:.1f}%")
+            for comp in mastery['by_component']:
+                scenarios_str = ', '.join(str(s) for s in comp['scenarios'])
+                lines.append(f"  - [{scenarios_str}] → {comp['action']}: "
+                      f"{comp['k']}/{comp['n']} = {comp['rate']*100:.1f}%")
+
+    return lines
 
 
 def format_rate_ci(rate: float, ci: Tuple[float, float]) -> str:
@@ -529,20 +580,43 @@ def main():
                 row += f",{score:.1f}"
             f.write(row + "\n")
 
-    # Build detailed breakdown for each category (save to file, not screen)
-    detail_lines = ["Detailed Mastery Category Breakdown (All Models, Overall)", "-" * 80]
-    for key, category in TOM_MASTERY_CATEGORIES.items():
-        mastery = all_mastery['overall'][key]
-        detail_lines.append(f"\n{category['name']}: {mastery['score']*100:.1f}%")
-        detail_lines.append(f"  {category['description']}")
-        for comp in mastery['by_component']:
-            scenarios_str = ', '.join(str(s) for s in comp['scenarios'])
-            detail_lines.append(f"  - Scenarios [{scenarios_str}] → {comp['action']}: "
-                  f"{comp['k']}/{comp['n']} = {comp['rate']*100:.1f}% (weight={comp['weight']})")
-
+    # Build detailed breakdown files for each free_response mode
+    # 1. All data combined
+    detail_lines = build_mastery_detail_lines(
+        all_records, model_records, sorted_models,
+        "Detailed Mastery Category Breakdown (All Data)", lies_okay=args.lies_okay
+    )
     mastery_detail_path = os.path.join(logs_dir, 'mastery_detail.txt')
     with open(mastery_detail_path, 'w') as f:
         f.write("\n".join(detail_lines))
+
+    # 2. Free Response only (fr_true)
+    fr_true_records = [r for r in all_records if r.get('free_response') == True]
+    if fr_true_records:
+        fr_true_model_records = {m: [r for r in recs if r.get('free_response') == True]
+                                  for m, recs in model_records.items()}
+        fr_true_model_records = {m: recs for m, recs in fr_true_model_records.items() if recs}
+        detail_lines_fr_true = build_mastery_detail_lines(
+            fr_true_records, fr_true_model_records, sorted_models,
+            "Detailed Mastery Category Breakdown (Free Response)", lies_okay=args.lies_okay
+        )
+        mastery_detail_fr_true_path = os.path.join(logs_dir, 'mastery_detail_fr_true.txt')
+        with open(mastery_detail_fr_true_path, 'w') as f:
+            f.write("\n".join(detail_lines_fr_true))
+
+    # 3. Multiple Choice only (fr_false)
+    fr_false_records = [r for r in all_records if r.get('free_response') == False]
+    if fr_false_records:
+        fr_false_model_records = {m: [r for r in recs if r.get('free_response') == False]
+                                   for m, recs in model_records.items()}
+        fr_false_model_records = {m: recs for m, recs in fr_false_model_records.items() if recs}
+        detail_lines_fr_false = build_mastery_detail_lines(
+            fr_false_records, fr_false_model_records, sorted_models,
+            "Detailed Mastery Category Breakdown (Multiple Choice)", lies_okay=args.lies_okay
+        )
+        mastery_detail_fr_false_path = os.path.join(logs_dir, 'mastery_detail_fr_false.txt')
+        with open(mastery_detail_fr_false_path, 'w') as f:
+            f.write("\n".join(detail_lines_fr_false))
 
     # Save main summary table to file
     summary_path = os.path.join(logs_dir, 'summary_table.txt')
@@ -556,6 +630,10 @@ def main():
         mastery_detail_path,
         mastery_csv_path,
     ]
+    if fr_true_records:
+        saved_files.append(mastery_detail_fr_true_path)
+    if fr_false_records:
+        saved_files.append(mastery_detail_fr_false_path)
     saved_files.extend([os.path.join(logs_dir, fn) for fn in extra_file_names.values()])
 
     # Generate charts for each free_response mode

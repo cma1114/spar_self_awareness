@@ -105,6 +105,10 @@ def parse_trial_block(block: str, trial_num: int, header_info: Dict) -> Optional
     spec_dict_str = header_match.group(3)
 
     # Parse spec fields
+    # Extract actual scenario Id (not Spec ID which is just row number)
+    id_match = re.search(r"'Id':\s*'(\d+)'", spec_dict_str)
+    actual_scenario_id = id_match.group(1) if id_match else spec_id
+
     extra_match = re.search(r"'Extra':\s*'(\w+)'", spec_dict_str)
     extra = extra_match.group(1) if extra_match else None
 
@@ -224,7 +228,7 @@ def parse_trial_block(block: str, trial_num: int, header_info: Dict) -> Optional
         "was_optimal": was_optimal,
         "blue_score_after": None,  # Could parse from Outcome line
         "red_score_after": None,
-        "scenario_id": spec_id,
+        "scenario_id": actual_scenario_id,
         "extra": extra,
         "epistemic_type": None,
         "ask_constraint": None,

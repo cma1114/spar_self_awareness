@@ -124,8 +124,14 @@ Plays through each scenario interactively, prompting for actions.
 
 ### LLM Mode
 ```bash
-python tom_test_new.py --mode llm --model <model-name>
+python tom_test_new.py --mode llm --model <model-name> [--free_response] [--history_mode none|full|actions] [--reps N]
 ```
+
+**Options:**
+- `--free_response`: Allow open-ended text responses (default: multiple choice format)
+- `--history_mode`: How much game history to include in prompts (`none`, `full`, `actions`)
+- `--reps`: Number of repetitions per scenario (default: 1)
+
 Runs the test against an LLM, logging all turns and computing optimal action accuracy.
 
 ## Scoring
@@ -152,11 +158,20 @@ The `generate_tom_scenarios_new.py` file converts CSV specifications into concre
 3. Generating event sequences that produce the required epistemic states
 4. Validating invariants (no acting after leaving, etc.)
 
-### Extra Complexity (Extra=1)
-When `Extra=1`, additional events are inserted to test tracking through more complex state changes:
-- Characters may leave and re-enter
-- Items may be moved multiple times
-- Tests ability to track beliefs through longer event sequences
+### Extra Categories
+
+The `Extra` field controls scenario complexity with four categories:
+
+| Code | Name | Description |
+|------|------|-------------|
+| **0A** | Minimal Events | No filler events, no Epistemic Category Transitions (ECT) |
+| **0B** | Event Load | Higher event load (+3 filler events), no ECT |
+| **1A** | Minimal ECT | Filler events for SIT parity, includes ECT |
+| **1B** | ECT Load | Extra events with ECT and more complexity |
+
+**ECT (Epistemic Category Transitions)**: Events that change a character's epistemic state category (e.g., from "Knows Truth" to "Believes False" when they leave before a move).
+
+Legacy data may use `Extra=0` (equivalent to 1A) or `Extra=1` (equivalent to 1B).
 
 ## Example Scenario
 
@@ -174,7 +189,28 @@ If the question is "What's in the bag?" and B answers:
 
 ## Analysis Tools
 
-### ToM Mastery Categories (`analyze_results.py`)
+### Results Analysis (`analyze_results.py`)
+
+```bash
+python analyze_results.py [--lies_okay]
+```
+
+**Options:**
+- `--lies_okay`: Count lying to opponent answerer as success (strategic deception)
+
+**Output:**
+- **Tables**: Summary by model, Extra category, and free_response mode (saved to `summary_table.txt`)
+- **Charts**: Performance comparison, scenario difficulty, Extra category comparison
+  - Generates separate charts for Free Response (`_fr_true.png`) and Multiple Choice (`_fr_false.png`) modes
+- **Mastery scores**: CSV and text files with ToM category breakdowns
+
+**Free Response Mode:**
+When `free_response=True`, the model provides open-ended text responses. When `free_response=False`, the model selects from multiple choice options. Analysis automatically breaks down results by mode when both exist.
+
+**Lies Okay Mode:**
+The `--lies_okay` flag treats lying to an opponent answerer as a success. This reflects strategic deception: if an opponent will answer the question and believes something false, telling them a lie (confirming their false belief or adding confusion) is arguably strategic, even if the "optimal" action is Pass. Records where `lied_to_opponent_answerer=TRUE` are counted as successes alongside `was_optimal=TRUE`.
+
+### ToM Mastery Categories
 
 Beyond raw accuracy, the test evaluates performance across five ToM mastery categories that measure distinct cognitive capabilities:
 

@@ -34,7 +34,7 @@ In each scenario, one or more of the players start inside a room. The room has t
 - one or more players entering or leaving the room
 - one or more players putting objects into containers
 - one or more players removing objects from containers
-Players cannot see inside containers, but when a player is inside the room, they are aware of anything that happens in the room. When a player is outside the room they are unaware of anything that happens in the room, but do know if anyone enters or leaves the room. If an object is put or moved into a container while a player is outside the room, it will not be described to that player, but players leaving or entering the room will be described to that player.
+Each container can hold at most one object. Players cannot see inside containers, but when a player is inside the room, they are aware of anything that happens in the room. When a player is outside the room they are unaware of anything that happens in the room, but do know if anyone enters or leaves the room. If an object is put or moved into a container while a player is outside the room, it will not be described to that player, but players leaving or entering the room will be described to that player.
 At the end of the scenario, I will reveal a question that I will ask in the answer phase.
 
 ACTION PHASE
@@ -653,13 +653,14 @@ It is your turn.
             return "\n\n".join(prompt_parts)
 
 
-def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None, run_all_scenarios: bool = False):
+def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None, run_all_scenarios: bool = False, max_tokens_override: Optional[int] = None):
     """Play the game in CLI mode, for humans or LLMs.
 
     Args:
         scenario_file: Path to the scenarios JSON file
         llm_player: Optional LLM player instance
         run_all_scenarios: If True, ignore winning score and run all scenarios (useful for testing)
+        max_tokens_override: Optional override for max tokens (for retrying token-limited failures)
     """
     game = GameState(scenario_file=scenario_file)
     log = llm_player._log if llm_player else print
@@ -759,7 +760,7 @@ It is {turn_name} turn.
                     message_history=[],
                     keep_appending=False,
                     setup_text="You are a player in a strategic deduction game. Your goal is to help your team win by taking the optimal action.",
-                    MAX_TOKENS=300 if free_response else 30,
+                    MAX_TOKENS=max_tokens_override if max_tokens_override else (1200 if free_response else 30),
                     temp=0.0,
                     accept_any=True
                 )

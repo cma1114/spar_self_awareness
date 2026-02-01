@@ -1,11 +1,16 @@
 Model,Extra,Self: Knowledge vs Belief,Teammate: Knowledge vs Belief,Combined Uncertainty,True vs False Belief,Teammate vs Opponent
-llama-3.1-70b-instruct,Overall,58.2,9.3,17.3,8.1,25.2
-llama-3.1-70b-instruct,Minimal Events,60.4,9.6,24.0,7.6,22.2
-llama-3.1-70b-instruct,Event Load,53.1,12.3,18.6,9.6,21.9
-llama-3.1-70b-instruct,Minimal ECT,63.1,7.6,23.5,7.5,22.6
-llama-3.1-70b-instruct,ECT Load,56.0,7.6,3.1,7.6,33.9
-ALL MODELS,Overall,58.2,9.3,17.3,8.1,25.2
-ALL MODELS,Minimal Events,60.4,9.6,24.0,7.6,22.2
-ALL MODELS,Event Load,53.1,12.3,18.6,9.6,21.9
-ALL MODELS,Minimal ECT,63.1,7.6,23.5,7.5,22.6
-ALL MODELS,ECT Load,56.0,7.6,3.1,7.6,33.9
+deepseek-chat-v3.1,Overall,51.1,75.0,44.7,68.1,63.9
+deepseek-chat-v3.1,Minimal Events,51.7,75.0,48.8,65.8,64.0
+deepseek-chat-v3.1,Event Load,51.7,81.7,47.5,71.7,69.0
+deepseek-chat-v3.1,Minimal ECT,50.0,80.0,36.2,70.8,60.0
+deepseek-chat-v3.1,ECT Load,51.2,63.3,46.2,64.2,62.5
+llama-3.1-70b-instruct,Overall,58.1,24.4,22.2,23.5,27.3
+llama-3.1-70b-instruct,Minimal Events,57.5,25.0,30.2,23.6,24.9
+llama-3.1-70b-instruct,Event Load,52.2,26.7,22.8,24.4,25.1
+llama-3.1-70b-instruct,Minimal ECT,58.3,23.8,29.0,24.0,25.4
+llama-3.1-70b-instruct,ECT Load,64.4,22.1,6.8,22.0,33.8
+ALL MODELS,Overall,55.8,41.2,29.6,38.3,39.5
+ALL MODELS,Minimal Events,55.6,41.7,36.4,37.6,37.9
+ALL MODELS,Event Load,52.0,45.0,31.0,40.1,39.7
+ALL MODELS,Minimal ECT,55.6,42.5,31.4,39.5,36.9
+ALL MODELS,ECT Load,60.1,35.8,19.8,36.0,43.4
