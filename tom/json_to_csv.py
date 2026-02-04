@@ -50,13 +50,24 @@ def json_to_csv(directory=".", csv_file="combined_game_data.csv"):
                 print(f"  Warning: {filename} is empty, skipping")
                 continue
             
+            # Handle both formats: 
+            # - Old format: array of records directly
+            # - New format: {"game_setup": "...", "turn_records": [...]}
+            if isinstance(data, dict) and 'turn_records' in data:
+                records = data['turn_records']
+            elif isinstance(data, list):
+                records = data
+            else:
+                print(f"  Warning: {filename} has unexpected format, skipping")
+                continue
+            
             # Add source_file to each record and collect keys
-            for record in data:
+            for record in records:
                 record['source_file'] = filename
                 all_keys.update(record.keys())
                 all_data.append(record)
             
-            print(f"  Added {len(data)} records")
+            print(f"  Added {len(records)} records")
             
         except json.JSONDecodeError as e:
             print(f"  Error: Could not parse {filename} as JSON: {e}")
