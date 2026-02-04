@@ -1,0 +1,116 @@
+Detailed Mastery Category Breakdown (Multiple Choice, Event Load - 0B)
+================================================================================
+
+OVERALL (All Models)
+----------------------------------------
+
+Self: Knowledge vs Belief: 51.9%
+  Distinguishing own knowledge from mere belief
+  - Scenarios [7, 8, 9] → Pass: 75/120 = 62.5% (weight=2)
+  - Scenarios [12, 13] → Ask: 33/80 = 41.2% (weight=3)
+
+Teammate: Knowledge vs Belief: 43.8%
+  Distinguishing teammate knowledge from belief
+  - Scenarios [20, 21, 22] → Pass: 48/120 = 40.0% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 57/120 = 47.5% (weight=1)
+
+Combined Uncertainty: 45.6%
+  Handling self + teammate uncertainty together
+  - Scenarios [10, 11] → Pass: 53/80 = 66.2% (weight=1)
+  - Scenarios [23, 24] → Pass: 20/80 = 25.0% (weight=1)
+
+True vs False Belief: 30.8%
+  Distinguishing true belief from false belief
+  - Scenarios [14, 15, 16] → Pass: 17/120 = 14.2% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 57/120 = 47.5% (weight=1)
+
+Teammate vs Opponent: 37.8%
+  Treating teammate differently from opponent
+  - Scenarios [12, 13] → Ask: 33/80 = 41.2% (weight=1)
+  - Scenarios [37, 39] → Pass: 33/80 = 41.2% (weight=1)
+  - Scenarios [37, 39] → Pass (lies ok): 35/80 = 43.8% (weight=1)
+  - Scenarios [30, 31, 32] → Pass: 28/120 = 23.3% (weight=1)
+  - Scenarios [30, 31, 32] → Pass (lies ok): 30/120 = 25.0% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 57/120 = 47.5% (weight=1)
+
+================================================================================
+PER-MODEL BREAKDOWN
+================================================================================
+
+=== deepseek-chat-v3.1 (390 records) ===
+
+Self: Knowledge vs Belief: 52.5%
+  - [7, 8, 9] → Pass: 27/30 = 90.0%
+  - [12, 13] → Ask: 3/20 = 15.0%
+
+Teammate: Knowledge vs Belief: 78.3%
+  - [20, 21, 22] → Pass: 17/30 = 56.7%
+  - [17, 18, 19] → Tell: 30/30 = 100.0%
+
+Combined Uncertainty: 47.5%
+  - [10, 11] → Pass: 19/20 = 95.0%
+  - [23, 24] → Pass: 0/20 = 0.0%
+
+True vs False Belief: 60.0%
+  - [14, 15, 16] → Pass: 6/30 = 20.0%
+  - [17, 18, 19] → Tell: 30/30 = 100.0%
+
+Teammate vs Opponent: 63.0%
+  - [12, 13] → Ask: 3/20 = 15.0%
+  - [37, 39] → Pass: 13/20 = 65.0%
+  - [37, 39] → Pass (lies ok): 15/20 = 75.0%
+  - [30, 31, 32] → Pass: 17/30 = 56.7%
+  - [30, 31, 32] → Pass (lies ok): 17/30 = 56.7%
+  - [17, 18, 19] → Tell: 30/30 = 100.0%
+
+=== qwen3-32b (390 records) ===
+
+Self: Knowledge vs Belief: 50.0%
+  - [7, 8, 9] → Pass: 30/30 = 100.0%
+  - [12, 13] → Ask: 0/20 = 0.0%
+
+Teammate: Knowledge vs Belief: 80.0%
+  - [20, 21, 22] → Pass: 26/30 = 86.7%
+  - [17, 18, 19] → Tell: 22/30 = 73.3%
+
+Combined Uncertainty: 100.0%
+  - [10, 11] → Pass: 20/20 = 100.0%
+  - [23, 24] → Pass: 20/20 = 100.0%
+
+True vs False Belief: 55.0%
+  - [14, 15, 16] → Pass: 11/30 = 36.7%
+  - [17, 18, 19] → Tell: 22/30 = 73.3%
+
+Teammate vs Opponent: 53.0%
+  - [12, 13] → Ask: 0/20 = 0.0%
+  - [37, 39] → Pass: 20/20 = 100.0%
+  - [37, 39] → Pass (lies ok): 20/20 = 100.0%
+  - [30, 31, 32] → Pass: 11/30 = 36.7%
+  - [30, 31, 32] → Pass (lies ok): 11/30 = 36.7%
+  - [17, 18, 19] → Tell: 22/30 = 73.3%
+
+=== llama-3.1-70b-instruct (780 records) ===
+
+Self: Knowledge vs Belief: 52.5%
+  - [7, 8, 9] → Pass: 18/60 = 30.0%
+  - [12, 13] → Ask: 30/40 = 75.0%
+
+Teammate: Knowledge vs Belief: 8.3%
+  - [20, 21, 22] → Pass: 5/60 = 8.3%
+  - [17, 18, 19] → Tell: 5/60 = 8.3%
+
+Combined Uncertainty: 17.5%
+  - [10, 11] → Pass: 14/40 = 35.0%
+  - [23, 24] → Pass: 0/40 = 0.0%
+
+True vs False Belief: 4.2%
+  - [14, 15, 16] → Pass: 0/60 = 0.0%
+  - [17, 18, 19] → Tell: 5/60 = 8.3%
+
+Teammate vs Opponent: 17.5%
+  - [12, 13] → Ask: 30/40 = 75.0%
+  - [37, 39] → Pass: 0/40 = 0.0%
+  - [37, 39] → Pass (lies ok): 0/40 = 0.0%
+  - [30, 31, 32] → Pass: 0/60 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 2/60 = 3.3%
+  - [17, 18, 19] → Tell: 5/60 = 8.3%

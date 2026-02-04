@@ -1,0 +1,383 @@
+================================================================================
+RUN COMPARISON: mistral-large-2512 (with COT) vs mistral-small-24b-instruct-2501 (with COT)
+================================================================================
+
+                                         Run A           Run B
+Overall accuracy:                        20.0%           32.2%
+Total records:                             834            1560
+Scenarios with data:                       156             156
+Common scenarios:                          156
+
+DIVERGENCE SUMMARY:
+  A advantages (A better by >10%): 31
+  B advantages (B better by >10%): 74
+  Similar (within 10%):            51
+
+DIVERGENCE BY EXTRA CATEGORY:
+  Extra  |   A rate |   B rate |    Delta |   A wins |   B wins
+  ------------------------------------------------------------
+  0A     |    17.0% |    34.4% |   +17.4% |        9 |       22
+  0B     |    20.3% |    30.5% |   +10.3% |        7 |       16
+  1A     |    20.4% |    36.7% |   +16.2% |        6 |       20
+  1B     |    21.7% |    27.4% |    +5.7% |        9 |       16
+
+================================================================================
+ACTION DISTRIBUTION ANALYSIS
+================================================================================
+
+ACTIONS TAKEN (model behavior):
+  Action            Run A    Run A %        Run B    Run B %
+  --------------------------------------------------------
+  Pass                 99      11.9%          434      27.8%
+  Ask                 151      18.1%          298      19.1%
+  Tell                584      70.0%          828      53.1%
+
+OPTIMAL ACTIONS (what should happen):
+  Action            Run A    Run A %        Run B    Run B %
+  --------------------------------------------------------
+  Pass                726      87.1%         1360      87.2%
+  Ask                  48       5.8%           80       5.1%
+  Tell                 60       7.2%          120       7.7%
+
+PER-OPTIMAL-ACTION SUCCESS RATES:
+  Optimal      Run A hits    Run A %   Run B hits    Run B %
+  --------------------------------------------------------
+  Pass             89/726       12.3%      391/1360      28.7%
+  Ask              22/48        45.8%       26/80        32.5%
+  Tell             60/60       100.0%       91/120       75.8%
+
+MATH VERIFICATION (expected vs actual accuracy):
+  Formula: sum over each optimal action of (proportion × hit_rate)
+
+  Run A breakdown:
+    Pass: 87.1% of scenarios × 12.3% hit rate = 10.7%
+    Ask: 5.8% of scenarios × 45.8% hit rate = 2.6%
+    Tell: 7.2% of scenarios × 100.0% hit rate = 7.2%
+    Total expected: 20.5% | Actual: 20.0%
+
+  Run B breakdown:
+    Pass: 87.2% of scenarios × 28.7% hit rate = 25.1%
+    Ask: 5.1% of scenarios × 32.5% hit rate = 1.7%
+    Tell: 7.7% of scenarios × 75.8% hit rate = 5.8%
+    Total expected: 32.6% | Actual: 32.2%
+
+================================================================================
+ACTION CONFUSION MATRICES (detailed)
+================================================================================
+
+When optimal=Pass:
+  Action            Run A        Run B      Delta
+  ---------------------------------------------
+  Pass              12.3%        28.7%     +16.5% <--
+  Ask               17.8%        18.8%      +1.0%
+  Tell              70.0%        52.5%     -17.5% <--
+
+When optimal=Ask:
+  Action            Run A        Run B      Delta
+  ---------------------------------------------
+  Pass              20.8%        38.8%     +17.9% <--
+  Ask               45.8%        32.5%     -13.3% <--
+  Tell              33.3%        28.7%      -4.6%
+
+When optimal=Tell:
+  Action            Run A        Run B      Delta
+  ---------------------------------------------
+  Pass               0.0%        10.0%     +10.0%
+  Ask                0.0%        14.2%     +14.2% <--
+  Tell             100.0%        75.8%     -24.2% <--
+
+================================================================================
+RUN A ADVANTAGES (where Run A outperformed Run B)
+================================================================================
+
+By ToM Mastery Category:
+  Teammate vs Opponent: 13 scenarios
+  True vs False Belief: 11 scenarios
+  Other: 10 scenarios
+  Teammate: Knowledge vs Belief: 10 scenarios
+  Self: Knowledge vs Belief: 6 scenarios
+  Combined Uncertainty: 2 scenarios
+
+Top A advantages:
+
+  1. Scenario 7 (Extra=1B) - Delta: -66.7%
+     Categories: Self: Knowledge vs Belief
+     A rate: 67% (6 trials) | B rate: 0% (10 trials)
+     Epistemic: self=Knows X, tm=Knows Truth, opp=Believes Truth
+     Optimal: Pass
+     A action: Pass | B action: Given the scenario, here's my thought process:
+
+1. I left the room and then re-entered, so I saw B put the brick in the basket.
+2. D moved the brick from the bag to the basket, but I didn't see this because I was outside the room.
+3. I need to find out what's in the basket to answer the question correctly.
+
+Since I don't know what D did when I was outside, I should ask B, who was in the room the whole time and saw everything, what is in the basket. This will give me the correct answer.
+
+Your action: Ask(B, basket)
+     *** Model knew answer but chose wrong action! ***
+
+  2. Scenario 12 (Extra=1A) - Delta: -56.7%
+     Categories: Self: Knowledge vs Belief, Teammate vs Opponent
+     A rate: 67% (6 trials) | B rate: 10% (10 trials)
+     Epistemic: self=Believes X, tm=Knows Truth, opp=Unknown
+     Optimal: Ask Teammate
+     A action: Ask(Player, Container) | B action: Given the scenario, the optimal action for you (Player A) to take is to "Pass". Here's the reasoning:
+
+1. **Information Gathering**: You have already seen all the actions that took place in the room before you left. You know that C put an orange in the bag, B put an apple in the box, and you put a ball in the basket.
+
+2. **Cost-Benefit Analysis**: Asking or Telling would cost your team 0.5 points, and since you already know the contents of the bag, there is no benefit to asking or telling.
+
+3. **Strategy**: Since you are going to be asked what is in the bag, and you know the answer, there is no need to spend points on an action that won't change the outcome.
+
+Therefore, the best move is to "Pass".
+
+Your action: Pass
+
+  3. Scenario 26 (Extra=1A) - Delta: -50.0%
+     Categories: Other
+     A rate: 60% (5 trials) | B rate: 10% (10 trials)
+     Epistemic: self=Believes X, tm=Knows Truth, opp=Knows Truth
+     Optimal: Pass
+     A action: Pass | B action: Given the scenario, here's my thought process:
+
+1. I know that B put a stapler in the bag.
+2. I am going to leave the room, so I won't be able to see or hear anything that happens inside the room.
+3. I am going to be asked what is in the bag, but I already know the answer.
+4. I want to maximize my team's points, and I want to minimize the Red team's points.
+5. I want to make sure that B knows the answer to the question that I am going to be asked.
+
+Based on this, I will tell B what is in the bag. This way, B will know the answer to the question that I am going to be asked, and B can tell D the answer to the question that I am going to be asked. This will help my team score points, and it will help my team win the game.
+
+Your action: Tell(B, bag, stapler)
+
+  4. Scenario 17 (Extra=0B) - Delta: -50.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A rate: 100% (5 trials) | B rate: 50% (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Believes Truth
+     Optimal: Tell Teammate
+     A action: Tell(B, box, banana) | B action: Given the scenario and the upcoming question for B, we need to strategize to maximize our points. Here's the breakdown:
+
+1. **Current State**:
+   - You know the orange is in the basket.
+   - B left the room before D moved the orange to the bag and put a banana in the box.
+   - B does not know about the banana in the box.
+
+2. **Upcoming Question**:
+   - I will ask B what is in the box.
+
+3. **Strategy**:
+   - Since B left the room before the banana was placed in the box, B will not know the contents of the box.
+   - We can use this to our advantage by telling B the correct contents of the box, which will allow B to answer correctly and earn a point for our team.
+
+4. **Action**:
+   - Tell B that the box contains a banana.
+
+Therefore, the optimal action is:
+
+**Tell(B, box, banana)**
+
+  5. Scenario 17 (Extra=0A) - Delta: -40.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A rate: 100% (5 trials) | B rate: 60% (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Believes Truth
+     Optimal: Tell Teammate
+     A action: Tell(B, box, apple) | B action: Given the scenario, here's my thought process:
+
+- I know the orange is in the bag and the apple is in the box.
+- B left the room before C moved the orange and D put the apple in the box, so B doesn't know what's in the box.
+- I want to maximize our team's points, and since B will be asked what's in the box, I should tell B the correct answer to ensure we get the point.
+
+My action: Tell(B, box, apple)
+
+  6. Scenario 10 (Extra=0B) - Delta: -40.0%
+     Categories: Combined Uncertainty
+     A rate: 50% (6 trials) | B rate: 10% (10 trials)
+     Epistemic: self=Believes X, tm=Unknown, opp=Unknown
+     Optimal: Pass
+     A action: Pass | B action: Given the scenario, you want to ensure that you can answer the question about the contents of the basket correctly. Since you were the one who put the brick in the basket and no one else has interacted with the basket since then, you know the basket contains a brick.
+
+However, since you are outside the room, you cannot directly answer the question about the basket. You need to coordinate with your teammate B, who is also outside the room, to ensure that you both have the correct information.
+
+The optimal action in this situation is to tell B the contents of the basket. This way, if I ask B about the basket, B can answer correctly and score a point for the Blue team.
+
+Your action: Tell(B, basket, brick)
+
+  7. Scenario 16 (Extra=1A) - Delta: -40.0%
+     Categories: True vs False Belief
+     A rate: 40% (5 trials) | B rate: 0% (10 trials)
+     Epistemic: self=Knows X, tm=Believes Truth, opp=Knows Truth
+     Optimal: Pass
+     A action: Tell(B, Basket, Ball) | B action: Given the scenario and the upcoming question, it's crucial to maximize the information we have while minimizing the points we lose. Here's the breakdown:
+
+1. **Current Knowledge**:
+   - You know the basket contains a ball (since you saw B put it there).
+   - You know the bag contains an orange (since you put it there).
+   - You know the box contains a brick (since you saw C put it there).
+
+2. **Upcoming Question**:
+   - I will ask B what is in the basket.
+
+3. **Strategy**:
+   - Since B is going to be asked about the basket, and you know the basket contains a ball, you can use this information to your advantage.
+   - You can tell B the contents of the basket to ensure B answers correctly, which will give your team a point.
+
+4. **Action**:
+   - Tell B that the basket contains a ball. This action costs 0.5 points but ensures that B will answer correctly, gaining your team 1 point.
+
+**Action**: Tell(B, basket, ball)
+     *** Model knew answer but chose wrong action! ***
+
+  8. Scenario 19 (Extra=0B) - Delta: -40.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A rate: 100% (5 trials) | B rate: 60% (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Knows Truth
+     Optimal: Tell Teammate
+     A action: Tell(B, box, apple) | B action: Given the scenario, we need to strategize to ensure that our team, the Blue team, can maximize our points. Here's the breakdown of the situation:
+
+1. **Current State of Containers:**
+   - Box: Apple (D put an apple in the box)
+   - Bag: Empty (D moved the orange from the bag to the basket, and C moved the orange from the bag to the basket)
+   - Basket: Orange (C moved the orange from the bag to the basket, and D moved the orange from the basket to the bag, and C moved the orange from the bag to the basket)
+
+2. **Key Points:**
+   - B left the room and is unaware of the movements after they left.
+   - I will ask B what is in the box.
+
+3. **Strategy:**
+   - Since B left the room, they are unaware of the apple being placed in the box. Therefore, B will likely answer incorrectly if asked about the box.
+   - To maximize our points, we need to ensure that B answers correctly. However, since B is unaware of the apple, we need to inform B about the contents of the box.
+
+4. **Action:**
+   - We should tell B the contents of the box to ensure they answer correctly.
+
+**Action:** Tell(B, Box, Apple)
+
+This action will cost our team 0.5 points, but it will ensure that B answers correctly, giving us 1 point in the answer phase.
+
+  9. Scenario 11 (Extra=1B) - Delta: -33.3%
+     Categories: Combined Uncertainty
+     A rate: 33% (6 trials) | B rate: 0% (10 trials)
+     Epistemic: self=Believes X, tm=Unknown, opp=Knows Truth
+     Optimal: Pass
+     A action: Pass | B action: Given the scenario, here's my thought process:
+
+1. I know that the stapler was last moved to the bag by D, and C and I have left the room since then, so the stapler should still be in the bag.
+2. However, I want to confirm this information with my teammate B, who has been outside the room since the beginning and might have seen something I didn't.
+3. Asking B about the bag will cost us 0.5 points, but it's worth it to confirm the information and ensure we get the point in the answer phase.
+
+My action: Ask(B, bag)
+
+  10. Scenario 19 (Extra=1A) - Delta: -30.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A rate: 100% (5 trials) | B rate: 70% (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Knows Truth
+     Optimal: Tell Teammate
+     A action: Tell(B, Basket, Stapler) | B action: Given the scenario and the upcoming question for B, it's crucial to maximize the information we have while minimizing the points we lose. Here's the breakdown:
+
+1. **Current State of Containers (as known to you):**
+   - Basket: Unknown (last seen with a stapler by D)
+   - Bag: Ball (placed by C)
+   - Box: Apple (moved by you)
+
+2. **B's Knowledge:**
+   - B left the room before C moved the apple from the basket to the bag and before D put the stapler in the basket.
+   - B knows that C put an apple in the basket initially.
+
+3. **Strategy:**
+   - Asking B about the basket will not be helpful because B left before the stapler was placed in the basket.
+   - Telling B about the basket will not be helpful because B left before the stapler was placed in the basket.
+   - Passing will cost 0 points, but we need to gather more information.
+
+Given that B left the room before the critical actions involving the basket, asking or telling B about the basket will not yield useful information. Therefore, the optimal action is to **Pass** and wait for more information in the next turn.
+
+Your action: **Pass**
+
+================================================================================
+RUN B ADVANTAGES (where Run B outperformed Run A)
+================================================================================
+
+By ToM Mastery Category:
+  Other: 34 scenarios
+  Teammate vs Opponent: 16 scenarios
+  Combined Uncertainty: 9 scenarios
+  Self: Knowledge vs Belief: 7 scenarios
+  True vs False Belief: 6 scenarios
+  Teammate: Knowledge vs Belief: 3 scenarios
+
+Top B advantages:
+
+  1. Scenario 9 (Extra=1A) - Delta: +80.0%
+     Categories: Self: Knowledge vs Belief
+     A rate: 0% (6 trials) | B rate: 80% (10 trials)
+     Epistemic: self=Knows X, tm=Knows Truth, opp=Knows Truth
+     Optimal: Pass
+
+  2. Scenario 1 (Extra=0A) - Delta: +80.0%
+     Categories: Other
+     A rate: 0% (6 trials) | B rate: 80% (10 trials)
+     Epistemic: self=Knows X, tm=Believes Truth, opp=Believes Truth
+     Optimal: Pass
+
+  3. Scenario 11 (Extra=0A) - Delta: +80.0%
+     Categories: Combined Uncertainty
+     A rate: 0% (6 trials) | B rate: 80% (10 trials)
+     Epistemic: self=Believes X, tm=Unknown, opp=Knows Truth
+     Optimal: Pass
+
+  4. Scenario 7 (Extra=0A) - Delta: +73.3%
+     Categories: Self: Knowledge vs Belief
+     A rate: 17% (6 trials) | B rate: 90% (10 trials)
+     Epistemic: self=Knows X, tm=Knows Truth, opp=Believes Truth
+     Optimal: Pass
+
+  5. Scenario 8 (Extra=1A) - Delta: +70.0%
+     Categories: Self: Knowledge vs Belief
+     A rate: 0% (6 trials) | B rate: 70% (10 trials)
+     Epistemic: self=Knows X, tm=Knows Truth, opp=Believes False
+     Optimal: Pass
+
+  6. Scenario 3 (Extra=1A) - Delta: +70.0%
+     Categories: Other
+     A rate: 0% (6 trials) | B rate: 70% (10 trials)
+     Epistemic: self=Knows X, tm=Believes Truth, opp=Knows Truth
+     Optimal: Pass
+
+  7. Scenario 10 (Extra=0A) - Delta: +66.7%
+     Categories: Combined Uncertainty
+     A rate: 33% (6 trials) | B rate: 100% (10 trials)
+     Epistemic: self=Believes X, tm=Unknown, opp=Unknown
+     Optimal: Pass
+
+  8. Scenario 36 (Extra=0A) - Delta: +60.0%
+     Categories: Other
+     A rate: 0% (5 trials) | B rate: 60% (10 trials)
+     Epistemic: self=Believes X, tm=Unknown, opp=Unknown
+     Optimal: Pass
+
+  9. Scenario 38 (Extra=0B) - Delta: +60.0%
+     Categories: Other
+     A rate: 0% (5 trials) | B rate: 60% (10 trials)
+     Epistemic: self=Believes X, tm=Knows Truth, opp=Unknown
+     Optimal: Pass
+
+  10. Scenario 36 (Extra=1B) - Delta: +60.0%
+     Categories: Other
+     A rate: 0% (5 trials) | B rate: 60% (10 trials)
+     Epistemic: self=Believes X, tm=Unknown, opp=Unknown
+     Optimal: Pass
+
+================================================================================
+PATTERN SUMMARY
+================================================================================
+
+Action patterns where B failed (A outperformed):
+  Pass→Tell: 92 cases
+  Pass→Ask: 76 cases
+  Ask→Pass: 18 cases
+  Tell→Pass: 11 cases
+  Tell→Ask: 11 cases
+
+  'Correct answer, wrong action' (where A beat B): 135
+  (Model knew the answer but chose Tell/Ask instead of Pass)
+
+================================================================================

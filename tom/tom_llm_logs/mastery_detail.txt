@@ -1,84 +1,480 @@
-Detailed Mastery Category Breakdown (All Data)
+Detailed Mastery Category Breakdown
 ================================================================================
 
 OVERALL (All Models)
 ----------------------------------------
 
-Self: Knowledge vs Belief: 55.8%
+Self: Knowledge vs Belief: 42.7%
   Distinguishing own knowledge from mere belief
-  - Scenarios [7, 8, 9] → Pass: 471/732 = 64.3% (weight=2)
-  - Scenarios [12, 13] → Ask: 231/488 = 47.3% (weight=3)
+  - Scenarios [7, 8, 9] → Pass: 1115/2244 = 49.7% (weight=2)
+  - Scenarios [12, 13] → Ask: 535/1496 = 35.8% (weight=3)
 
-Teammate: Knowledge vs Belief: 41.2%
+Teammate: Knowledge vs Belief: 44.0%
   Distinguishing teammate knowledge from belief
-  - Scenarios [20, 21, 22] → Pass: 139/720 = 19.3% (weight=1)
-  - Scenarios [17, 18, 19] → Tell: 455/720 = 63.2% (weight=1)
+  - Scenarios [20, 21, 22] → Pass: 527/2220 = 23.7% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 1427/2220 = 64.3% (weight=1)
 
-Combined Uncertainty: 29.6%
+Combined Uncertainty: 29.9%
   Handling self + teammate uncertainty together
-  - Scenarios [10, 11] → Pass: 277/488 = 56.8% (weight=1)
-  - Scenarios [23, 24] → Pass: 10/480 = 2.1% (weight=1)
+  - Scenarios [10, 11] → Pass: 740/1496 = 49.5% (weight=1)
+  - Scenarios [23, 24] → Pass: 150/1479 = 10.1% (weight=1)
 
-True vs False Belief: 38.3%
+True vs False Belief: 40.8%
   Distinguishing true belief from false belief
-  - Scenarios [14, 15, 16] → Pass: 99/727 = 13.6% (weight=1)
-  - Scenarios [17, 18, 19] → Tell: 455/720 = 63.2% (weight=1)
+  - Scenarios [14, 15, 16] → Pass: 390/2230 = 17.5% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 1427/2220 = 64.3% (weight=1)
 
-Teammate vs Opponent: 39.5%
+Teammate vs Opponent: 38.2%
   Treating teammate differently from opponent
-  - Scenarios [12, 13] → Ask: 231/488 = 47.3% (weight=1)
-  - Scenarios [37, 39] → Pass: 108/480 = 22.5% (weight=1)
-  - Scenarios [30, 31, 32] → Pass: 156/720 = 21.7% (weight=1)
-  - Scenarios [17, 18, 19] → Tell: 455/720 = 63.2% (weight=1)
+  - Scenarios [12, 13] → Ask: 535/1496 = 35.8% (weight=1)
+  - Scenarios [37, 39] → Pass: 421/1480 = 28.4% (weight=1)
+  - Scenarios [37, 39] → Pass (lies ok): 569/1480 = 38.4% (weight=1)
+  - Scenarios [30, 31, 32] → Pass: 452/2220 = 20.4% (weight=1)
+  - Scenarios [30, 31, 32] → Pass (lies ok): 608/2220 = 27.4% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 1427/2220 = 64.3% (weight=1)
 
 ================================================================================
 PER-MODEL BREAKDOWN
 ================================================================================
 
-=== deepseek-chat-v3.1 (3120 records) ===
+=== qwen3-next-80b-a3b-thinking_think (1560 records) ===
 
-Self: Knowledge vs Belief: 51.1%
-  - [7, 8, 9] → Pass: 193/240 = 80.4%
-  - [12, 13] → Ask: 35/160 = 21.9%
+Self: Knowledge vs Belief: 49.2%
+  - [7, 8, 9] → Pass: 115/120 = 95.8%
+  - [12, 13] → Ask: 2/80 = 2.5%
 
-Teammate: Knowledge vs Belief: 75.0%
-  - [20, 21, 22] → Pass: 129/240 = 53.8%
-  - [17, 18, 19] → Tell: 231/240 = 96.2%
+Teammate: Knowledge vs Belief: 100.0%
+  - [20, 21, 22] → Pass: 120/120 = 100.0%
+  - [17, 18, 19] → Tell: 120/120 = 100.0%
 
-Combined Uncertainty: 44.7%
-  - [10, 11] → Pass: 135/160 = 84.4%
-  - [23, 24] → Pass: 8/160 = 5.0%
+Combined Uncertainty: 47.5%
+  - [10, 11] → Pass: 76/80 = 95.0%
+  - [23, 24] → Pass: 0/80 = 0.0%
 
-True vs False Belief: 68.1%
-  - [14, 15, 16] → Pass: 96/240 = 40.0%
-  - [17, 18, 19] → Tell: 231/240 = 96.2%
+True vs False Belief: 98.8%
+  - [14, 15, 16] → Pass: 117/120 = 97.5%
+  - [17, 18, 19] → Tell: 120/120 = 100.0%
 
-Teammate vs Opponent: 63.9%
-  - [12, 13] → Ask: 35/160 = 21.9%
-  - [37, 39] → Pass: 105/160 = 65.6%
-  - [30, 31, 32] → Pass: 140/240 = 58.3%
-  - [17, 18, 19] → Tell: 231/240 = 96.2%
+Teammate vs Opponent: 78.0%
+  - [12, 13] → Ask: 2/80 = 2.5%
+  - [37, 39] → Pass: 74/80 = 92.5%
+  - [37, 39] → Pass (lies ok): 78/80 = 97.5%
+  - [30, 31, 32] → Pass: 116/120 = 96.7%
+  - [30, 31, 32] → Pass (lies ok): 116/120 = 96.7%
+  - [17, 18, 19] → Tell: 120/120 = 100.0%
 
-=== llama-3.1-70b-instruct (6299 records) ===
+=== qwen3-32b_think (1560 records) ===
+
+Self: Knowledge vs Belief: 50.6%
+  - [7, 8, 9] → Pass: 117/120 = 97.5%
+  - [12, 13] → Ask: 3/80 = 3.8%
+
+Teammate: Knowledge vs Belief: 97.5%
+  - [20, 21, 22] → Pass: 115/120 = 95.8%
+  - [17, 18, 19] → Tell: 119/120 = 99.2%
+
+Combined Uncertainty: 49.4%
+  - [10, 11] → Pass: 79/80 = 98.8%
+  - [23, 24] → Pass: 0/80 = 0.0%
+
+True vs False Belief: 92.9%
+  - [14, 15, 16] → Pass: 104/120 = 86.7%
+  - [17, 18, 19] → Tell: 119/120 = 99.2%
+
+Teammate vs Opponent: 73.8%
+  - [12, 13] → Ask: 3/80 = 3.8%
+  - [37, 39] → Pass: 77/80 = 96.2%
+  - [37, 39] → Pass (lies ok): 80/80 = 100.0%
+  - [30, 31, 32] → Pass: 96/120 = 80.0%
+  - [30, 31, 32] → Pass (lies ok): 97/120 = 80.8%
+  - [17, 18, 19] → Tell: 119/120 = 99.2%
+
+=== deepseek-chat-v3.1 (1560 records) ===
+
+Self: Knowledge vs Belief: 53.5%
+  - [7, 8, 9] → Pass: 106/120 = 88.3%
+  - [12, 13] → Ask: 15/80 = 18.8%
+
+Teammate: Knowledge vs Belief: 66.7%
+  - [20, 21, 22] → Pass: 47/120 = 39.2%
+  - [17, 18, 19] → Tell: 113/120 = 94.2%
+
+Combined Uncertainty: 46.2%
+  - [10, 11] → Pass: 67/80 = 83.8%
+  - [23, 24] → Pass: 7/80 = 8.8%
+
+True vs False Belief: 55.8%
+  - [14, 15, 16] → Pass: 21/120 = 17.5%
+  - [17, 18, 19] → Tell: 113/120 = 94.2%
+
+Teammate vs Opponent: 54.8%
+  - [12, 13] → Ask: 15/80 = 18.8%
+  - [37, 39] → Pass: 51/80 = 63.7%
+  - [37, 39] → Pass (lies ok): 65/80 = 81.2%
+  - [30, 31, 32] → Pass: 40/120 = 33.3%
+  - [30, 31, 32] → Pass (lies ok): 42/120 = 35.0%
+  - [17, 18, 19] → Tell: 113/120 = 94.2%
+
+=== deepseek-chat-v3.1 (with COT) (1560 records) ===
+
+Self: Knowledge vs Belief: 48.8%
+  - [7, 8, 9] → Pass: 87/120 = 72.5%
+  - [12, 13] → Ask: 20/80 = 25.0%
+
+Teammate: Knowledge vs Belief: 83.3%
+  - [20, 21, 22] → Pass: 82/120 = 68.3%
+  - [17, 18, 19] → Tell: 118/120 = 98.3%
+
+Combined Uncertainty: 43.1%
+  - [10, 11] → Pass: 68/80 = 85.0%
+  - [23, 24] → Pass: 1/80 = 1.2%
+
+True vs False Belief: 80.4%
+  - [14, 15, 16] → Pass: 75/120 = 62.5%
+  - [17, 18, 19] → Tell: 118/120 = 98.3%
+
+Teammate vs Opponent: 73.0%
+  - [12, 13] → Ask: 20/80 = 25.0%
+  - [37, 39] → Pass: 54/80 = 67.5%
+  - [37, 39] → Pass (lies ok): 73/80 = 91.2%
+  - [30, 31, 32] → Pass: 100/120 = 83.3%
+  - [30, 31, 32] → Pass (lies ok): 114/120 = 95.0%
+  - [17, 18, 19] → Tell: 118/120 = 98.3%
+
+=== qwen3-32b (1560 records) ===
+
+Self: Knowledge vs Belief: 43.8%
+  - [7, 8, 9] → Pass: 105/120 = 87.5%
+  - [12, 13] → Ask: 0/80 = 0.0%
+
+Teammate: Knowledge vs Belief: 50.4%
+  - [20, 21, 22] → Pass: 47/120 = 39.2%
+  - [17, 18, 19] → Tell: 74/120 = 61.7%
+
+Combined Uncertainty: 81.9%
+  - [10, 11] → Pass: 80/80 = 100.0%
+  - [23, 24] → Pass: 51/80 = 63.7%
+
+True vs False Belief: 35.4%
+  - [14, 15, 16] → Pass: 11/120 = 9.2%
+  - [17, 18, 19] → Tell: 74/120 = 61.7%
+
+Teammate vs Opponent: 34.0%
+  - [12, 13] → Ask: 0/80 = 0.0%
+  - [37, 39] → Pass: 50/80 = 62.5%
+  - [37, 39] → Pass (lies ok): 50/80 = 62.5%
+  - [30, 31, 32] → Pass: 12/120 = 10.0%
+  - [30, 31, 32] → Pass (lies ok): 12/120 = 10.0%
+  - [17, 18, 19] → Tell: 74/120 = 61.7%
+
+=== qwen3-32b (with COT) (1560 records) ===
+
+Self: Knowledge vs Belief: 35.0%
+  - [7, 8, 9] → Pass: 69/120 = 57.5%
+  - [12, 13] → Ask: 10/80 = 12.5%
+
+Teammate: Knowledge vs Belief: 27.5%
+  - [20, 21, 22] → Pass: 40/120 = 33.3%
+  - [17, 18, 19] → Tell: 26/120 = 21.7%
+
+Combined Uncertainty: 83.8%
+  - [10, 11] → Pass: 70/80 = 87.5%
+  - [23, 24] → Pass: 64/80 = 80.0%
+
+True vs False Belief: 21.7%
+  - [14, 15, 16] → Pass: 26/120 = 21.7%
+  - [17, 18, 19] → Tell: 26/120 = 21.7%
+
+Teammate vs Opponent: 34.5%
+  - [12, 13] → Ask: 10/80 = 12.5%
+  - [37, 39] → Pass: 61/80 = 76.2%
+  - [37, 39] → Pass (lies ok): 64/80 = 80.0%
+  - [30, 31, 32] → Pass: 41/120 = 34.2%
+  - [30, 31, 32] → Pass (lies ok): 42/120 = 35.0%
+  - [17, 18, 19] → Tell: 26/120 = 21.7%
+
+=== mistral-small-24b-instruct-2501 (1560 records) ===
+
+Self: Knowledge vs Belief: 31.9%
+  - [7, 8, 9] → Pass: 0/120 = 0.0%
+  - [12, 13] → Ask: 51/80 = 63.7%
+
+Teammate: Knowledge vs Belief: 28.7%
+  - [20, 21, 22] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 69/120 = 57.5%
+
+Combined Uncertainty: 0.0%
+  - [10, 11] → Pass: 0/80 = 0.0%
+  - [23, 24] → Pass: 0/80 = 0.0%
+
+True vs False Belief: 28.7%
+  - [14, 15, 16] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 69/120 = 57.5%
+
+Teammate vs Opponent: 30.0%
+  - [12, 13] → Ask: 51/80 = 63.7%
+  - [37, 39] → Pass: 0/80 = 0.0%
+  - [37, 39] → Pass (lies ok): 11/80 = 13.8%
+  - [30, 31, 32] → Pass: 0/120 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 69/120 = 57.5%
+
+=== mistral-small-24b-instruct-2501 (with COT) (1560 records) ===
+
+Self: Knowledge vs Belief: 36.9%
+  - [7, 8, 9] → Pass: 51/120 = 42.5%
+  - [12, 13] → Ask: 25/80 = 31.2%
+
+Teammate: Knowledge vs Belief: 45.0%
+  - [20, 21, 22] → Pass: 19/120 = 15.8%
+  - [17, 18, 19] → Tell: 89/120 = 74.2%
+
+Combined Uncertainty: 31.9%
+  - [10, 11] → Pass: 34/80 = 42.5%
+  - [23, 24] → Pass: 17/80 = 21.2%
+
+True vs False Belief: 45.8%
+  - [14, 15, 16] → Pass: 21/120 = 17.5%
+  - [17, 18, 19] → Tell: 89/120 = 74.2%
+
+Teammate vs Opponent: 42.8%
+  - [12, 13] → Ask: 25/80 = 31.2%
+  - [37, 39] → Pass: 27/80 = 33.8%
+  - [37, 39] → Pass (lies ok): 40/80 = 50.0%
+  - [30, 31, 32] → Pass: 30/120 = 25.0%
+  - [30, 31, 32] → Pass (lies ok): 56/120 = 46.7%
+  - [17, 18, 19] → Tell: 89/120 = 74.2%
+
+=== llama-3.1-70b-instruct (3120 records) ===
 
 Self: Knowledge vs Belief: 58.1%
-  - [7, 8, 9] → Pass: 278/492 = 56.5%
-  - [12, 13] → Ask: 196/328 = 59.8%
+  - [7, 8, 9] → Pass: 75/240 = 31.2%
+  - [12, 13] → Ask: 136/160 = 85.0%
 
-Teammate: Knowledge vs Belief: 24.4%
-  - [20, 21, 22] → Pass: 10/480 = 2.1%
-  - [17, 18, 19] → Tell: 224/480 = 46.7%
+Teammate: Knowledge vs Belief: 3.1%
+  - [20, 21, 22] → Pass: 7/240 = 2.9%
+  - [17, 18, 19] → Tell: 8/240 = 3.3%
 
-Combined Uncertainty: 22.2%
-  - [10, 11] → Pass: 142/328 = 43.3%
-  - [23, 24] → Pass: 2/320 = 0.6%
+Combined Uncertainty: 14.1%
+  - [10, 11] → Pass: 45/160 = 28.1%
+  - [23, 24] → Pass: 0/160 = 0.0%
 
-True vs False Belief: 23.5%
-  - [14, 15, 16] → Pass: 3/487 = 0.6%
-  - [17, 18, 19] → Tell: 224/480 = 46.7%
+True vs False Belief: 1.7%
+  - [14, 15, 16] → Pass: 0/240 = 0.0%
+  - [17, 18, 19] → Tell: 8/240 = 3.3%
 
-Teammate vs Opponent: 27.3%
-  - [12, 13] → Ask: 196/328 = 59.8%
-  - [37, 39] → Pass: 3/320 = 0.9%
-  - [30, 31, 32] → Pass: 16/480 = 3.3%
-  - [17, 18, 19] → Tell: 224/480 = 46.7%
+Teammate vs Opponent: 18.0%
+  - [12, 13] → Ask: 136/160 = 85.0%
+  - [37, 39] → Pass: 0/160 = 0.0%
+  - [37, 39] → Pass (lies ok): 0/160 = 0.0%
+  - [30, 31, 32] → Pass: 0/240 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 13/240 = 5.4%
+  - [17, 18, 19] → Tell: 8/240 = 3.3%
+
+=== llama-3.1-70b-instruct (with COT) (3179 records) ===
+
+Self: Knowledge vs Belief: 58.1%
+  - [7, 8, 9] → Pass: 203/252 = 80.6%
+  - [12, 13] → Ask: 60/168 = 35.7%
+
+Teammate: Knowledge vs Belief: 45.6%
+  - [20, 21, 22] → Pass: 3/240 = 1.2%
+  - [17, 18, 19] → Tell: 216/240 = 90.0%
+
+Combined Uncertainty: 30.2%
+  - [10, 11] → Pass: 97/168 = 57.7%
+  - [23, 24] → Pass: 2/160 = 1.2%
+
+True vs False Belief: 45.0%
+  - [14, 15, 16] → Pass: 3/247 = 1.2%
+  - [17, 18, 19] → Tell: 216/240 = 90.0%
+
+Teammate vs Opponent: 36.5%
+  - [12, 13] → Ask: 60/168 = 35.7%
+  - [37, 39] → Pass: 3/160 = 1.9%
+  - [37, 39] → Pass (lies ok): 20/160 = 12.5%
+  - [30, 31, 32] → Pass: 16/240 = 6.7%
+  - [30, 31, 32] → Pass (lies ok): 95/240 = 39.6%
+  - [17, 18, 19] → Tell: 216/240 = 90.0%
+
+=== hermes-4-70b (1560 records) ===
+
+Self: Knowledge vs Belief: 49.4%
+  - [7, 8, 9] → Pass: 3/120 = 2.5%
+  - [12, 13] → Ask: 77/80 = 96.2%
+
+Teammate: Knowledge vs Belief: 0.0%
+  - [20, 21, 22] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 0/120 = 0.0%
+
+Combined Uncertainty: 3.1%
+  - [10, 11] → Pass: 5/80 = 6.2%
+  - [23, 24] → Pass: 0/80 = 0.0%
+
+True vs False Belief: 0.0%
+  - [14, 15, 16] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 0/120 = 0.0%
+
+Teammate vs Opponent: 19.2%
+  - [12, 13] → Ask: 77/80 = 96.2%
+  - [37, 39] → Pass: 0/80 = 0.0%
+  - [37, 39] → Pass (lies ok): 0/80 = 0.0%
+  - [30, 31, 32] → Pass: 0/120 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 0/120 = 0.0%
+
+=== hermes-4-70b (with COT) (1560 records) ===
+
+Self: Knowledge vs Belief: 64.0%
+  - [7, 8, 9] → Pass: 104/120 = 86.7%
+  - [12, 13] → Ask: 33/80 = 41.2%
+
+Teammate: Knowledge vs Belief: 15.4%
+  - [20, 21, 22] → Pass: 37/120 = 30.8%
+  - [17, 18, 19] → Tell: 0/120 = 0.0%
+
+Combined Uncertainty: 39.4%
+  - [10, 11] → Pass: 55/80 = 68.8%
+  - [23, 24] → Pass: 8/80 = 10.0%
+
+True vs False Belief: 2.5%
+  - [14, 15, 16] → Pass: 6/120 = 5.0%
+  - [17, 18, 19] → Tell: 0/120 = 0.0%
+
+Teammate vs Opponent: 10.8%
+  - [12, 13] → Ask: 33/80 = 41.2%
+  - [37, 39] → Pass: 10/80 = 12.5%
+  - [37, 39] → Pass (lies ok): 10/80 = 12.5%
+  - [30, 31, 32] → Pass: 0/120 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 0/120 = 0.0%
+
+=== mistral-large-2512 (1560 records) ===
+
+Self: Knowledge vs Belief: 15.0%
+  - [7, 8, 9] → Pass: 36/120 = 30.0%
+  - [12, 13] → Ask: 0/80 = 0.0%
+
+Teammate: Knowledge vs Belief: 47.5%
+  - [20, 21, 22] → Pass: 6/120 = 5.0%
+  - [17, 18, 19] → Tell: 108/120 = 90.0%
+
+Combined Uncertainty: 28.7%
+  - [10, 11] → Pass: 46/80 = 57.5%
+  - [23, 24] → Pass: 0/80 = 0.0%
+
+True vs False Belief: 45.0%
+  - [14, 15, 16] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 108/120 = 90.0%
+
+Teammate vs Opponent: 27.0%
+  - [12, 13] → Ask: 0/80 = 0.0%
+  - [37, 39] → Pass: 0/80 = 0.0%
+  - [37, 39] → Pass (lies ok): 43/80 = 53.8%
+  - [30, 31, 32] → Pass: 0/120 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 18/120 = 15.0%
+  - [17, 18, 19] → Tell: 108/120 = 90.0%
+
+=== mistral-large-2512 (with COT) (834 records) ===
+
+Self: Knowledge vs Belief: 29.9%
+  - [7, 8, 9] → Pass: 16/72 = 22.2%
+  - [12, 13] → Ask: 18/48 = 37.5%
+
+Teammate: Knowledge vs Belief: 52.5%
+  - [20, 21, 22] → Pass: 3/60 = 5.0%
+  - [17, 18, 19] → Tell: 60/60 = 100.0%
+
+Combined Uncertainty: 12.6%
+  - [10, 11] → Pass: 11/48 = 22.9%
+  - [23, 24] → Pass: 0/39 = 0.0%
+
+True vs False Belief: 53.7%
+  - [14, 15, 16] → Pass: 6/63 = 9.5%
+  - [17, 18, 19] → Tell: 60/60 = 100.0%
+
+Teammate vs Opponent: 40.4%
+  - [12, 13] → Ask: 18/48 = 37.5%
+  - [37, 39] → Pass: 5/40 = 12.5%
+  - [37, 39] → Pass (lies ok): 5/40 = 12.5%
+  - [30, 31, 32] → Pass: 1/60 = 1.7%
+  - [30, 31, 32] → Pass (lies ok): 1/60 = 1.7%
+  - [17, 18, 19] → Tell: 60/60 = 100.0%
+
+=== qwen3-next-80b-a3b-instruct (1560 records) ===
+
+Self: Knowledge vs Belief: 25.6%
+  - [7, 8, 9] → Pass: 21/120 = 17.5%
+  - [12, 13] → Ask: 27/80 = 33.8%
+
+Teammate: Knowledge vs Belief: 49.6%
+  - [20, 21, 22] → Pass: 1/120 = 0.8%
+  - [17, 18, 19] → Tell: 118/120 = 98.3%
+
+Combined Uncertainty: 4.4%
+  - [10, 11] → Pass: 7/80 = 8.8%
+  - [23, 24] → Pass: 0/80 = 0.0%
+
+True vs False Belief: 49.2%
+  - [14, 15, 16] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 118/120 = 98.3%
+
+Teammate vs Opponent: 38.5%
+  - [12, 13] → Ask: 27/80 = 33.8%
+  - [37, 39] → Pass: 9/80 = 11.2%
+  - [37, 39] → Pass (lies ok): 14/80 = 17.5%
+  - [30, 31, 32] → Pass: 0/120 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 1/120 = 0.8%
+  - [17, 18, 19] → Tell: 118/120 = 98.3%
+
+=== qwen3-next-80b-a3b-instruct (with COT) (1560 records) ===
+
+Self: Knowledge vs Belief: 7.9%
+  - [7, 8, 9] → Pass: 7/120 = 5.8%
+  - [12, 13] → Ask: 8/80 = 10.0%
+
+Teammate: Knowledge vs Belief: 49.2%
+  - [20, 21, 22] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 118/120 = 98.3%
+
+Combined Uncertainty: 0.0%
+  - [10, 11] → Pass: 0/80 = 0.0%
+  - [23, 24] → Pass: 0/80 = 0.0%
+
+True vs False Belief: 49.2%
+  - [14, 15, 16] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 118/120 = 98.3%
+
+Teammate vs Opponent: 31.5%
+  - [12, 13] → Ask: 8/80 = 10.0%
+  - [37, 39] → Pass: 0/80 = 0.0%
+  - [37, 39] → Pass (lies ok): 2/80 = 2.5%
+  - [30, 31, 32] → Pass: 0/120 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 1/120 = 0.8%
+  - [17, 18, 19] → Tell: 118/120 = 98.3%
+
+=== mistral-small-24b-instruct-2501_think (1560 records) ===
+
+Self: Knowledge vs Belief: 31.2%
+  - [7, 8, 9] → Pass: 0/120 = 0.0%
+  - [12, 13] → Ask: 50/80 = 62.5%
+
+Teammate: Knowledge vs Belief: 29.6%
+  - [20, 21, 22] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 71/120 = 59.2%
+
+Combined Uncertainty: 0.0%
+  - [10, 11] → Pass: 0/80 = 0.0%
+  - [23, 24] → Pass: 0/80 = 0.0%
+
+True vs False Belief: 29.6%
+  - [14, 15, 16] → Pass: 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 71/120 = 59.2%
+
+Teammate vs Opponent: 30.2%
+  - [12, 13] → Ask: 50/80 = 62.5%
+  - [37, 39] → Pass: 0/80 = 0.0%
+  - [37, 39] → Pass (lies ok): 14/80 = 17.5%
+  - [30, 31, 32] → Pass: 0/120 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 0/120 = 0.0%
+  - [17, 18, 19] → Tell: 71/120 = 59.2%
