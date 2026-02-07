@@ -72,6 +72,14 @@ TOM_MASTERY_CATEGORIES = {
             {'scenarios': [17, 18, 19], 'action': 'Tell', 'weight': 1},
         ],
     },
+    'strategic_lies': {
+        'name': 'Strategic Lies',
+        'description': 'Knowing when lying is strategically effective vs. unnecessary',
+        'components': [
+            {'scenarios': [27, 28, 29], 'action': 'Tell (Lie)', 'weight': 1, 'success_is_lie': True},
+            {'scenarios': [30, 31, 32], 'action': 'Pass', 'weight': 1, 'success_is_lie': False},
+        ],
+    },
 }
 
 # Features to analyze (boolean features first, then categorical)
@@ -128,6 +136,32 @@ def filter_player_a_by_extra(records: List[dict], extra: str) -> List[dict]:
     return [r for r in records
             if r.get('character') == 'A'
             and normalize_extra(r.get('extra')) == extra]
+
+
+def has_valid_action(action: str) -> bool:
+    """Check if action string contains a valid action keyword.
+
+    Used to filter out records where the model hit token limit before
+    outputting its action (Pass/Ask/Tell).
+    """
+    if not action:
+        return False
+    # Check for Pass (case insensitive, word boundary)
+    if re.search(r'\bpass\b', action, re.IGNORECASE):
+        return True
+    # Check for Ask() or Tell()
+    if re.search(r'\b(ask|tell)\s*\(', action, re.IGNORECASE):
+        return True
+    return False
+
+
+def filter_valid_records(records: List[dict]) -> Tuple[List[dict], int]:
+    """Filter out records where model hit token limit before giving action.
+
+    Returns: (filtered_records, excluded_count)
+    """
+    filtered = [r for r in records if has_valid_action(r.get('action', ''))]
+    return filtered, len(records) - len(filtered)
 
 
 def normalize_action(action: str) -> str:
@@ -623,6 +657,8 @@ def run_analysis_for_extra(files: List[str], logs_dir: str, extra: str, suffix: 
                 continue
 
         filtered = filter_player_a_by_extra(records, extra)
+        # Filter out records where model hit token limit before giving action
+        filtered, _ = filter_valid_records(filtered)
 
         if len(filtered) == 0:
             continue

@@ -212,7 +212,7 @@ The `--lies_okay` flag treats lying to an opponent answerer as a success. This r
 
 ### ToM Mastery Categories
 
-Beyond raw accuracy, the test evaluates performance across five ToM mastery categories that measure distinct cognitive capabilities:
+Beyond raw accuracy, the test evaluates performance across six ToM mastery categories that measure distinct cognitive capabilities:
 
 | Category | What It Measures | Key Scenarios |
 |----------|------------------|---------------|
@@ -221,6 +221,12 @@ Beyond raw accuracy, the test evaluates performance across five ToM mastery cate
 | **Combined Uncertainty** | Handling situations where both self and teammate are uncertain | 10-11, 23-24 (Pass) |
 | **True vs False Belief** | Distinguishing teammate's true belief from false belief | 14-16 (Pass), 17-19 (Tell) |
 | **Teammate vs Opponent** | Treating teammate differently from opponent | 12-13 (Ask), 30-32, 37, 39 (Pass), 17-19 (Tell) |
+| **Strategic Lies** | Knowing when lying is effective vs. unnecessary | 27-29 (Lie), 30-32 (Pass) |
+
+**Strategic Lies Category:**
+This category contrasts scenarios where strategic deception would be effective vs. unnecessary:
+- **27-29**: Opponent believes **truth** - lying could deceive them into doubting their correct belief
+- **30-32**: Opponent believes **false** - no intervention helps (they'll answer wrong anyway)
 
 Mastery scores use weighted components to reflect the relative difficulty and importance of each sub-skill.
 

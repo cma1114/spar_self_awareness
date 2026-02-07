@@ -16,6 +16,9 @@ CONTAINERS_GEN = ['bag', 'box', 'basket']
 EXTRA_0A_FILLER = 0   # Minimal load (no filler)
 EXTRA_0B_FILLER = 3   # Higher load (tweak as needed)
 
+# Adaptive filler for Extra=1A (balancing with 1B)
+ADAPTIVE_FILLER_ENABLED = True  # Set to False to disable
+
 def _map_chartypes_to_names(chartypes: List[CharacterType]) -> List[str]:
     chars = []
     for ct in chartypes:
@@ -1746,6 +1749,110 @@ def insert_n_filler_events(scenario: Scenario, rng: random.Random, n: int) -> No
         scenario.events.insert(insert_idx + i, evt)
 
 
+def insert_adaptive_filler_events(scenario: Scenario, rng: random.Random, n: int) -> int:
+    """Insert additional filler events to balance SIT with paired 1B scenario.
+
+    This function adds N filler events to an already-generated 1A scenario
+    (which already has initial filler from insert_filler_events()).
+
+    CRITICAL CONSTRAINT: Only uses non-target containers, no leave/enter pairs.
+    This ensures NO ECTs are added. The function validates this invariant.
+
+    Args:
+        scenario: The 1A scenario to modify (already has initial filler)
+        rng: Random generator for reproducibility
+        n: Number of additional filler events to add
+
+    Returns:
+        Number of events actually inserted (may be < n if constrained)
+    """
+    if n <= 0:
+        return 0
+
+    target = scenario.question_container
+    non_targets = _non_target_containers(target)  # 2 containers
+
+    # Find last position where A is present (same logic as insert_filler_events)
+    a_present = 'A' in scenario.present_initially
+    insert_idx = len(scenario.events)
+    present = set(scenario.present_initially)
+    contents = {c: None for c in CONTAINERS_GEN}
+
+    for idx, event in enumerate(scenario.events):
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+        elif event.event_type == 'move':
+            contents[event.to_container] = event.item
+            contents[event.from_container] = None
+        elif event.event_type == 'leave':
+            if event.character == 'A' and a_present:
+                insert_idx = idx
+                break
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+            if event.character == 'A':
+                a_present = True
+
+    if not present:
+        return 0  # No actors available
+
+    # Collect all items already used in scenario (including initial filler)
+    all_scenario_items = {e.item for e in scenario.events if e.item}
+    used_items = all_scenario_items | {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
+    available_items = [i for i in ITEMS_GEN if i not in used_items]
+
+    events_to_add = []
+    present_list = sorted(present)
+    nt0, nt1 = non_targets[0], non_targets[1]
+
+    # Track contents of non-target containers at insertion point
+    nt_contents = {nt0: contents[nt0], nt1: contents[nt1]}
+    last_actor = None
+
+    for _ in range(n):
+        # Choose actor (alternate when possible)
+        actor = _choose_different_actor(present, last_actor, rng)
+        last_actor = actor
+
+        # Decide what filler event to add (same logic as insert_n_filler_events)
+        if nt_contents[nt0] is None and nt_contents[nt1] is None:
+            # Both empty: need to put an item
+            if not available_items:
+                break  # Cannot add more events
+            item = available_items.pop(rng.randint(0, len(available_items) - 1))
+            target_container = rng.choice([nt0, nt1])
+            events_to_add.append(Event('put', actor, container=target_container, item=item))
+            nt_contents[target_container] = item
+        elif nt_contents[nt0] is not None and nt_contents[nt1] is None:
+            # nt0 has item, nt1 empty: move to nt1
+            events_to_add.append(Event('move', actor, from_container=nt0, to_container=nt1, item=nt_contents[nt0]))
+            nt_contents[nt1] = nt_contents[nt0]
+            nt_contents[nt0] = None
+        elif nt_contents[nt0] is None and nt_contents[nt1] is not None:
+            # nt1 has item, nt0 empty: move to nt0
+            events_to_add.append(Event('move', actor, from_container=nt1, to_container=nt0, item=nt_contents[nt1]))
+            nt_contents[nt0] = nt_contents[nt1]
+            nt_contents[nt1] = None
+        else:
+            # Both have items: move one to the other (displacing the other item)
+            # We can only do this if we have room - just move nt0 to nt1 (nt1's item is "displaced")
+            if rng.random() < 0.5:
+                events_to_add.append(Event('move', actor, from_container=nt0, to_container=nt1, item=nt_contents[nt0]))
+                nt_contents[nt1] = nt_contents[nt0]
+                nt_contents[nt0] = None
+            else:
+                events_to_add.append(Event('move', actor, from_container=nt1, to_container=nt0, item=nt_contents[nt1]))
+                nt_contents[nt0] = nt_contents[nt1]
+                nt_contents[nt1] = None
+
+    # Insert all events at the insertion point
+    for i, evt in enumerate(events_to_add):
+        scenario.events.insert(insert_idx + i, evt)
+
+    return len(events_to_add)
+
+
 def apply_name_variation(scenario: Scenario, rng: random.Random) -> None:
     """Apply cosmetic variations to differentiate Extra=1 from its paired Extra=0.
 
@@ -2079,6 +2186,31 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
 
             scenarios.append(scenario_e1b)
             scenario_idx += 1
+
+            # --- Adaptive filler for 1A: Balance SIT with 1B ---
+            if ADAPTIVE_FILLER_ENABLED and e1a_sit is not None:
+                e1b_sit = scenario_e1b.situation_event_count
+                sit_deficit = e1b_sit - e1a_sit
+
+                if sit_deficit > 0:
+                    # Add adaptive filler to 1A to match 1B event count
+                    adaptive_seed = int(f"{seed or 0}{scenario_idx:03d}{int(row['Id']):04d}3")
+                    adaptive_rng = random.Random(adaptive_seed)
+
+                    old_ect = scenario_e1a.epistemic_transitions['total']
+                    added = insert_adaptive_filler_events(scenario_e1a, adaptive_rng, sit_deficit)
+
+                    # Update SIT count
+                    scenario_e1a.situation_event_count = _count_visible_events(scenario_e1a)
+
+                    # Validate ECT unchanged (critical invariant)
+                    new_ect = count_epistemic_category_transitions(scenario_e1a)['total']
+                    if new_ect != old_ect:
+                        raise ValueError(
+                            f"ID {row['Id']} Extra=1A: Adaptive filler changed ECT "
+                            f"from {old_ect} to {new_ect}. Bug in filler event generation."
+                        )
+                    scenario_e1a.epistemic_transitions = count_epistemic_category_transitions(scenario_e1a)
 
     # Final safeguard: ensure we generated scenarios if specs were provided
     if specs and not scenarios:

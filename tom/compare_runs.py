@@ -125,6 +125,32 @@ def get_action_from_record(record: dict) -> str:
         return normalize_action(action_str)
 
 
+def has_valid_action(action: str) -> bool:
+    """Check if action string contains a valid action keyword.
+
+    Used to filter out records where the model hit token limit before
+    outputting its action (Pass/Ask/Tell).
+    """
+    if not action:
+        return False
+    # Check for Pass (case insensitive, word boundary)
+    if re.search(r'\bpass\b', action, re.IGNORECASE):
+        return True
+    # Check for Ask() or Tell()
+    if re.search(r'\b(ask|tell)\s*\(', action, re.IGNORECASE):
+        return True
+    return False
+
+
+def filter_valid_records(records: List[dict]) -> Tuple[List[dict], int]:
+    """Filter out records where model hit token limit before giving action.
+
+    Returns: (filtered_records, excluded_count)
+    """
+    filtered = [r for r in records if has_valid_action(r.get('action', ''))]
+    return filtered, len(records) - len(filtered)
+
+
 # =============================================================================
 # Core comparison logic
 # =============================================================================
@@ -149,6 +175,8 @@ def load_run_data(model: str, free_response: bool, logs_dir: str) -> List[dict]:
 
         # Filter to player A
         player_a = [r for r in records if r.get('character') == 'A']
+        # Filter out records where model hit token limit before giving action
+        player_a, _ = filter_valid_records(player_a)
         all_records.extend(player_a)
 
     return all_records
