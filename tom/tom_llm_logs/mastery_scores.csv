@@ -1,16 +1,156 @@
-Model,Extra,Self: Knowledge vs Belief,Teammate: Knowledge vs Belief,Combined Uncertainty,True vs False Belief,Teammate vs Opponent
-deepseek-chat-v3.1,Overall,51.1,75.0,44.7,68.1,63.9
-deepseek-chat-v3.1,Minimal Events,51.7,75.0,48.8,65.8,64.0
-deepseek-chat-v3.1,Event Load,51.7,81.7,47.5,71.7,69.0
-deepseek-chat-v3.1,Minimal ECT,50.0,80.0,36.2,70.8,60.0
-deepseek-chat-v3.1,ECT Load,51.2,63.3,46.2,64.2,62.5
-llama-3.1-70b-instruct,Overall,58.1,24.4,22.2,23.5,27.3
-llama-3.1-70b-instruct,Minimal Events,57.5,25.0,30.2,23.6,24.9
-llama-3.1-70b-instruct,Event Load,52.2,26.7,22.8,24.4,25.1
-llama-3.1-70b-instruct,Minimal ECT,58.3,23.8,29.0,24.0,25.4
-llama-3.1-70b-instruct,ECT Load,64.4,22.1,6.8,22.0,33.8
-ALL MODELS,Overall,55.8,41.2,29.6,38.3,39.5
-ALL MODELS,Minimal Events,55.6,41.7,36.4,37.6,37.9
-ALL MODELS,Event Load,52.0,45.0,31.0,40.1,39.7
-ALL MODELS,Minimal ECT,55.6,42.5,31.4,39.5,36.9
-ALL MODELS,ECT Load,60.1,35.8,19.8,36.0,43.4
+Model,Extra,Self: Knowledge vs Belief,Teammate: Knowledge vs Belief,Combined Uncertainty,True vs False Belief,Teammate vs Opponent,Strategic Lies
+anthropic-claude-opus-4.5,Overall,50.0,90.8,50.0,65.0,79.5,49.2
+anthropic-claude-opus-4.5,Minimal Events,50.0,100.0,50.0,53.3,78.0,46.7
+anthropic-claude-opus-4.5,Event Load,50.0,100.0,50.0,80.0,80.0,50.0
+anthropic-claude-opus-4.5,Minimal ECT,50.0,86.7,50.0,76.7,80.0,50.0
+anthropic-claude-opus-4.5,ECT Load,50.0,76.7,50.0,50.0,80.0,50.0
+anthropic-claude-opus-4.6,Overall,50.0,95.8,50.0,66.7,70.0,33.3
+anthropic-claude-opus-4.6,Minimal Events,50.0,100.0,50.0,50.0,60.0,16.7
+anthropic-claude-opus-4.6,Event Load,50.0,100.0,50.0,66.7,70.0,33.3
+anthropic-claude-opus-4.6,Minimal ECT,50.0,100.0,50.0,100.0,80.0,50.0
+anthropic-claude-opus-4.6,ECT Load,50.0,83.3,50.0,50.0,70.0,33.3
+anthropic-claude-opus-4.6 (with COT),Overall,60.0,100.0,50.0,100.0,84.0,57.5
+anthropic-claude-opus-4.6 (with COT),Minimal Events,55.0,100.0,50.0,100.0,82.0,50.0
+anthropic-claude-opus-4.6 (with COT),Event Load,55.0,100.0,50.0,100.0,82.0,53.3
+anthropic-claude-opus-4.6 (with COT),Minimal ECT,50.0,100.0,50.0,100.0,80.0,56.7
+anthropic-claude-opus-4.6 (with COT),ECT Load,80.0,100.0,50.0,100.0,92.0,70.0
+anthropic-claude-opus-4.6_think,Overall,78.8,100.0,50.0,99.2,91.5,52.5
+anthropic-claude-opus-4.6_think,Minimal Events,85.0,100.0,50.0,100.0,94.0,50.0
+anthropic-claude-opus-4.6_think,Event Load,65.0,100.0,50.0,96.7,86.0,53.3
+anthropic-claude-opus-4.6_think,Minimal ECT,75.0,100.0,50.0,100.0,90.0,50.0
+anthropic-claude-opus-4.6_think,ECT Load,90.0,100.0,50.0,100.0,96.0,56.7
+deepseek-V3.2,Overall,4.4,48.3,0.0,48.3,30.8,0.8
+deepseek-V3.2,Minimal Events,0.0,50.0,0.0,50.0,30.0,0.0
+deepseek-V3.2,Event Load,5.0,50.0,0.0,50.0,32.0,0.0
+deepseek-V3.2,Minimal ECT,5.0,50.0,0.0,50.0,32.0,0.0
+deepseek-V3.2,ECT Load,7.5,43.3,0.0,43.3,29.0,3.3
+deepseek-V3.2 (with COT),Overall,19.2,53.3,25.2,54.0,47.4,25.7
+deepseek-V3.2 (with COT),Minimal Events,8.3,48.3,25.6,46.7,37.0,8.3
+deepseek-V3.2 (with COT),Event Load,29.2,56.7,32.5,50.0,59.0,37.3
+deepseek-V3.2 (with COT),Minimal ECT,16.7,60.0,5.0,53.3,43.4,23.7
+deepseek-V3.2 (with COT),ECT Load,22.8,48.3,37.5,66.1,50.0,33.9
+deepseek-V3.2_think,Overall,60.4,100.0,46.9,87.5,84.6,53.2
+deepseek-V3.2_think,Minimal Events,75.0,100.0,37.5,100.0,89.5,58.3
+deepseek-V3.2_think,Event Load,50.0,100.0,50.0,91.7,80.0,54.5
+deepseek-V3.2_think,Minimal ECT,75.0,100.0,50.0,83.3,89.5,50.0
+deepseek-V3.2_think,ECT Load,41.7,100.0,50.0,75.0,80.0,50.0
+deepseek-chat-V3.1,Overall,52.1,66.7,62.5,50.0,62.5,33.3
+deepseek-chat-V3.1,Minimal Events,50.0,83.3,75.0,33.3,40.0,0.0
+deepseek-chat-V3.1,Event Load,75.0,66.7,50.0,66.7,80.0,50.0
+deepseek-chat-V3.1,Minimal ECT,33.3,66.7,50.0,50.0,80.0,50.0
+deepseek-chat-V3.1,ECT Load,50.0,50.0,75.0,50.0,50.0,33.3
+deepseek-chat-v3.1,Overall,52.1,68.3,47.8,55.6,56.4,20.0
+deepseek-chat-v3.1,Minimal Events,54.6,75.8,66.2,60.0,49.5,10.0
+deepseek-chat-v3.1,Event Load,57.1,75.0,46.2,56.7,69.0,35.8
+deepseek-chat-v3.1,Minimal ECT,47.9,74.2,32.5,59.2,53.0,12.5
+deepseek-chat-v3.1,ECT Load,48.8,48.3,46.2,46.7,54.0,21.7
+deepseek-chat-v3.1 (with COT),Overall,48.8,83.3,43.1,80.4,73.0,75.0
+deepseek-chat-v3.1 (with COT),Minimal Events,44.2,76.7,40.0,70.0,74.0,65.0
+deepseek-chat-v3.1 (with COT),Event Load,50.8,85.0,47.5,83.3,75.0,80.0
+deepseek-chat-v3.1 (with COT),Minimal ECT,50.0,90.0,35.0,85.0,74.0,80.0
+deepseek-chat-v3.1 (with COT),ECT Load,50.0,81.7,50.0,83.3,69.0,75.0
+hermes-4-70b,Overall,49.4,0.0,3.1,0.0,19.2,0.0
+hermes-4-70b,Minimal Events,42.5,0.0,7.5,0.0,17.0,0.0
+hermes-4-70b,Event Load,53.3,0.0,0.0,0.0,20.0,0.0
+hermes-4-70b,Minimal ECT,51.7,0.0,5.0,0.0,20.0,0.0
+hermes-4-70b,ECT Load,50.0,0.0,0.0,0.0,20.0,0.0
+hermes-4-70b (with COT),Overall,64.0,15.4,39.4,2.5,10.8,0.0
+hermes-4-70b (with COT),Minimal Events,48.3,33.3,57.5,3.3,10.0,0.0
+hermes-4-70b (with COT),Event Load,66.7,6.7,32.5,0.0,10.0,0.0
+hermes-4-70b (with COT),Minimal ECT,60.0,21.7,47.5,6.7,6.0,0.0
+hermes-4-70b (with COT),ECT Load,80.8,0.0,20.0,0.0,17.0,0.0
+kimi-k2-0905,Overall,42.5,38.8,1.2,38.8,35.5,0.0
+kimi-k2-0905,Minimal Events,42.5,41.7,5.0,41.7,35.0,0.0
+kimi-k2-0905,Event Load,49.2,45.0,0.0,45.0,42.0,0.0
+kimi-k2-0905,Minimal ECT,45.8,41.7,0.0,41.7,36.0,0.0
+kimi-k2-0905,ECT Load,32.5,26.7,0.0,26.7,29.0,0.0
+kimi-k2-0905 (with COT),Overall,29.2,0.0,0.0,0.0,10.0,0.0
+kimi-k2-0905 (with COT),Minimal Events,25.0,0.0,0.0,0.0,10.0,0.0
+kimi-k2-0905 (with COT),Event Load,50.0,0.0,0.0,0.0,20.0,0.0
+kimi-k2-0905 (with COT),Minimal ECT,41.7,0.0,0.0,0.0,10.0,0.0
+kimi-k2-0905 (with COT),ECT Load,0.0,0.0,0.0,0.0,0.0,0.0
+kimi-k2-thinking,Overall,50.7,100.0,51.2,92.0,79.6,66.7
+kimi-k2-thinking,Minimal Events,57.4,100.0,50.0,96.6,85.1,60.7
+kimi-k2-thinking,Event Load,50.0,100.0,55.0,93.1,76.0,73.3
+kimi-k2-thinking,Minimal ECT,50.9,100.0,50.0,96.7,81.6,58.6
+kimi-k2-thinking,ECT Load,44.4,100.0,50.0,80.0,76.0,74.1
+llama-3.1-70b-instruct,Overall,58.1,3.1,14.1,1.7,18.0,0.6
+llama-3.1-70b-instruct,Minimal Events,62.5,1.7,20.0,0.0,16.0,2.5
+llama-3.1-70b-instruct,Event Load,52.5,8.3,17.5,4.2,17.5,0.0
+llama-3.1-70b-instruct,Minimal ECT,65.0,2.5,18.8,2.5,18.5,0.0
+llama-3.1-70b-instruct,ECT Load,52.5,0.0,0.0,0.0,20.0,0.0
+llama-3.1-70b-instruct (with COT),Overall,58.1,45.6,30.2,45.0,36.5,19.0
+llama-3.1-70b-instruct (with COT),Minimal Events,52.8,48.3,40.2,46.7,33.7,19.2
+llama-3.1-70b-instruct (with COT),Event Load,52.0,45.0,28.0,44.3,32.7,17.5
+llama-3.1-70b-instruct (with COT),Minimal ECT,52.0,45.0,39.0,45.1,32.2,18.3
+llama-3.1-70b-instruct (with COT),ECT Load,75.8,44.2,13.4,43.8,47.5,20.8
+mistral-large-2512,Overall,15.0,47.5,28.7,45.0,27.0,0.8
+mistral-large-2512,Minimal Events,15.0,41.7,27.5,31.7,19.0,1.7
+mistral-large-2512,Event Load,18.3,50.0,15.0,50.0,30.0,0.0
+mistral-large-2512,Minimal ECT,15.0,50.0,25.0,50.0,30.0,0.0
+mistral-large-2512,ECT Load,11.7,48.3,47.5,48.3,29.0,1.7
+mistral-large-2512 (with COT),Overall,29.9,52.5,12.6,53.7,40.4,0.8
+mistral-large-2512 (with COT),Minimal Events,20.8,50.0,9.1,51.6,36.5,0.0
+mistral-large-2512 (with COT),Event Load,18.1,53.3,18.2,51.6,34.6,3.3
+mistral-large-2512 (with COT),Minimal ECT,27.8,56.7,0.0,61.3,42.3,0.0
+mistral-large-2512 (with COT),ECT Load,52.8,50.0,22.7,50.0,48.1,0.0
+mistral-large-2512_think,Overall,16.7,50.0,25.0,50.0,30.0,4.2
+mistral-large-2512_think,Minimal Events,33.3,50.0,25.0,50.0,30.0,16.7
+mistral-large-2512_think,Event Load,33.3,50.0,25.0,50.0,30.0,0.0
+mistral-large-2512_think,Minimal ECT,0.0,50.0,0.0,50.0,30.0,0.0
+mistral-large-2512_think,ECT Load,0.0,50.0,50.0,50.0,30.0,0.0
+mistral-large-2512_think (with COT),Overall,30.4,50.6,20.5,47.0,33.4,11.5
+mistral-large-2512_think (with COT),Minimal Events,22.9,35.7,10.0,23.8,26.7,14.6
+mistral-large-2512_think (with COT),Event Load,31.2,52.4,23.3,54.8,30.7,6.2
+mistral-large-2512_think (with COT),Minimal ECT,19.8,64.3,12.9,64.3,38.7,14.6
+mistral-large-2512_think (with COT),ECT Load,48.4,50.0,35.5,45.2,37.8,10.4
+mistral-small-24b-instruct-2501,Overall,31.9,28.7,0.0,28.7,30.0,0.0
+mistral-small-24b-instruct-2501,Minimal Events,15.0,38.3,0.0,38.3,29.0,0.0
+mistral-small-24b-instruct-2501,Event Load,42.5,25.0,0.0,25.0,32.0,0.0
+mistral-small-24b-instruct-2501,Minimal ECT,20.0,30.0,0.0,30.0,26.0,0.0
+mistral-small-24b-instruct-2501,ECT Load,50.0,21.7,0.0,21.7,33.0,0.0
+mistral-small-24b-instruct-2501 (with COT),Overall,36.9,45.0,31.9,45.8,42.9,18.3
+mistral-small-24b-instruct-2501 (with COT),Minimal Events,36.7,50.0,55.0,38.3,33.3,10.0
+mistral-small-24b-instruct-2501 (with COT),Event Load,35.0,35.0,10.0,51.7,43.0,21.7
+mistral-small-24b-instruct-2501 (with COT),Minimal ECT,45.0,45.0,30.0,43.3,45.0,18.3
+mistral-small-24b-instruct-2501 (with COT),ECT Load,30.8,50.0,32.5,50.0,50.0,23.3
+mistral-small-24b-instruct-2501_think,Overall,31.2,29.6,0.0,29.6,30.2,0.0
+mistral-small-24b-instruct-2501_think,Minimal Events,7.5,40.0,0.0,40.0,27.0,0.0
+mistral-small-24b-instruct-2501_think,Event Load,42.5,25.0,0.0,25.0,32.0,0.0
+mistral-small-24b-instruct-2501_think,Minimal ECT,25.0,31.7,0.0,31.7,29.0,0.0
+mistral-small-24b-instruct-2501_think,ECT Load,50.0,21.7,0.0,21.7,33.0,0.0
+qwen3-32b,Overall,43.8,50.4,81.9,35.4,34.0,5.0
+qwen3-32b,Minimal Events,46.7,55.0,70.0,41.7,33.0,0.0
+qwen3-32b,Event Load,50.0,80.0,100.0,55.0,53.0,18.3
+qwen3-32b,Minimal ECT,48.3,50.0,75.0,33.3,29.0,0.0
+qwen3-32b,ECT Load,30.0,16.7,82.5,11.7,21.0,1.7
+qwen3-32b (with COT),Overall,35.0,27.5,83.8,21.7,34.5,17.1
+qwen3-32b (with COT),Minimal Events,3.3,23.3,57.5,20.0,29.0,3.3
+qwen3-32b (with COT),Event Load,43.3,48.3,100.0,41.7,44.0,38.3
+qwen3-32b (with COT),Minimal ECT,56.7,31.7,87.5,20.0,34.0,6.7
+qwen3-32b (with COT),ECT Load,36.7,6.7,90.0,5.0,31.0,20.0
+qwen3-32b_think,Overall,50.8,97.9,49.4,92.9,74.5,58.9
+qwen3-32b_think,Minimal Events,57.5,100.0,50.0,85.0,76.8,47.5
+qwen3-32b_think,Event Load,50.0,96.7,50.0,95.0,74.5,56.9
+qwen3-32b_think,Minimal ECT,50.0,100.0,50.0,100.0,72.0,53.3
+qwen3-32b_think,ECT Load,45.8,94.9,47.5,91.7,74.7,78.0
+qwen3-next-80b-a3b-instruct,Overall,25.6,49.6,4.4,49.2,38.5,0.0
+qwen3-next-80b-a3b-instruct,Minimal Events,30.0,46.7,5.0,46.7,43.0,0.0
+qwen3-next-80b-a3b-instruct,Event Load,19.2,51.7,2.5,50.0,34.0,0.0
+qwen3-next-80b-a3b-instruct,Minimal ECT,10.0,50.0,0.0,50.0,37.0,0.0
+qwen3-next-80b-a3b-instruct,ECT Load,43.3,50.0,10.0,50.0,40.0,0.0
+qwen3-next-80b-a3b-instruct (with COT),Overall,7.9,49.2,0.0,49.2,31.5,0.0
+qwen3-next-80b-a3b-instruct (with COT),Minimal Events,0.0,46.7,0.0,46.7,28.0,0.0
+qwen3-next-80b-a3b-instruct (with COT),Event Load,1.7,50.0,0.0,50.0,30.0,0.0
+qwen3-next-80b-a3b-instruct (with COT),Minimal ECT,5.0,50.0,0.0,50.0,32.0,0.0
+qwen3-next-80b-a3b-instruct (with COT),ECT Load,25.0,50.0,0.0,50.0,36.0,0.0
+qwen3-next-80b-a3b-thinking_think,Overall,50.0,100.0,47.5,99.2,78.6,63.8
+qwen3-next-80b-a3b-thinking_think,Minimal Events,52.5,100.0,50.0,100.0,80.0,51.7
+qwen3-next-80b-a3b-thinking_think,Event Load,48.3,100.0,50.0,100.0,78.6,67.8
+qwen3-next-80b-a3b-thinking_think,Minimal ECT,50.0,100.0,40.0,100.0,79.0,55.2
+qwen3-next-80b-a3b-thinking_think,ECT Load,49.1,100.0,50.0,96.6,76.8,81.5
+ALL MODELS,Overall,41.7,50.3,29.7,46.3,42.8,18.6
+ALL MODELS,Minimal Events,37.5,51.8,32.4,45.1,40.1,14.6
+ALL MODELS,Event Load,42.5,53.0,30.0,49.1,45.0,21.8
+ALL MODELS,Minimal ECT,40.7,52.5,27.5,48.7,42.0,16.8
+ALL MODELS,ECT Load,46.0,43.8,29.1,42.4,44.0,21.0

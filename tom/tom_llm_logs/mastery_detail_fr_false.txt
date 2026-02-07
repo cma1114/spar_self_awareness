@@ -4,32 +4,34 @@ Detailed Mastery Category Breakdown (Multiple Choice)
 OVERALL (All Models)
 ----------------------------------------
 
-Self: Knowledge vs Belief: 56.6%
+Self: Knowledge vs Belief: 53.4%
   Distinguishing own knowledge from mere belief
-  - Scenarios [7, 8, 9] → Pass: 181/360 = 50.3% (weight=2)
-  - Scenarios [12, 13] → Ask: 151/240 = 62.9% (weight=3)
+  - Scenarios [7, 8, 9] → Pass: 286/480 = 59.6% (weight=2)
+  - Scenarios [12, 13] → Ask: 151/320 = 47.2% (weight=3)
 
-Teammate: Knowledge vs Belief: 24.3%
+Teammate: Knowledge vs Belief: 30.8%
   Distinguishing teammate knowledge from belief
-  - Scenarios [20, 21, 22] → Pass: 54/360 = 15.0% (weight=1)
-  - Scenarios [17, 18, 19] → Tell: 121/360 = 33.6% (weight=1)
+  - Scenarios [20, 21, 22] → Pass: 101/480 = 21.0% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 195/480 = 40.6% (weight=1)
 
-Combined Uncertainty: 24.8%
+Combined Uncertainty: 39.1%
   Handling self + teammate uncertainty together
-  - Scenarios [10, 11] → Pass: 112/240 = 46.7% (weight=1)
-  - Scenarios [23, 24] → Pass: 7/240 = 2.9% (weight=1)
+  - Scenarios [10, 11] → Pass: 192/320 = 60.0% (weight=1)
+  - Scenarios [23, 24] → Pass: 58/320 = 18.1% (weight=1)
 
-True vs False Belief: 19.7%
+True vs False Belief: 23.6%
   Distinguishing true belief from false belief
-  - Scenarios [14, 15, 16] → Pass: 21/360 = 5.8% (weight=1)
-  - Scenarios [17, 18, 19] → Tell: 121/360 = 33.6% (weight=1)
+  - Scenarios [14, 15, 16] → Pass: 32/480 = 6.7% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 195/480 = 40.6% (weight=1)
 
-Teammate vs Opponent: 30.2%
+Teammate vs Opponent: 31.2%
   Treating teammate differently from opponent
-  - Scenarios [12, 13] → Ask: 151/240 = 62.9% (weight=1)
-  - Scenarios [37, 39] → Pass: 51/240 = 21.2% (weight=1)
-  - Scenarios [30, 31, 32] → Pass: 40/360 = 11.1% (weight=1)
-  - Scenarios [17, 18, 19] → Tell: 121/360 = 33.6% (weight=1)
+  - Scenarios [12, 13] → Ask: 151/320 = 47.2% (weight=1)
+  - Scenarios [37, 39] → Pass: 101/320 = 31.6% (weight=1)
+  - Scenarios [37, 39] → Pass (lies ok): 115/320 = 35.9% (weight=1)
+  - Scenarios [30, 31, 32] → Pass: 52/480 = 10.8% (weight=1)
+  - Scenarios [30, 31, 32] → Pass (lies ok): 67/480 = 14.0% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 195/480 = 40.6% (weight=1)
 
 ================================================================================
 PER-MODEL BREAKDOWN
@@ -56,8 +58,36 @@ True vs False Belief: 55.8%
 Teammate vs Opponent: 54.8%
   - [12, 13] → Ask: 15/80 = 18.8%
   - [37, 39] → Pass: 51/80 = 63.7%
+  - [37, 39] → Pass (lies ok): 65/80 = 81.2%
   - [30, 31, 32] → Pass: 40/120 = 33.3%
+  - [30, 31, 32] → Pass (lies ok): 42/120 = 35.0%
   - [17, 18, 19] → Tell: 113/120 = 94.2%
+
+=== qwen3-32b (1560 records) ===
+
+Self: Knowledge vs Belief: 43.8%
+  - [7, 8, 9] → Pass: 105/120 = 87.5%
+  - [12, 13] → Ask: 0/80 = 0.0%
+
+Teammate: Knowledge vs Belief: 50.4%
+  - [20, 21, 22] → Pass: 47/120 = 39.2%
+  - [17, 18, 19] → Tell: 74/120 = 61.7%
+
+Combined Uncertainty: 81.9%
+  - [10, 11] → Pass: 80/80 = 100.0%
+  - [23, 24] → Pass: 51/80 = 63.7%
+
+True vs False Belief: 35.4%
+  - [14, 15, 16] → Pass: 11/120 = 9.2%
+  - [17, 18, 19] → Tell: 74/120 = 61.7%
+
+Teammate vs Opponent: 34.0%
+  - [12, 13] → Ask: 0/80 = 0.0%
+  - [37, 39] → Pass: 50/80 = 62.5%
+  - [37, 39] → Pass (lies ok): 50/80 = 62.5%
+  - [30, 31, 32] → Pass: 12/120 = 10.0%
+  - [30, 31, 32] → Pass (lies ok): 12/120 = 10.0%
+  - [17, 18, 19] → Tell: 74/120 = 61.7%
 
 === llama-3.1-70b-instruct (3120 records) ===
 
@@ -80,5 +110,7 @@ True vs False Belief: 1.7%
 Teammate vs Opponent: 18.0%
   - [12, 13] → Ask: 136/160 = 85.0%
   - [37, 39] → Pass: 0/160 = 0.0%
+  - [37, 39] → Pass (lies ok): 0/160 = 0.0%
   - [30, 31, 32] → Pass: 0/240 = 0.0%
+  - [30, 31, 32] → Pass (lies ok): 13/240 = 5.4%
   - [17, 18, 19] → Tell: 8/240 = 3.3%

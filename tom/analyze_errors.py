@@ -17,9 +17,17 @@ import re
 from collections import defaultdict
 from typing import Dict, List, Tuple, Optional
 
-# Models to generate individual analysis for
+# Models to filter for analysis (filters both aggregate and individual reports)
 # Set to None to analyze ALL models, or specify a list of model names
-INDIVIDUAL_MODEL_ANALYSIS: Optional[List[str]] = ['openai-gpt-5', 'openai-gpt-5_think']#None 
+INDIVIDUAL_MODEL_ANALYSIS: Optional[List[str]] = ['mistral-large-2512']
+
+# Filter by free_response mode (run-level setting, same for all records in a file)
+# Set to True for COT only, False for non-COT only, None for both
+FREE_RESPONSE_FILTER: Optional[bool] = True#None
+
+# Allow incomplete runs (records not divisible by 39 scenarios)
+# Set to True to include partial data, False to require complete runs only
+ALLOW_INCOMPLETE_RUNS: bool = True
 
 # ToM Mastery Categories (from analyze_results.py)
 TOM_MASTERY_CATEGORIES = {
@@ -64,6 +72,14 @@ TOM_MASTERY_CATEGORIES = {
             {'scenarios': [17, 18, 19], 'action': 'Tell', 'weight': 1},
         ],
     },
+    'strategic_lies': {
+        'name': 'Strategic Lies',
+        'description': 'Knowing when lying is strategically effective vs. unnecessary',
+        'components': [
+            {'scenarios': [27, 28, 29], 'action': 'Tell (Lie)', 'weight': 1, 'success_is_lie': True},
+            {'scenarios': [30, 31, 32], 'action': 'Pass', 'weight': 1, 'success_is_lie': False},
+        ],
+    },
 }
 
 # Features to analyze (boolean features first, then categorical)
@@ -92,7 +108,13 @@ def extract_model_name(filepath: str) -> str:
 def load_game_data(filepath: str) -> List[dict]:
     """Load and return records from a game_data.json file."""
     with open(filepath, 'r') as f:
-        return json.load(f)
+        data = json.load(f)
+    # Handle both old (flat list) and new (wrapper object) formats
+    if isinstance(data, list):
+        return data
+    elif isinstance(data, dict) and 'turn_records' in data:
+        return data['turn_records']
+    return data
 
 
 def normalize_extra(val):
@@ -114,6 +136,32 @@ def filter_player_a_by_extra(records: List[dict], extra: str) -> List[dict]:
     return [r for r in records
             if r.get('character') == 'A'
             and normalize_extra(r.get('extra')) == extra]
+
+
+def has_valid_action(action: str) -> bool:
+    """Check if action string contains a valid action keyword.
+
+    Used to filter out records where the model hit token limit before
+    outputting its action (Pass/Ask/Tell).
+    """
+    if not action:
+        return False
+    # Check for Pass (case insensitive, word boundary)
+    if re.search(r'\bpass\b', action, re.IGNORECASE):
+        return True
+    # Check for Ask() or Tell()
+    if re.search(r'\b(ask|tell)\s*\(', action, re.IGNORECASE):
+        return True
+    return False
+
+
+def filter_valid_records(records: List[dict]) -> Tuple[List[dict], int]:
+    """Filter out records where model hit token limit before giving action.
+
+    Returns: (filtered_records, excluded_count)
+    """
+    filtered = [r for r in records if has_valid_action(r.get('action', ''))]
+    return filtered, len(records) - len(filtered)
 
 
 def normalize_action(action: str) -> str:
@@ -593,12 +641,29 @@ def run_analysis_for_extra(files: List[str], logs_dir: str, extra: str, suffix: 
 
     for filepath in files:
         records = load_game_data(filepath)
-        filtered = filter_player_a_by_extra(records, extra)
 
-        if len(filtered) == 0 or len(filtered) % 39 != 0:
-            continue
+        # Skip if free_response doesn't match filter (check first record - it's run-level)
+        if FREE_RESPONSE_FILTER is not None and records:
+            file_fr = records[0].get('free_response')
+            if file_fr != FREE_RESPONSE_FILTER:
+                continue
 
+        # Skip if model not in INDIVIDUAL_MODEL_ANALYSIS list (when specified)
         model_name = extract_model_name(filepath)
+        if INDIVIDUAL_MODEL_ANALYSIS is not None:
+            # Check if model name matches any in the list (with or without _think suffix)
+            base_name = model_name.replace('_think', '')
+            if model_name not in INDIVIDUAL_MODEL_ANALYSIS and base_name not in INDIVIDUAL_MODEL_ANALYSIS:
+                continue
+
+        filtered = filter_player_a_by_extra(records, extra)
+        # Filter out records where model hit token limit before giving action
+        filtered, _ = filter_valid_records(filtered)
+
+        if len(filtered) == 0:
+            continue
+        if not ALLOW_INCOMPLETE_RUNS and len(filtered) % 39 != 0:
+            continue
 
         if is_thinking_model(model_name):
             thinking_model_records[model_name].extend(filtered)
@@ -644,47 +709,38 @@ def run_analysis_for_extra(files: List[str], logs_dir: str, extra: str, suffix: 
         print(f"No records found for {extra_label}, skipping")
         return
 
-    # Generate combined analysis (all models)
-    generate_analysis(
-        all_model_records,
-        all_records,
-        f"ALL MODELS ({extra_label})",
-        logs_dir,
-        f'error_analysis{suffix}.txt'
-    )
+    # Skip aggregate reports when filtering to specific models (would be duplicate)
+    if INDIVIDUAL_MODEL_ANALYSIS is None:
+        # Generate combined analysis (all models)
+        generate_analysis(
+            all_model_records,
+            all_records,
+            f"ALL MODELS ({extra_label})",
+            logs_dir,
+            f'error_analysis{suffix}.txt'
+        )
 
-    # Generate separate analyses for PAIRED thinking and non-thinking models only
-    generate_analysis(
-        paired_thinking_records,
-        paired_thinking_all,
-        f"THINKING MODELS (paired only, {extra_label})",
-        logs_dir,
-        f'error_analysis_thinking{suffix}.txt'
-    )
+        # Generate separate analyses for PAIRED thinking and non-thinking models only
+        generate_analysis(
+            paired_thinking_records,
+            paired_thinking_all,
+            f"THINKING MODELS (paired only, {extra_label})",
+            logs_dir,
+            f'error_analysis_thinking{suffix}.txt'
+        )
 
-    generate_analysis(
-        paired_nonthinking_records,
-        paired_nonthinking_all,
-        f"NON-THINKING MODELS (paired only, {extra_label})",
-        logs_dir,
-        f'error_analysis_nonthinking{suffix}.txt'
-    )
+        generate_analysis(
+            paired_nonthinking_records,
+            paired_nonthinking_all,
+            f"NON-THINKING MODELS (paired only, {extra_label})",
+            logs_dir,
+            f'error_analysis_nonthinking{suffix}.txt'
+        )
 
-    # Generate per-model analysis
-    models_to_analyze = (
-        list(all_model_records.keys())
-        if INDIVIDUAL_MODEL_ANALYSIS is None
-        else INDIVIDUAL_MODEL_ANALYSIS
-    )
-
-    for model_name in models_to_analyze:
-        if model_name not in all_model_records:
-            print(f"Warning: Model {model_name} not found for {extra_label}, skipping")
-            continue
-
+    # Generate per-model analysis (models already filtered by INDIVIDUAL_MODEL_ANALYSIS at file level)
+    for model_name in all_model_records.keys():
         model_records_single = {model_name: all_model_records[model_name]}
         model_all_records = all_model_records[model_name]
-
         safe_name = model_name.replace('/', '_').replace(':', '_')
 
         generate_analysis(

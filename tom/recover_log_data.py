@@ -176,6 +176,35 @@ def parse_trial_block(block: str, trial_num: int, header_info: Dict) -> Optional
         if action_match:
             action_text = action_match.group(1).strip()
 
+    # Pattern 6: Markdown bold "**Action:** Pass" or "**Action:** Ask(...)"
+    if not action_text:
+        action_match = re.search(r'\*\*Action:\*\*\s*(Pass|Ask\s*\([^)]+\)|Tell\s*\([^)]+\))', block, re.IGNORECASE)
+        if action_match:
+            action_text = action_match.group(1).strip()
+
+    # Pattern 7: "Action: Answer: Pass" or similar
+    if not action_text:
+        action_match = re.search(r'Action:\s*Answer:\s*(Pass|Ask\s*\([^)]+\)|Tell\s*\([^)]+\))', block, re.IGNORECASE)
+        if action_match:
+            action_text = action_match.group(1).strip()
+
+    # Pattern 8: Fallback - look for any "Pass", "Ask(...)", "Tell(...)" on its own line in the action section
+    if not action_text:
+        action_section = re.search(r'ACTION PHASE.*?([A-D]) answers:', block, re.DOTALL)
+        if action_section:
+            section = action_section.group(0)
+            # Look for Pass anywhere (more lenient)
+            pass_match = re.search(r'\b(Pass)\b', section, re.IGNORECASE)
+            ask_match = re.search(r'(Ask\s*\([^)]+\))', section, re.IGNORECASE)
+            tell_match = re.search(r'(Tell\s*\([^)]+\))', section, re.IGNORECASE)
+            # Prefer Ask/Tell over Pass if both exist (Pass is more common false positive)
+            if ask_match:
+                action_text = ask_match.group(1)
+            elif tell_match:
+                action_text = tell_match.group(1)
+            elif pass_match:
+                action_text = pass_match.group(1)
+
     if not action_text:
         # Pattern 2: Look for standalone action lines before "A answers:"
         # Find the section between ACTION PHASE and "A answers:"
