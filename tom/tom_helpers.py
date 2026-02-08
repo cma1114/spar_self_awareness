@@ -103,6 +103,7 @@ class Scenario:
     ask_constraint: Optional[AskConstraintType] = None
     situation_event_count: Optional[int] = None
     epistemic_transitions: Optional[Dict[str, int]] = None  # {'certainty': N, 'accuracy': N, 'total': N}
+    rep: Optional[int] = None  # Which rep this scenario is from (for pre-generated scenarios)
     
     def get_description_for(self, character_name: str, characters: Dict[str, Character],
                             pause_mode: str = "none", ellipsis_mode: bool = False) -> str:
@@ -216,6 +217,7 @@ class Scenario:
             'correct_action': self.correct_action if self.correct_action else None,
             'situation_event_count': self.situation_event_count,
             'epistemic_transitions': self.epistemic_transitions,
+            'rep': self.rep,
         }
     
     @staticmethod
@@ -238,6 +240,7 @@ class Scenario:
             correct_action=data.get('correct_action') if data.get('correct_action') else None,
             situation_event_count=data.get('situation_event_count'),
             epistemic_transitions=data.get('epistemic_transitions'),
+            rep=data.get('rep'),
         )
 
 def load_scenarios(filename: str) -> Tuple[List[Scenario], List[str], List[CharacterType]]:

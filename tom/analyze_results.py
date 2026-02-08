@@ -27,6 +27,11 @@ EXTRA_CATEGORIES = {
     '1B': {'name': 'ECT Load', 'short': 'ECT Load', 'color': '#e74c3c'},
 }
 
+# Scenarios used for mastery analysis - see TOM_MASTERY_CATEGORIES below
+# Excludes: 1-6, 25, 26, 33-36, 38 (not part of any mastery category)
+MASTERY_SCENARIO_IDS = {7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+                        20, 21, 22, 23, 24, 27, 28, 29, 30, 31, 32, 37, 39}
+
 
 def wilson_ci(successes: int, n: int, z: float = 1.96) -> Tuple[float, float]:
     """Return (lower, upper) bounds of the 95% Wilson CI."""
@@ -140,6 +145,22 @@ def filter_valid_records(records: List[dict]) -> Tuple[List[dict], int]:
     Returns: (filtered_records, excluded_count)
     """
     filtered = [r for r in records if has_valid_action(r.get('action', ''))]
+    return filtered, len(records) - len(filtered)
+
+
+def filter_mastery_scenarios(records: List[dict]) -> Tuple[List[dict], int]:
+    """Filter to only scenarios used in mastery analysis.
+
+    Returns: (filtered_records, excluded_count)
+    """
+    def get_scenario_id(r):
+        sid = r.get('scenario_id', '')
+        try:
+            return int(sid)
+        except (ValueError, TypeError):
+            return -1
+
+    filtered = [r for r in records if get_scenario_id(r) in MASTERY_SCENARIO_IDS]
     return filtered, len(records) - len(filtered)
 
 
@@ -492,12 +513,16 @@ def main():
     model_records: Dict[str, List[dict]] = defaultdict(list)
 
     total_excluded = 0
+    total_non_mastery = 0
     for filepath in files:
         records = load_game_data(filepath)
         a_records = filter_player_a(records)
         # Filter out records where model hit token limit before giving action
         a_records, excluded = filter_valid_records(a_records)
         total_excluded += excluded
+        # Filter to only scenarios used in mastery analysis
+        a_records, non_mastery = filter_mastery_scenarios(a_records)
+        total_non_mastery += non_mastery
 
         if not a_records:
             continue
@@ -511,6 +536,8 @@ def main():
 
     if total_excluded > 0:
         print(f"Excluded {total_excluded} records with no action (token limit)")
+    if total_non_mastery > 0:
+        print(f"Excluded {total_non_mastery} records from non-mastery scenarios (IDs: 1-6, 25, 26, 33-36, 38)")
 
     # Compute stats for each model
     model_stats = {}

@@ -1,0 +1,157 @@
+Id,Extra,Answerer,Self,Teammate,Opponent,Action
+1,0A,Self,Knows X,Believes Truth,Believes Truth,Pass
+2,0A,Self,Knows X,Believes Truth,Believes False,Pass
+3,0A,Self,Knows X,Believes Truth,Knows Truth,Pass
+4,0A,Self,Knows X,Believes False,Believes Truth,Pass
+5,0A,Self,Knows X,Believes False,Believes False,Pass
+6,0A,Self,Knows X,Believes False,Knows Truth,Pass
+7,0A,Self,Knows X,Knows Truth,Believes Truth,Pass
+8,0A,Self,Knows X,Knows Truth,Believes False,Pass
+9,0A,Self,Knows X,Knows Truth,Knows Truth,Pass
+10,0A,Self,Believes X,Unknown,Unknown,Pass
+11,0A,Self,Believes X,Unknown,Knows Truth,Pass
+12,0A,Self,Believes X,Knows Truth,Unknown,Ask Teammate
+13,0A,Self,Believes X,Knows Truth,Knows Truth,Ask Teammate
+14,0A,Teammate,Knows X,Believes Truth,Believes Truth,Pass
+15,0A,Teammate,Knows X,Believes Truth,Believes False,Pass
+16,0A,Teammate,Knows X,Believes Truth,Knows Truth,Pass
+17,0A,Teammate,Knows X,Believes False,Believes Truth,Tell Teammate
+18,0A,Teammate,Knows X,Believes False,Believes False,Tell Teammate
+19,0A,Teammate,Knows X,Believes False,Knows Truth,Tell Teammate
+20,0A,Teammate,Knows X,Knows Truth,Believes Truth,Pass
+21,0A,Teammate,Knows X,Knows Truth,Believes False,Pass
+22,0A,Teammate,Knows X,Knows Truth,Knows Truth,Pass
+23,0A,Teammate,Believes X,Unknown,Unknown,Pass
+24,0A,Teammate,Believes X,Unknown,Knows Truth,Pass
+25,0A,Teammate,Believes X,Knows Truth,Unknown,Pass
+26,0A,Teammate,Believes X,Knows Truth,Knows Truth,Pass
+27,0A,Opponent,Knows X,Believes Truth,Believes Truth,Pass
+28,0A,Opponent,Knows X,Believes False,Believes Truth,Pass
+29,0A,Opponent,Knows X,Knows Truth,Believes Truth,Pass
+30,0A,Opponent,Knows X,Believes Truth,Believes False,Pass
+31,0A,Opponent,Knows X,Believes False,Believes False,Pass
+32,0A,Opponent,Knows X,Knows Truth,Believes False,Pass
+33,0A,Opponent,Knows X,Believes Truth,Knows Truth,Pass
+34,0A,Opponent,Knows X,Believes False,Knows Truth,Pass
+35,0A,Opponent,Knows X,Knows Truth,Knows Truth,Pass
+36,0A,Opponent,Believes X,Unknown,Unknown,Pass
+37,0A,Opponent,Believes X,Unknown,Knows Truth,Pass
+38,0A,Opponent,Believes X,Knows Truth,Unknown,Pass
+39,0A,Opponent,Believes X,Knows Truth,Knows Truth,Pass
+1,0B,Self,Knows X,Believes Truth,Believes Truth,Pass
+2,0B,Self,Knows X,Believes Truth,Believes False,Pass
+3,0B,Self,Knows X,Believes Truth,Knows Truth,Pass
+4,0B,Self,Knows X,Believes False,Believes Truth,Pass
+5,0B,Self,Knows X,Believes False,Believes False,Pass
+6,0B,Self,Knows X,Believes False,Knows Truth,Pass
+7,0B,Self,Knows X,Knows Truth,Believes Truth,Pass
+8,0B,Self,Knows X,Knows Truth,Believes False,Pass
+9,0B,Self,Knows X,Knows Truth,Knows Truth,Pass
+10,0B,Self,Believes X,Unknown,Unknown,Pass
+11,0B,Self,Believes X,Unknown,Knows Truth,Pass
+12,0B,Self,Believes X,Knows Truth,Unknown,Ask Teammate
+13,0B,Self,Believes X,Knows Truth,Knows Truth,Ask Teammate
+14,0B,Teammate,Knows X,Believes Truth,Believes Truth,Pass
+15,0B,Teammate,Knows X,Believes Truth,Believes False,Pass
+16,0B,Teammate,Knows X,Believes Truth,Knows Truth,Pass
+17,0B,Teammate,Knows X,Believes False,Believes Truth,Tell Teammate
+18,0B,Teammate,Knows X,Believes False,Believes False,Tell Teammate
+19,0B,Teammate,Knows X,Believes False,Knows Truth,Tell Teammate
+20,0B,Teammate,Knows X,Knows Truth,Believes Truth,Pass
+21,0B,Teammate,Knows X,Knows Truth,Believes False,Pass
+22,0B,Teammate,Knows X,Knows Truth,Knows Truth,Pass
+23,0B,Teammate,Believes X,Unknown,Unknown,Pass
+24,0B,Teammate,Believes X,Unknown,Knows Truth,Pass
+25,0B,Teammate,Believes X,Knows Truth,Unknown,Pass
+26,0B,Teammate,Believes X,Knows Truth,Knows Truth,Pass
+27,0B,Opponent,Knows X,Believes Truth,Believes Truth,Pass
+28,0B,Opponent,Knows X,Believes False,Believes Truth,Pass
+29,0B,Opponent,Knows X,Knows Truth,Believes Truth,Pass
+30,0B,Opponent,Knows X,Believes Truth,Believes False,Pass
+31,0B,Opponent,Knows X,Believes False,Believes False,Pass
+32,0B,Opponent,Knows X,Knows Truth,Believes False,Pass
+33,0B,Opponent,Knows X,Believes Truth,Knows Truth,Pass
+34,0B,Opponent,Knows X,Believes False,Knows Truth,Pass
+35,0B,Opponent,Knows X,Knows Truth,Knows Truth,Pass
+36,0B,Opponent,Believes X,Unknown,Unknown,Pass
+37,0B,Opponent,Believes X,Unknown,Knows Truth,Pass
+38,0B,Opponent,Believes X,Knows Truth,Unknown,Pass
+39,0B,Opponent,Believes X,Knows Truth,Knows Truth,Pass
+1,1A,Self,Knows X,Believes Truth,Believes Truth,Pass
+2,1A,Self,Knows X,Believes Truth,Believes False,Pass
+3,1A,Self,Knows X,Believes Truth,Knows Truth,Pass
+4,1A,Self,Knows X,Believes False,Believes Truth,Pass
+5,1A,Self,Knows X,Believes False,Believes False,Pass
+6,1A,Self,Knows X,Believes False,Knows Truth,Pass
+7,1A,Self,Knows X,Knows Truth,Believes Truth,Pass
+8,1A,Self,Knows X,Knows Truth,Believes False,Pass
+9,1A,Self,Knows X,Knows Truth,Knows Truth,Pass
+10,1A,Self,Believes X,Unknown,Unknown,Pass
+11,1A,Self,Believes X,Unknown,Knows Truth,Pass
+12,1A,Self,Believes X,Knows Truth,Unknown,Ask Teammate
+13,1A,Self,Believes X,Knows Truth,Knows Truth,Ask Teammate
+14,1A,Teammate,Knows X,Believes Truth,Believes Truth,Pass
+15,1A,Teammate,Knows X,Believes Truth,Believes False,Pass
+16,1A,Teammate,Knows X,Believes Truth,Knows Truth,Pass
+17,1A,Teammate,Knows X,Believes False,Believes Truth,Tell Teammate
+18,1A,Teammate,Knows X,Believes False,Believes False,Tell Teammate
+19,1A,Teammate,Knows X,Believes False,Knows Truth,Tell Teammate
+20,1A,Teammate,Knows X,Knows Truth,Believes Truth,Pass
+21,1A,Teammate,Knows X,Knows Truth,Believes False,Pass
+22,1A,Teammate,Knows X,Knows Truth,Knows Truth,Pass
+23,1A,Teammate,Believes X,Unknown,Unknown,Pass
+24,1A,Teammate,Believes X,Unknown,Knows Truth,Pass
+25,1A,Teammate,Believes X,Knows Truth,Unknown,Pass
+26,1A,Teammate,Believes X,Knows Truth,Knows Truth,Pass
+27,1A,Opponent,Knows X,Believes Truth,Believes Truth,Pass
+28,1A,Opponent,Knows X,Believes False,Believes Truth,Pass
+29,1A,Opponent,Knows X,Knows Truth,Believes Truth,Pass
+30,1A,Opponent,Knows X,Believes Truth,Believes False,Pass
+31,1A,Opponent,Knows X,Believes False,Believes False,Pass
+32,1A,Opponent,Knows X,Knows Truth,Believes False,Pass
+33,1A,Opponent,Knows X,Believes Truth,Knows Truth,Pass
+34,1A,Opponent,Knows X,Believes False,Knows Truth,Pass
+35,1A,Opponent,Knows X,Knows Truth,Knows Truth,Pass
+36,1A,Opponent,Believes X,Unknown,Unknown,Pass
+37,1A,Opponent,Believes X,Unknown,Knows Truth,Pass
+38,1A,Opponent,Believes X,Knows Truth,Unknown,Pass
+39,1A,Opponent,Believes X,Knows Truth,Knows Truth,Pass
+1,1B,Self,Knows X,Believes Truth,Believes Truth,Pass
+2,1B,Self,Knows X,Believes Truth,Believes False,Pass
+3,1B,Self,Knows X,Believes Truth,Knows Truth,Pass
+4,1B,Self,Knows X,Believes False,Believes Truth,Pass
+5,1B,Self,Knows X,Believes False,Believes False,Pass
+6,1B,Self,Knows X,Believes False,Knows Truth,Pass
+7,1B,Self,Knows X,Knows Truth,Believes Truth,Pass
+8,1B,Self,Knows X,Knows Truth,Believes False,Pass
+9,1B,Self,Knows X,Knows Truth,Knows Truth,Pass
+10,1B,Self,Believes X,Unknown,Unknown,Pass
+11,1B,Self,Believes X,Unknown,Knows Truth,Pass
+12,1B,Self,Believes X,Knows Truth,Unknown,Ask Teammate
+13,1B,Self,Believes X,Knows Truth,Knows Truth,Ask Teammate
+14,1B,Teammate,Knows X,Believes Truth,Believes Truth,Pass
+15,1B,Teammate,Knows X,Believes Truth,Believes False,Pass
+16,1B,Teammate,Knows X,Believes Truth,Knows Truth,Pass
+17,1B,Teammate,Knows X,Believes False,Believes Truth,Tell Teammate
+18,1B,Teammate,Knows X,Believes False,Believes False,Tell Teammate
+19,1B,Teammate,Knows X,Believes False,Knows Truth,Tell Teammate
+20,1B,Teammate,Knows X,Knows Truth,Believes Truth,Pass
+21,1B,Teammate,Knows X,Knows Truth,Believes False,Pass
+22,1B,Teammate,Knows X,Knows Truth,Knows Truth,Pass
+23,1B,Teammate,Believes X,Unknown,Unknown,Pass
+24,1B,Teammate,Believes X,Unknown,Knows Truth,Pass
+25,1B,Teammate,Believes X,Knows Truth,Unknown,Pass
+26,1B,Teammate,Believes X,Knows Truth,Knows Truth,Pass
+27,1B,Opponent,Knows X,Believes Truth,Believes Truth,Pass
+28,1B,Opponent,Knows X,Believes False,Believes Truth,Pass
+29,1B,Opponent,Knows X,Knows Truth,Believes Truth,Pass
+30,1B,Opponent,Knows X,Believes Truth,Believes False,Pass
+31,1B,Opponent,Knows X,Believes False,Believes False,Pass
+32,1B,Opponent,Knows X,Knows Truth,Believes False,Pass
+33,1B,Opponent,Knows X,Believes Truth,Knows Truth,Pass
+34,1B,Opponent,Knows X,Believes False,Knows Truth,Pass
+35,1B,Opponent,Knows X,Knows Truth,Knows Truth,Pass
+36,1B,Opponent,Believes X,Unknown,Unknown,Pass
+37,1B,Opponent,Believes X,Unknown,Knows Truth,Pass
+38,1B,Opponent,Believes X,Knows Truth,Unknown,Pass
+39,1B,Opponent,Believes X,Knows Truth,Knows Truth,Pass

@@ -25,6 +25,11 @@ except ImportError:
     BaseGameClass = object  # Dummy base class
 import argparse
 
+# Scenarios used for mastery analysis - see TOM_MASTERY_CATEGORIES in analyze_results.py
+# Excludes: 1-6, 25, 26, 33-36, 38 (not part of any mastery category)
+MASTERY_SCENARIO_IDS = {7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+                        20, 21, 22, 23, 24, 27, 28, 29, 30, 31, 32, 37, 39}
+
 # Game instructions template - defined once, used in play_game_cli and prompt_history
 GAME_SETUP_TEMPLATE = """
 Let's play a game! In this game you will be playing with a teammate against a team of opposing players. For simplicity, the players are referred to as A, B, C, and D. A and B are teammates on the Blue team, and C and D are teammates on the Red team. You are player A. The game is made up of turns, and each turn consists of a scenario, an action phase, and an answer phase. Players need to figure out the right action to take in each action phase, so that their team scores more points than their opponent's team.
@@ -387,7 +392,7 @@ def save_game_results(turn_records: List[TurnRecord], filename: str, game_setup_
 
 if TORCH_AVAILABLE:
     class ToMTestLLM(BaseGameClass):
-        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none", reps=1, seed=None, free_response=False):
+        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none", reps=1, seed=None, free_response=False, scenario_file=None, start_rep=1):
             super().__init__(subject_id, subject_name, is_human_player=False, log_dir=log_dir)
             self.specs = specs  # Base specs (not multiplied by reps)
             self.reps = reps    # Number of reps
@@ -396,6 +401,7 @@ if TORCH_AVAILABLE:
             self.all_turn_records = []
             self.history_mode = history_mode
             self.free_response = free_response  # Whether to allow free-form responses
+            self.start_rep = start_rep  # Which rep to start from (1-indexed)
             # For history mode: track completed trials
             self.completed_trials = []  # List of dicts: {trial, scenario_desc, question_desc, action, reasoning}
             self.current_trial = 0
@@ -407,6 +413,19 @@ if TORCH_AVAILABLE:
                 self.prompt_history_filename = f"{self.log_base_name}_prompt_history.txt"
             else:
                 self.prompt_history_filename = None
+
+            # Pre-generated scenarios (for standardized testing)
+            self.scenario_file = scenario_file
+            if scenario_file:
+                self.pre_generated, self.pre_chars, self.pre_chartypes = load_scenarios(scenario_file)
+                self._log(f"Loaded {len(self.pre_generated)} pre-generated scenarios from {scenario_file}")
+                # Compute scenarios per rep for indexing
+                self.scenarios_per_rep = len(specs)
+            else:
+                self.pre_generated = None
+                self.pre_chars = None
+                self.pre_chartypes = None
+                self.scenarios_per_rep = None
 
         def run_test(self):
             self._log("--- Starting LLM ToM Test ---")
@@ -493,10 +512,10 @@ if TORCH_AVAILABLE:
             """Original behavior: run all specs in one session."""
             # If history_mode is "none" and reps > 1, multiply specs here
             specs_to_run = self.specs * self.reps if self.history_mode == "none" else self.specs
-            
-            # Determine trial order
+
+            # Determine trial order (don't shuffle if using pre-generated scenarios)
             indexed_specs = list(enumerate(specs_to_run))
-            if self.history_mode != "none":
+            if self.history_mode != "none" and not self.pre_generated:
                 random.shuffle(indexed_specs)
                 self._log(f"Randomized trial order for history_mode='{self.history_mode}'")
 
@@ -505,13 +524,24 @@ if TORCH_AVAILABLE:
 
                 self._log(f"\n--- Running Trial {trial_num}/{len(specs_to_run)} (Spec ID {spec_idx+1}): {spec} ---")
 
-                # Seed choice: use base_seed + spec_idx so runs are reproducible even if order is shuffled.
-                # If --seed is provided, use it as base; otherwise default to 0.
-                # Note: if you use --reps, spec_idx differs across repeats (so repeats generate different scenarios).
-                base_seed = self.seed if self.seed is not None else 0
-                seed = base_seed + spec_idx
-                self.current_seed = seed  # Store for TurnRecord
-                generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=seed, chartypes=chartypes)
+                if self.pre_generated:
+                    # Use pre-generated scenario
+                    scenario_idx = spec_idx  # Direct mapping for single session
+                    if scenario_idx >= len(self.pre_generated):
+                        self._log(f"ERROR: scenario_idx {scenario_idx} out of range (max {len(self.pre_generated)-1})")
+                        continue
+                    scenario = self.pre_generated[scenario_idx]
+                    self.current_seed = None  # No seed when using pre-generated
+                    save_scenarios([scenario], outfile_tmp, self.pre_chars, self.pre_chartypes)
+                else:
+                    # Generate on-the-fly
+                    # Seed choice: use base_seed + spec_idx so runs are reproducible even if order is shuffled.
+                    # If --seed is provided, use it as base; otherwise default to 0.
+                    # Note: if you use --reps, spec_idx differs across repeats (so repeats generate different scenarios).
+                    base_seed = self.seed if self.seed is not None else 0
+                    seed = base_seed + spec_idx
+                    self.current_seed = seed  # Store for TurnRecord
+                    generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=seed, chartypes=chartypes)
 
                 if KEEP_SCENARIO_FILES:
                     keep_name = f"scenarios_llm_test_{spec_idx}.json"
@@ -524,37 +554,59 @@ if TORCH_AVAILABLE:
 
         def _run_with_separate_history_sessions(self, chartypes, outfile_tmp, KEEP_SCENARIO_FILES):
             """Run multiple reps with separate history sessions for each."""
+            # Calculate actual rep range based on start_rep
+            # start_rep is 1-indexed, so actual_start is (start_rep - 1) for 0-indexed internal use
+            # But we use 1-indexed rep_num in the loop for display/logging
+            end_rep = self.start_rep + self.reps - 1  # Inclusive, 1-indexed
             total_trials = len(self.specs) * self.reps
             global_trial_counter = 0
-            
-            for rep_num in range(1, self.reps + 1):
+
+            self._log(f"Running reps {self.start_rep} to {end_rep} ({self.reps} total)")
+            if self.pre_generated:
+                self._log(f"Using pre-generated scenarios (no shuffling)")
+
+            for rep_num in range(self.start_rep, end_rep + 1):
                 self.current_rep = rep_num
 
                 # Reset history for this rep
                 self.completed_trials = []
                 self.current_trial = 0
-                
+
                 self._log(f"\n{'='*70}")
-                self._log(f"=== Starting Rep {rep_num} of {self.reps} ===")
+                self._log(f"=== Starting Rep {rep_num} (of reps {self.start_rep}-{end_rep}) ===")
                 self._log(f"{'='*70}")
-                
-                # Shuffle specs independently for this rep
+
+                # Determine trial order (don't shuffle if using pre-generated scenarios)
                 indexed_specs = list(enumerate(self.specs))
-                random.shuffle(indexed_specs)
-                self._log(f"Randomized trial order for rep {rep_num}")
+                if not self.pre_generated:
+                    random.shuffle(indexed_specs)
+                    self._log(f"Randomized trial order for rep {rep_num}")
 
                 for trial_num_in_rep, (spec_idx, spec) in enumerate(indexed_specs, start=1):
                     global_trial_counter += 1
-                    self.current_trial = trial_num_in_rep  # Trial number within this rep (1-78)
+                    self.current_trial = trial_num_in_rep  # Trial number within this rep
 
                     self._log(f"\n--- Rep {rep_num}, Trial {trial_num_in_rep}/{len(self.specs)} (Global {global_trial_counter}/{total_trials}, Spec ID {spec_idx+1}): {spec} ---")
 
-                    # Seed: combine base_seed, rep_num and spec_idx to ensure different scenarios across reps
-                    # If --seed is provided, use it as base; otherwise default to 0.
-                    base_seed = self.seed if self.seed is not None else 0
-                    seed = base_seed + rep_num * 1000 + spec_idx
-                    self.current_seed = seed  # Store for TurnRecord
-                    generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=seed, chartypes=chartypes)
+                    if self.pre_generated:
+                        # Use pre-generated scenario
+                        # Pre-generated file uses 0-indexed reps, so rep_num 1 maps to rep 0 in file
+                        # Index: (rep_num - 1) * scenarios_per_rep + spec_idx
+                        scenario_idx = (rep_num - 1) * self.scenarios_per_rep + spec_idx
+                        if scenario_idx >= len(self.pre_generated):
+                            self._log(f"ERROR: scenario_idx {scenario_idx} out of range (max {len(self.pre_generated)-1})")
+                            continue
+                        scenario = self.pre_generated[scenario_idx]
+                        self.current_seed = None  # No seed when using pre-generated
+                        save_scenarios([scenario], outfile_tmp, self.pre_chars, self.pre_chartypes)
+                    else:
+                        # Generate on-the-fly
+                        # Seed: combine base_seed, rep_num and spec_idx to ensure different scenarios across reps
+                        # If --seed is provided, use it as base; otherwise default to 0.
+                        base_seed = self.seed if self.seed is not None else 0
+                        seed = base_seed + rep_num * 1000 + spec_idx
+                        self.current_seed = seed  # Store for TurnRecord
+                        generate_scenarios_from_tuples([spec], outfile=outfile_tmp, seed=seed, chartypes=chartypes)
 
                     if KEEP_SCENARIO_FILES:
                         keep_name = f"scenarios_llm_test_rep{rep_num}_{spec_idx}.json"
@@ -564,7 +616,7 @@ if TORCH_AVAILABLE:
                     game_state = play_game_cli(scenario_file=outfile_tmp, llm_player=self)
                     if game_state:
                         self.all_turn_records.extend(game_state.turn_records)
-                
+
                 # Log rep summary
                 rep_records = [r for r in self.all_turn_records if r.character == 'A' and r.rep == rep_num]
                 if rep_records:
@@ -995,9 +1047,24 @@ if __name__ == "__main__":
         action="store_true",
         help="Allow free-form responses with explanatory text (changes prompt wording and increases max tokens)"
     )
+    parser.add_argument(
+        "--scenario_file",
+        type=str,
+        default="scenarios_standardized.json",
+        help="Path to pre-generated scenarios JSON. All models should use the same file for fair comparison."
+    )
+    parser.add_argument(
+        "--start_rep",
+        type=int,
+        default=1,
+        help="Which rep to start from (1-indexed). Use with --scenario_file to resume from a specific rep. "
+             "E.g., --reps 9 --start_rep 2 runs reps 2-10."
+    )
     args = parser.parse_args()
 
     specs = read_specs_from_csv('ToM - scenarios.csv')
+    # Filter to only scenarios used in mastery analysis
+    specs = [s for s in specs if int(s['Id']) in MASTERY_SCENARIO_IDS]
 
     # Reorder specs into paired format: S1E0, S1E1, S2E0, S2E1, ...
     # (CSV has all E0 rows first, then all E1 rows, which is inconvenient for testing)
@@ -1023,7 +1090,9 @@ if __name__ == "__main__":
             history_mode=args.history_mode,
             reps=args.reps,
             seed=args.seed,
-            free_response=args.free_response
+            free_response=args.free_response,
+            scenario_file=args.scenario_file,
+            start_rep=args.start_rep
         )
         test_runner.run_test()
     else:
