@@ -157,7 +157,8 @@ The `insert_extra_events_believes_*()` functions added answerer enter/leave even
 **EPISTEMIC_METRICS.md defines ECT #2 as:**
 > Character (who previously had belief) **sees** a put/move on target container → belief → knowledge
 
-Entering a room does NOT give knowledge. You must WITNESS an event.
+When A is inside observing, entering a room does NOT give knowledge. You must WITNESS an event.
+(See EPISTEMIC_METRICS.md for the full rule including when A is outside.)
 
 ### Solution
 

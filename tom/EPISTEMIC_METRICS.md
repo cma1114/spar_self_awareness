@@ -9,9 +9,14 @@ Events the **player (A) can see**. Put and move events are only
 counted when A is in the room (perspective\_present = True). Leave and enter
 events are **always** visible regardless of A's location.
 
-Events happening while A is out of the room do **not** count toward situation
-tracking, but they **can** contribute to ECT (since absent characters'
-epistemic states change).
+Put and move events while A is out do **not** count toward situation tracking
+or ECT #2/#3/#4. However, enter and leave events are always visible, so ECT #1
+(knowledge → belief when leaving) can still be triggered even when A is absent.
+
+**Important caveat for ECT #1 when A is absent:** A can only count ECT #1 for
+another character if A previously observed that character gaining knowledge
+(i.e., A saw them witness a target event before A left). If A doesn't know
+whether the character ever saw a target event, A cannot count ECT #1 for them.
 
 ## Epistemic Category Transitions (ECTs)
 
@@ -29,6 +34,17 @@ epistemic state has two axes:
 | 2 | Character (who previously had belief) **sees** a put/move on target container | belief/uncertainty → knowledge | Certainty |
 | 3 | Target container contents **change while character is absent** (and character had a true belief) | true → false belief | Accuracy |
 | 4 | Target container contents **change while character is present**, after having gone through #3 | false → true belief | Accuracy |
+
+### ECT #2 and Room Entry
+
+**When A is inside the room:** Containers are opaque. A character entering
+does NOT automatically gain knowledge — they must witness a put/move event.
+ECT #2 is only counted when they actually see an event on the target container.
+
+**When A is outside the room:** A cannot observe what characters inside actually
+see. When a non-A character enters, A assumes they *might* gain knowledge, so
+ECT #2 is counted. (A entering never triggers ECT #2 for A — A knows their own
+observations require witnessing an event.)
 
 ### What Is NOT an ECT
 
@@ -49,9 +65,18 @@ not a tracking demand.
 
 ## Design Goal
 
-Extra=0 and Extra=1 scenarios should have:
+The Extra field controls scenario complexity (see `EXTRA_MAPPING.md` for full details):
+
+| Code | Name | Has ECT? |
+|------|------|----------|
+| 0A | Minimal Events | No |
+| 0B | Event Load | No |
+| 1A | Minimal ECT | Yes (legacy `Extra=0`) |
+| 1B | ECT Load | Yes, more (legacy `Extra=1`) |
+
+For paired scenarios (1A vs 1B, or legacy Extra=0 vs Extra=1):
 - **Similar** situation tracking demands (visible event counts)
-- Extra=1 should **always** have more ECTs than its Extra=0 counterpart
+- 1B should **always** have more ECTs than its 1A counterpart
 
 This is achieved by:
 1. Adding neutral **filler events** to Extra=0 scenarios (operations on the

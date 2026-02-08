@@ -127,6 +127,8 @@ class Scenario_Builder:
         self.exclude_true: Set[str] = set() # who must leave believing something that matches the end queried_item/container state
         self.exclude_false: Set[str] = set() # who must leave believing something that does NOT match the end state
         self.exclude_unknown: Set[str] = set()  # who must leave BEFORE seeing target (UNKNOWN state)
+        self.exclude_flexible_unknown: Set[str] = set()  # who must leave before end, timing flexible (UNKNOWN from A's perspective)
+        self.exclude_after_self: Set[str] = set()  # who must leave after A (self), before final put (Case 3)
         self.include: Set[str] = set()      # who must be present at end
         self.present_initially: Set[str] = set()  # who must be present initially
         self.must_leave_together: Tuple[Optional[str], Optional[str]] = (None, None)  # (char1, char2) must be in same group
@@ -207,9 +209,8 @@ class Scenario_Builder:
                     self.include.add(staying_opp)
 
             elif spec['KS_Teammate'] == EpistemicState.UNKNOWN and spec['KS_Opponent'] == EpistemicState.KNOWS_TRUTH:
-                self.exclude_unknown.add(teammate)
-                # Note: don't set must_leave_together here because Teammate must leave before
-                # any put (UNKNOWN) while Self must see a put first (BELIEVES_X) - conflicting requirements
+                # Teammate can leave at flexible times (before puts OR after intermediate) - all result in UNKNOWN from A's perspective
+                self.exclude_flexible_unknown.add(teammate)
                 if spec['Answerer'] == 'Self':
                     self.include.add(opponent1)
                     self.include.add(opponent2)
@@ -220,9 +221,8 @@ class Scenario_Builder:
                     self.include.add(self.rng.choice([opponent1, opponent2])) 
 
             elif spec['KS_Teammate'] == EpistemicState.UNKNOWN and spec['KS_Opponent'] == EpistemicState.UNKNOWN:
-                self.exclude_unknown.add(teammate)
-                # Note: don't set must_leave_together here because Teammate must leave before
-                # any put (UNKNOWN) while Self must see a put first (BELIEVES_X) - conflicting requirements
+                # Teammate can leave at flexible times (before puts OR after intermediate) - all result in UNKNOWN from A's perspective
+                self.exclude_flexible_unknown.add(teammate)
                 # Ensure one opponent stays, one leaves (UNKNOWN)
                 if spec.get('Answerer') == 'Opponent':
                     leave_opponent = answerer
@@ -342,7 +342,7 @@ class Scenario_Builder:
                 else:
                     self.include.add(self.rng.choice([opponent1, opponent2])) 
 
-        self.present_initially = self.exclude | self.exclude_true | self.exclude_false | self.exclude_unknown | self.include # who must be present initially
+        self.present_initially = self.exclude | self.exclude_true | self.exclude_false | self.exclude_unknown | self.exclude_flexible_unknown | self.exclude_after_self | self.include # who must be present initially
 
     def build_scenario(self, answerer: str):
         #randomly add anyone who is in available but not in present_initially to present_initially
@@ -362,6 +362,20 @@ class Scenario_Builder:
 
         # Characters who must be UNKNOWN always go to leave_immediately_group
         leave_immediately_group |= self.exclude_unknown
+
+        # Characters with flexible UNKNOWN timing - 3 valid cases
+        # All result in UNKNOWN from A's perspective since A doesn't know the final reality
+        for who in sorted(self.exclude_flexible_unknown):
+            r = self.rng.random()
+            if r < 0.33:
+                # Case 1: Leave before any puts
+                leave_immediately_group.add(who)
+            elif r < 0.67:
+                # Case 2: Leave after intermediate put, before A leaves
+                self.exclude_false.add(who)
+            else:
+                # Case 3: Leave after A leaves, before final put
+                self.exclude_after_self.add(who)
 
         # Self with "Believes X" must see a put before leaving to form their belief
         # Move them out of leave_immediately_group to exclude_false
@@ -454,6 +468,11 @@ class Scenario_Builder:
             for who in order_self_first(self.exclude_false):
                 self.leave(who)
 
+        # Case 3: Characters who leave after A (self), before final put
+        # A has already left (in exclude_false), so we use sorted() not order_self_first()
+        for who in sorted(self.exclude_after_self):
+            self.leave(who)
+
         # Exclude blue team members from doing the put if their teammate left with false belief.
         # Only blue team (A/B) is protected - opponents (C/D) can invalidate each other.
         BLUE = {'A', 'B'}
@@ -538,6 +557,9 @@ def count_epistemic_category_transitions(scenario: 'Scenario') -> Dict[str, int]
 
     Initial learning (first observation of target) is NOT counted.
 
+    IMPORTANT: ECTs are counted from A's perspective. After A leaves, no more ECTs
+    are counted because A cannot observe any further transitions.
+
     Returns: {'certainty': int, 'accuracy': int, 'total': int}
     """
     target = scenario.question_container
@@ -560,17 +582,45 @@ def count_epistemic_category_transitions(scenario: 'Scenario') -> Dict[str, int]
 
     certainty_count = 0
     accuracy_count = 0
+    a_left = False  # Track when A leaves - no ECTs counted after this
 
     for event in scenario.events:
         if event.event_type == 'leave':
             char = event.character
+            # ECT #1: knowledge → belief when leaving after seeing target
+            # Leave events are visible to A, so this counts even after A leaves
             if has_observed[char] and has_knowledge[char]:
                 certainty_count += 1  # #1: knowledge → belief
                 has_knowledge[char] = False
+
+            # Track when A leaves (for #2, #3, #4 which require A to see put/move)
+            if char == 'A':
+                a_left = True
+
             present.discard(char)
 
         elif event.event_type == 'enter':
-            present.add(event.character)
+            char = event.character
+            a_is_outside = 'A' not in present  # Check BEFORE adding char
+            present.add(char)
+
+            # Reset a_left when A re-enters - A can observe ECTs again
+            if char == 'A':
+                a_left = False
+
+            # ECT #2 on enter only when:
+            # - A is outside (can't observe what they actually see inside)
+            # - The entering character is not A (A knows their own observations)
+            # - Target has contents (something to potentially observe)
+            # When A is inside, containers are opaque - must witness put/move for knowledge.
+            if a_is_outside and char != 'A' and actual is not None:
+                had_belief = has_observed[char] and not has_knowledge[char]
+                has_observed[char] = True
+                has_knowledge[char] = True
+                belief_content[char] = actual
+                has_false_belief[char] = False
+                if had_belief:
+                    certainty_count += 1
 
         else:
             # Determine if this event affects the target container
@@ -593,6 +643,19 @@ def count_epistemic_category_transitions(scenario: 'Scenario') -> Dict[str, int]
 
             if affects_target and old_actual != actual:
                 # Target container contents changed
+
+                # If A has left, still update state tracking but don't count ECTs
+                if a_left:
+                    for char in list(present):
+                        has_observed[char] = True
+                        has_knowledge[char] = True
+                        belief_content[char] = actual
+                        has_false_belief[char] = False
+                    for char in all_chars:
+                        if char not in present and belief_content[char] != _UNKNOWN:
+                            if belief_content[char] != actual:
+                                has_false_belief[char] = True
+                    continue
 
                 # Present characters see the change
                 for char in list(present):
@@ -1475,6 +1538,31 @@ def insert_extra_events_unknown(scenario: Scenario, answerer: str, rng: random.R
         scenario.events.insert(insert_pos + i, evt)
 
 
+def insert_teammate_reentry_unknown(scenario: Scenario, teammate: str, rng: random.Random) -> None:
+    """
+    For scenarios where Self=BELIEVES_X and Teammate=UNKNOWN,
+    add teammate re-entry after final target state.
+
+    Teammate enters then leaves - adding 2 SIT events.
+    Teammate's state transitions: UNKNOWN → KNOWS_TRUTH → UNKNOWN (from A's view).
+    A can't observe any of this (A left earlier), so A's classification of teammate remains UNKNOWN.
+    """
+    # Verify teammate actually left (not present at end)
+    present = set(scenario.present_initially)
+    for event in scenario.events:
+        if event.event_type == 'leave':
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+
+    if teammate in present:
+        return  # Teammate is still present, no re-entry needed
+
+    # Insert at end of scenario
+    scenario.events.append(Event('enter', teammate))
+    scenario.events.append(Event('leave', teammate))
+
+
 def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> None:
     """
     Insert extra put/move events for scenarios where Answerer=Teammate,
@@ -1989,6 +2077,12 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             else:
                 insert_extra_events(scenario_e1b, answerer, actor, answerer_state, e1b_spec, extra_rng)
 
+            # For Self=BELIEVES_X + Teammate=UNKNOWN scenarios, add teammate's re-entry
+            if (e1b_spec['KS_Self'] == EpistemicState.BELIEVES_X and
+                e1b_spec['KS_Teammate'] == EpistemicState.UNKNOWN):
+                teammate = _teammate_of(actor)
+                insert_teammate_reentry_unknown(scenario_e1b, teammate, extra_rng)
+
             # Validate: extra events were actually added
             if len(scenario_e1b.events) <= base_event_count:
                 raise ValueError(
@@ -2146,6 +2240,12 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                     insert_extra_events_unknown(scenario_e1b, answerer, retry_rng)
                 else:
                     insert_extra_events(scenario_e1b, answerer, actor, answerer_state, e1b_spec, retry_rng)
+
+                # For Self=BELIEVES_X + Teammate=UNKNOWN scenarios, add teammate's re-entry
+                if (e1b_spec['KS_Self'] == EpistemicState.BELIEVES_X and
+                    e1b_spec['KS_Teammate'] == EpistemicState.UNKNOWN):
+                    teammate = _teammate_of(actor)
+                    insert_teammate_reentry_unknown(scenario_e1b, teammate, retry_rng)
 
                 # Validate: extra events were actually added
                 if len(scenario_e1b.events) <= base_event_count:

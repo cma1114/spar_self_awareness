@@ -49,7 +49,7 @@ The test systematically varies the epistemic states of three parties relative to
 | **Knows Truth** | Player was present for the final state and knows the correct answer |
 | **Believes Truth** | Player left but their last belief happens to match reality |
 | **Believes False** | Player left and their last belief is incorrect |
-| **Unknown** | Player left before seeing anything relevant |
+| **Unknown** | A doesn't know whether this player's belief is true or false (player is out, and A cannot verify their belief accuracy) |
 
 The notation in the CSV uses:
 - **Knows X** (for Self): Player A knows the true answer

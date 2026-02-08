@@ -5,7 +5,7 @@
 Before working on scenario generation or ECT logic, **always read `EPISTEMIC_METRICS.md`** to understand the correct definitions of:
 - Epistemic Category Transitions (ECTs) - the 4 transition types
 - Situation Tracking Events
-- Key rule: **Entering a room does NOT give knowledge of container contents** - you must WITNESS a put/move event
+- Key rule: **When A is inside**, entering a room does NOT give knowledge of container contents - you must WITNESS a put/move event. **When A is outside**, ECT #2 is counted for others entering (A assumes they might know).
 
 ## Critical Architecture Rules
 
@@ -28,7 +28,14 @@ Use a single temp file that gets overwritten each iteration, not 78 separate fil
 
 ### Extra Field
 
-- `Extra=0`: Base scenario
-- `Extra=1`: More complex event sequences
-- CSV has 39 base scenarios x 2 (with/without Extra) = 78 total
+The Extra field controls scenario complexity. See `EXTRA_MAPPING.md` for full details.
+
+| Code | Name | Description |
+|------|------|-------------|
+| 0A | Minimal Events | No filler events, no ECT |
+| 0B | Event Load | Higher event load (+3 filler), no ECT |
+| 1A | Minimal ECT | Filler events for SIT parity, has ECT (legacy `Extra=0`) |
+| 1B | ECT Load | Extra events with ECT and more complexity (legacy `Extra=1`) |
+
+- CSV has 39 base scenarios × 4 Extra categories = 156 total (or 78 if using only 1A/1B)
 - Report performance broken down by Extra value
