@@ -33,19 +33,19 @@ def pre_generate(num_reps: int, seed_base: int, output_file: str):
     specs = read_specs_from_csv('ToM - scenarios.csv')
     specs = [s for s in specs if int(s['Id']) in MASTERY_SCENARIO_IDS]
 
-    # Reorder specs to match tom_test_new.py ordering: ID7_0A, ID7_0B, ID7_1A, ID7_1B, ID8_0A, ...
+    # Group specs by scenario ID so all Extra variants (0A, 0B, 1A, 1B) are
+    # generated together in a single call to generate_scenarios_from_tuples.
+    # This is REQUIRED for the adaptive filler logic to work: it needs both
+    # 1A and 1B in the same call to balance their SIT event counts.
     from collections import defaultdict
-    spec_by_id = defaultdict(dict)
+    specs_by_id = defaultdict(list)
     for spec in specs:
-        spec_by_id[spec['Id']][spec['Extra']] = spec
-    reordered_specs = []
-    for id_str in sorted(spec_by_id.keys(), key=int):
-        for extra_val in ['0A', '0B', '1A', '1B']:
-            if extra_val in spec_by_id[id_str]:
-                reordered_specs.append(spec_by_id[id_str][extra_val])
-    specs = reordered_specs
+        specs_by_id[spec['Id']].append(spec)
+    sorted_ids = sorted(specs_by_id.keys(), key=int)
 
-    print(f"Generating scenarios for {len(specs)} specs × {num_reps} reps = {len(specs) * num_reps} total")
+    total_specs = len(specs)
+    print(f"Generating scenarios for {total_specs} specs × {num_reps} reps = {total_specs * num_reps} total")
+    print(f"  ({len(sorted_ids)} scenario IDs, grouped for SIT balancing)")
     print(f"Base seed: {seed_base}")
 
     # Character types (matches tom_test_new.py)
@@ -68,13 +68,12 @@ def pre_generate(num_reps: int, seed_base: int, output_file: str):
         for rep in range(num_reps):
             rep_1indexed = rep + 1  # 1-indexed rep number for display and storage
             print(f"  Generating rep {rep_1indexed}/{num_reps}...")
-            for spec_idx, spec in enumerate(specs):
-                # Seed formula matches tom_test_new.py multi-rep logic:
-                # base_seed + rep_num * 1000 + spec_idx
-                # Note: tom_test_new.py uses 1-indexed rep_num in seed calculation
-                seed = seed_base + rep_1indexed * 1000 + spec_idx
+            for id_idx, scenario_id in enumerate(sorted_ids):
+                id_specs = specs_by_id[scenario_id]
+                # Seed: one per (ID, rep) combination
+                seed = seed_base + rep_1indexed * 1000 + id_idx
 
-                generate_scenarios_from_tuples([spec], tmp_path, seed=seed, chartypes=chartypes)
+                generate_scenarios_from_tuples(id_specs, tmp_path, seed=seed, chartypes=chartypes)
                 scenarios, chars, ctypes = load_scenarios(tmp_path)
 
                 # Tag each scenario with rep number (1-indexed to match user interface)
