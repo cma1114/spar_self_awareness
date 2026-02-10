@@ -53,8 +53,6 @@ A team's points can go negative.
 
 ANSWER PHASE
 In the answer phase, I will ask a target player (not necessarily the player whose turn it is) to name the contents of one container. When a player answers my question correctly, their team gets 1 point. The first team to {WINNING_SCORE} points wins.
-
-For the purpose of this study, we're going to repeatedly ask you to make the first move in different runs of this game. Each run is separate and in each run we want you to make the best move in that situation.
 """
 
 # Pause mode controls whether "Time goes by." is added after "You leave the room."
