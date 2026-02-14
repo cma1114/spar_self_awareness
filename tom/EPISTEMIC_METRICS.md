@@ -33,7 +33,7 @@ epistemic state has two axes:
 | 1 | Character **leaves** the room after seeing ≥1 event on target container | knowledge → belief/uncertainty | Certainty |
 | 2 | Character (who previously had belief) **sees** a put/move on target container | belief/uncertainty → knowledge | Certainty |
 | 3 | Target container contents **change while character is absent** (and character had a true belief) | true → false belief | Accuracy |
-| 4 | Target container contents **change while character is present**, after having gone through #3 | false → true belief | Accuracy |
+| 4 | Target container contents **change while character is absent**, after having gone through #3 | false → true belief | Accuracy |
 
 ### ECT #2 and Room Entry
 
@@ -54,10 +54,10 @@ not a tracking demand.
 
 ### Notes
 
-- A single event can trigger transitions on **both axes** simultaneously.
+- A single event cannot trigger transitions on **both axes** simultaneously.
   For example, a character who re-enters the room and sees a put that reverts
-  the target container contents triggers both #2 (belief → knowledge) and #4
-  (false → true), counting as 2 ECTs.
+  the target container contents triggers #2 (belief → knowledge) but not #4
+  (false → true), since the character *knows* the truth rather than believes it (true/false epistemic state parameters only apply to beliefs).
 - **Total ECT** for a scenario = sum across all characters, all four
   transition types.
 - ECTs are computed only for the **target (queried) container**, not all
@@ -67,12 +67,12 @@ not a tracking demand.
 
 The Extra field controls scenario complexity (see `EXTRA_MAPPING.md` for full details):
 
-| Code | Name | Has ECT? |
-|------|------|----------|
-| 0A | Minimal Events | No |
-| 0B | Event Load | No |
-| 1A | Minimal ECT | Yes (legacy `Extra=0`) |
-| 1B | ECT Load | Yes, more (legacy `Extra=1`) |
+| Code | Name |
+|------|------|
+| 0A | Minimal Events |
+| 0B | Event Load |
+| 1A | Minimal ECT |
+| 1B | ECT Load |
 
 For paired scenarios (1A vs 1B, or legacy Extra=0 vs Extra=1):
 - **Similar** situation tracking demands (visible event counts)
@@ -83,3 +83,14 @@ This is achieved by:
    non-target container + leave/enter pairs) to equalize visible event counts
 2. Extra=1's inserted events create epistemic divergence (characters leaving,
    missing changes, returning) that generate additional ECTs
+
+## Color Coding (for charts)
+
+```python
+EXTRA_CATEGORIES = {
+    '0A': {'name': 'Minimal Events', 'short': 'Min Events', 'color': '#9b59b6'},  # Purple
+    '0B': {'name': 'Event Load', 'short': 'Event Load', 'color': '#f39c12'},      # Orange
+    '1A': {'name': 'Minimal ECT', 'short': 'Min ECT', 'color': '#3498db'},        # Blue
+    '1B': {'name': 'ECT Load', 'short': 'ECT Load', 'color': '#e74c3c'},          # Red
+}
+```

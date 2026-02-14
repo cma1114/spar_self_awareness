@@ -40,7 +40,7 @@ In each scenario, one or more of the players start inside a room. The room has t
 - one or more players putting objects into containers
 - one or more players removing objects from containers
 Each container can hold at most one object. Players cannot see inside containers, but when a player is inside the room, they are aware of anything that happens in the room. When a player is outside the room they are unaware of anything that happens in the room, but do know if anyone enters or leaves the room. If an object is put or moved into a container while a player is outside the room, it will not be described to that player, but players leaving or entering the room will be described to that player.
-At the end of the scenario, I will reveal a question that I will ask in the answer phase.
+Ellipses ("...") indicate the passage of time. At the end of the scenario, I will reveal a question that I will ask in the answer phase.
 
 ACTION PHASE
 In the action phase, the player whose turn it is can take one action: Ask, Tell, or Pass.
@@ -53,8 +53,6 @@ A team's points can go negative.
 
 ANSWER PHASE
 In the answer phase, I will ask a target player (not necessarily the player whose turn it is) to name the contents of one container. When a player answers my question correctly, their team gets 1 point. The first team to {WINNING_SCORE} points wins.
-
-For the purpose of this study, we're going to repeatedly ask you to make the first move in different runs of this game. Each run is separate and in each run we want you to make the best move in that situation.
 """
 
 # Pause mode controls whether "Time goes by." is added after "You leave the room."

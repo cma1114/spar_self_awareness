@@ -597,7 +597,7 @@ class DelegateGameFromCapabilities(BaseGameClass):
                     current_history = base_history.copy()
                     llm_prompt = setup_text + "\n" + feedback_text + "\n" + q_text + "\n" + decision_suffix
                     gla = self.get_llm_answer_static_args
-                    resp, _, probs = self._get_llm_answer(
+                    resp, _, probs, _ = self._get_llm_answer(
                         options,
                         llm_prompt,
                         message_history=current_history,
@@ -725,7 +725,7 @@ class DelegateGameFromCapabilities(BaseGameClass):
                     max_tokens = gla["MAX_TOKENS"]
                     accept_any = gla["accept_any"]
 
-                resp, _, probs = self._get_llm_answer(
+                resp, _, probs, _ = self._get_llm_answer(
                     options,
                     llm_prompt,
                     message_history=current_history,
@@ -954,7 +954,7 @@ def real_main(SUBJECT_NAME, DATASET):
     N_TRIALS_PHASE2 = 500
     TEAMMATE_ACCURACY_PHASE1 = 0.5
     TEAMMATE_ACCURACY_PHASE2 = 0.5
-    TEMPERATURE = 0.0 if (no_logprobs(SUBJECT_NAME) or (DECISION_ONLY==False and DATASET not in ["GPQA", "SimpleMC", "TriviaMC", "PopMC_0_difficulty_filtered", "MMLU"])) else 1.0
+    TEMPERATURE = 0.0 if (no_logprobs(SUBJECT_NAME) or (DECISION_ONLY==False and DATASET not in ["GPQA", "SimpleMC", "TriviaMC", "PopMC_0_difficulty_filtered", "TriviaMC_difficulty_filtered", "MMLU"])) else 1.0
     SEED = 16#42
     resume_from = None
     succinct = True #False #True to output single token, false to see CoT
@@ -985,6 +985,8 @@ def real_main(SUBJECT_NAME, DATASET):
         CAP_FILE = f"./compiled_results_smc/{SUBJECT_NAME.replace('/','-')}_phase1_compiled.json"
     elif DATASET == "TriviaMC":
         CAP_FILE = f"./compiled_results_tmc/{SUBJECT_NAME.replace('/','-')}_phase1_compiled.json"
+    elif DATASET == "TriviaMC_difficulty_filtered":
+        CAP_FILE = f"./compiled_results_tdf/{SUBJECT_NAME.replace('/','-')}_phase1_compiled.json"
     elif DATASET == "MMLU":
         CAP_FILE = f"./compiled_results_mmlu/{SUBJECT_NAME.replace('/','-')}_phase1_compiled.json"
     elif DATASET == "PopMC_0_difficulty_filtered":
@@ -997,7 +999,7 @@ def real_main(SUBJECT_NAME, DATASET):
     # Restore the original, detailed setup explanation (integrates with Phase 1 history/summary)
     fbstr = "your and " if feedback_config['phase1_subject_feedback'] else ""
     phasestr = "both phases" if (feedback_config['phase1_subject_feedback'] and feedback_config.get('phase2_subject_feedback', False)) else "phase 1"
-    qtypestr = "short-answer" if (DATASET == "SimpleQA" or DATASET == "GPSA") else "multiple-choice" if (DATASET == "SimpleMC" or DATASET == "GPQA" or DATASET == "TriviaMC" or DATASET == "PopMC_0_difficulty_filtered" or DATASET == "MMLU") else "translation"
+    qtypestr = "short-answer" if (DATASET == "SimpleQA" or DATASET == "GPSA") else "multiple-choice" if (DATASET == "SimpleMC" or DATASET == "GPQA" or DATASET == "TriviaMC" or DATASET == "TriviaMC_difficulty_filtered" or DATASET == "PopMC_0_difficulty_filtered" or DATASET == "MMLU") else "translation"
     use_examples = False###True
     if DECISION_ONLY:
         initial_setup_explanation = f"""
@@ -1021,7 +1023,7 @@ def real_main(SUBJECT_NAME, DATASET):
         Question:
         What is the capital of France?
         """
-            if DATASET in ["GPQA", "SimpleMC", "TriviaMC", "PopMC_0_difficulty_filtered", "MMLU"]:
+            if DATASET in ["GPQA", "SimpleMC", "TriviaMC", "TriviaMC_difficulty_filtered", "PopMC_0_difficulty_filtered", "MMLU"]:
                 initial_setup_explanation += """----------
         A: New York
         B: London
@@ -1129,9 +1131,10 @@ def real_main(SUBJECT_NAME, DATASET):
     print("\nExecution completed.")
 
 
-def main():
-    DATASETS = ["SimpleMC"]#"MMLU"]#"GPQA"]#"TriviaMC"]#"GPSA"]#"SimpleQA"]
-    models = ["deepseek-v3.2_think"]#"ft:gpt-4.1-2025-04-14:personal:garupanese-41-f2e:Ca6CxgOU"]
+def main(): 
+
+    DATASETS = ["TriviaMC_difficulty_filtered"]#["SimpleMC"]#"MMLU"]#"GPQA"]#"TriviaMC"]#"GPSA"]#"SimpleQA"]
+    models = ["llama-3.3-70b-instruct"]#"ft:gpt-4.1-2025-04-14:personal:garupanese-41-f2e:Ca6CxgOU"]
     for model in models:
         for d in DATASETS:
             real_main(model, d)

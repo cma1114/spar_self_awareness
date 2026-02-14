@@ -1,21 +1,11 @@
 Model,Extra,Self: Knowledge vs Belief,Teammate: Knowledge vs Belief,Combined Uncertainty,True vs False Belief,Teammate vs Opponent,Strategic Lies
-anthropic-claude-opus-4.6_think,Overall,75.0,100.0,81.2,95.8,90.0,50.0
-anthropic-claude-opus-4.6_think,Minimal Events,75.0,100.0,100.0,100.0,90.0,50.0
-anthropic-claude-opus-4.6_think,Event Load,50.0,100.0,75.0,100.0,80.0,50.0
-anthropic-claude-opus-4.6_think,Minimal ECT,75.0,100.0,75.0,100.0,90.0,50.0
-anthropic-claude-opus-4.6_think,ECT Load,100.0,100.0,75.0,83.3,100.0,50.0
-deepseek-chat-v3.1,Overall,52.5,62.1,40.6,50.4,47.8,8.3
-deepseek-chat-v3.1,Minimal Events,55.0,66.7,52.5,51.7,42.0,1.7
-deepseek-chat-v3.1,Event Load,60.8,71.7,25.0,55.0,59.0,16.7
-deepseek-chat-v3.1,Minimal ECT,43.3,65.0,30.0,50.0,41.0,5.0
-deepseek-chat-v3.1,ECT Load,50.8,45.0,55.0,45.0,49.0,10.0
-deepseek-v3.2,Overall,4.4,45.8,0.0,45.8,29.2,0.4
-deepseek-v3.2,Minimal Events,2.5,45.0,0.0,45.0,28.0,0.0
-deepseek-v3.2,Event Load,2.5,50.0,0.0,50.0,31.0,0.0
-deepseek-v3.2,Minimal ECT,2.5,50.0,0.0,50.0,31.0,0.0
-deepseek-v3.2,ECT Load,10.0,38.3,0.0,38.3,27.0,1.7
-ALL MODELS,Overall,30.7,56.2,23.2,50.4,41.0,6.5
-ALL MODELS,Minimal Events,31.0,57.9,29.8,50.8,37.6,3.2
-ALL MODELS,Event Load,32.5,62.7,15.5,54.8,46.7,10.3
-ALL MODELS,Minimal ECT,25.4,59.5,17.9,52.4,38.6,4.8
-ALL MODELS,ECT Load,33.7,44.4,29.8,43.7,41.0,7.9
+anthropic-claude-opus-4.6_think,Overall,87.5,100.0,68.8,100.0,95.0,50.0
+anthropic-claude-opus-4.6_think,Minimal Events,100.0,100.0,75.0,100.0,100.0,50.0
+anthropic-claude-opus-4.6_think,Event Load,75.0,100.0,75.0,100.0,90.0,50.0
+anthropic-claude-opus-4.6_think,Minimal ECT,100.0,100.0,75.0,100.0,100.0,50.0
+anthropic-claude-opus-4.6_think,ECT Load,75.0,100.0,50.0,100.0,90.0,50.0
+ALL MODELS,Overall,87.5,100.0,68.8,100.0,95.0,50.0
+ALL MODELS,Minimal Events,100.0,100.0,75.0,100.0,100.0,50.0
+ALL MODELS,Event Load,75.0,100.0,75.0,100.0,90.0,50.0
+ALL MODELS,Minimal ECT,100.0,100.0,75.0,100.0,100.0,50.0
+ALL MODELS,ECT Load,75.0,100.0,50.0,100.0,90.0,50.0

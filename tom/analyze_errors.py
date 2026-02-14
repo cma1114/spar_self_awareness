@@ -19,11 +19,11 @@ from typing import Dict, List, Tuple, Optional
 
 # Models to filter for analysis (filters both aggregate and individual reports)
 # Set to None to analyze ALL models, or specify a list of model names
-INDIVIDUAL_MODEL_ANALYSIS: Optional[List[str]] = ['mistral-large-2512']
+INDIVIDUAL_MODEL_ANALYSIS: Optional[List[str]] = None
 
 # Filter by free_response mode (run-level setting, same for all records in a file)
 # Set to True for COT only, False for non-COT only, None for both
-FREE_RESPONSE_FILTER: Optional[bool] = True#None
+FREE_RESPONSE_FILTER: Optional[bool] = None
 
 # Allow incomplete runs (records not divisible by 39 scenarios)
 # Set to True to include partial data, False to require complete runs only
@@ -177,6 +177,265 @@ def normalize_action(action: str) -> str:
         return 'Tell'
     # Likely a direct answer (model passed and gave answer)
     return 'Pass'
+
+
+def parse_action_args(action_str: str) -> dict:
+    """Parse action string into components.
+
+    Returns: {
+        'type': 'Pass' | 'Ask' | 'Tell' | 'Unknown',
+        'player': str or None,
+        'container': str or None,
+        'contents': str or None (Tell only)
+    }
+    """
+    action_str = action_str.strip() if action_str else ''
+
+    # Pass
+    if re.match(r'^pass\b', action_str, re.IGNORECASE):
+        return {'type': 'Pass', 'player': None, 'container': None, 'contents': None}
+
+    # Ask(Player, container)
+    ask_match = re.match(r'ask\s*\(\s*([^,]+)\s*,\s*([^)]+)\s*\)', action_str, re.IGNORECASE)
+    if ask_match:
+        return {'type': 'Ask', 'player': ask_match.group(1).strip(),
+                'container': ask_match.group(2).strip(), 'contents': None}
+
+    # Tell(Player, container, contents)
+    tell_match = re.match(r'tell\s*\(\s*([^,]+)\s*,\s*([^,]+)\s*,\s*([^)]+)\s*\)', action_str, re.IGNORECASE)
+    if tell_match:
+        return {'type': 'Tell', 'player': tell_match.group(1).strip(),
+                'container': tell_match.group(2).strip(), 'contents': tell_match.group(3).strip()}
+
+    return {'type': 'Unknown', 'player': None, 'container': None, 'contents': None}
+
+
+def get_reference_args(record: dict) -> dict:
+    """Get 'correct' arguments for comparison, even when optimal is Pass.
+
+    For Pass optimal: derive what args WOULD be correct if Ask/Tell were appropriate
+    For Ask/Tell optimal: use the optimal action's args
+
+    Returns: {
+        'player_for_ask': 'B',           # Always teammate
+        'player_for_tell': answerer,     # The player who will answer
+        'container': extracted from question,
+        'contents': from answer_given or scenario
+    }
+    """
+    # Extract container from question (e.g., "what is in the bag" → "bag")
+    question = record.get('question', '')
+    container_match = re.search(r'what is in the (\w+)', question, re.IGNORECASE)
+    container = container_match.group(1) if container_match else None
+
+    # For Tell actions, we need the correct contents
+    # Use the answer_given field as it reflects the true contents
+    # But we should only use this if the answer was correct
+    contents = None
+    if record.get('answer_correct'):
+        contents = record.get('answer_given', '')
+
+    return {
+        'player_for_ask': 'B',  # A always asks teammate
+        'player_for_tell': record.get('answerer', ''),
+        'container': container,
+        'contents': contents
+    }
+
+
+def classify_error(record: dict) -> dict:
+    """Classify an error by type + argument correctness.
+
+    Uses pre-computed fields when available (told_player, ask_container_matches,
+    tell_truthful_about_question), falls back to parsing when not.
+
+    Returns: {
+        'is_action_type_error': bool,
+        'args_correct': bool,  # Even for action type errors, were args sensible?
+        'actual_type': str,
+        'expected_type': str,
+        'wrong_args': list,  # Which args were wrong
+    }
+    """
+    actual = parse_action_args(record.get('action', ''))
+    expected = parse_action_args(record.get('optimal_action', ''))
+    ref = get_reference_args(record)
+
+    is_type_error = actual['type'] != expected['type']
+
+    # Pass or Unknown - no args to compare
+    if actual['type'] not in ['Ask', 'Tell']:
+        return {
+            'is_action_type_error': is_type_error,
+            'args_correct': True,
+            'actual_type': actual['type'],
+            'expected_type': expected['type'],
+            'wrong_args': [],
+        }
+
+    wrong_args = []
+
+    if actual['type'] == 'Ask':
+        # Check player: should ask teammate B, not opponent
+        ref_player = ref['player_for_ask']
+        if actual['player'] and ref_player and actual['player'] != ref_player:
+            wrong_args.append('player')
+
+        # Check container: use pre-computed ask_container_matches if available
+        ask_matches = record.get('ask_container_matches', '')
+        if ask_matches == 'FALSE':
+            wrong_args.append('container')
+        elif ask_matches == '' and actual['container'] and ref['container']:
+            # Fallback to comparing parsed values
+            if actual['container'] != ref['container']:
+                wrong_args.append('container')
+
+    elif actual['type'] == 'Tell':
+        # Check player: use pre-computed told_player vs answerer if available
+        told_player = record.get('told_player', '')
+        ref_player = ref['player_for_tell']
+        if told_player and ref_player and told_player != ref_player:
+            wrong_args.append('player')
+        elif not told_player and actual['player'] and ref_player and actual['player'] != ref_player:
+            wrong_args.append('player')
+
+        # Check container: compare to question container
+        if actual['container'] and ref['container'] and actual['container'] != ref['container']:
+            wrong_args.append('container')
+
+        # Check contents: use pre-computed tell_truthful_about_question if available
+        tell_truthful = record.get('tell_truthful_about_question', '')
+        if tell_truthful == 'FALSE':
+            wrong_args.append('contents')
+        elif tell_truthful == '' and actual['contents'] and ref['contents']:
+            # Fallback to comparing parsed values
+            if actual['contents'] != ref['contents']:
+                wrong_args.append('contents')
+
+    return {
+        'is_action_type_error': is_type_error,
+        'args_correct': len(wrong_args) == 0,
+        'actual_type': actual['type'],
+        'expected_type': expected['type'],
+        'wrong_args': wrong_args,
+    }
+
+
+def analyze_error_types(records: List[dict]) -> dict:
+    """Analyze error types across records.
+
+    Returns dict with counts and percentages for:
+    - action_type_errors (total, by substitution pattern, with/without correct args)
+    - argument_errors (total, by arg type)
+    """
+    errors = [r for r in records if not r.get('was_optimal')]
+
+    results = {
+        'total_errors': len(errors),
+        'action_type_errors': 0,
+        'action_type_with_correct_args': 0,
+        'action_type_with_wrong_args': 0,
+        'argument_only_errors': 0,  # Correct action type but wrong args
+        'substitution_counts': defaultdict(lambda: {'total': 0, 'correct_args': 0, 'wrong_args': 0}),
+        'arg_error_counts': {'player': 0, 'container': 0, 'contents': 0},
+        'by_expected_type': defaultdict(lambda: {
+            'total': 0, 'action_type_errors': 0, 'argument_errors': 0,
+            'arg_error_counts': {'player': 0, 'container': 0, 'contents': 0}
+        }),
+    }
+
+    for r in errors:
+        classification = classify_error(r)
+        exp_type = classification['expected_type']
+        results['by_expected_type'][exp_type]['total'] += 1
+
+        if classification['is_action_type_error']:
+            results['action_type_errors'] += 1
+            results['by_expected_type'][exp_type]['action_type_errors'] += 1
+
+            key = f"{exp_type}→{classification['actual_type']}"
+            results['substitution_counts'][key]['total'] += 1
+
+            if classification['args_correct']:
+                results['action_type_with_correct_args'] += 1
+                results['substitution_counts'][key]['correct_args'] += 1
+            else:
+                results['action_type_with_wrong_args'] += 1
+                results['substitution_counts'][key]['wrong_args'] += 1
+                for arg in classification['wrong_args']:
+                    results['arg_error_counts'][arg] += 1
+        else:
+            # Correct action type but wrong args
+            results['argument_only_errors'] += 1
+            results['by_expected_type'][exp_type]['argument_errors'] += 1
+            for arg in classification['wrong_args']:
+                results['arg_error_counts'][arg] += 1
+                results['by_expected_type'][exp_type]['arg_error_counts'][arg] += 1
+
+    return results
+
+
+def format_error_type_analysis(results: dict, title: str = "ERROR TYPE ANALYSIS") -> List[str]:
+    """Format error type analysis results as lines for output."""
+    lines = [title, "=" * 80]
+
+    total = results['total_errors']
+    if total == 0:
+        lines.append("No errors to analyze.")
+        return lines
+
+    # Overall breakdown
+    lines.append(f"\nTotal errors: {total}")
+    lines.append("")
+
+    # Action type errors
+    ate = results['action_type_errors']
+    ate_pct = ate / total * 100 if total > 0 else 0
+    lines.append(f"Action Type Errors: {ate} ({ate_pct:.1f}%)")
+
+    if ate > 0:
+        correct = results['action_type_with_correct_args']
+        wrong = results['action_type_with_wrong_args']
+        lines.append(f"  With correct arguments: {correct} ({correct/ate*100:.1f}%)")
+        lines.append(f"  With wrong arguments: {wrong} ({wrong/ate*100:.1f}%)")
+
+    # By substitution
+    lines.append("\n  By substitution pattern:")
+    for key in sorted(results['substitution_counts'].keys()):
+        counts = results['substitution_counts'][key]
+        total_sub = counts['total']
+        correct = counts['correct_args']
+        wrong = counts['wrong_args']
+        if total_sub > 0:
+            lines.append(f"    {key}: {total_sub} (correct args: {correct}, wrong args: {wrong})")
+
+    # Argument-only errors (correct action type, wrong args)
+    aoe = results['argument_only_errors']
+    aoe_pct = aoe / total * 100 if total > 0 else 0
+    lines.append(f"\nArgument Errors Only (correct action type): {aoe} ({aoe_pct:.1f}%)")
+
+    # Argument error breakdown
+    if results['arg_error_counts']['player'] > 0 or results['arg_error_counts']['container'] > 0 or results['arg_error_counts']['contents'] > 0:
+        lines.append("\n  Argument error breakdown (across all error types):")
+        lines.append(f"    Wrong player: {results['arg_error_counts']['player']}")
+        lines.append(f"    Wrong container: {results['arg_error_counts']['container']}")
+        lines.append(f"    Wrong contents: {results['arg_error_counts']['contents']}")
+
+    # By expected action type
+    lines.append("\n  By expected action type:")
+    for exp_type in ['Pass', 'Ask', 'Tell']:
+        if exp_type in results['by_expected_type']:
+            data = results['by_expected_type'][exp_type]
+            if data['total'] > 0:
+                lines.append(f"    {exp_type} expected: {data['total']} errors")
+                lines.append(f"      Action type errors: {data['action_type_errors']}")
+                lines.append(f"      Argument errors: {data['argument_errors']}")
+                if data['argument_errors'] > 0:
+                    lines.append(f"        Player: {data['arg_error_counts']['player']}, "
+                                f"Container: {data['arg_error_counts']['container']}, "
+                                f"Contents: {data['arg_error_counts']['contents']}")
+
+    return lines
 
 
 def compute_action_confusion(records: List[dict], expected_action: str) -> Dict[str, int]:
@@ -560,6 +819,65 @@ def generate_analysis(model_records: Dict[str, List[dict]], all_records: List[di
             optimal = example.get('optimal_action')
             output_lines.append(f"  Scenario {sid}: {rate:5.1f}% | {optimal} | {ks}")
 
+    # Error Type Analysis
+    output_lines.append("\n" + "=" * 100)
+    output_lines.append("ERROR TYPE ANALYSIS")
+    output_lines.append("=" * 100)
+
+    # Aggregate analysis
+    aggregate_results = analyze_error_types(all_records)
+    output_lines.extend(format_error_type_analysis(aggregate_results, "\nAGGREGATE (All Models, All Scenarios)"))
+
+    # Per-model analysis
+    output_lines.append("\n" + "-" * 80)
+    output_lines.append("PER-MODEL ERROR TYPE BREAKDOWN")
+    output_lines.append("-" * 80)
+    for model_name in sorted(model_records.keys()):
+        model_results = analyze_error_types(model_records[model_name])
+        if model_results['total_errors'] > 0:
+            output_lines.append(f"\n{model_name}:")
+            total = model_results['total_errors']
+            ate = model_results['action_type_errors']
+            aoe = model_results['argument_only_errors']
+            ate_pct = ate / total * 100 if total > 0 else 0
+            aoe_pct = aoe / total * 100 if total > 0 else 0
+            output_lines.append(f"  Total errors: {total}")
+            output_lines.append(f"  Action type errors: {ate} ({ate_pct:.1f}%)")
+            output_lines.append(f"  Argument errors (correct action type): {aoe} ({aoe_pct:.1f}%)")
+            if ate > 0:
+                correct = model_results['action_type_with_correct_args']
+                wrong = model_results['action_type_with_wrong_args']
+                output_lines.append(f"    Type errors with correct args: {correct} ({correct/ate*100:.1f}%)")
+                output_lines.append(f"    Type errors with wrong args: {wrong} ({wrong/ate*100:.1f}%)")
+
+    # Per-scenario analysis (for scenarios with Ask/Tell optimal)
+    output_lines.append("\n" + "-" * 80)
+    output_lines.append("PER-SCENARIO ERROR TYPE BREAKDOWN (Ask/Tell scenarios)")
+    output_lines.append("-" * 80)
+
+    # Get unique scenario IDs
+    scenario_ids = sorted(set(r.get('scenario_id') for r in all_records if r.get('scenario_id')), key=lambda x: int(x) if x.isdigit() else 0)
+    for sid in scenario_ids:
+        scenario_records = [r for r in all_records if r.get('scenario_id') == sid]
+        if not scenario_records:
+            continue
+        # Get expected action
+        expected = scenario_records[0].get('optimal_action', '')
+        exp_type = normalize_action(expected)
+        # Only show Ask/Tell scenarios
+        if exp_type not in ['Ask', 'Tell']:
+            continue
+
+        results = analyze_error_types(scenario_records)
+        if results['total_errors'] > 0:
+            total = results['total_errors']
+            ate = results['action_type_errors']
+            aoe = results['argument_only_errors']
+            ate_pct = ate / total * 100 if total > 0 else 0
+            aoe_pct = aoe / total * 100 if total > 0 else 0
+            output_lines.append(f"  Scenario {sid} ({exp_type}): {total} errors - "
+                              f"type errors: {ate} ({ate_pct:.1f}%), arg errors: {aoe} ({aoe_pct:.1f}%)")
+
     # Print to console
     output_text = '\n'.join(output_lines)
     print(output_text)
@@ -619,140 +937,256 @@ def generate_scenario_matrix(model_records: Dict[str, List[dict]], logs_dir: str
     print(f"Models included: {len(models_with_data)} (excludes {len(model_records) - len(models_with_data)} old-format files without scenario_id)")
 
 
-def run_analysis_for_extra(files: List[str], logs_dir: str, extra: str, suffix: str):
-    """Run the full analysis pipeline for a specific extra value.
+def generate_error_type_matrix(model_records: Dict[str, List[dict]], logs_dir: str,
+                               output_filename: str = 'error_type_matrix.csv'):
+    """Generate CSV with error type breakdown by model × scenario.
 
-    Args:
-        files: List of game_data.json file paths
-        logs_dir: Directory to write output files
-        extra: Extra value to filter by ('0A', '0B', '1A', '1B') - see EXTRA_MAPPING.md
-        suffix: Suffix for output filenames (e.g., '_extra1a' for Extra=1A)
+    Each cell contains: total_errors|action_type_pct|arg_error_pct|args_wrong_on_type_error_pct
     """
-    extra_label = f"Extra={extra}"
-    print(f"\n{'='*80}")
-    print(f"RUNNING ANALYSIS FOR {extra_label}")
-    print(f"{'='*80}")
+    # Get Ask/Tell scenarios only (where argument analysis is relevant)
+    ask_tell_scenarios = set()
+    for records in model_records.values():
+        for r in records:
+            exp_type = normalize_action(r.get('optimal_action', ''))
+            if exp_type in ['Ask', 'Tell']:
+                ask_tell_scenarios.add(r.get('scenario_id'))
 
-    # Load and classify records by thinking vs non-thinking
-    thinking_model_records: Dict[str, List[dict]] = defaultdict(list)
-    nonthinking_model_records: Dict[str, List[dict]] = defaultdict(list)
-    thinking_all_records = []
-    nonthinking_all_records = []
+    all_scenario_ids = sorted(ask_tell_scenarios, key=lambda x: int(x) if x and x.isdigit() else 0)
+
+    models_with_data = sorted([
+        model for model, records in model_records.items()
+        if any(r.get('scenario_id') is not None for r in records)
+    ])
+
+    output_path = os.path.join(logs_dir, output_filename)
+    with open(output_path, 'w') as f:
+        # Header
+        f.write('scenario,expected_action,' + ','.join(
+            f'{m}_errors,{m}_type_err_pct,{m}_arg_err_pct,{m}_type_w_wrong_args_pct'
+            for m in models_with_data
+        ) + '\n')
+
+        for sid in all_scenario_ids:
+            # Get expected action type for this scenario
+            exp_type = None
+            for records in model_records.values():
+                for r in records:
+                    if r.get('scenario_id') == sid:
+                        exp_type = normalize_action(r.get('optimal_action', ''))
+                        break
+                if exp_type:
+                    break
+
+            row = [f'scenario_{sid}', exp_type or '?']
+
+            for model_name in models_with_data:
+                scenario_records = [r for r in model_records[model_name] if r.get('scenario_id') == sid]
+                results = analyze_error_types(scenario_records)
+
+                total = results['total_errors']
+                if total > 0:
+                    ate = results['action_type_errors']
+                    aoe = results['argument_only_errors']
+                    ate_wrong_args = results['action_type_with_wrong_args']
+                    ate_pct = ate / total * 100
+                    aoe_pct = aoe / total * 100
+                    wrong_on_type_pct = ate_wrong_args / ate * 100 if ate > 0 else 0
+                    row.extend([str(total), f'{ate_pct:.1f}', f'{aoe_pct:.1f}', f'{wrong_on_type_pct:.1f}'])
+                else:
+                    row.extend(['0', '', '', ''])
+
+            f.write(','.join(row) + '\n')
+
+    print(f"\nError type matrix saved to: {output_path}")
+
+
+def load_all_records(files: List[str]) -> Tuple[Dict[str, List[dict]], List[dict]]:
+    """Load all records from game data files.
+
+    Returns: (model_records dict, all_records list)
+    """
+    model_records: Dict[str, List[dict]] = defaultdict(list)
+    all_records = []
 
     for filepath in files:
         records = load_game_data(filepath)
 
-        # Skip if free_response doesn't match filter (check first record - it's run-level)
+        # Skip if free_response doesn't match filter
         if FREE_RESPONSE_FILTER is not None and records:
             file_fr = records[0].get('free_response')
             if file_fr != FREE_RESPONSE_FILTER:
                 continue
 
-        # Skip if model not in INDIVIDUAL_MODEL_ANALYSIS list (when specified)
+        # Skip if model not in filter list
         model_name = extract_model_name(filepath)
         if INDIVIDUAL_MODEL_ANALYSIS is not None:
-            # Check if model name matches any in the list (with or without _think suffix)
             base_name = model_name.replace('_think', '')
             if model_name not in INDIVIDUAL_MODEL_ANALYSIS and base_name not in INDIVIDUAL_MODEL_ANALYSIS:
                 continue
 
-        filtered = filter_player_a_by_extra(records, extra)
-        # Filter out records where model hit token limit before giving action
+        # Filter to player A with valid actions
+        filtered = [r for r in records if r.get('character') == 'A']
         filtered, _ = filter_valid_records(filtered)
 
-        if len(filtered) == 0:
+        if not filtered:
             continue
         if not ALLOW_INCOMPLETE_RUNS and len(filtered) % 39 != 0:
             continue
 
-        if is_thinking_model(model_name):
-            thinking_model_records[model_name].extend(filtered)
-            thinking_all_records.extend(filtered)
-        else:
-            nonthinking_model_records[model_name].extend(filtered)
-            nonthinking_all_records.extend(filtered)
+        model_records[model_name].extend(filtered)
+        all_records.extend(filtered)
 
-    print(f"Found {len(thinking_model_records)} thinking models, {len(nonthinking_model_records)} non-thinking models")
+    return model_records, all_records
 
-    # Find models that have BOTH thinking and non-thinking versions
-    thinking_base_names = {name.replace('_think', '') for name in thinking_model_records.keys()}
-    nonthinking_names = set(nonthinking_model_records.keys())
-    paired_base_names = thinking_base_names & nonthinking_names
-    print(f"Models with both thinking and non-thinking versions: {sorted(paired_base_names)}")
 
-    # Filter to only paired models
-    paired_thinking_records: Dict[str, List[dict]] = {}
-    paired_nonthinking_records: Dict[str, List[dict]] = {}
-    paired_thinking_all = []
-    paired_nonthinking_all = []
+def generate_error_type_summary_csv(model_records: Dict[str, List[dict]], logs_dir: str):
+    """Generate a single CSV with error type summary by model, extra, and scenario."""
+    output_path = os.path.join(logs_dir, 'error_type_summary.csv')
 
-    for base_name in paired_base_names:
-        think_name = f"{base_name}_think"
-        if think_name in thinking_model_records:
-            paired_thinking_records[think_name] = thinking_model_records[think_name]
-            paired_thinking_all.extend(thinking_model_records[think_name])
-        if base_name in nonthinking_model_records:
-            paired_nonthinking_records[base_name] = nonthinking_model_records[base_name]
-            paired_nonthinking_all.extend(nonthinking_model_records[base_name])
+    with open(output_path, 'w') as f:
+        f.write('model,extra,scenario,expected_action,total_errors,action_type_errors,action_type_pct,'
+                'with_correct_args,with_wrong_args,argument_only_errors,arg_only_pct\n')
 
-    # Combine all records
-    all_model_records: Dict[str, List[dict]] = defaultdict(list)
-    all_records = []
-    for model_name, records in thinking_model_records.items():
-        all_model_records[model_name].extend(records)
-        all_records.extend(records)
-    for model_name, records in nonthinking_model_records.items():
-        all_model_records[model_name].extend(records)
-        all_records.extend(records)
+        for model_name in sorted(model_records.keys()):
+            for extra in ['0A', '0B', '1A', '1B']:
+                extra_records = [r for r in model_records[model_name]
+                                if normalize_extra(r.get('extra')) == extra]
+                if not extra_records:
+                    continue
 
-    if not all_records:
-        print(f"No records found for {extra_label}, skipping")
-        return
+                # Get unique scenarios
+                scenario_ids = sorted(set(r.get('scenario_id') for r in extra_records if r.get('scenario_id')),
+                                      key=lambda x: int(x) if x and x.isdigit() else 0)
 
-    # Skip aggregate reports when filtering to specific models (would be duplicate)
-    if INDIVIDUAL_MODEL_ANALYSIS is None:
-        # Generate combined analysis (all models)
-        generate_analysis(
-            all_model_records,
-            all_records,
-            f"ALL MODELS ({extra_label})",
-            logs_dir,
-            f'error_analysis{suffix}.txt'
-        )
+                for sid in scenario_ids:
+                    scenario_records = [r for r in extra_records if r.get('scenario_id') == sid]
+                    if not scenario_records:
+                        continue
 
-        # Generate separate analyses for PAIRED thinking and non-thinking models only
-        generate_analysis(
-            paired_thinking_records,
-            paired_thinking_all,
-            f"THINKING MODELS (paired only, {extra_label})",
-            logs_dir,
-            f'error_analysis_thinking{suffix}.txt'
-        )
+                    exp_type = normalize_action(scenario_records[0].get('optimal_action', ''))
+                    results = analyze_error_types(scenario_records)
 
-        generate_analysis(
-            paired_nonthinking_records,
-            paired_nonthinking_all,
-            f"NON-THINKING MODELS (paired only, {extra_label})",
-            logs_dir,
-            f'error_analysis_nonthinking{suffix}.txt'
-        )
+                    total = results['total_errors']
+                    ate = results['action_type_errors']
+                    ate_correct = results['action_type_with_correct_args']
+                    ate_wrong = results['action_type_with_wrong_args']
+                    aoe = results['argument_only_errors']
 
-    # Generate per-model analysis (models already filtered by INDIVIDUAL_MODEL_ANALYSIS at file level)
-    for model_name in all_model_records.keys():
-        model_records_single = {model_name: all_model_records[model_name]}
-        model_all_records = all_model_records[model_name]
-        safe_name = model_name.replace('/', '_').replace(':', '_')
+                    ate_pct = ate / total * 100 if total > 0 else 0
+                    aoe_pct = aoe / total * 100 if total > 0 else 0
 
-        generate_analysis(
-            model_records_single,
-            model_all_records,
-            f"{model_name} ({extra_label})",
-            logs_dir,
-            f'error_analysis_{safe_name}{suffix}.txt'
-        )
+                    f.write(f'{model_name},{extra},{sid},{exp_type},{total},{ate},{ate_pct:.1f},'
+                            f'{ate_correct},{ate_wrong},{aoe},{aoe_pct:.1f}\n')
 
-    # Generate per-model, per-scenario matrix
-    generate_scenario_matrix(all_model_records, logs_dir, f'scenario_success_matrix{suffix}.csv')
+    print(f"Error type summary saved to: {output_path}")
+
+
+def generate_combined_analysis(model_records: Dict[str, List[dict]], all_records: List[dict],
+                               logs_dir: str):
+    """Generate a single combined error analysis file."""
+    output_lines = []
+    output_lines.append("=" * 100)
+    output_lines.append("ToM ERROR ANALYSIS")
+    output_lines.append("=" * 100)
+    output_lines.append(f"\nTotal records: {len(all_records)} from {len(model_records)} models")
+    output_lines.append(f"Models: {', '.join(sorted(model_records.keys()))}")
+
+    # ========== ERROR TYPE ANALYSIS (the new stuff) ==========
+    output_lines.append("\n" + "=" * 100)
+    output_lines.append("ERROR TYPE ANALYSIS")
+    output_lines.append("=" * 100)
+
+    # Aggregate across all data
+    aggregate_results = analyze_error_types(all_records)
+    output_lines.extend(format_error_type_analysis(aggregate_results, "\nAGGREGATE (All Models, All Extra Categories)"))
+
+    # By Extra category
+    output_lines.append("\n" + "-" * 80)
+    output_lines.append("BY EXTRA CATEGORY")
+    output_lines.append("-" * 80)
+    for extra in ['0A', '0B', '1A', '1B']:
+        extra_records = [r for r in all_records if normalize_extra(r.get('extra')) == extra]
+        if extra_records:
+            results = analyze_error_types(extra_records)
+            total = results['total_errors']
+            if total > 0:
+                ate = results['action_type_errors']
+                aoe = results['argument_only_errors']
+                ate_correct = results['action_type_with_correct_args']
+                output_lines.append(f"\n{extra}: {total} errors")
+                output_lines.append(f"  Action type errors: {ate} ({ate/total*100:.1f}%) - "
+                                  f"correct args: {ate_correct}, wrong args: {results['action_type_with_wrong_args']}")
+                output_lines.append(f"  Argument only errors: {aoe} ({aoe/total*100:.1f}%)")
+
+    # By Model
+    output_lines.append("\n" + "-" * 80)
+    output_lines.append("BY MODEL")
+    output_lines.append("-" * 80)
+    for model_name in sorted(model_records.keys()):
+        results = analyze_error_types(model_records[model_name])
+        total = results['total_errors']
+        if total > 0:
+            ate = results['action_type_errors']
+            aoe = results['argument_only_errors']
+            ate_correct = results['action_type_with_correct_args']
+            output_lines.append(f"\n{model_name}: {total} errors")
+            output_lines.append(f"  Action type errors: {ate} ({ate/total*100:.1f}%) - "
+                              f"correct args: {ate_correct}, wrong args: {results['action_type_with_wrong_args']}")
+            output_lines.append(f"  Argument only errors: {aoe} ({aoe/total*100:.1f}%)")
+            # Substitution patterns
+            if results['substitution_counts']:
+                output_lines.append("  Substitutions:")
+                for key, counts in sorted(results['substitution_counts'].items()):
+                    output_lines.append(f"    {key}: {counts['total']}")
+
+    # By Scenario (Ask/Tell only)
+    output_lines.append("\n" + "-" * 80)
+    output_lines.append("BY SCENARIO (Ask/Tell scenarios only)")
+    output_lines.append("-" * 80)
+    scenario_ids = sorted(set(r.get('scenario_id') for r in all_records if r.get('scenario_id')),
+                          key=lambda x: int(x) if x and x.isdigit() else 0)
+    for sid in scenario_ids:
+        scenario_records = [r for r in all_records if r.get('scenario_id') == sid]
+        if not scenario_records:
+            continue
+        exp_type = normalize_action(scenario_records[0].get('optimal_action', ''))
+        if exp_type not in ['Ask', 'Tell']:
+            continue
+
+        results = analyze_error_types(scenario_records)
+        total = results['total_errors']
+        if total > 0:
+            ate = results['action_type_errors']
+            aoe = results['argument_only_errors']
+            output_lines.append(f"  Scenario {sid} ({exp_type}): {total} errors - "
+                              f"type: {ate} ({ate/total*100:.0f}%), args: {aoe} ({aoe/total*100:.0f}%)")
+
+    # ========== MASTERY CATEGORY ANALYSIS (existing) ==========
+    output_lines.append("\n" + "=" * 100)
+    output_lines.append("MASTERY CATEGORY ANALYSIS")
+    output_lines.append("=" * 100)
+
+    for cat_key, category in TOM_MASTERY_CATEGORIES.items():
+        output_lines.append(f"\n--- {category['name']} ---")
+        output_lines.append(f"Description: {category['description']}")
+
+        for comp in category['components']:
+            analysis = analyze_category_component(all_records, comp, category['name'])
+            if not analysis:
+                continue
+
+            scenarios_str = ', '.join(str(s) for s in analysis['scenarios'])
+            output_lines.append(f"\n  Scenarios [{scenarios_str}] → {analysis['expected_action']}")
+            output_lines.append(f"  Success: {analysis['n_success']}/{analysis['n_total']} = {analysis['success_rate']*100:.1f}%")
+
+            if analysis['n_failure'] > 0:
+                output_lines.append(f"  Failures chose: {dict(analysis['failure_actions'])}")
+
+    # Save to single file
+    output_path = os.path.join(logs_dir, 'error_analysis.txt')
+    with open(output_path, 'w') as f:
+        f.write('\n'.join(output_lines))
+    print(f"\nAnalysis saved to: {output_path}")
 
 
 def main():
@@ -766,12 +1200,24 @@ def main():
     # Find all game data files
     pattern = os.path.join(logs_dir, '*_game_data.json')
     files = glob.glob(pattern)
+    print(f"Found {len(files)} game data files")
 
-    # Run analysis for all Extra values (see EXTRA_MAPPING.md)
-    run_analysis_for_extra(files, logs_dir, extra='0A', suffix='_extra0a')
-    run_analysis_for_extra(files, logs_dir, extra='0B', suffix='_extra0b')
-    run_analysis_for_extra(files, logs_dir, extra='1A', suffix='_extra1a')
-    run_analysis_for_extra(files, logs_dir, extra='1B', suffix='_extra1b')
+    # Load all records
+    model_records, all_records = load_all_records(files)
+    print(f"Loaded {len(all_records)} records from {len(model_records)} models")
+    print(f"Models: {', '.join(sorted(model_records.keys()))}")
+
+    if not all_records:
+        print("No records found")
+        return
+
+    # Generate single combined analysis file
+    generate_combined_analysis(model_records, all_records, logs_dir)
+
+    # Generate single CSV summary
+    generate_error_type_summary_csv(model_records, logs_dir)
+
+    print("\nDone!")
 
 
 if __name__ == '__main__':

@@ -328,7 +328,7 @@ class BaseGameClass:
                         if system_msg != "": formatted_messages.append({"role": "system", "content": system_msg})
                         if self.provider == "OpenAI" and len (formatted_messages) > 0 and self.subject_name != "deepseek-chat" and "llama" not in self.subject_name: formatted_messages[-1]["content"] = [{"type": "text", "text": formatted_messages[-1]["content"], "cache_control": {"type": "ephemeral"}}]
                         formatted_messages.append(user_msg)
-                    if 'base' in model_name or 'llama' in model_name:
+                    if 'base' in model_name:
                         prompt = f"User: {formatted_messages[0]['content']}\n"
                         if len (formatted_messages) > 1: prompt += f"{formatted_messages[1]['content']}\n"
                         prompt += "Assistant: "
@@ -405,7 +405,7 @@ class BaseGameClass:
                             'provider': {
                                 'order': ['Chutes'] if 'v3.1' in self.subject_name else [],
                                 'allow_fallbacks': True,
-                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'llama' in self.subject_name or 'gemini' in self.subject_name or 'hermes' in self.subject_name or 'mistral' in self.subject_name else True,
+                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'gemini' in self.subject_name or 'hermes' in self.subject_name or 'mistral' in self.subject_name else True,
 #                                'quantizations': ['fp8'],
                             },
                         }} if self.provider == "OpenRouter" else {}

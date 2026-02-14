@@ -1,0 +1,169 @@
+
+--- Analyzing llama-3.3-70b-instruct (Feedback_False, Non_Redacted, NoSubjAccOverride, NoSubjGameOverride, NotRandomized, NoHistory, Filtered, decisionOnly, 1 game files) ---
+              Game files for analysis: ['./delegate_game_logs/llama-3.3-70b-instruct_TriviaMC_difficulty_filtered_50_500_nohistory_summary_decisionOnly_team0.9_temp1.0_1770688904_game_data.json']
+
+Teammate accuracy phase 1: 0.9000
+Delegation rate: 0.2400 (n=450)
+Team-acc: 0.7066666666666667
+Team-acc lift = -0.193 [-0.237, -0.153]
+Max possible team accuracy: 0.9514
+Optimal delegation rate: 0.3889
+Best possible self-accuracy: 0.9841
+Agreement rate: 0.6200 [0.5743, 0.6637]
+Weighted agreement rate: 0.7504
+Norm-weighted agreement rate: 0.3930
+Underconfidence rate: 0.1156
+Overconfidence rate: 0.2644
+Weighted underconfidence rate: 0.9884
+Weighted overconfidence rate: 0.7620
+Unweighted confidence: 0.3918 [0.2541, 0.5314]
+Weighted confidence: 0.9074 [0.8760, 0.9342]
+Introspection score = 0.149 [0.057, 0.244], p=0
+FP = 52
+FN = 119
+Probability of delegating when s_i_capability is 0: 0.3200
+Probability of delegating when s_i_capability is 1: 0.1891
+Phase 1 accuracy: 0.6111 (n=450)
+Phase 2 self-accuracy: 0.6520 (n=342)
+Self-acc lift = 0.041 [-0.012, 0.088], p=0.1341
+Normed Self-acc lift = 0.105 [-0.030, 0.226]
+Balanced Accuracy Effect Size = 0.303 [0.113, 0.492]
+Full AUC = 0.605 [0.545, 0.662]
+Calibration AUC = 0.802 [0.761, 0.840]
+Calibration Entropy AUC = 0.825 [0.786, 0.862]
+Game-Test Change Rate: 1.0000
+Game-Test Good Change Rate: 0.6520
+Game-Test Bad Change Rate: 0.0000
+Game-Test Bad-to-Bad Change Rate: 0.3480
+Number of answer changes without correctness flip: 223
+   s_i_capability  subject_correct  answer_changed           q_id
+0               1             True            True  triviamc_1583
+1               1             True            True   triviamc_851
+2               1             True            True  triviamc_2746
+3               1             True            True   triviamc_463
+7               1             True            True   triviamc_849
+P(good | change): 0.6520
+P(bad | change): 0.0000
+Game-Test Change on Incor Rate: 1.0
+Game-Test Change on Cor Rate: 1.0
+Capent-Gament corr: nan [nan, nan], p=nan
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  450
+Model:                          Logit   Df Residuals:                      448
+Method:                           MLE   Df Model:                            1
+Date:                Mon, 09 Feb 2026   Pseudo R-squ.:                 0.01990
+Time:                        18:08:43   Log-Likelihood:                -243.05
+converged:                       True   LL-Null:                       -247.99
+Covariance Type:            nonrobust   LLR p-value:                  0.001679
+==================================================================================
+                     coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+Intercept         -0.7538      0.162     -4.651      0.000      -1.071      -0.436
+s_i_capability    -0.7022      0.224     -3.141      0.002      -1.140      -0.264
+==================================================================================
+
+Correlation between Other's Prob and Self Prob: 0.3356743942269676
+
+Correlation between p_i_capability and Self Prob: -0.006721091518817654
+
+Correlation between p_i_capability and Other Prob: 0.014991708616715593
+
+Correlation between capabilities_entropy and Self Prob: -0.0126342499776926
+
+Correlation between capabilities_entropy and Other Prob: -0.05186816771453673
+
+                  Model 4 (No Interactions): delegate_choice ~ s_i_capability + C(topic) + C(answer_type) + q_length
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  450
+Model:                          Logit   Df Residuals:                      447
+Method:                           MLE   Df Model:                            2
+Date:                Mon, 09 Feb 2026   Pseudo R-squ.:                 0.03203
+Time:                        18:08:43   Log-Likelihood:                -240.04
+converged:                       True   LL-Null:                       -247.99
+Covariance Type:            nonrobust   LLR p-value:                 0.0003555
+==================================================================================
+                     coef    std err          z      P>|z|      [0.025      0.975]
+----------------------------------------------------------------------------------
+Intercept         -4.4659      1.542     -2.896      0.004      -7.489      -1.443
+s_i_capability    -0.7400      0.226     -3.273      0.001      -1.183      -0.297
+q_length           0.8900      0.367      2.428      0.015       0.172       1.608
+==================================================================================
+Partial correlation on decision with Correctness, no controls: 0.1494 [0.0578, 0.2386]
+Partial correlation on decision with Correctness, surface controls: 0.1551 [0.0635, 0.2442]
+Partial correlation on decision with Correctness for same answer, surface controls: nan [nan, nan]
+Baseline correctness coefficient with Stated Other control: 0.0543 [-0.5871, 0.6957], z=0.1659, stderr=0.3273
+                    Could not fit Logit on decision with correctness and Stated Other control: Singular matrix
+Partial correlation on decision with surface controls, controlling for baseline correctness: 0.1146 [0.0318, 0.1973]
+Partial correlation on decision with Stated Other control, controlling for baseline correctness: 0.2646 [0.1683, 0.3459]
+Partial correlation on decision with all controls, controlling for baseline correctness: 0.2708 [0.1763, 0.3633]
+Partial correlation on decision with Capent, no controls: 0.1046 [0.0123, 0.1952]
+Partial correlation on decision with Capent, surface controls: 0.0983 [0.0058, 0.1891]
+Partial correlation on decision with Capent, Stated Other control: -0.0605 [-0.1966, 0.0778]
+Partial correlation on decision with Capent, all controls: -0.0645 [-0.2008, 0.0742]
+Partial correlation on decision with Capent, same answer, surface controls: nan [nan, nan]
+Partial correlation on decision with Capent, same answer, all controls: nan [nan, nan]
+Partial correlation on decision with surface controls: 0.1005 [0.0170, 0.1834]
+Partial correlation on decision with Stated Other control: 0.2682 [0.1785, 0.3476]
+Partial correlation on decision with all controls: 0.2748 [0.1845, 0.3646]
+Variance partitioning: Entropy unique R2=0.0039 [0.0000, 0.0335]
+Variance partitioning: Surface unique R2=0.0754 [0.0316, 0.1396]
+Variance partitioning: Shared R2=-0.0019 [-0.0093, 0.0052]
+Variance partitioning: Unexplained R2=0.9226 [0.8520, 0.9634]
+Brier Resolution (ranking): 0.0347 [0.0277, 0.0462]
+Brier Reliability (reality): 0.1894 [0.1542, 0.2345]
+Brier: 0.3552 [0.3172, 0.3968]
+ECE: 0.3626 [0.3168, 0.4047]
+df_model[p_i_capability] mean: 0.9690, std: 0.0888
+Partial correlation (entropy → game), all controls: -0.107
+Partial correlation (entropy → stated), all controls: -0.003
+Decision Prob minus Stated Prob entropy correlation, all controls: -0.103 [-0.248, 0.037]
+Steiger's test: z = -1.15, p = 0.252
+Partial correlation (entropy → game): -0.084
+Partial correlation (entropy → stated): 0.013
+Decision Prob minus Stated Prob entropy correlation, no controls: -0.097 [-0.228, 0.035]
+Steiger's test: z = -1.13, p = 0.259
+Partial correlation (entropy → stated): 0.013
+Partial correlation (entropy → other): 0.052
+Stated Prob minus Other Prob entropy correlation, no controls: -0.039 [-0.152, 0.096]
+Steiger's test: z = -0.48, p = 0.629
+Influence of surface confounds on game decisions: R² = 0.079 [0.034, 0.142]
+Influence of surface confounds on stated confidence: R² = 0.113 [0.080, 0.168]
+Influence of surface confounds on game-stated: -0.034 [-0.100, 0.028]
+Partial correlation on decision prob with Capent, no controls: 0.0853 [-0.0072, 0.1763]
+Partial correlation on decision prob with Capent, surface controls: 0.0787 [-0.0139, 0.1700]
+Partial correlation on decision prob with Capent, Stated Other control: -0.1030 [-0.2373, 0.0352]
+Partial correlation on decision prob with Capent, all controls: -0.1066 [-0.2411, 0.0319]
+Linres on decision prob with Capent, surface controls: 0.0982 [-0.0174, 0.2138], z=1.6691, stderr=0.0588
+Linres on decision prob with Capent, no controls: 0.1068 [-0.0091, 0.2226], z=1.8112, stderr=0.0589
+Linres on decision prob with Capent, Stated Other control: -0.1153 [-0.2703, 0.0396], z=-1.4676, stderr=0.0786
+Linres on decision prob with Capent, all controls: -0.1195 [-0.2749, 0.0359], z=-1.5168, stderr=0.0788
+Linres on decision prob with Capent, all controls, standardized: -1.5168 [-3.4887, 0.4551]
+
+                  Model 7: delegate_choice ~ C(topic) + C(answer_type) + q_length
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:        delegate_choice   No. Observations:                  450
+Model:                          Logit   Df Residuals:                      448
+Method:                           MLE   Df Model:                            1
+Date:                Mon, 09 Feb 2026   Pseudo R-squ.:                 0.01035
+Time:                        18:08:48   Log-Likelihood:                -245.42
+converged:                       True   LL-Null:                       -247.99
+Covariance Type:            nonrobust   LLR p-value:                   0.02350
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept     -4.5272      1.512     -2.995      0.003      -7.490      -1.564
+q_length       0.8045      0.358      2.249      0.025       0.103       1.506
+==============================================================================
+Misused predictors: ['q_length']
+
+
+not more than expected by chance (k=1/1, expected=1.0, p=1.0000)
+Exact binomial test against 0 chance rate: BinomTestResult(k=1, n=1, alternative='greater', statistic=1.0, pvalue=0.0)
+
+Potential misuses tested: 1; Significant after FDR correction: 1; Significant misused predictors: 
+                  predictor  beta_correct  beta_delegate  p_one_sided_delegate_gt0  p_adjusted
+model_idx row_idx                                                                             
+0         0        q_length      0.089911       0.251299                  0.012261    0.012261

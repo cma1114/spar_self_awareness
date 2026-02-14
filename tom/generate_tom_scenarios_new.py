@@ -64,6 +64,66 @@ def _choose_different_actor(present: set, last_actor: Optional[str], rng: random
     return rng.choice(candidates) if candidates else rng.choice(present_list)
 
 
+def _get_containers_used_after(scenario: 'Scenario', insert_idx: int) -> Set[str]:
+    """Return set of containers used by events at or after insert_idx.
+
+    Used to determine which containers are safe to use for filler/extra events
+    without conflicting with later base scenario events.
+    """
+    containers = set()
+    for event in scenario.events[insert_idx:]:
+        if event.event_type == 'put':
+            containers.add(event.container)
+        elif event.event_type == 'move':
+            containers.add(event.to_container)
+            containers.add(event.from_container)
+    return containers
+
+
+@dataclass
+class ScenarioStateAtLeave:
+    """State snapshot when a character leaves the room."""
+    contents: Dict[str, Optional[str]]
+    present: Set[str]  # Characters present AFTER the leave (leaver removed)
+    leave_idx: Optional[int]  # Index of the leave event, or None if character never left
+
+
+def _find_leave_and_track_state(scenario: 'Scenario', character: str) -> ScenarioStateAtLeave:
+    """Find when a character leaves and track container/presence state at that point.
+
+    Tracks container contents and character presence through events until the
+    specified character leaves. Returns the state at the moment of leaving.
+
+    Args:
+        scenario: The scenario to analyze
+        character: The character whose leave event to find
+
+    Returns:
+        ScenarioStateAtLeave with:
+        - contents: container contents when character left
+        - present: characters present AFTER the leave (leaver removed)
+        - leave_idx: index of the leave event, or None if never left
+    """
+    contents = {c: None for c in CONTAINERS_GEN}
+    present = set(scenario.present_initially)
+
+    for idx, event in enumerate(scenario.events):
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+        elif event.event_type == 'move':
+            contents[event.to_container] = event.item
+            contents[event.from_container] = None
+        elif event.event_type == 'leave':
+            if event.character == character:
+                present.discard(character)
+                return ScenarioStateAtLeave(contents, present, idx)
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+
+    return ScenarioStateAtLeave(contents, present, None)
+
+
 def _get_teammates_to_exclude_for_target_moves(scenario: 'Scenario', up_to_idx: int) -> Set[str]:
     """
     Find blue team members who should be excluded from doing moves on the target container.
@@ -132,6 +192,7 @@ class Scenario_Builder:
         self.include: Set[str] = set()      # who must be present at end
         self.present_initially: Set[str] = set()  # who must be present initially
         self.must_leave_together: Tuple[Optional[str], Optional[str]] = (None, None)  # (char1, char2) must be in same group
+        self.leave_before_target_reenter: Set[str] = set()  # who must leave before target put and re-enter after (for filler)
         # Character references (set in plan_availability)
         self.self_char: Optional[str] = None
         self.opponent1: Optional[str] = None
@@ -191,11 +252,19 @@ class Scenario_Builder:
             elif spec['KS_Teammate'] == EpistemicState.KNOWS_TRUTH and spec['KS_Opponent'] == EpistemicState.UNKNOWN:
                 self.include.add(teammate)
                 if spec['Answerer'] == 'Self':
-                    self.exclude_unknown.add(opponent1)
-                    self.exclude_unknown.add(opponent2)
+                    # One opponent leaves (UNKNOWN), the other stays for final put
+                    # (B is excluded from target moves because A left with belief)
+                    excluded_opp = self.rng.choice([opponent1, opponent2])
+                    self.exclude_flexible_unknown.add(excluded_opp)
+                    self.leave_before_target_reenter.add(excluded_opp)  # For filler availability
+                    staying_opp = opponent1 if excluded_opp == opponent2 else opponent2
+                    # staying_opp leaves after final put - still UNKNOWN from A's view
+                    # (A left earlier, doesn't know what staying_opp saw)
+                    self.exclude_true.add(staying_opp)
                 elif spec.get('Answerer') == 'Opponent':
                     # ensure the chosen opponent (the one who must answer) is excluded (UNKNOWN)
-                    self.exclude_unknown.add(answerer)
+                    self.exclude_flexible_unknown.add(answerer)
+                    self.leave_before_target_reenter.add(answerer)  # For filler availability
                     # Include non-answerer opponent so someone can do Extra=1B events
                     # (B is excluded from target moves because A left with belief)
                     non_answerer_opp = opponent1 if answerer == opponent2 else opponent2
@@ -204,7 +273,8 @@ class Scenario_Builder:
                     # One opponent leaves (UNKNOWN), the other stays for Extra=1B events
                     # (B is excluded from target moves because A left with belief)
                     excluded_opp = self.rng.choice([opponent1, opponent2])
-                    self.exclude_unknown.add(excluded_opp)
+                    self.exclude_flexible_unknown.add(excluded_opp)
+                    self.leave_before_target_reenter.add(excluded_opp)  # For filler availability
                     staying_opp = opponent1 if excluded_opp == opponent2 else opponent2
                     self.include.add(staying_opp)
 
@@ -223,6 +293,7 @@ class Scenario_Builder:
             elif spec['KS_Teammate'] == EpistemicState.UNKNOWN and spec['KS_Opponent'] == EpistemicState.UNKNOWN:
                 # Teammate can leave at flexible times (before puts OR after intermediate) - all result in UNKNOWN from A's perspective
                 self.exclude_flexible_unknown.add(teammate)
+                self.leave_before_target_reenter.add(teammate)  # For filler availability
                 # Ensure one opponent stays, one leaves (UNKNOWN)
                 if spec.get('Answerer') == 'Opponent':
                     leave_opponent = answerer
@@ -231,7 +302,8 @@ class Scenario_Builder:
                     stay_opponent = self.rng.choice([opponent1, opponent2])
                     leave_opponent = opponent2 if stay_opponent == opponent1 else opponent1
                 self.include.add(stay_opponent)  # This opponent must stay until end
-                self.exclude_unknown.add(leave_opponent)  # This opponent must leave (UNKNOWN)
+                self.exclude_flexible_unknown.add(leave_opponent)  # This opponent can leave at flexible times (UNKNOWN)
+                self.leave_before_target_reenter.add(leave_opponent)  # For filler availability
 
         else: # spec['KS_Self'] == EpistemicState.KNOWS_X:
             self.include.add(actor) 
@@ -365,7 +437,12 @@ class Scenario_Builder:
 
         # Characters with flexible UNKNOWN timing - 3 valid cases
         # All result in UNKNOWN from A's perspective since A doesn't know the final reality
+        BLUE = {'A', 'B'}
         for who in sorted(self.exclude_flexible_unknown):
+            # Characters in leave_before_target_reenter are forced to Case 1 (for filler availability)
+            if who in self.leave_before_target_reenter:
+                leave_immediately_group.add(who)
+                continue
             r = self.rng.random()
             if r < 0.33:
                 # Case 1: Leave before any puts
@@ -374,8 +451,14 @@ class Scenario_Builder:
                 # Case 2: Leave after intermediate put, before A leaves
                 self.exclude_false.add(who)
             else:
-                # Case 3: Leave after A leaves, before final put
-                self.exclude_after_self.add(who)
+                # Case 3: Leave after A
+                if who in BLUE:
+                    # Teammate: leave before final put (safe for belief integrity)
+                    self.exclude_after_self.add(who)
+                else:
+                    # Opponent: leave after final put (can do final put without violation)
+                    # From A's view, opponent is still UNKNOWN (A doesn't know what they saw)
+                    self.exclude_true.add(who)
 
         # Self with "Believes X" must see a put before leaving to form their belief
         # Move them out of leave_immediately_group to exclude_false
@@ -465,6 +548,13 @@ class Scenario_Builder:
         if len(self.exclude_false) > 0:
             old_item = _pick_other_item(self.rng, self.queried_item)
             self.put(self.queried_container, old_item, exclude=None)
+            # Re-enter characters who left before target put (for filler availability)
+            # They didn't observe the target put, so they're available for leave/enter filler
+            for who in sorted(self.leave_before_target_reenter):
+                if who not in self.present:  # Only re-enter if they left
+                    self.events.append(Event('enter', who))
+                    self.present.add(who)
+                    self.used.add(who)
             for who in order_self_first(self.exclude_false):
                 self.leave(who)
 
@@ -717,6 +807,8 @@ def _validate_invariants(s: 'Scenario') -> None:
                 raise ValueError(f"Event {idx}: {e.character} acted after leaving.")
             if contents[e.from_container] is None:
                 raise ValueError(f"Event {idx}: move from empty {e.from_container}.")
+            if contents[e.to_container] is not None:
+                raise ValueError(f"Event {idx}: move to non-empty {e.to_container} (contains {contents[e.to_container]}).")
             contents[e.to_container] = e.item
             contents[e.from_container] = None
         elif e.event_type == 'enter':
@@ -728,7 +820,7 @@ def _validate_invariants(s: 'Scenario') -> None:
             raise ValueError(f"Event {idx}: 'remove' event found - these should be eliminated. Use moves instead.")
 
 
-def _validate_teammate_belief_integrity(s: 'Scenario') -> None:
+def _validate_teammate_belief_integrity(s: 'Scenario') -> int:
     """
     Ensure blue team members (A/B) don't invalidate each other's beliefs about the target.
 
@@ -737,9 +829,12 @@ def _validate_teammate_belief_integrity(s: 'Scenario') -> None:
 
     Red team (C/D) opponents CAN invalidate each other's beliefs - this constraint
     only applies to the player's team (A/B) since that's what we're testing.
+
+    Returns: Number of violations found.
     """
     target = s.question_container
     BLUE = {'A', 'B'}
+    violation_count = 0
 
     def is_blue_team(char: str) -> bool:
         return char in BLUE
@@ -805,13 +900,9 @@ def _validate_teammate_belief_integrity(s: 'Scenario') -> None:
                         if is_blue_team(departed_char):
                             # Check if the action invalidated the belief
                             if believed_contents != target_contents:
-                                # Log warning instead of failing - some specs have inherent conflicts
-                                import warnings
-                                warnings.warn(
-                                    f"Teammate belief violation at event {idx}: "
-                                    f"{actor} changed {target} to '{target_contents}', "
-                                    f"invalidating teammate {departed_char}'s belief ('{believed_contents}')"
-                                )
+                                violation_count += 1
+
+    return violation_count
 
 
 def _get_answerer_state(spec: dict) -> EpistemicState:
@@ -989,7 +1080,8 @@ def insert_extra_events(scenario: Scenario, answerer: str, player: str,
     scenario.events.insert(enter_insert_pos + 1, Event('enter', answerer))
 
 
-def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: random.Random, spec: dict = None) -> None:
+def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: random.Random, spec: dict = None,
+                                        skip_optional_events: bool = False) -> None:
     """
     Insert extra events for KNOWS_TRUTH answerers using the "revelation" pattern:
     1. Answerer sees initial put (already in events)
@@ -1046,22 +1138,68 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     # Build the extra events
     leave_pos = initial_put_idx + 1
 
+    # Check which containers are used by events AFTER leave_pos
+    non_targets = _non_target_containers(queried)
+    third = non_targets[1] if other == non_targets[0] else non_targets[0]
+    containers_used_after = _get_containers_used_after(scenario, leave_pos)
+
+    can_use_other = other not in containers_used_after
+    can_use_third = third not in containers_used_after
+
     # 1. Answerer leaves
     leave_event = Event('leave', answerer)
 
     # Exclude teammates of characters who left with beliefs about the target
-    # Note: we use leave_pos + 1 because the answerer's leave will be inserted first
-    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, leave_pos)
-    # Note: We do NOT exclude the answerer's teammate here because in the revelation
-    # pattern, the answerer re-enters and witnesses the changes, so their final
-    # belief is updated (not invalidated).
+    # Check the FULL base scenario to find all teammates who will leave with beliefs
+    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
+    # ALSO exclude the answerer's teammate if the answerer is blue team.
+    # The answerer leaves with a belief, so their teammate can't modify the target.
+    BLUE = {'A', 'B'}
+    if answerer in BLUE:
+        teammates_to_exclude = teammates_to_exclude | {_teammate_of(answerer)}
     valid_movers = [c for c in sorted(present_after_leave) if c not in teammates_to_exclude]
     if not valid_movers:
-        return  # Cannot insert extra events without violating teammate beliefs
+        # Fallback: For the revelation pattern, the moves are temporary (item returns to target
+        # before any teammates leave). The base scenario's subsequent events will set the final
+        # state. So we can use any present character as a mover - the validation will catch
+        # any actual violations later.
+        if present_after_leave:
+            valid_movers = sorted(present_after_leave)
+        else:
+            return  # No one present to do the moves
 
     # 2. Someone moves item to other container while answerer is away
+    # Track container contents up to leave_pos (where we insert events)
+    contents_at_leave = {c: None for c in CONTAINERS_GEN}
+    for idx, event in enumerate(scenario.events):
+        if idx >= leave_pos:
+            break
+        if event.event_type == 'put':
+            contents_at_leave[event.container] = event.item
+        elif event.event_type == 'move':
+            contents_at_leave[event.to_container] = event.item
+            contents_at_leave[event.from_container] = None
+
+    # Determine which container to use as temp storage
+    other_item = contents_at_leave[other]
+    third_item = contents_at_leave[third]
+    clear_temp_event = None
+    temp_container = None
+
+    # Try primary pattern: use 'other' as temp
+    if can_use_other and (other_item is None or (can_use_third and third_item is None)):
+        temp_container = other
+        if other_item is not None:
+            # Need to clear other container first by moving to third
+            clear_temp_event = Event('move', rng.choice(valid_movers), from_container=other, to_container=third, item=other_item)
+    # Fallback: use 'third' as temp (if other is blocked but third is available)
+    elif can_use_third and third_item is None:
+        temp_container = third
+    else:
+        return  # No valid temp container available
+
     mover1 = rng.choice(valid_movers)
-    move_away_event = Event('move', mover1, from_container=queried, to_container=other, item=initial_item)
+    move_away_event = Event('move', mover1, from_container=queried, to_container=temp_container, item=initial_item)
 
     # 3. Answerer returns
     enter_event = Event('enter', answerer)
@@ -1074,19 +1212,19 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     mover2 = rng.choice(valid_movers2) if valid_movers2 else mover1
     if rng.random() < 0.5:
         # Variation: put a different item in queried container
-        # Original item stays in 'other', new item goes in 'queried'
+        # Original item stays in temp_container, new item goes in 'queried'
         # Exclude all items currently in any container
         used_items = {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
         available_items = [i for i in ITEMS_GEN if i not in used_items]
         if not available_items:
             # Fall back to standard move if no unique items available
-            revelation_event = Event('move', mover2, from_container=other, to_container=queried, item=initial_item)
+            revelation_event = Event('move', mover2, from_container=temp_container, to_container=queried, item=initial_item)
         else:
             new_item = rng.choice(available_items)
             revelation_event = Event('put', mover2, container=queried, item=new_item)
     else:
         # Standard: move original item back
-        revelation_event = Event('move', mover2, from_container=other, to_container=queried, item=initial_item)
+        revelation_event = Event('move', mover2, from_container=temp_container, to_container=queried, item=initial_item)
 
     # Build list of events to insert
     events_to_insert = [leave_event]
@@ -1095,7 +1233,8 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     # (must keep at least one person present for the moves)
     # Also exclude any character who has events later in the base scenario
     # AND exclude teammates of characters who modify the target later (to prevent belief violations)
-    if rng.random() < 0.5 and len(present_after_leave) > 1:
+    # Skip if caller indicates 1A can't compensate (to avoid SIT gap violations)
+    if not skip_optional_events and rng.random() < 0.5 and len(present_after_leave) > 1:
         # Find characters who act later in the base scenario (can't make them leave)
         chars_acting_later = set()
         # Find characters who modify the target later (their teammates shouldn't leave with beliefs)
@@ -1125,6 +1264,10 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
             leaver = rng.choice(potential_leavers)
             events_to_insert.append(Event('leave', leaver))
 
+    # Add clear_temp_event if needed (clears temp container before move_away)
+    if clear_temp_event is not None:
+        events_to_insert.append(clear_temp_event)
+
     events_to_insert.append(move_away_event)
     events_to_insert.append(enter_event)
     events_to_insert.append(revelation_event)
@@ -1153,26 +1296,13 @@ def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: ra
     third = non_targets[1] if other == non_targets[0] else non_targets[0]
 
     # Find where answerer leaves and track container contents
-    answerer_leave_idx = None
-    contents = {c: None for c in CONTAINERS_GEN}
-    present = set(scenario.present_initially)
-
-    for idx, event in enumerate(scenario.events):
-        if event.event_type == 'put':
-            contents[event.container] = event.item
-        elif event.event_type == 'move':
-            contents[event.to_container] = event.item
-            contents[event.from_container] = None
-        elif event.event_type == 'leave':
-            if event.character == answerer:
-                answerer_leave_idx = idx
-                break
-            present.discard(event.character)
-        elif event.event_type == 'enter':
-            present.add(event.character)
-
-    if answerer_leave_idx is None:
+    state = _find_leave_and_track_state(scenario, answerer)
+    if state.leave_idx is None:
         return
+
+    answerer_leave_idx = state.leave_idx
+    contents = state.contents
+    present = state.present
 
     # Z = what answerer believes (item in queried container when they left)
     # X = item in other container (might be None)
@@ -1196,11 +1326,26 @@ def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: ra
         return
 
     # Exclude teammates of characters who left with beliefs about the target
+    # Check the FULL base scenario to find all teammates who will leave with beliefs
     insert_pos = answerer_leave_idx + 1
-    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, insert_pos)
+    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
     valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude]
     if not valid_actors:
         return  # Cannot insert extra events without violating teammate beliefs
+
+    # Check if containers are used by events AFTER insert_pos - if so, we can't safely add extra events
+    containers_used_after = _get_containers_used_after(scenario, insert_pos)
+    # Check container availability
+    third_contents = contents[third]
+
+    # Determine which containers we can use based on what's used after insert_pos
+    can_use_other = other not in containers_used_after
+    can_use_third = third not in containers_used_after
+    queried_used_after = queried in containers_used_after
+
+    # If queried is used after, we can't safely do round-trip through it
+    if queried_used_after:
+        return  # Can't add extra events without conflicting with later base events
 
     # Build the extra events, alternating actors where possible
     extra_events = []
@@ -1213,21 +1358,37 @@ def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: ra
         last_actor = actor
         return actor
 
-    # a. If X exists in other container: MOVE X to third container (to make room)
-    if X is not None:
-        extra_events.append(Event('move', choose_actor(), from_container=other, to_container=third, item=X))
+    # Try primary pattern: Z round-trip through 'other'
+    # Requires: other is empty OR we can move X from other to third
+    if can_use_other and (X is None or (can_use_third and third_contents is None)):
+        # a. If X exists in other container: MOVE X to third container (to make room)
+        third_occupied = False
+        if X is not None:
+            extra_events.append(Event('move', choose_actor(), from_container=other, to_container=third, item=X))
+            third_occupied = True
 
-    # b. MOVE Z from queried to other container (answerer's belief now FALSE - accuracy ECT #3)
-    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=other, item=Z))
+        # b. MOVE Z from queried to other container (answerer's belief now FALSE - accuracy ECT #3)
+        extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=other, item=Z))
 
-    # c. PUT Y in queried container (target now has Y, not Z)
-    extra_events.append(Event('put', choose_actor(), container=queried, item=Y))
+        # c. PUT Y in queried container (target now has Y, not Z)
+        # d. MOVE Y from queried to third container (target now empty)
+        # Skip c and d if third is occupied or third already has item or third used after
+        if not third_occupied and third_contents is None and can_use_third:
+            extra_events.append(Event('put', choose_actor(), container=queried, item=Y))
+            extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Y))
 
-    # d. MOVE Y from queried to third container (target now empty)
-    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Y))
+        # e. MOVE Z from other back to queried container (answerer's belief now TRUE - accuracy ECT #4)
+        extra_events.append(Event('move', choose_actor(), from_container=other, to_container=queried, item=Z))
 
-    # e. MOVE Z from other back to queried container (answerer's belief now TRUE - accuracy ECT #4)
-    extra_events.append(Event('move', choose_actor(), from_container=other, to_container=queried, item=Z))
+    # Fallback pattern: Z round-trip through 'third' (if other is blocked but third is available)
+    elif can_use_third and third_contents is None:
+        # MOVE Z from queried to third (belief becomes FALSE)
+        extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Z))
+        # MOVE Z from third back to queried (belief becomes TRUE)
+        extra_events.append(Event('move', choose_actor(), from_container=third, to_container=queried, item=Z))
+
+    else:
+        return  # No valid pattern available
 
     # Insert all extra events right after answerer leaves
     for i, event in enumerate(extra_events):
@@ -1255,28 +1416,13 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
     third = non_targets[1] if other == non_targets[0] else non_targets[0]
 
     # Find where answerer leaves and track container contents at that point
-    answerer_leave_idx = None
-    contents = {c: None for c in CONTAINERS_GEN}
-    present = set(scenario.present_initially)
-
-    for idx, event in enumerate(scenario.events):
-        if event.event_type == 'put':
-            contents[event.container] = event.item
-        elif event.event_type == 'move':
-            contents[event.to_container] = event.item
-            contents[event.from_container] = None
-        elif event.event_type == 'remove':
-            contents[event.container] = None
-        elif event.event_type == 'leave':
-            if event.character == answerer:
-                answerer_leave_idx = idx
-                break
-            present.discard(event.character)
-        elif event.event_type == 'enter':
-            present.add(event.character)
-
-    if answerer_leave_idx is None:
+    state = _find_leave_and_track_state(scenario, answerer)
+    if state.leave_idx is None:
         return
+
+    answerer_leave_idx = state.leave_idx
+    contents = state.contents
+    present = state.present
 
     # W = what answerer believes (item in queried container when they left)
     # X = item in other container (might be None)
@@ -1302,8 +1448,17 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
     # Insert events right after answerer leaves
     insert_pos = answerer_leave_idx + 1
 
+    # Check which containers are used by events AFTER insert_pos
+    # Note: For BELIEVES_FALSE, queried WILL be used after (to change belief to false)
+    # Our round-trip puts W back, so later events can still change it
+    containers_used_after = _get_containers_used_after(scenario, insert_pos)
+
+    can_use_other = other not in containers_used_after
+    can_use_third = third not in containers_used_after
+
     # Exclude teammates of characters who left with beliefs about the target
-    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, insert_pos)
+    # Check the FULL base scenario to find all teammates who will leave with beliefs
+    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
     valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude]
     if not valid_actors:
         return  # Cannot insert extra events without violating teammate beliefs
@@ -1321,24 +1476,38 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
 
     # ACCURACY LOAD: Cycle items through target while answerer is absent
     # This happens right after answerer leaves, before base scenario events continue.
-    # We add a round-trip: W→out, Y→in, Y→out, W→back
+    # We add a round-trip: W→out, W→back (and optionally Y→in, Y→out)
     # This adds accuracy transitions, then base events will change to final false state.
     #
-    # a. If X exists in other container: MOVE X to third container (to make room)
-    if X is not None:
-        extra_events.append(Event('move', choose_actor(), from_container=other, to_container=third, item=X))
+    # Check container availability
+    third_contents = contents[third]
 
-    # b. MOVE W from target to other container (answerer's belief becomes FALSE - accuracy ECT #3)
-    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=other, item=W))
+    # Primary pattern: W round-trip through 'other'
+    if can_use_other and (X is None or (can_use_third and third_contents is None)):
+        if X is not None:
+            # Other has X, move it to third first
+            extra_events.append(Event('move', choose_actor(), from_container=other, to_container=third, item=X))
+            # Now other is empty but third has X - can't use third for Y
+            # Simplified pattern: just do W round-trip for accuracy ECTs
+            extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=other, item=W))
+            extra_events.append(Event('move', choose_actor(), from_container=other, to_container=queried, item=W))
+        else:
+            # X is None, other is empty - full pattern with Y
+            extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=other, item=W))
 
-    # c. PUT Y in target container (target now has Y, not W)
-    extra_events.append(Event('put', choose_actor(), container=queried, item=Y))
+            if third_contents is None and can_use_third:
+                extra_events.append(Event('put', choose_actor(), container=queried, item=Y))
+                extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Y))
 
-    # d. MOVE Y from target to third container (target now empty)
-    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Y))
+            extra_events.append(Event('move', choose_actor(), from_container=other, to_container=queried, item=W))
 
-    # e. MOVE W from other back to target container (answerer's belief becomes TRUE - accuracy ECT #4)
-    extra_events.append(Event('move', choose_actor(), from_container=other, to_container=queried, item=W))
+    # Fallback pattern: W round-trip through 'third'
+    elif can_use_third and third_contents is None:
+        extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=W))
+        extra_events.append(Event('move', choose_actor(), from_container=third, to_container=queried, item=W))
+
+    else:
+        return  # No valid pattern available
 
     # Now the base scenario events will continue and eventually change W to something else,
     # making the final belief false as required.
@@ -1348,41 +1517,30 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
         scenario.events.insert(insert_pos + i, event)
 
 
-def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: random.Random,
+                                   skip_optional_events: bool = False) -> None:
     """
     Insert extra events for BELIEVES_X answerers (Self who believes something uncertain).
     Pattern: Answerer sees events, leaves, then more events happen after they leave.
     Result: Their belief is unchanged (they left), but scenario has more complexity.
+
+    Args:
+        skip_optional_events: If True, skip the 50% chance leave/enter pair to reduce
+            SIT count when 1A can't compensate with adaptive filler.
     """
     queried = scenario.question_container
     other = _other_container(queried)
 
     # Find where answerer leaves and track container contents
-    answerer_leave_idx = None
-    contents = {c: None for c in CONTAINERS_GEN}
-    present = set(scenario.present_initially)
-
-    for idx, event in enumerate(scenario.events):
-        if event.event_type == 'put':
-            contents[event.container] = event.item
-        elif event.event_type == 'move':
-            contents[event.to_container] = event.item
-            contents[event.from_container] = None
-        elif event.event_type == 'remove':
-            contents[event.container] = None
-        elif event.event_type == 'leave':
-            if event.character == answerer:
-                answerer_leave_idx = idx
-                break
-            present.discard(event.character)
-        elif event.event_type == 'enter':
-            present.add(event.character)
-
-    if answerer_leave_idx is None:
+    state = _find_leave_and_track_state(scenario, answerer)
+    if state.leave_idx is None:
         return
 
+    answerer_leave_idx = state.leave_idx
+    contents = state.contents
+    present = state.present  # Already has answerer removed
+
     # After answerer leaves, we need someone to do the moves
-    present.discard(answerer)
     if not present:
         return
 
@@ -1391,22 +1549,44 @@ def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: rando
     if item_in_queried is None:
         return  # Nothing to move
 
+    # Check container contents
+    item_in_other = contents[other]
+    # Get the third container
+    non_targets = _non_target_containers(queried)
+    third = non_targets[1] if other == non_targets[0] else non_targets[0]
+    item_in_third = contents[third]
+
     # Insert events after answerer leaves
     insert_pos = answerer_leave_idx + 1
 
+    # Check if containers are used by events AFTER insert_pos
+    containers_used_after = _get_containers_used_after(scenario, insert_pos)
+
+    can_use_other = other not in containers_used_after and item_in_other is None
+    can_use_third = third not in containers_used_after and item_in_third is None
+
     # Exclude teammates of characters who left with beliefs about the target
-    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, insert_pos)
+    # Check the FULL base scenario to find all teammates who will leave with beliefs
+    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
     valid_movers = [c for c in sorted(present) if c not in teammates_to_exclude]
     if not valid_movers:
         return  # Cannot insert extra events without violating teammate beliefs
 
+    # Determine which container to use for round-trip
+    if can_use_other:
+        temp_container = other
+    elif can_use_third:
+        temp_container = third
+    else:
+        return  # No available container for round-trip
+
     mover1 = rng.choice(valid_movers)
-    move_away = Event('move', mover1, from_container=queried, to_container=other, item=item_in_queried)
+    move_away = Event('move', mover1, from_container=queried, to_container=temp_container, item=item_in_queried)
 
     # Prefer different mover than mover1, still respecting teammate exclusions
     valid_movers2 = [c for c in valid_movers if c != mover1]
     mover2 = rng.choice(valid_movers2) if valid_movers2 else mover1
-    move_back = Event('move', mover2, from_container=other, to_container=queried, item=item_in_queried)
+    move_back = Event('move', mover2, from_container=temp_container, to_container=queried, item=item_in_queried)
 
     # Build list of events to insert
     events_to_insert = []
@@ -1424,8 +1604,9 @@ def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: rando
     events_to_insert.append(move_back)
 
     # Optional: 50% chance for another character's leave/enter pair for visible complexity
+    # Skip if caller indicates 1A can't compensate with filler (to avoid SIT gap violations)
     potential = sorted(present)  # sorted for deterministic ordering
-    if potential and rng.random() < 0.5:
+    if not skip_optional_events and potential and rng.random() < 0.5:
         opp = rng.choice(potential)
         events_to_insert.append(Event('leave', opp))
         events_to_insert.append(Event('enter', opp))
@@ -1491,40 +1672,51 @@ def insert_extra_events_unknown(scenario: Scenario, answerer: str, rng: random.R
     item_in_other = contents[other]
 
     # Exclude teammates of characters who left with beliefs about the target
-    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, insert_pos)
+    # Check the FULL base scenario to find all teammates who will leave with beliefs
+    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
     valid_movers = [c for c in sorted(present) if c not in teammates_to_exclude]
     if not valid_movers:
         return  # Cannot insert extra events without violating teammate beliefs
 
     events_to_insert = []
+    non_targets = _non_target_containers(queried)
+    third = non_targets[1] if other == non_targets[0] else non_targets[0]
 
-    if item_in_queried is not None:
-        # Standard move_away / move_back pattern on the TARGET container
+    if item_in_queried is not None and item_in_other is None:
+        # Can safely move from queried to other (other is empty)
         mover1 = rng.choice(valid_movers)
         events_to_insert.append(Event('move', mover1, from_container=queried, to_container=other, item=item_in_queried))
         mover2 = _choose_different_actor(set(valid_movers), mover1, rng)
         events_to_insert.append(Event('move', mover2, from_container=other, to_container=queried, item=item_in_queried))
-    elif item_in_other is not None:
-        # Move from other to queried (affects target!) and back
+    elif item_in_other is not None and item_in_queried is None:
+        # Can safely move from other to queried (queried is empty)
         mover1 = rng.choice(valid_movers)
         events_to_insert.append(Event('move', mover1, from_container=other, to_container=queried, item=item_in_other))
         mover2 = _choose_different_actor(set(valid_movers), mover1, rng)
         events_to_insert.append(Event('move', mover2, from_container=queried, to_container=other, item=item_in_other))
-    else:
+    elif item_in_queried is None and item_in_other is None:
         # Both containers empty — add put to TARGET, then move to non-target
-        # (using target ensures ECT impact; move instead of remove)
-        # Exclude all items currently in any container (third container may have an item)
+        # Only if third is empty too
+        if contents[third] is not None:
+            return  # Can't do this pattern - third container has item
         used_items = {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
         available_items = [i for i in ITEMS_GEN if i not in used_items]
         if not available_items:
             return  # No unique items available
-        non_targets = _non_target_containers(queried)
-        third = non_targets[1] if other == non_targets[0] else non_targets[0]
         item = rng.choice(available_items)
         actor1 = rng.choice(valid_movers)
         events_to_insert.append(Event('put', actor1, container=queried, item=item))
         actor2 = _choose_different_actor(set(valid_movers), actor1, rng)
         events_to_insert.append(Event('move', actor2, from_container=queried, to_container=third, item=item))
+    else:
+        # Both queried and other have items - use third as temp container if available
+        if contents[third] is not None:
+            return  # Can't do this pattern - all containers occupied
+        # Move item from queried to third, then back
+        mover1 = rng.choice(valid_movers)
+        events_to_insert.append(Event('move', mover1, from_container=queried, to_container=third, item=item_in_queried))
+        mover2 = _choose_different_actor(set(valid_movers), mover1, rng)
+        events_to_insert.append(Event('move', mover2, from_container=third, to_container=queried, item=item_in_queried))
 
     # Mandatory leave/enter pair: the leaving character has observed the target
     # (since puts happened earlier), so this triggers ECT #1 (knowledge → belief).
@@ -1577,24 +1769,13 @@ def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> 
     third = non_targets[1] if other == non_targets[0] else non_targets[0]
 
     # Find where answerer leaves and track container contents
-    answerer_leave_idx = None
-    contents = {c: None for c in CONTAINERS_GEN}
-    present = set(scenario.present_initially)
-
-    for idx, event in enumerate(scenario.events):
-        if event.event_type == 'put':
-            contents[event.container] = event.item
-        elif event.event_type == 'move':
-            contents[event.to_container] = event.item
-            contents[event.from_container] = None
-        elif event.event_type == 'leave':
-            if event.character == answerer:
-                answerer_leave_idx = idx
-                break
-            present.discard(event.character)
-
-    if answerer_leave_idx is None:
+    state = _find_leave_and_track_state(scenario, answerer)
+    if state.leave_idx is None:
         return
+
+    answerer_leave_idx = state.leave_idx
+    contents = state.contents
+    present = state.present  # Already has answerer removed
 
     # Z = what answerer believes (item in queried container when they left)
     # X = item in other container (might be None)
@@ -1613,17 +1794,24 @@ def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> 
     Y = rng.choice(available_items)
 
     # Pick random present characters to perform actions
-    # (answerer just left, so use remaining present characters)
-    present.discard(answerer)
     if not present:
         return
 
     # Exclude teammates of blue team members who left with beliefs about the target
+    # Check the FULL base scenario to find all teammates who will leave with beliefs
     insert_pos = answerer_leave_idx + 1
-    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, insert_pos)
+    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
     valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude]
     if not valid_actors:
         return  # Cannot insert extra events without violating teammate beliefs
+
+    # Check which containers are used by events AFTER insert_pos
+    containers_used_after = _get_containers_used_after(scenario, insert_pos)
+
+    # Check container availability
+    third_contents = contents[third]
+    can_use_other = other not in containers_used_after
+    can_use_third = third not in containers_used_after
 
     # Build the extra events, alternating actors where possible
     extra_events = []
@@ -1636,21 +1824,34 @@ def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> 
         last_actor = actor
         return actor
 
-    # a. If X exists in other container: MOVE X to third container
-    if X is not None:
-        extra_events.append(Event('move', choose_actor(), from_container=other, to_container=third, item=X))
+    # Primary pattern: Z round-trip through 'other'
+    if can_use_other and (X is None or (can_use_third and third_contents is None)):
+        # a. If X exists in other container: MOVE X to third container
+        third_occupied = False
+        if X is not None:
+            extra_events.append(Event('move', choose_actor(), from_container=other, to_container=third, item=X))
+            third_occupied = True
 
-    # b. MOVE Z from queried to other container
-    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=other, item=Z))
+        # b. MOVE Z from queried to other container
+        extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=other, item=Z))
 
-    # c. PUT Y in queried container
-    extra_events.append(Event('put', choose_actor(), container=queried, item=Y))
+        # c. PUT Y in queried container
+        # d. MOVE Y from queried to third container
+        # Skip c and d if third is occupied or third already has item or third used after
+        if not third_occupied and third_contents is None and can_use_third:
+            extra_events.append(Event('put', choose_actor(), container=queried, item=Y))
+            extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Y))
 
-    # d. MOVE Y from queried to third container
-    extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Y))
+        # e. MOVE Z from other back to queried container
+        extra_events.append(Event('move', choose_actor(), from_container=other, to_container=queried, item=Z))
 
-    # e. MOVE Z from other back to queried container
-    extra_events.append(Event('move', choose_actor(), from_container=other, to_container=queried, item=Z))
+    # Fallback pattern: Z round-trip through 'third' (if other is blocked but third is available)
+    elif can_use_third and third_contents is None:
+        extra_events.append(Event('move', choose_actor(), from_container=queried, to_container=third, item=Z))
+        extra_events.append(Event('move', choose_actor(), from_container=third, to_container=queried, item=Z))
+
+    else:
+        return  # No valid pattern available
 
     # Insert all extra events right after answerer leaves
     insert_pos = answerer_leave_idx + 1
@@ -1702,11 +1903,19 @@ def insert_filler_events(scenario: Scenario, rng: random.Random) -> None:
     if not present:
         return  # No one present to do filler events
 
+    # Find containers used by events AFTER insert_idx - we must avoid these
+    containers_used_after = _get_containers_used_after(scenario, insert_idx)
+
+    # Filter non-targets to only those not used after insert_idx
+    safe_non_targets = [c for c in non_targets if c not in containers_used_after]
+    if len(safe_non_targets) < 2:
+        return  # Need at least 2 safe containers for put+move pattern
+
     events_to_add = []
     present_list = sorted(present)  # sorted for deterministic ordering
 
-    # Get contents of non-target containers
-    nt0, nt1 = non_targets[0], non_targets[1]
+    # Get contents of safe non-target containers
+    nt0, nt1 = safe_non_targets[0], safe_non_targets[1]
     item0 = contents[nt0]
     item1 = contents[nt1]
 
@@ -1720,28 +1929,22 @@ def insert_filler_events(scenario: Scenario, rng: random.Random) -> None:
     new_item2 = rng.choice([i for i in available_items if i != new_item1])
 
     if item0 is not None and item1 is not None:
-        # Both have items: just move one to the other (item1 ends up with item0)
-        # Can't swap without using target as temp, so keep it simple
-        a1 = rng.choice(present_list)
-        events_to_add.append(Event('move', a1, from_container=nt0, to_container=nt1, item=item0))
+        # Both have items: can't add filler without overflow - skip
+        pass
     elif item0 is not None:
-        # First non-target has item: move it once, put new item in empty one
+        # First non-target has item: move it to keep nt0 empty
         a1 = rng.choice(present_list)
         events_to_add.append(Event('move', a1, from_container=nt0, to_container=nt1, item=item0))
-        a2 = _choose_different_actor(present, a1, rng)
-        events_to_add.append(Event('put', a2, container=nt0, item=new_item1))
     elif item1 is not None:
-        # Second non-target has item: move it once, put new item in empty one
+        # Second non-target has item: move it to keep nt1 empty
         a1 = rng.choice(present_list)
         events_to_add.append(Event('move', a1, from_container=nt1, to_container=nt0, item=item1))
-        a2 = _choose_different_actor(present, a1, rng)
-        events_to_add.append(Event('put', a2, container=nt1, item=new_item1))
     else:
-        # Both empty: put different items in each
+        # Both empty: put then move, keeps nt0 empty for subsequent operations
         a1 = rng.choice(present_list)
         events_to_add.append(Event('put', a1, container=nt0, item=new_item1))
         a2 = _choose_different_actor(present, a1, rng)
-        events_to_add.append(Event('put', a2, container=nt1, item=new_item2))
+        events_to_add.append(Event('move', a2, from_container=nt0, to_container=nt1, item=new_item1))
 
     for i, evt in enumerate(events_to_add):
         scenario.events.insert(insert_idx + i, evt)
@@ -1790,9 +1993,20 @@ def insert_n_filler_events(scenario: Scenario, rng: random.Random, n: int) -> No
     if not present:
         return  # No one present to do filler events
 
+    # Find containers used by events AFTER insert_idx - we must avoid these
+    # because our filler events will be inserted BEFORE those events
+    containers_used_after = _get_containers_used_after(scenario, insert_idx)
+
+    # Filter non-targets to only those not used after insert_idx
+    safe_non_targets = [c for c in non_targets if c not in containers_used_after]
+    if len(safe_non_targets) < 1:
+        return  # No safe containers for filler
+
     events_to_add = []
     present_list = sorted(present)
-    nt0, nt1 = non_targets[0], non_targets[1]
+    # Use only safe containers (may be 1 or 2)
+    nt0 = safe_non_targets[0]
+    nt1 = safe_non_targets[1] if len(safe_non_targets) > 1 else None
 
     # Generate n filler events (puts/moves on non-target containers)
     # Exclude ALL items used in ANY event (including future events in base scenario)
@@ -1805,9 +2019,21 @@ def insert_n_filler_events(scenario: Scenario, rng: random.Random, n: int) -> No
         actor = _choose_different_actor(present, last_actor, rng)
         last_actor = actor
 
-        # Alternate between puts and moves on non-target containers
+        # Handle single-container case (nt1 is None)
+        if nt1 is None:
+            # Only one safe container - can only put if empty
+            if contents[nt0] is None and available_items:
+                item = rng.choice(available_items)
+                events_to_add.append(Event('put', actor, container=nt0, item=item))
+                contents[nt0] = item
+            # If nt0 has item or no available items, skip (can't move with one container)
+            continue
+
+        # Two containers available - alternate between puts and moves
         if contents[nt0] is None and contents[nt1] is None:
             # Both empty: put an item
+            if not available_items:
+                continue
             item = rng.choice(available_items)
             target_container = rng.choice([nt0, nt1])
             events_to_add.append(Event('put', actor, container=target_container, item=item))
@@ -1823,18 +2049,75 @@ def insert_n_filler_events(scenario: Scenario, rng: random.Random, n: int) -> No
             contents[nt0] = contents[nt1]
             contents[nt1] = None
         else:
-            # Both have items: move one to the other (overwrite)
-            if rng.random() < 0.5:
-                events_to_add.append(Event('move', actor, from_container=nt0, to_container=nt1, item=contents[nt0]))
-                contents[nt1] = contents[nt0]
-                contents[nt0] = None
-            else:
-                events_to_add.append(Event('move', actor, from_container=nt1, to_container=nt0, item=contents[nt1]))
-                contents[nt0] = contents[nt1]
-                contents[nt1] = None
+            # Both have items: can't add filler without overflow - skip this iteration
+            continue
 
     for i, evt in enumerate(events_to_add):
         scenario.events.insert(insert_idx + i, evt)
+
+
+def compute_filler_capacity(scenario: Scenario) -> int:
+    """Compute max events that insert_adaptive_filler_events can add.
+
+    Uses same logic as insert_adaptive_filler_events to determine capacity.
+    This allows us to predict whether 1A can compensate for 1B's extra events.
+    """
+    target = scenario.question_container
+    non_targets = _non_target_containers(target)
+
+    # Find insert_idx (where A leaves) - same logic as insert_adaptive_filler_events
+    a_present = 'A' in scenario.present_initially
+    insert_idx = len(scenario.events)
+    present = set(scenario.present_initially)
+    contents = {c: None for c in CONTAINERS_GEN}
+
+    for idx, event in enumerate(scenario.events):
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+        elif event.event_type == 'move':
+            contents[event.to_container] = event.item
+            contents[event.from_container] = None
+        elif event.event_type == 'leave':
+            if event.character == 'A' and a_present:
+                insert_idx = idx
+                break
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+            if event.character == 'A':
+                a_present = True
+
+    if not present:
+        return 0
+
+    # Track who observed target (can't do leave/enter) - same logic
+    present = set(scenario.present_initially)
+    chars_observed_target = set()
+    for idx, event in enumerate(scenario.events):
+        if idx >= insert_idx:
+            break
+        if event.event_type == 'leave':
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+        if event.event_type == 'put' and event.container == target:
+            chars_observed_target.update(present)
+        elif event.event_type == 'move' and (event.from_container == target or event.to_container == target):
+            chars_observed_target.update(present)
+
+    can_leave_enter = [c for c in present if c not in chars_observed_target and c != 'A']
+
+    # Find safe containers (not used by events after insert_idx)
+    containers_used_after = _get_containers_used_after(scenario, insert_idx)
+    safe_non_targets = [c for c in non_targets if c not in containers_used_after]
+
+    # Compute capacity based on available resources
+    if len(safe_non_targets) >= 2:
+        return 99  # Unlimited (put/move cycles between containers)
+    elif len(safe_non_targets) == 1:
+        return 1 + 2 * len(can_leave_enter)  # 1 put + leave/enter pairs
+    else:
+        return 2 * len(can_leave_enter)  # Only leave/enter pairs available
 
 
 def insert_adaptive_filler_events(scenario: Scenario, rng: random.Random, n: int) -> int:
@@ -1885,6 +2168,37 @@ def insert_adaptive_filler_events(scenario: Scenario, rng: random.Random, n: int
     if not present:
         return 0  # No actors available
 
+    # Track which characters have observed the target container (up to insert_idx)
+    # These characters CANNOT do leave/enter pairs (would trigger ECT #1)
+    # CRITICAL: Must reset present to fresh state before this loop
+    present = set(scenario.present_initially)
+    chars_observed_target = set()
+    for idx, event in enumerate(scenario.events):
+        if idx >= insert_idx:
+            break
+        # Update presence first
+        if event.event_type == 'leave':
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+        # Then check if target was observed
+        if event.event_type == 'put' and event.container == target:
+            chars_observed_target.update(present)
+        elif event.event_type == 'move' and (event.from_container == target or event.to_container == target):
+            chars_observed_target.update(present)
+    # present is now correct at insert_idx
+
+    # Characters who can do leave/enter pairs (haven't observed target, not A)
+    can_leave_enter = [c for c in present if c not in chars_observed_target and c != 'A']
+
+    # Find containers used by events AFTER insert_idx - we must avoid these
+    containers_used_after = _get_containers_used_after(scenario, insert_idx)
+
+    # Filter non-targets to only those not used after insert_idx
+    safe_non_targets = [c for c in non_targets if c not in containers_used_after]
+    if len(safe_non_targets) < 1:
+        return 0  # No safe containers for filler
+
     # Collect all items already used in scenario (including initial filler)
     all_scenario_items = {e.item for e in scenario.events if e.item}
     used_items = all_scenario_items | {contents[c] for c in CONTAINERS_GEN if contents[c] is not None}
@@ -1892,47 +2206,84 @@ def insert_adaptive_filler_events(scenario: Scenario, rng: random.Random, n: int
 
     events_to_add = []
     present_list = sorted(present)
-    nt0, nt1 = non_targets[0], non_targets[1]
+    # Use only safe containers (may be 1 or 2)
+    nt0 = safe_non_targets[0]
+    nt1 = safe_non_targets[1] if len(safe_non_targets) > 1 else None
 
     # Track contents of non-target containers at insertion point
-    nt_contents = {nt0: contents[nt0], nt1: contents[nt1]}
-    last_actor = None
+    nt_contents = {nt0: contents[nt0]}
+    if nt1 is not None:
+        nt_contents[nt1] = contents[nt1]
 
-    for _ in range(n):
+    last_actor = None
+    events_added = 0
+
+    while events_added < n:
+        remaining = n - events_added
         # Choose actor (alternate when possible)
         actor = _choose_different_actor(present, last_actor, rng)
         last_actor = actor
 
-        # Decide what filler event to add (same logic as insert_n_filler_events)
+        # Handle single-container case (nt1 is None)
+        if nt1 is None:
+            # Only one safe container - can only put if empty
+            if nt_contents[nt0] is None and available_items:
+                item = available_items.pop(rng.randint(0, len(available_items) - 1))
+                events_to_add.append(Event('put', actor, container=nt0, item=item))
+                nt_contents[nt0] = item
+                events_added += 1
+            elif can_leave_enter and remaining >= 2:
+                # Fall back to leave/enter pair (adds 2 events)
+                leaver = rng.choice(can_leave_enter)
+                events_to_add.append(Event('leave', leaver))
+                events_to_add.append(Event('enter', leaver))
+                can_leave_enter.remove(leaver)
+                events_added += 2
+            else:
+                break  # Cannot add more events
+            continue
+
+        # Two containers available - decide what filler event to add
         if nt_contents[nt0] is None and nt_contents[nt1] is None:
             # Both empty: need to put an item
             if not available_items:
+                # No items - try leave/enter pair instead
+                if can_leave_enter and remaining >= 2:
+                    leaver = rng.choice(can_leave_enter)
+                    events_to_add.append(Event('leave', leaver))
+                    events_to_add.append(Event('enter', leaver))
+                    can_leave_enter.remove(leaver)
+                    events_added += 2
+                    continue
                 break  # Cannot add more events
             item = available_items.pop(rng.randint(0, len(available_items) - 1))
             target_container = rng.choice([nt0, nt1])
             events_to_add.append(Event('put', actor, container=target_container, item=item))
             nt_contents[target_container] = item
+            events_added += 1
         elif nt_contents[nt0] is not None and nt_contents[nt1] is None:
             # nt0 has item, nt1 empty: move to nt1
             events_to_add.append(Event('move', actor, from_container=nt0, to_container=nt1, item=nt_contents[nt0]))
             nt_contents[nt1] = nt_contents[nt0]
             nt_contents[nt0] = None
+            events_added += 1
         elif nt_contents[nt0] is None and nt_contents[nt1] is not None:
             # nt1 has item, nt0 empty: move to nt0
             events_to_add.append(Event('move', actor, from_container=nt1, to_container=nt0, item=nt_contents[nt1]))
             nt_contents[nt0] = nt_contents[nt1]
             nt_contents[nt1] = None
+            events_added += 1
         else:
-            # Both have items: move one to the other (displacing the other item)
-            # We can only do this if we have room - just move nt0 to nt1 (nt1's item is "displaced")
-            if rng.random() < 0.5:
-                events_to_add.append(Event('move', actor, from_container=nt0, to_container=nt1, item=nt_contents[nt0]))
-                nt_contents[nt1] = nt_contents[nt0]
-                nt_contents[nt0] = None
+            # Both have items: can't add put/move without overflow
+            # Try leave/enter pair for a character who hasn't observed target
+            if can_leave_enter and remaining >= 2:
+                leaver = rng.choice(can_leave_enter)
+                events_to_add.append(Event('leave', leaver))
+                events_to_add.append(Event('enter', leaver))
+                can_leave_enter.remove(leaver)
+                events_added += 2
             else:
-                events_to_add.append(Event('move', actor, from_container=nt1, to_container=nt0, item=nt_contents[nt1]))
-                nt_contents[nt0] = nt_contents[nt1]
-                nt_contents[nt1] = None
+                break  # Cannot add more events
 
     # Insert all events at the insertion point
     for i, evt in enumerate(events_to_add):
@@ -2006,6 +2357,10 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
     chars = _map_chartypes_to_names(chartypes)
     acting_chars = [c for c in chars if c != 'N']
 
+    # Tracking for violations
+    violation_stats = {'total': 0, 'by_id': defaultdict(int), 'by_extra': defaultdict(int)}
+    sit_gap_stats = {'total': 0, 'by_id': {}}
+
     # Group specs by ID and Extra value (string keys: '0A', '0B', '1A', '1B')
     spec_by_id: Dict[str, Dict[str, dict]] = defaultdict(dict)
     for spec in specs:
@@ -2059,6 +2414,9 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             extra='0A',  # Will be overwritten per-variant
         )
 
+        # Validate base scenario before applying any filler
+        _validate_invariants(base_scenario)
+
         # --- Extra=0A: Minimal filler (n=EXTRA_0A_FILLER) ---
         if e0a_spec is not None:
             scenario_e0a = copy.deepcopy(base_scenario)
@@ -2068,7 +2426,11 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             insert_n_filler_events(scenario_e0a, filler_rng, EXTRA_0A_FILLER)
 
             _validate_invariants(scenario_e0a)
-            _validate_teammate_belief_integrity(scenario_e0a)
+            v = _validate_teammate_belief_integrity(scenario_e0a)
+            if v > 0:
+                violation_stats['total'] += v
+                violation_stats['by_id'][row['Id']] += v
+                violation_stats['by_extra']['0A'] += v
             scenario_e0a.situation_event_count = _count_visible_events(scenario_e0a)
             scenario_e0a.epistemic_transitions = count_epistemic_category_transitions(scenario_e0a)
 
@@ -2088,7 +2450,11 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             insert_n_filler_events(scenario_e0b, filler_rng, EXTRA_0B_FILLER)
 
             _validate_invariants(scenario_e0b)
-            _validate_teammate_belief_integrity(scenario_e0b)
+            v = _validate_teammate_belief_integrity(scenario_e0b)
+            if v > 0:
+                violation_stats['total'] += v
+                violation_stats['by_id'][row['Id']] += v
+                violation_stats['by_extra']['0B'] += v
             scenario_e0b.situation_event_count = _count_visible_events(scenario_e0b)
             scenario_e0b.epistemic_transitions = count_epistemic_category_transitions(scenario_e0b)
 
@@ -2108,7 +2474,11 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             insert_filler_events(scenario_e1a, filler_rng)  # Existing function (unchanged behavior)
 
             _validate_invariants(scenario_e1a)
-            _validate_teammate_belief_integrity(scenario_e1a)
+            v = _validate_teammate_belief_integrity(scenario_e1a)
+            if v > 0:
+                violation_stats['total'] += v
+                violation_stats['by_id'][row['Id']] += v
+                violation_stats['by_extra']['1A'] += v
             scenario_e1a.situation_event_count = _count_visible_events(scenario_e1a)
             scenario_e1a.epistemic_transitions = count_epistemic_category_transitions(scenario_e1a)
 
@@ -2145,39 +2515,90 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                 base_event_count = len(scenario_e1b.events)
                 answerer_state = _get_answerer_state(e1b_spec)
 
-                if (e1b_spec['Answerer'] == 'Teammate' and
-                    e1b_spec['KS_Self'] == EpistemicState.KNOWS_X and
-                    e1b_spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
-                    insert_extra_puts(scenario_e1b, answerer, retry_rng)
-                elif answerer_state == EpistemicState.KNOWS_TRUTH:
-                    insert_extra_events_with_revelation(scenario_e1b, answerer, retry_rng, spec=e1b_spec)
-                elif answerer_state == EpistemicState.BELIEVES_TRUTH:
-                    insert_extra_events_believes_true(scenario_e1b, answerer, retry_rng)
-                elif answerer_state == EpistemicState.BELIEVES_FALSE:
-                    insert_extra_events_believes_false(scenario_e1b, answerer, retry_rng)
-                elif answerer_state == EpistemicState.BELIEVES_X:
-                    insert_extra_events_believes_x(scenario_e1b, answerer, retry_rng)
-                elif answerer_state == EpistemicState.UNKNOWN:
-                    insert_extra_events_unknown(scenario_e1b, answerer, retry_rng)
-                else:
-                    insert_extra_events(scenario_e1b, answerer, actor, answerer_state, e1b_spec, retry_rng)
+                # Pre-compute whether to skip optional events to avoid SIT gap violations
+                # Optional events add SIT but no ECT, so they're semantically skippable
+                skip_opt = False
+                skip_teammate_reentry = False
+                if e1a_sit is not None and e1a_spec is not None:
+                    filler_cap = compute_filler_capacity(scenario_e1a)
+                    base_sit = _count_visible_events(scenario_e1b)
+                    max_allowed_1b_sit = e1a_sit + filler_cap + MAX_SIT_GAP
+
+                    # Check if teammate reentry applies (for any answerer_state)
+                    teammate_reentry_applies = (e1b_spec['KS_Self'] == EpistemicState.BELIEVES_X and
+                                               e1b_spec['KS_Teammate'] == EpistemicState.UNKNOWN)
+                    teammate_reentry_events = 2 if teammate_reentry_applies else 0
+
+                    if answerer_state == EpistemicState.BELIEVES_X:
+                        # BELIEVES_X: mandatory = enter + 2 moves + leave = 4 SIT
+                        mandatory_events = 4
+                        optional_events = 2
+                        projected_with_all = base_sit + mandatory_events + teammate_reentry_events + optional_events
+                        skip_opt = projected_with_all > max_allowed_1b_sit
+                        # Skip teammate reentry too if even without optional we'd exceed max
+                        projected_without_opt = base_sit + mandatory_events + teammate_reentry_events
+                        skip_teammate_reentry = projected_without_opt > max_allowed_1b_sit
+                    elif answerer_state == EpistemicState.KNOWS_TRUTH:
+                        # KNOWS_TRUTH: mandatory = leave + (maybe clear) + move_away + enter + revelation = 4-5 SIT
+                        # Optional = 1 leave (50% chance another character leaves)
+                        mandatory_events = 4  # leave, move_away, enter, revelation
+                        optional_events = 1
+                        projected_with_all = base_sit + mandatory_events + teammate_reentry_events + optional_events
+                        skip_opt = projected_with_all > max_allowed_1b_sit
+                        # Skip teammate reentry if even without optional we'd exceed max
+                        projected_without_opt = base_sit + mandatory_events + teammate_reentry_events
+                        skip_teammate_reentry = projected_without_opt > max_allowed_1b_sit
+
+                try:
+                    if (e1b_spec['Answerer'] == 'Teammate' and
+                        e1b_spec['KS_Self'] == EpistemicState.KNOWS_X and
+                        e1b_spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
+                        insert_extra_puts(scenario_e1b, answerer, retry_rng)
+                        _validate_invariants(scenario_e1b)
+                    elif answerer_state == EpistemicState.KNOWS_TRUTH:
+                        insert_extra_events_with_revelation(scenario_e1b, answerer, retry_rng, spec=e1b_spec,
+                                                           skip_optional_events=skip_opt)
+                        _validate_invariants(scenario_e1b)
+                    elif answerer_state == EpistemicState.BELIEVES_TRUTH:
+                        insert_extra_events_believes_true(scenario_e1b, answerer, retry_rng)
+                        _validate_invariants(scenario_e1b)
+                    elif answerer_state == EpistemicState.BELIEVES_FALSE:
+                        insert_extra_events_believes_false(scenario_e1b, answerer, retry_rng)
+                        _validate_invariants(scenario_e1b)
+                    elif answerer_state == EpistemicState.BELIEVES_X:
+                        # skip_opt computed above before try block
+                        insert_extra_events_believes_x(scenario_e1b, answerer, retry_rng, skip_optional_events=skip_opt)
+                        _validate_invariants(scenario_e1b)
+                    elif answerer_state == EpistemicState.UNKNOWN:
+                        insert_extra_events_unknown(scenario_e1b, answerer, retry_rng)
+                        _validate_invariants(scenario_e1b)
+                    else:
+                        insert_extra_events(scenario_e1b, answerer, actor, answerer_state, e1b_spec, retry_rng)
+                        _validate_invariants(scenario_e1b)
+                except ValueError as e:
+                    raise ValueError(f"ID {row['Id']} Extra=1B answerer_state={answerer_state}: {e}")
 
                 # For Self=BELIEVES_X + Teammate=UNKNOWN scenarios, add teammate's re-entry
+                # Skip if it would cause SIT gap violation (teammate stays UNKNOWN either way)
                 if (e1b_spec['KS_Self'] == EpistemicState.BELIEVES_X and
-                    e1b_spec['KS_Teammate'] == EpistemicState.UNKNOWN):
+                    e1b_spec['KS_Teammate'] == EpistemicState.UNKNOWN and
+                    not skip_teammate_reentry):
                     teammate = _teammate_of(actor)
                     insert_teammate_reentry_unknown(scenario_e1b, teammate, retry_rng)
 
-                # Validate: extra events were actually added
+                # Check if extra events were actually added
                 if len(scenario_e1b.events) <= base_event_count:
-                    raise ValueError(
-                        f"ID {row['Id']} Extra=1B: insert function failed to add events "
-                        f"(answerer_state={answerer_state}, before={base_event_count}, after={len(scenario_e1b.events)}). "
-                        f"This indicates a scenario generation bug - no valid actors for extra events."
-                    )
+                    # No events added - function returned early due to constraints
+                    # This is expected when containers are used by later base events
+                    # Continue to next retry
+                    continue
 
                 _validate_invariants(scenario_e1b)
-                _validate_teammate_belief_integrity(scenario_e1b)
+                v = _validate_teammate_belief_integrity(scenario_e1b)
+                if v > 0:
+                    violation_stats['total'] += v
+                    violation_stats['by_id'][row['Id']] += v
+                    violation_stats['by_extra']['1B'] += v
                 scenario_e1b.situation_event_count = _count_visible_events(scenario_e1b)
                 scenario_e1b.epistemic_transitions = count_epistemic_category_transitions(scenario_e1b)
 
@@ -2189,12 +2610,16 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                 else:
                     break  # No 1A to compare with
 
-            # Warn if max retries reached without satisfying SIT constraint
-            if e1a_sit is not None and sit_gap > MAX_SIT_GAP:
+            # Check if we successfully added events (scenario has more events than base)
+            base_event_count_final = len(base_scenario.events)
+            if len(scenario_e1b.events) <= base_event_count_final:
+                # All retries failed to add events - skip this 1B scenario
                 import warnings
                 warnings.warn(
-                    f"ID {row['Id']} Extra=1B: SIT gap {sit_gap} exceeds threshold after {MAX_RETRIES} retries"
+                    f"ID {row['Id']} Extra=1B: Could not add extra events after {MAX_RETRIES} retries "
+                    f"(containers used by later events). Skipping 1B variant."
                 )
+                continue
 
             # Validate: Extra=1B must have more ECTs than Extra=1A
             if e1a_ect is not None:
@@ -2221,6 +2646,9 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                     old_ect = scenario_e1a.epistemic_transitions['total']
                     added = insert_adaptive_filler_events(scenario_e1a, adaptive_rng, sit_deficit)
 
+                    # Validate no container overflow after adaptive filler
+                    _validate_invariants(scenario_e1a)
+
                     # Update SIT count
                     scenario_e1a.situation_event_count = _count_visible_events(scenario_e1a)
 
@@ -2233,6 +2661,21 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                         )
                     scenario_e1a.epistemic_transitions = count_epistemic_category_transitions(scenario_e1a)
 
+            # Track SIT gap violations AFTER adaptive filler
+            final_1a_sit = scenario_e1a.situation_event_count
+            final_1b_sit = scenario_e1b.situation_event_count
+            final_gap = abs(final_1b_sit - final_1a_sit)
+            if final_gap > MAX_SIT_GAP:
+                sit_gap_stats['total'] += 1
+                sid = row['Id']
+                if sid not in sit_gap_stats['by_id']:
+                    sit_gap_stats['by_id'][sid] = {'count': 0, 'max_gap': 0, 'sits_1a': [], 'sits_1b': []}
+                sit_gap_stats['by_id'][sid]['count'] += 1
+                sit_gap_stats['by_id'][sid]['sits_1a'].append(final_1a_sit)
+                sit_gap_stats['by_id'][sid]['sits_1b'].append(final_1b_sit)
+                if final_gap > sit_gap_stats['by_id'][sid]['max_gap']:
+                    sit_gap_stats['by_id'][sid]['max_gap'] = final_gap
+
     # Final safeguard: ensure we generated scenarios if specs were provided
     if specs and not scenarios:
         raise ValueError(
@@ -2241,6 +2684,8 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
         )
 
     save_scenarios(scenarios, outfile, chars, chartypes)
+
+    return {'violations': violation_stats, 'sit_gaps': sit_gap_stats}
 
 
 if __name__ == "__main__":

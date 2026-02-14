@@ -26,16 +26,3 @@ for i, spec in enumerate(self.specs):
 
 Use a single temp file that gets overwritten each iteration, not 78 separate files. Clean up when done.
 
-### Extra Field
-
-The Extra field controls scenario complexity. See `EXTRA_MAPPING.md` for full details.
-
-| Code | Name | Description |
-|------|------|-------------|
-| 0A | Minimal Events | No filler events, no ECT |
-| 0B | Event Load | Higher event load (+3 filler), no ECT |
-| 1A | Minimal ECT | Filler events for SIT parity, has ECT (legacy `Extra=0`) |
-| 1B | ECT Load | Extra events with ECT and more complexity (legacy `Extra=1`) |
-
-- CSV has 39 base scenarios × 4 Extra categories = 156 total (or 78 if using only 1A/1B)
-- Report performance broken down by Extra value

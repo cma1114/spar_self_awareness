@@ -376,7 +376,7 @@ class CapabilitiesTest(BaseGameClass):
                     )
 
                     gla_args = self.run_parameters["get_llm_answer_static_args"]
-                    subject_answer, _, probs = self._get_llm_answer(
+                    subject_answer, _, probs, _ = self._get_llm_answer(
                         options,
                         setup_prompt + "\n\n" + llm_prompt,
                         gla_args["message_history"],
@@ -619,7 +619,7 @@ def main(model_dataset_dict, temp):
             INCLUDE_TOTAL = False
             resume_from = None  # "capabilities_1p_test_logs/llama-3.3-70b-instruct_SimpleMC_500_1759847064_test_data.json"#
             RESAMPLE = False
-            NESTED = "Self" #values: None, "Self", "Other"
+            NESTED = "Other" #values: None, "Self", "Other"
             temp = temp
             seed = 42
 
@@ -706,6 +706,6 @@ def main(model_dataset_dict, temp):
 
 if __name__ == "__main__":
     model_dataset_dict = {
-        "openai/gpt-5-chat": ["SimpleMC"],
+        "llama-3.3-70b-instruct": ["TriviaMC_difficulty_filtered"],
         }
     main(model_dataset_dict, temp=1.0)

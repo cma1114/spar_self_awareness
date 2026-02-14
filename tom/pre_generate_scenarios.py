@@ -33,19 +33,19 @@ def pre_generate(num_reps: int, seed_base: int, output_file: str):
     specs = read_specs_from_csv('ToM - scenarios.csv')
     specs = [s for s in specs if int(s['Id']) in MASTERY_SCENARIO_IDS]
 
-    # Reorder specs to match tom_test_new.py ordering: ID7_0A, ID7_0B, ID7_1A, ID7_1B, ID8_0A, ...
+    # Group specs by scenario ID so all Extra variants (0A, 0B, 1A, 1B) are
+    # generated together in a single call to generate_scenarios_from_tuples.
+    # This is REQUIRED for the adaptive filler logic to work: it needs both
+    # 1A and 1B in the same call to balance their SIT event counts.
     from collections import defaultdict
-    spec_by_id = defaultdict(dict)
+    specs_by_id = defaultdict(list)
     for spec in specs:
-        spec_by_id[spec['Id']][spec['Extra']] = spec
-    reordered_specs = []
-    for id_str in sorted(spec_by_id.keys(), key=int):
-        for extra_val in ['0A', '0B', '1A', '1B']:
-            if extra_val in spec_by_id[id_str]:
-                reordered_specs.append(spec_by_id[id_str][extra_val])
-    specs = reordered_specs
+        specs_by_id[spec['Id']].append(spec)
+    sorted_ids = sorted(specs_by_id.keys(), key=int)
 
-    print(f"Generating scenarios for {len(specs)} specs × {num_reps} reps = {len(specs) * num_reps} total")
+    total_specs = len(specs)
+    print(f"Generating scenarios for {total_specs} specs × {num_reps} reps = {total_specs * num_reps} total")
+    print(f"  ({len(sorted_ids)} scenario IDs, grouped for SIT balancing)")
     print(f"Base seed: {seed_base}")
 
     # Character types (matches tom_test_new.py)
@@ -60,6 +60,13 @@ def pre_generate(num_reps: int, seed_base: int, output_file: str):
     chars = None
     ctypes = None
 
+    # Aggregate stats across all calls
+    total_violations = 0
+    violations_by_id = defaultdict(int)
+    violations_by_extra = defaultdict(int)
+    total_sit_gaps = 0
+    sit_gaps_by_id = {}
+
     # Create temp file for intermediate generation
     with tempfile.NamedTemporaryFile(suffix='.json', delete=False) as tmp:
         tmp_path = tmp.name
@@ -68,14 +75,31 @@ def pre_generate(num_reps: int, seed_base: int, output_file: str):
         for rep in range(num_reps):
             rep_1indexed = rep + 1  # 1-indexed rep number for display and storage
             print(f"  Generating rep {rep_1indexed}/{num_reps}...")
-            for spec_idx, spec in enumerate(specs):
-                # Seed formula matches tom_test_new.py multi-rep logic:
-                # base_seed + rep_num * 1000 + spec_idx
-                # Note: tom_test_new.py uses 1-indexed rep_num in seed calculation
-                seed = seed_base + rep_1indexed * 1000 + spec_idx
+            for id_idx, scenario_id in enumerate(sorted_ids):
+                id_specs = specs_by_id[scenario_id]
+                # Seed: one per (ID, rep) combination
+                seed = seed_base + rep_1indexed * 1000 + id_idx
 
-                generate_scenarios_from_tuples([spec], tmp_path, seed=seed, chartypes=chartypes)
+                stats = generate_scenarios_from_tuples(id_specs, tmp_path, seed=seed, chartypes=chartypes)
                 scenarios, chars, ctypes = load_scenarios(tmp_path)
+
+                # Aggregate violation stats
+                if stats:
+                    v = stats['violations']
+                    total_violations += v['total']
+                    for sid, count in v['by_id'].items():
+                        violations_by_id[sid] += count
+                    for extra, count in v['by_extra'].items():
+                        violations_by_extra[extra] += count
+                    sg = stats['sit_gaps']
+                    total_sit_gaps += sg['total']
+                    for sid, info in sg['by_id'].items():
+                        if sid not in sit_gaps_by_id:
+                            sit_gaps_by_id[sid] = {'count': 0, 'max_gap': 0, 'sits_1a': [], 'sits_1b': []}
+                        sit_gaps_by_id[sid]['count'] += info.get('count', 1)
+                        sit_gaps_by_id[sid]['max_gap'] = max(sit_gaps_by_id[sid]['max_gap'], info.get('max_gap', 0))
+                        sit_gaps_by_id[sid]['sits_1a'].extend(info.get('sits_1a', []))
+                        sit_gaps_by_id[sid]['sits_1b'].extend(info.get('sits_1b', []))
 
                 # Tag each scenario with rep number (1-indexed to match user interface)
                 for s in scenarios:
@@ -109,6 +133,30 @@ def pre_generate(num_reps: int, seed_base: int, output_file: str):
         extra_counts[extra] = extra_counts.get(extra, 0) + 1
     print(f"  By Extra: {extra_counts}")
 
+    # Print violation summary
+    print(f"\n=== Violation Summary ===")
+    print(f"Teammate belief violations: {total_violations}")
+    if violations_by_id:
+        print(f"  By ID:")
+        for sid in sorted(violations_by_id.keys(), key=int):
+            print(f"    {sid}: {violations_by_id[sid]}")
+    if violations_by_extra:
+        print(f"  By Extra:")
+        for extra in ['0A', '0B', '1A', '1B']:
+            if extra in violations_by_extra:
+                print(f"    {extra}: {violations_by_extra[extra]}")
+    print(f"SIT gap violations (>3): {total_sit_gaps}")
+    if sit_gaps_by_id:
+        print(f"  ID | count | max_gap | 1A range   | 1B range")
+        print(f"  ---|-------|---------|------------|----------")
+        for sid in sorted(sit_gaps_by_id.keys(), key=int):
+            info = sit_gaps_by_id[sid]
+            sits_1a = info.get('sits_1a', [])
+            sits_1b = info.get('sits_1b', [])
+            range_1a = f"{min(sits_1a)}-{max(sits_1a)}" if sits_1a else "?"
+            range_1b = f"{min(sits_1b)}-{max(sits_1b)}" if sits_1b else "?"
+            print(f"  {sid:>2} | {info['count']:>5} | {info['max_gap']:>7} | {range_1a:>10} | {range_1b:>8}")
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -119,8 +167,8 @@ if __name__ == '__main__':
     parser.add_argument(
         '--reps',
         type=int,
-        default=5,
-        help='Number of repetitions (default: 5)'
+        default=10,
+        help='Number of repetitions (default: 10)'
     )
     parser.add_argument(
         '--seed',

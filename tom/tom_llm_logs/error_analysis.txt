@@ -1,0 +1,141 @@
+====================================================================================================
+ToM ERROR ANALYSIS
+====================================================================================================
+
+Total records: 312 from 1 models
+Models: anthropic-claude-opus-4.6_think
+
+====================================================================================================
+ERROR TYPE ANALYSIS
+====================================================================================================
+
+AGGREGATE (All Models, All Extra Categories)
+================================================================================
+
+Total errors: 24
+
+Action Type Errors: 24 (100.0%)
+  With correct arguments: 22 (91.7%)
+  With wrong arguments: 2 (8.3%)
+
+  By substitution pattern:
+    Ask→Pass: 4 (correct args: 4, wrong args: 0)
+    Pass→Ask: 2 (correct args: 2, wrong args: 0)
+    Pass→Tell: 18 (correct args: 16, wrong args: 2)
+
+Argument Errors Only (correct action type): 0 (0.0%)
+
+  Argument error breakdown (across all error types):
+    Wrong player: 0
+    Wrong container: 0
+    Wrong contents: 2
+
+  By expected action type:
+    Pass expected: 20 errors
+      Action type errors: 20
+      Argument errors: 0
+    Ask expected: 4 errors
+      Action type errors: 4
+      Argument errors: 0
+
+--------------------------------------------------------------------------------
+BY EXTRA CATEGORY
+--------------------------------------------------------------------------------
+
+0A: 3 errors
+  Action type errors: 3 (100.0%) - correct args: 3, wrong args: 0
+  Argument only errors: 0 (0.0%)
+
+0B: 5 errors
+  Action type errors: 5 (100.0%) - correct args: 5, wrong args: 0
+  Argument only errors: 0 (0.0%)
+
+1A: 5 errors
+  Action type errors: 5 (100.0%) - correct args: 4, wrong args: 1
+  Argument only errors: 0 (0.0%)
+
+1B: 11 errors
+  Action type errors: 11 (100.0%) - correct args: 10, wrong args: 1
+  Argument only errors: 0 (0.0%)
+
+--------------------------------------------------------------------------------
+BY MODEL
+--------------------------------------------------------------------------------
+
+anthropic-claude-opus-4.6_think: 24 errors
+  Action type errors: 24 (100.0%) - correct args: 22, wrong args: 2
+  Argument only errors: 0 (0.0%)
+  Substitutions:
+    Ask→Pass: 4
+    Pass→Ask: 2
+    Pass→Tell: 18
+
+--------------------------------------------------------------------------------
+BY SCENARIO (Ask/Tell scenarios only)
+--------------------------------------------------------------------------------
+  Scenario 12 (Ask): 4 errors - type: 4 (100%), args: 0 (0%)
+
+====================================================================================================
+MASTERY CATEGORY ANALYSIS
+====================================================================================================
+
+--- Self: Knowledge vs Belief ---
+Description: Distinguishing own knowledge from mere belief
+
+  Scenarios [7, 8, 9] → Pass
+  Success: 36/36 = 100.0%
+
+  Scenarios [12, 13] → Ask
+  Success: 20/24 = 83.3%
+  Failures chose: {'Pass': 4}
+
+--- Teammate: Knowledge vs Belief ---
+Description: Distinguishing teammate knowledge from belief
+
+  Scenarios [20, 21, 22] → Pass
+  Success: 36/36 = 100.0%
+
+  Scenarios [17, 18, 19] → Tell
+  Success: 36/36 = 100.0%
+
+--- Combined Uncertainty ---
+Description: Handling self + teammate uncertainty together
+
+  Scenarios [10, 11, 23, 24] → Pass
+  Success: 34/48 = 70.8%
+  Failures chose: {'Ask': 2, 'Tell': 12}
+
+--- True vs False Belief ---
+Description: Distinguishing true belief from false belief
+
+  Scenarios [14, 15, 16] → Pass
+  Success: 36/36 = 100.0%
+
+  Scenarios [17, 18, 19] → Tell
+  Success: 36/36 = 100.0%
+
+--- Teammate vs Opponent ---
+Description: Treating teammate differently from opponent
+
+  Scenarios [12, 13] → Ask
+  Success: 20/24 = 83.3%
+  Failures chose: {'Pass': 4}
+
+  Scenarios [37, 39] → Pass
+  Success: 24/24 = 100.0%
+
+  Scenarios [30, 31, 32] → Pass
+  Success: 36/36 = 100.0%
+
+  Scenarios [17, 18, 19] → Tell
+  Success: 36/36 = 100.0%
+
+--- Strategic Lies ---
+Description: Knowing when lying is strategically effective vs. unnecessary
+
+  Scenarios [27, 28, 29] → Tell (Lie)
+  Success: 30/36 = 83.3%
+  Failures chose: {'Tell': 6}
+
+  Scenarios [30, 31, 32] → Pass
+  Success: 36/36 = 100.0%

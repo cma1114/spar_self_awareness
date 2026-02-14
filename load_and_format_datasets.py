@@ -46,8 +46,8 @@ def load_and_format_dataset(dataset_name, num_questions_needed=None, split=None,
             return load_and_format_popmc_filtered(num_questions_needed, skip_questions=skip_questions, shuffle_answers=shuffle_answers)
         else:
             return load_and_format_popmc_filtered(num_questions_needed, split=split, skip_questions=skip_questions, shuffle_answers=shuffle_answers)
-    elif dataset_name=="TriviaMC":
-        return load_and_format_triviamc(num_questions_needed, skip_questions=skip_questions, shuffle_answers=shuffle_answers)
+    elif "TriviaMC" in dataset_name:
+        return load_and_format_triviamc(num_questions_needed, skip_questions=skip_questions, shuffle_answers=shuffle_answers, filtered="filtered" in dataset_name)
     elif dataset_name=="Garupanese":
         if split is None:
             return load_and_format_garupanese(num_questions_needed, skip_questions=skip_questions)
@@ -1024,14 +1024,14 @@ def load_and_format_popmc_filtered(num_questions_needed=None, split="test", skip
     print(f"Successfully formatted {len(formatted_questions)} unique questions from PopMC_0_difficulty_filtered.")
     return formatted_questions
 
-def load_and_format_triviamc(num_questions_needed=None, split="test", skip_questions=None, shuffle_answers=True):
+def load_and_format_triviamc(num_questions_needed=None, split="test", skip_questions=None, shuffle_answers=True, filtered=False):
     """
     Loads the TriviaMC dataset from a local JSONL file and formats questions into the A-D multiple-choice format.
     """
     import json
     print(f"Attempting to load TriviaMC...")
     try:
-        filename = "./data/TriviaMC.jsonl"
+        filename = "./data/TriviaMC.jsonl" if not filtered else "./data/TriviaMC_difficulty_filtered.jsonl"
         with open(filename, 'r') as f:
             dataset = [json.loads(line) for line in f]
         print("TriviaMC Dataset loaded successfully.")
@@ -1047,7 +1047,7 @@ def load_and_format_triviamc(num_questions_needed=None, split="test", skip_quest
     question_ids_added = set()  # Keep track of IDs to ensure uniqueness
 
     if not num_questions_needed: num_questions_needed = len(dataset)
-    print(f"Formatting {num_questions_needed} questions from TriviaMC...")
+    print(f"Formatting {num_questions_needed} questions from TriviaMC{' (filtered)' if filtered else ''}...")
     for idx in dataset_indices:
         if len(formatted_questions) >= num_questions_needed:
             break

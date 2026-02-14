@@ -302,7 +302,7 @@ def process_file_groups(files_to_process, criteria_chain, model_name_for_log, gr
 # --- Main Analysis Logic ---
 if __name__ == "__main__":
 
-    dataset = "SimpleMC" #"MMLU"#"TriviaMC"#"PopMC_0_difficulty_filtered"#SimpleQA" # "Garupanese"#
+    dataset = "TriviaMC_difficulty_filtered" #"MMLU"#"TriviaMC"#"PopMC_0_difficulty_filtered"#SimpleQA" # "Garupanese"#
     game_type = "dg" #"aop"#
     output_entropy = False 
     USE_FILTERED_FOR_LOGRES = False #remove items where capabilites and game correctness disagree
@@ -322,8 +322,8 @@ if __name__ == "__main__":
     print(f"sqa feature lookup created with {len(sqa_feature_lookup)} entries.")
 
     game_logs_dir = "./delegate_game_logs/" if game_type == "dg" else "./pass_game_logs/"
-    capabilities_dir = "./compiled_results_sqa/" if dataset == "SimpleQA" else "./compiled_results_smc/" if dataset == "SimpleMC" else "./compiled_results_pmc/" if dataset == "PopMC_0_difficulty_filtered" else "./compiled_results_tmc/" if dataset == "TriviaMC" else "./compiled_results_mmlu/" if dataset == "MMLU" else  "./compiled_results_grp/"
-
+    capabilities_dir = "./compiled_results_sqa/" if dataset == "SimpleQA" else "./compiled_results_smc/" if dataset == "SimpleMC" else "./compiled_results_pmc/" if dataset == "PopMC_0_difficulty_filtered" else "./compiled_results_tmc/" if dataset == "TriviaMC" else "./compiled_results_tdf/" if dataset == "TriviaMC_difficulty_filtered" else "./compiled_results_mmlu/" if dataset == "MMLU" else  "./compiled_results_grp/"
+    
     if not os.path.isdir(game_logs_dir) or not os.path.isdir(capabilities_dir):
         print(f"Error: Ensure directories exist: {game_logs_dir}, {capabilities_dir}")
         exit()
@@ -1143,7 +1143,7 @@ if __name__ == "__main__":
 
 
     qtype = "factual" if dataset in ['SimpleQA', 'SimpleMC', 'PopMC_0_difficulty_filtered', 'TriviaMC', 'MMLU'] else "reasoning" if dataset in ['GPQA', 'GPSA'] else "translation"
-    rtype = "mc" if dataset in ['SimpleMC', 'GPQA', 'PopMC_0_difficulty_filtered', 'TriviaMC', 'MMLU'] else "sa"
+    rtype = "mc" if dataset in ['SimpleMC', 'GPQA', 'PopMC_0_difficulty_filtered', 'TriviaMC_difficulty_filtered', 'TriviaMC', 'MMLU'] else "sa"
     with open(f"res_dicts_{qtype}_{rtype}_{game_type}.json", 'w') as f:
         json.dump(res_dicts, f, indent=2)
 

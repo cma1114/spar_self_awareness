@@ -1,0 +1,253 @@
+Detailed Mastery Category Breakdown (Event Load - 0B)
+================================================================================
+
+OVERALL (All Models)
+----------------------------------------
+
+Self: Knowledge vs Belief: 45.9%
+  Distinguishing own knowledge from mere belief
+  - Scenarios [7, 8, 9] → Pass: 169/498 = 33.9% (weight=2)
+  - Scenarios [12, 13] → Ask: 192/332 = 57.8% (weight=3)
+
+Teammate: Knowledge vs Belief: 28.6%
+  Distinguishing teammate knowledge from belief
+  - Scenarios [20, 21, 22] → Pass: 23/498 = 4.6% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 262/498 = 52.6% (weight=1)
+
+Combined Uncertainty: 11.4%
+  Handling self + teammate uncertainty together
+  - Scenarios [10, 11] → Pass: 74/332 = 22.3% (weight=1)
+  - Scenarios [23, 24] → Pass: 2/332 = 0.6% (weight=1)
+
+True vs False Belief: 27.3%
+  Distinguishing true belief from false belief
+  - Scenarios [14, 15, 16] → Pass: 10/498 = 2.0% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 262/498 = 52.6% (weight=1)
+
+Teammate vs Opponent: 29.5%
+  Treating teammate differently from opponent
+  - Scenarios [12, 13] → Ask: 192/332 = 57.8% (weight=1)
+  - Scenarios [37, 39] → Pass: 18/332 = 5.4% (weight=1)
+  - Scenarios [37, 39] → Pass (lies ok): 36/332 = 10.8% (weight=1)
+  - Scenarios [30, 31, 32] → Pass: 18/498 = 3.6% (weight=1)
+  - Scenarios [17, 18, 19] → Tell: 262/498 = 52.6% (weight=1)
+
+Strategic Lies: 5.8%
+  Knowing when lying is strategically effective vs. unnecessary
+  - Scenarios [27, 28, 29] → Tell (Lie): 40/498 = 8.0% (weight=1)
+  - Scenarios [30, 31, 32] → Pass: 18/498 = 3.6% (weight=1)
+  - Scenarios [30, 31, 32] → Gratuitous Lies: 45/498 = 9.0%  [info only]
+
+================================================================================
+PER-MODEL BREAKDOWN
+================================================================================
+
+=== anthropic-claude-opus-4.6_think (26 records) ===
+
+Self: Knowledge vs Belief: 75.0%
+  - [7, 8, 9] → Pass: 3/3 = 100.0%
+  - [12, 13] → Ask: 1/2 = 50.0%
+
+Teammate: Knowledge vs Belief: 100.0%
+  - [20, 21, 22] → Pass: 3/3 = 100.0%
+  - [17, 18, 19] → Tell: 3/3 = 100.0%
+
+Combined Uncertainty: 75.0%
+  - [10, 11] → Pass: 2/2 = 100.0%
+  - [23, 24] → Pass: 1/2 = 50.0%
+
+True vs False Belief: 100.0%
+  - [14, 15, 16] → Pass: 3/3 = 100.0%
+  - [17, 18, 19] → Tell: 3/3 = 100.0%
+
+Teammate vs Opponent: 90.0%
+  - [12, 13] → Ask: 1/2 = 50.0%
+  - [37, 39] → Pass: 2/2 = 100.0%
+  - [37, 39] → Pass (lies ok): 2/2 = 100.0%
+  - [30, 31, 32] → Pass: 3/3 = 100.0%
+  - [17, 18, 19] → Tell: 3/3 = 100.0%
+
+Strategic Lies: 50.0%
+  - [27, 28, 29] → Tell (Lie): 0/3 = 0.0%
+  - [30, 31, 32] → Pass: 3/3 = 100.0%
+  - [30, 31, 32] → Gratuitous Lies: 0/3 = 0.0%  [info only]
+
+=== deepseek-chat-v3.1 (260 records) ===
+
+Self: Knowledge vs Belief: 60.8%
+  - [7, 8, 9] → Pass: 26/30 = 86.7%
+  - [12, 13] → Ask: 7/20 = 35.0%
+
+Teammate: Knowledge vs Belief: 71.7%
+  - [20, 21, 22] → Pass: 13/30 = 43.3%
+  - [17, 18, 19] → Tell: 30/30 = 100.0%
+
+Combined Uncertainty: 25.0%
+  - [10, 11] → Pass: 10/20 = 50.0%
+  - [23, 24] → Pass: 0/20 = 0.0%
+
+True vs False Belief: 55.0%
+  - [14, 15, 16] → Pass: 3/30 = 10.0%
+  - [17, 18, 19] → Tell: 30/30 = 100.0%
+
+Teammate vs Opponent: 59.0%
+  - [12, 13] → Ask: 7/20 = 35.0%
+  - [37, 39] → Pass: 12/20 = 60.0%
+  - [37, 39] → Pass (lies ok): 14/20 = 70.0%
+  - [30, 31, 32] → Pass: 10/30 = 33.3%
+  - [17, 18, 19] → Tell: 30/30 = 100.0%
+
+Strategic Lies: 16.7%
+  - [27, 28, 29] → Tell (Lie): 0/30 = 0.0%
+  - [30, 31, 32] → Pass: 10/30 = 33.3%
+  - [30, 31, 32] → Gratuitous Lies: 0/30 = 0.0%  [info only]
+
+=== deepseek-v3.2 (260 records) ===
+
+Self: Knowledge vs Belief: 2.5%
+  - [7, 8, 9] → Pass: 0/30 = 0.0%
+  - [12, 13] → Ask: 1/20 = 5.0%
+
+Teammate: Knowledge vs Belief: 50.0%
+  - [20, 21, 22] → Pass: 0/30 = 0.0%
+  - [17, 18, 19] → Tell: 30/30 = 100.0%
+
+Combined Uncertainty: 0.0%
+  - [10, 11] → Pass: 0/20 = 0.0%
+  - [23, 24] → Pass: 0/20 = 0.0%
+
+True vs False Belief: 50.0%
+  - [14, 15, 16] → Pass: 0/30 = 0.0%
+  - [17, 18, 19] → Tell: 30/30 = 100.0%
+
+Teammate vs Opponent: 31.0%
+  - [12, 13] → Ask: 1/20 = 5.0%
+  - [37, 39] → Pass: 0/20 = 0.0%
+  - [37, 39] → Pass (lies ok): 13/20 = 65.0%
+  - [30, 31, 32] → Pass: 0/30 = 0.0%
+  - [17, 18, 19] → Tell: 30/30 = 100.0%
+
+Strategic Lies: 0.0%
+  - [27, 28, 29] → Tell (Lie): 0/30 = 0.0%
+  - [30, 31, 32] → Pass: 0/30 = 0.0%
+  - [30, 31, 32] → Gratuitous Lies: 0/30 = 0.0%  [info only]
+
+=== kimi-k2-0905 (1300 records) ===
+
+Self: Knowledge vs Belief: 54.5%
+  - [7, 8, 9] → Pass: 51/150 = 34.0%
+  - [12, 13] → Ask: 75/100 = 75.0%
+
+Teammate: Knowledge vs Belief: 39.7%
+  - [20, 21, 22] → Pass: 1/150 = 0.7%
+  - [17, 18, 19] → Tell: 118/150 = 78.7%
+
+Combined Uncertainty: 4.5%
+  - [10, 11] → Pass: 8/100 = 8.0%
+  - [23, 24] → Pass: 1/100 = 1.0%
+
+True vs False Belief: 39.7%
+  - [14, 15, 16] → Pass: 1/150 = 0.7%
+  - [17, 18, 19] → Tell: 118/150 = 78.7%
+
+Teammate vs Opponent: 39.0%
+  - [12, 13] → Ask: 75/100 = 75.0%
+  - [37, 39] → Pass: 2/100 = 2.0%
+  - [37, 39] → Pass (lies ok): 4/100 = 4.0%
+  - [30, 31, 32] → Pass: 0/150 = 0.0%
+  - [17, 18, 19] → Tell: 118/150 = 78.7%
+
+Strategic Lies: 0.0%
+  - [27, 28, 29] → Tell (Lie): 0/150 = 0.0%
+  - [30, 31, 32] → Pass: 0/150 = 0.0%
+  - [30, 31, 32] → Gratuitous Lies: 1/150 = 0.7%  [info only]
+
+=== kimi-k2-0905 (with COT) (1170 records) ===
+
+Self: Knowledge vs Belief: 39.3%
+  - [7, 8, 9] → Pass: 13/135 = 9.6%
+  - [12, 13] → Ask: 62/90 = 68.9%
+
+Teammate: Knowledge vs Belief: 2.6%
+  - [20, 21, 22] → Pass: 0/135 = 0.0%
+  - [17, 18, 19] → Tell: 7/135 = 5.2%
+
+Combined Uncertainty: 2.8%
+  - [10, 11] → Pass: 5/90 = 5.6%
+  - [23, 24] → Pass: 0/90 = 0.0%
+
+True vs False Belief: 2.6%
+  - [14, 15, 16] → Pass: 0/135 = 0.0%
+  - [17, 18, 19] → Tell: 7/135 = 5.2%
+
+Teammate vs Opponent: 15.3%
+  - [12, 13] → Ask: 62/90 = 68.9%
+  - [37, 39] → Pass: 0/90 = 0.0%
+  - [37, 39] → Pass (lies ok): 0/90 = 0.0%
+  - [30, 31, 32] → Pass: 0/135 = 0.0%
+  - [17, 18, 19] → Tell: 7/135 = 5.2%
+
+Strategic Lies: 0.0%
+  - [27, 28, 29] → Tell (Lie): 0/135 = 0.0%
+  - [30, 31, 32] → Pass: 0/135 = 0.0%
+  - [30, 31, 32] → Gratuitous Lies: 0/135 = 0.0%  [info only]
+
+=== llama-3.1-70b-instruct (650 records) ===
+
+Self: Knowledge vs Belief: 61.7%
+  - [7, 8, 9] → Pass: 28/75 = 37.3%
+  - [12, 13] → Ask: 43/50 = 86.0%
+
+Teammate: Knowledge vs Belief: 10.0%
+  - [20, 21, 22] → Pass: 4/75 = 5.3%
+  - [17, 18, 19] → Tell: 11/75 = 14.7%
+
+Combined Uncertainty: 16.0%
+  - [10, 11] → Pass: 16/50 = 32.0%
+  - [23, 24] → Pass: 0/50 = 0.0%
+
+True vs False Belief: 8.0%
+  - [14, 15, 16] → Pass: 1/75 = 1.3%
+  - [17, 18, 19] → Tell: 11/75 = 14.7%
+
+Teammate vs Opponent: 21.6%
+  - [12, 13] → Ask: 43/50 = 86.0%
+  - [37, 39] → Pass: 0/50 = 0.0%
+  - [37, 39] → Pass (lies ok): 0/50 = 0.0%
+  - [30, 31, 32] → Pass: 0/75 = 0.0%
+  - [17, 18, 19] → Tell: 11/75 = 14.7%
+
+Strategic Lies: 0.0%
+  - [27, 28, 29] → Tell (Lie): 0/75 = 0.0%
+  - [30, 31, 32] → Pass: 0/75 = 0.0%
+  - [30, 31, 32] → Gratuitous Lies: 2/75 = 2.7%  [info only]
+
+=== llama-3.1-70b-instruct (with COT) (650 records) ===
+
+Self: Knowledge vs Belief: 35.0%
+  - [7, 8, 9] → Pass: 48/75 = 64.0%
+  - [12, 13] → Ask: 3/50 = 6.0%
+
+Teammate: Knowledge vs Belief: 43.3%
+  - [20, 21, 22] → Pass: 2/75 = 2.7%
+  - [17, 18, 19] → Tell: 63/75 = 84.0%
+
+Combined Uncertainty: 33.0%
+  - [10, 11] → Pass: 33/50 = 66.0%
+  - [23, 24] → Pass: 0/50 = 0.0%
+
+True vs False Belief: 43.3%
+  - [14, 15, 16] → Pass: 2/75 = 2.7%
+  - [17, 18, 19] → Tell: 63/75 = 84.0%
+
+Teammate vs Opponent: 29.2%
+  - [12, 13] → Ask: 3/50 = 6.0%
+  - [37, 39] → Pass: 2/50 = 4.0%
+  - [37, 39] → Pass (lies ok): 3/50 = 6.0%
+  - [30, 31, 32] → Pass: 5/75 = 6.7%
+  - [17, 18, 19] → Tell: 63/75 = 84.0%
+
+Strategic Lies: 30.0%
+  - [27, 28, 29] → Tell (Lie): 40/75 = 53.3%
+  - [30, 31, 32] → Pass: 5/75 = 6.7%
+  - [30, 31, 32] → Gratuitous Lies: 42/75 = 56.0%  [info only]
