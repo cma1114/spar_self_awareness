@@ -1,0 +1,53 @@
+================================================================================
+REP CONSISTENCY ANALYSIS
+================================================================================
+
+Files analyzed:
+  - anthropic-claude-opus-4.6_think_1771016556_game_data.json
+  - anthropic-claude-opus-4.6_think_1771085885_game_data.json
+
+Scenarios compared: 104
+
+OVERALL CONSISTENCY
+----------------------------------------
+Action type consistent: 93/104 (89.4%)
+Action fully consistent: 79/104 (76.0%)
+Accuracy consistent:     93/104 (89.4%)
+
+BY EXTRA CATEGORY
+----------------------------------------
+  0A: 25/26 type consistent (96.2%)
+  0B: 25/26 type consistent (96.2%)
+  1A: 24/26 type consistent (92.3%)
+  1B: 19/26 type consistent (73.1%)
+
+BY SCENARIO ID (action type consistency)
+----------------------------------------
+Scenarios with inconsistent action types:
+  ID 10: 3/4 consistent (75.0%)
+  ID 11: 3/4 consistent (75.0%)
+  ID 12: 3/4 consistent (75.0%)
+  ID 13: 3/4 consistent (75.0%)
+  ID 15: 3/4 consistent (75.0%)
+  ID 24: 0/4 consistent (0.0%)
+  ID 27: 3/4 consistent (75.0%)
+  ID 29: 3/4 consistent (75.0%)
+
+DETAILED INCONSISTENCIES
+----------------------------------------
+
+ID  Extra  Optimal  |  Rep 1 Action    Rep 2 Action
+--- -----  -------  |  -------------   -------------
+10  1B     Pass     |  Ask*              Pass           
+11  1B     Pass     |  Pass              Ask*           
+12  1B     Ask(B, bag)  |  Pass*             Ask            
+13  1A     Ask(B, box)  |  Ask               Pass*          
+15  1B     Pass     |  Pass              Tell*          
+24  0A     Pass     |  Pass              Tell*          
+24  0B     Pass     |  Pass              Tell*          
+24  1A     Pass     |  Pass              Tell*          
+24  1B     Pass     |  Pass              Tell*          
+27  1B     Pass     |  Tell*             Pass           
+29  1B     Pass     |  Pass              Tell*          
+
+* = incorrect action

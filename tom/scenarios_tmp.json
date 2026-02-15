@@ -15,46 +15,14 @@
     {
       "round_num": 1,
       "whose_turn": "A",
-      "who_answers": "B",
-      "question_container": "box",
+      "who_answers": "A",
+      "question_container": "basket",
       "events": [
         {
           "event_type": "put",
-          "character": "B",
-          "container": "box",
-          "item": "banana",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "B",
-          "container": null,
-          "item": null,
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "move",
-          "character": "C",
-          "container": null,
-          "item": "banana",
-          "from_container": "box",
-          "to_container": "bag"
-        },
-        {
-          "event_type": "put",
-          "character": "D",
-          "container": "box",
-          "item": "orange",
-          "from_container": null,
-          "to_container": null
-        },
-        {
-          "event_type": "leave",
-          "character": "D",
-          "container": null,
-          "item": null,
+          "character": "A",
+          "container": "basket",
+          "item": "ball",
           "from_container": null,
           "to_container": null
         },
@@ -70,17 +38,23 @@
       "present_initially": [
         "A",
         "B",
-        "C",
-        "D"
+        "C"
       ],
-      "id": "17",
-      "extra": null,
+      "id": "7",
+      "extra": "0A",
       "epistemic_type": null,
       "ask_constraint": null,
       "ks_self": "Knows X",
-      "ks_teammate": "Believes False",
+      "ks_teammate": "Knows Truth",
       "ks_opponent": "Believes Truth",
-      "correct_action": "Tell Teammate"
+      "correct_action": "Pass",
+      "situation_event_count": 2,
+      "epistemic_transitions": {
+        "certainty": 1,
+        "accuracy": 0,
+        "total": 1
+      },
+      "rep": null
     }
   ]
 }

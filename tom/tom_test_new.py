@@ -508,23 +508,37 @@ if TORCH_AVAILABLE:
 
         def _run_single_session(self, chartypes, outfile_tmp, KEEP_SCENARIO_FILES):
             """Original behavior: run all specs in one session."""
-            # If history_mode is "none" and reps > 1, multiply specs here
-            specs_to_run = self.specs * self.reps if self.history_mode == "none" else self.specs
+            scenarios_per_rep = len(self.specs)
 
-            # Determine trial order (don't shuffle if using pre-generated scenarios)
-            indexed_specs = list(enumerate(specs_to_run))
-            if self.history_mode != "none" and not self.pre_generated:
-                random.shuffle(indexed_specs)
-                self._log(f"Randomized trial order for history_mode='{self.history_mode}'")
+            if self.pre_generated:
+                # When using pre-generated scenarios, calculate offset based on start_rep
+                start_idx = (self.start_rep - 1) * scenarios_per_rep
+                end_idx = start_idx + (self.reps * scenarios_per_rep)
+                # Build indexed_specs with scenario indices from start_idx to end_idx
+                indexed_specs = [(i, self.specs[i % scenarios_per_rep])
+                                 for i in range(start_idx, end_idx)]
+                total_trials = len(indexed_specs)
+                self._log(f"Running reps {self.start_rep} to {self.start_rep + self.reps - 1} "
+                         f"(scenarios {start_idx} to {end_idx - 1})")
+            else:
+                # On-the-fly generation: multiply specs (original behavior)
+                specs_to_run = self.specs * self.reps if self.history_mode == "none" else self.specs
+                indexed_specs = list(enumerate(specs_to_run))
+                total_trials = len(indexed_specs)
+                if self.history_mode != "none" and not self.pre_generated:
+                    random.shuffle(indexed_specs)
+                    self._log(f"Randomized trial order for history_mode='{self.history_mode}'")
 
             for trial_num, (spec_idx, spec) in enumerate(indexed_specs, start=1):
                 self.current_trial = trial_num if self.history_mode != "none" else 0
+                # Update current_rep based on which rep this scenario belongs to
+                self.current_rep = (spec_idx // scenarios_per_rep) + 1
 
-                self._log(f"\n--- Running Trial {trial_num}/{len(specs_to_run)} (Spec ID {spec_idx+1}): {spec} ---")
+                self._log(f"\n--- Running Trial {trial_num}/{total_trials} (Rep {self.current_rep}, Spec ID {spec_idx % scenarios_per_rep + 1}): {spec} ---")
 
                 if self.pre_generated:
                     # Use pre-generated scenario
-                    scenario_idx = spec_idx  # Direct mapping for single session
+                    scenario_idx = spec_idx
                     if scenario_idx >= len(self.pre_generated):
                         self._log(f"ERROR: scenario_idx {scenario_idx} out of range (max {len(self.pre_generated)-1})")
                         continue
@@ -972,7 +986,7 @@ It is {turn_name} turn.
             history_mode=history_mode if llm_player else None,
             trial=current_trial if history_mode != "none" else None,
             pause_mode=PAUSE_MODE,
-            rep=current_rep if llm_player and history_mode != "none" else None,
+            rep=scenario.rep,
             seed=llm_player.current_seed if llm_player and hasattr(llm_player, 'current_seed') else None,
             situation_event_count=scenario.situation_event_count,
             ect_certainty=scenario.epistemic_transitions.get('certainty') if scenario.epistemic_transitions else None,
