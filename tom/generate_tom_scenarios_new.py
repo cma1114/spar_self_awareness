@@ -3,9 +3,10 @@ import copy
 from collections import defaultdict
 from tom_helpers import (
     Scenario, Event, EpistemicState, CharacterType,
-    save_scenarios, SpecTuple, read_specs_from_csv
+    save_scenarios, load_scenarios, SpecTuple, read_specs_from_csv
 )
 from typing import List, Optional, Tuple, Set, Dict
+from validate_scenarios import validate_scenario
 from dataclasses import dataclass
 
 ITEMS_GEN = ['apple', 'ball', 'banana', 'brick', 'stapler', 'orange']
@@ -788,6 +789,7 @@ def _validate_invariants(s: 'Scenario') -> None:
     Defensive checks to catch logical errors early:
       - No one acts after leaving.
       - No put into a non-empty container.
+      - Move item matches actual container contents.
     """
     present = set(s.present_initially)
     contents = {c: None for c in CONTAINERS_GEN}
@@ -807,6 +809,8 @@ def _validate_invariants(s: 'Scenario') -> None:
                 raise ValueError(f"Event {idx}: {e.character} acted after leaving.")
             if contents[e.from_container] is None:
                 raise ValueError(f"Event {idx}: move from empty {e.from_container}.")
+            if contents[e.from_container] != e.item:
+                raise ValueError(f"Event {idx}: move claims item '{e.item}' but {e.from_container} contains '{contents[e.from_container]}'.")
             if contents[e.to_container] is not None:
                 raise ValueError(f"Event {idx}: move to non-empty {e.to_container} (contains {contents[e.to_container]}).")
             contents[e.to_container] = e.item
@@ -1208,9 +1212,12 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     # 50% chance: use a DIFFERENT item (adds variety without affecting certainty ECTs)
     # The answerer's certainty transitions (knowledge ↔ belief) depend on presence/absence,
     # not on which specific item is in the container.
+    # IMPORTANT: Only use variation if queried container is NOT used by later base events,
+    # because those events expect initial_item to be there.
     valid_movers2 = [c for c in valid_movers if c != mover1]
     mover2 = rng.choice(valid_movers2) if valid_movers2 else mover1
-    if rng.random() < 0.5:
+    queried_used_after = queried in containers_used_after
+    if rng.random() < 0.5 and not queried_used_after:
         # Variation: put a different item in queried container
         # Original item stays in temp_container, new item goes in 'queried'
         # Exclude all items currently in any container
@@ -1954,7 +1961,8 @@ def insert_n_filler_events(scenario: Scenario, rng: random.Random, n: int) -> No
     """Insert exactly n neutral filler events for Extra=0A/0B scenarios.
 
     If n=0, does nothing (minimal scenario for 0A).
-    If n>0, generates n moves/puts on non-target containers.
+    If n>0, generates n moves/puts on non-target containers, falling back to
+    leave/enter pairs when container capacity is exhausted.
 
     Unlike insert_filler_events() which aims for SIT parity with 1B,
     this function adds a fixed number of filler events.
@@ -1993,19 +2001,37 @@ def insert_n_filler_events(scenario: Scenario, rng: random.Random, n: int) -> No
     if not present:
         return  # No one present to do filler events
 
+    # Track who has observed the target (for ECT-safe leave/enter)
+    chars_observed_target = set()
+    obs_present = set(scenario.present_initially)
+    for idx, event in enumerate(scenario.events):
+        if idx >= insert_idx:
+            break
+        if event.event_type == 'put' and event.container == target:
+            chars_observed_target.update(obs_present)
+        elif event.event_type == 'move' and (event.from_container == target or event.to_container == target):
+            chars_observed_target.update(obs_present)
+        if event.event_type == 'leave':
+            obs_present.discard(event.character)
+        elif event.event_type == 'enter':
+            obs_present.add(event.character)
+
+    # Compute characters who are OUT at insert_idx and haven't observed target (ECT-safe for enter/leave pairs)
+    all_chars = {'A', 'B', 'C', 'D'}
+    chars_out_without_observing = [c for c in sorted(all_chars - present)
+                                   if c not in chars_observed_target and c != 'A']
+
     # Find containers used by events AFTER insert_idx - we must avoid these
     # because our filler events will be inserted BEFORE those events
     containers_used_after = _get_containers_used_after(scenario, insert_idx)
 
     # Filter non-targets to only those not used after insert_idx
     safe_non_targets = [c for c in non_targets if c not in containers_used_after]
-    if len(safe_non_targets) < 1:
-        return  # No safe containers for filler
 
     events_to_add = []
     present_list = sorted(present)
-    # Use only safe containers (may be 1 or 2)
-    nt0 = safe_non_targets[0]
+    # Use only safe containers (may be 0, 1, or 2)
+    nt0 = safe_non_targets[0] if len(safe_non_targets) > 0 else None
     nt1 = safe_non_targets[1] if len(safe_non_targets) > 1 else None
 
     # Generate n filler events (puts/moves on non-target containers)
@@ -2015,42 +2041,114 @@ def insert_n_filler_events(scenario: Scenario, rng: random.Random, n: int) -> No
     available_items = [i for i in ITEMS_GEN if i not in used_items]
     last_actor = None
 
+    # Track characters who have left WITHOUT observing target (ECT-safe for enter)
+    chars_who_left = []
+
     for _ in range(n):
         actor = _choose_different_actor(present, last_actor, rng)
         last_actor = actor
+        added_event = False
 
-        # Handle single-container case (nt1 is None)
-        if nt1 is None:
-            # Only one safe container - can only put if empty
-            if contents[nt0] is None and available_items:
-                item = rng.choice(available_items)
-                events_to_add.append(Event('put', actor, container=nt0, item=item))
-                contents[nt0] = item
-            # If nt0 has item or no available items, skip (can't move with one container)
-            continue
+        # Try container-based filler first
+        if nt0 is not None:
+            if nt1 is None:
+                # Only one safe container - can only put if empty
+                if contents[nt0] is None and available_items:
+                    item = available_items.pop(rng.randint(0, len(available_items) - 1))
+                    events_to_add.append(Event('put', actor, container=nt0, item=item))
+                    contents[nt0] = item
+                    added_event = True
+            else:
+                # Two containers available - alternate between puts and moves
+                if contents[nt0] is None and contents[nt1] is None:
+                    # Both empty: put an item
+                    if available_items:
+                        item = available_items.pop(rng.randint(0, len(available_items) - 1))
+                        target_container = rng.choice([nt0, nt1])
+                        events_to_add.append(Event('put', actor, container=target_container, item=item))
+                        contents[target_container] = item
+                        added_event = True
+                elif contents[nt0] is not None and contents[nt1] is None:
+                    # nt0 has item, nt1 empty: move to nt1
+                    events_to_add.append(Event('move', actor, from_container=nt0, to_container=nt1, item=contents[nt0]))
+                    contents[nt1] = contents[nt0]
+                    contents[nt0] = None
+                    added_event = True
+                elif contents[nt0] is None and contents[nt1] is not None:
+                    # nt1 has item, nt0 empty: move to nt0
+                    events_to_add.append(Event('move', actor, from_container=nt1, to_container=nt0, item=contents[nt1]))
+                    contents[nt0] = contents[nt1]
+                    contents[nt1] = None
+                    added_event = True
 
-        # Two containers available - alternate between puts and moves
-        if contents[nt0] is None and contents[nt1] is None:
-            # Both empty: put an item
-            if not available_items:
-                continue
-            item = rng.choice(available_items)
-            target_container = rng.choice([nt0, nt1])
-            events_to_add.append(Event('put', actor, container=target_container, item=item))
-            contents[target_container] = item
-        elif contents[nt0] is not None and contents[nt1] is None:
-            # nt0 has item, nt1 empty: move to nt1
-            events_to_add.append(Event('move', actor, from_container=nt0, to_container=nt1, item=contents[nt0]))
-            contents[nt1] = contents[nt0]
-            contents[nt0] = None
-        elif contents[nt0] is None and contents[nt1] is not None:
-            # nt1 has item, nt0 empty: move to nt0
-            events_to_add.append(Event('move', actor, from_container=nt1, to_container=nt0, item=contents[nt1]))
-            contents[nt0] = contents[nt1]
-            contents[nt1] = None
-        else:
-            # Both have items: can't add filler without overflow - skip this iteration
-            continue
+        # Fallback: use leave/enter pairs when container capacity exhausted
+        # IMPORTANT: Only use characters who haven't observed target (ECT-safe)
+        # to avoid adding ECT #1 (knowledge -> belief) which would cause ECT drift
+        if not added_event:
+            # Priority 1: bring back someone who left during filler insertion
+            # Skip anyone who's already present (may have been brought back via Priority 2)
+            while chars_who_left and not added_event:
+                char_to_enter = chars_who_left.pop(0)
+                if char_to_enter not in present:
+                    events_to_add.append(Event('enter', char_to_enter))
+                    present.add(char_to_enter)
+                    added_event = True
+            # Priority 2: bring back someone who is OUT and hasn't observed target
+            if not added_event and chars_out_without_observing:
+                # Find first character who is NOT currently present
+                char_to_enter = None
+                for c in list(chars_out_without_observing):
+                    if c not in present:
+                        char_to_enter = c
+                        chars_out_without_observing.remove(c)
+                        break
+                if char_to_enter:
+                    events_to_add.append(Event('enter', char_to_enter))
+                    present.add(char_to_enter)
+                    chars_who_left.append(char_to_enter)  # Add to chars_who_left so they can leave again
+                    added_event = True
+            # Priority 3: have someone leave who hasn't observed target
+            if not added_event:
+                # Have someone leave (not A, must be present, must NOT have observed target)
+                leavers = [c for c in sorted(present) if c != 'A' and c not in chars_observed_target]
+                if leavers:
+                    char_to_leave = rng.choice(leavers)
+                    events_to_add.append(Event('leave', char_to_leave))
+                    present.discard(char_to_leave)
+                    chars_who_left.append(char_to_leave)
+                    added_event = True
+
+            # NOTE: We intentionally do NOT use non-ECT-safe fallback here.
+            # Using characters who observed the target would add ECT to 1A,
+            # potentially violating the ECT(1B) > ECT(1A) constraint.
+            # Accept bounded SIT gaps rather than break ECT ordering.
+
+    # If anyone is still out, bring them back before inserting
+    # Only add enter for chars who are NOT currently present (they may have been brought back during the loop)
+    for char in chars_who_left:
+        if char not in present:
+            events_to_add.append(Event('enter', char))
+
+    # DEBUG: Validate events before inserting
+    debug_present = set(scenario.present_initially)
+    for idx, event in enumerate(scenario.events[:insert_idx]):
+        if event.event_type == 'leave':
+            debug_present.discard(event.character)
+        elif event.event_type == 'enter':
+            debug_present.add(event.character)
+
+    for evt in events_to_add:
+        if evt.event_type == 'enter' and evt.character in debug_present:
+            raise ValueError(f"BUG: About to insert enter for {evt.character} but they're in debug_present={debug_present}. "
+                           f"chars_who_left={chars_who_left}, chars_out_without_observing={chars_out_without_observing}, "
+                           f"present={present}, events_to_add={([(e.event_type, e.character) for e in events_to_add])}")
+        elif evt.event_type == 'leave' and evt.character not in debug_present:
+            raise ValueError(f"BUG: About to insert leave for {evt.character} but they're not in debug_present={debug_present}")
+
+        if evt.event_type == 'enter':
+            debug_present.add(evt.character)
+        elif evt.event_type == 'leave':
+            debug_present.discard(evt.character)
 
     for i, evt in enumerate(events_to_add):
         scenario.events.insert(insert_idx + i, evt)
@@ -2170,26 +2268,33 @@ def insert_adaptive_filler_events(scenario: Scenario, rng: random.Random, n: int
 
     # Track which characters have observed the target container (up to insert_idx)
     # These characters CANNOT do leave/enter pairs (would trigger ECT #1)
+    # Also track characters who left WITHOUT observing - they can do enter/leave pairs
     # CRITICAL: Must reset present to fresh state before this loop
     present = set(scenario.present_initially)
     chars_observed_target = set()
+    chars_left_without_observing = []  # Characters who left before seeing target
     for idx, event in enumerate(scenario.events):
         if idx >= insert_idx:
             break
-        # Update presence first
-        if event.event_type == 'leave':
-            present.discard(event.character)
-        elif event.event_type == 'enter':
-            present.add(event.character)
-        # Then check if target was observed
+        # Check if target was observed BEFORE updating presence
         if event.event_type == 'put' and event.container == target:
             chars_observed_target.update(present)
         elif event.event_type == 'move' and (event.from_container == target or event.to_container == target):
             chars_observed_target.update(present)
+        # Then update presence
+        if event.event_type == 'leave':
+            if event.character not in chars_observed_target and event.character != 'A':
+                chars_left_without_observing.append(event.character)
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
     # present is now correct at insert_idx
 
-    # Characters who can do leave/enter pairs (haven't observed target, not A)
+    # Characters who can do leave/enter pairs (present, haven't observed target, not A)
     can_leave_enter = [c for c in present if c not in chars_observed_target and c != 'A']
+    # Characters who left without observing AND are not currently present can do enter/leave pairs
+    # (they left and didn't come back, so we can bring them back then have them leave)
+    can_enter_leave = [c for c in chars_left_without_observing if c not in present]
 
     # Find containers used by events AFTER insert_idx - we must avoid these
     containers_used_after = _get_containers_used_after(scenario, insert_idx)
@@ -2239,6 +2344,17 @@ def insert_adaptive_filler_events(scenario: Scenario, rng: random.Random, n: int
                 events_to_add.append(Event('enter', leaver))
                 can_leave_enter.remove(leaver)
                 events_added += 2
+            elif can_enter_leave and remaining >= 2:
+                # Bring back someone who left without observing, then have them leave
+                enterer = can_enter_leave.pop(0)
+                events_to_add.append(Event('enter', enterer))
+                events_to_add.append(Event('leave', enterer))
+                events_added += 2
+            elif can_enter_leave and remaining == 1:
+                # Just bring back someone who left without observing (single event)
+                enterer = can_enter_leave.pop(0)
+                events_to_add.append(Event('enter', enterer))
+                events_added += 1
             else:
                 break  # Cannot add more events
             continue
@@ -2254,6 +2370,17 @@ def insert_adaptive_filler_events(scenario: Scenario, rng: random.Random, n: int
                     events_to_add.append(Event('enter', leaver))
                     can_leave_enter.remove(leaver)
                     events_added += 2
+                    continue
+                elif can_enter_leave and remaining >= 2:
+                    enterer = can_enter_leave.pop(0)
+                    events_to_add.append(Event('enter', enterer))
+                    events_to_add.append(Event('leave', enterer))
+                    events_added += 2
+                    continue
+                elif can_enter_leave and remaining == 1:
+                    enterer = can_enter_leave.pop(0)
+                    events_to_add.append(Event('enter', enterer))
+                    events_added += 1
                     continue
                 break  # Cannot add more events
             item = available_items.pop(rng.randint(0, len(available_items) - 1))
@@ -2282,6 +2409,15 @@ def insert_adaptive_filler_events(scenario: Scenario, rng: random.Random, n: int
                 events_to_add.append(Event('enter', leaver))
                 can_leave_enter.remove(leaver)
                 events_added += 2
+            elif can_enter_leave and remaining >= 2:
+                enterer = can_enter_leave.pop(0)
+                events_to_add.append(Event('enter', enterer))
+                events_to_add.append(Event('leave', enterer))
+                events_added += 2
+            elif can_enter_leave and remaining == 1:
+                enterer = can_enter_leave.pop(0)
+                events_to_add.append(Event('enter', enterer))
+                events_added += 1
             else:
                 break  # Cannot add more events
 
@@ -2437,6 +2573,11 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             if not scenario_e0a.events:
                 raise ValueError(f"Generated scenario {scenario_e0a.id} Extra={scenario_e0a.extra} has no events")
 
+            # Epistemic state validation
+            epistemic_errors = validate_scenario(scenario_e0a, e0a_spec)
+            if epistemic_errors:
+                raise ValueError(f"ID={row['Id']} Extra=0A epistemic mismatch: {epistemic_errors}")
+
             scenarios.append(scenario_e0a)
             scenario_idx += 1
 
@@ -2461,44 +2602,30 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             if not scenario_e0b.events:
                 raise ValueError(f"Generated scenario {scenario_e0b.id} Extra={scenario_e0b.extra} has no events")
 
+            # Epistemic state validation
+            epistemic_errors = validate_scenario(scenario_e0b, e0b_spec)
+            if epistemic_errors:
+                raise ValueError(f"ID={row['Id']} Extra=0B epistemic mismatch: {epistemic_errors}")
+
             scenarios.append(scenario_e0b)
             scenario_idx += 1
 
-        # --- Extra=1A: Was Extra=0 - filler for SIT parity with 1B ---
+        # --- Extra=1A: Will be generated AFTER 1B to match its SIT exactly ---
+        # Store placeholder values; actual 1A generation happens after 1B
+        e1a_scenario_idx = scenario_idx if e1a_spec is not None else None
+        e1a_round_num = (scenario_idx // len(acting_chars)) + 1 if e1a_spec is not None else None
         if e1a_spec is not None:
-            scenario_e1a = copy.deepcopy(base_scenario)
-            scenario_e1a.extra = '1A'
-            scenario_e1a.round_num = (scenario_idx // len(acting_chars)) + 1
-            filler_seed = int(f"{seed or 0}{scenario_idx:03d}{int(row['Id']):04d}2")
-            filler_rng = random.Random(filler_seed)
-            insert_filler_events(scenario_e1a, filler_rng)  # Existing function (unchanged behavior)
+            scenario_idx += 1  # Reserve index for 1A
 
-            _validate_invariants(scenario_e1a)
-            v = _validate_teammate_belief_integrity(scenario_e1a)
-            if v > 0:
-                violation_stats['total'] += v
-                violation_stats['by_id'][row['Id']] += v
-                violation_stats['by_extra']['1A'] += v
-            scenario_e1a.situation_event_count = _count_visible_events(scenario_e1a)
-            scenario_e1a.epistemic_transitions = count_epistemic_category_transitions(scenario_e1a)
-
-            if not scenario_e1a.events:
-                raise ValueError(f"Generated scenario {scenario_e1a.id} Extra={scenario_e1a.extra} has no events")
-
-            scenarios.append(scenario_e1a)
-            e1a_sit = scenario_e1a.situation_event_count  # For SIT gap check with 1B
-            e1a_ect = scenario_e1a.epistemic_transitions['total']  # For ECT validation with 1B
-            scenario_idx += 1
-        else:
-            e1a_sit = None
-            e1a_ect = None
+        # Placeholder for 1A (will be set after 1B generation)
+        scenario_e1a = None
+        e1a_sit = None
+        e1a_ect = None
 
         # --- Extra=1B: Was Extra=1 - apply variation + extra events (adds ECT) ---
-        # Use rejection sampling to ensure SIT gap <= 3 with 1A
+        # Generate 1B first, then generate 1A to match its SIT exactly
         if e1b_spec is not None:
-            MAX_SIT_GAP = 3
             MAX_RETRIES = 10
-            sit_gap = 0
 
             for retry in range(MAX_RETRIES):
                 scenario_e1b = copy.deepcopy(base_scenario)
@@ -2515,38 +2642,40 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                 base_event_count = len(scenario_e1b.events)
                 answerer_state = _get_answerer_state(e1b_spec)
 
-                # Pre-compute whether to skip optional events to avoid SIT gap violations
-                # Optional events add SIT but no ECT, so they're semantically skippable
+                # Constrain 1B's SIT based on 1A's filler capacity
+                # This ensures 1A can always match 1B within MAX_SIT_GAP
+                MAX_SIT_GAP = 3
                 skip_opt = False
                 skip_teammate_reentry = False
-                if e1a_sit is not None and e1a_spec is not None:
-                    filler_cap = compute_filler_capacity(scenario_e1a)
-                    base_sit = _count_visible_events(scenario_e1b)
-                    max_allowed_1b_sit = e1a_sit + filler_cap + MAX_SIT_GAP
+
+                if e1a_spec is not None:
+                    filler_cap = compute_filler_capacity(base_scenario)
+                    base_sit = _count_visible_events(base_scenario)
+                    max_allowed_1b_sit = base_sit + filler_cap + MAX_SIT_GAP
 
                     # Check if teammate reentry applies (for any answerer_state)
                     teammate_reentry_applies = (e1b_spec['KS_Self'] == EpistemicState.BELIEVES_X and
                                                e1b_spec['KS_Teammate'] == EpistemicState.UNKNOWN)
                     teammate_reentry_events = 2 if teammate_reentry_applies else 0
 
+                    # Project 1B's SIT and determine if we need to skip optional events
+                    current_1b_sit = _count_visible_events(scenario_e1b)
+
                     if answerer_state == EpistemicState.BELIEVES_X:
                         # BELIEVES_X: mandatory = enter + 2 moves + leave = 4 SIT
                         mandatory_events = 4
                         optional_events = 2
-                        projected_with_all = base_sit + mandatory_events + teammate_reentry_events + optional_events
+                        projected_with_all = current_1b_sit + mandatory_events + teammate_reentry_events + optional_events
                         skip_opt = projected_with_all > max_allowed_1b_sit
-                        # Skip teammate reentry too if even without optional we'd exceed max
-                        projected_without_opt = base_sit + mandatory_events + teammate_reentry_events
+                        projected_without_opt = current_1b_sit + mandatory_events + teammate_reentry_events
                         skip_teammate_reentry = projected_without_opt > max_allowed_1b_sit
                     elif answerer_state == EpistemicState.KNOWS_TRUTH:
-                        # KNOWS_TRUTH: mandatory = leave + (maybe clear) + move_away + enter + revelation = 4-5 SIT
-                        # Optional = 1 leave (50% chance another character leaves)
-                        mandatory_events = 4  # leave, move_away, enter, revelation
+                        # KNOWS_TRUTH: mandatory = leave + move_away + enter + revelation = 4 SIT
+                        mandatory_events = 4
                         optional_events = 1
-                        projected_with_all = base_sit + mandatory_events + teammate_reentry_events + optional_events
+                        projected_with_all = current_1b_sit + mandatory_events + teammate_reentry_events + optional_events
                         skip_opt = projected_with_all > max_allowed_1b_sit
-                        # Skip teammate reentry if even without optional we'd exceed max
-                        projected_without_opt = base_sit + mandatory_events + teammate_reentry_events
+                        projected_without_opt = current_1b_sit + mandatory_events + teammate_reentry_events
                         skip_teammate_reentry = projected_without_opt > max_allowed_1b_sit
 
                 try:
@@ -2602,13 +2731,8 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                 scenario_e1b.situation_event_count = _count_visible_events(scenario_e1b)
                 scenario_e1b.epistemic_transitions = count_epistemic_category_transitions(scenario_e1b)
 
-                # Check SIT gap with 1A (if 1A was generated)
-                if e1a_sit is not None:
-                    sit_gap = abs(scenario_e1b.situation_event_count - e1a_sit)
-                    if sit_gap <= MAX_SIT_GAP:
-                        break
-                else:
-                    break  # No 1A to compare with
+                # Successfully generated 1B - exit retry loop
+                break
 
             # Check if we successfully added events (scenario has more events than base)
             base_event_count_final = len(base_scenario.events)
@@ -2621,8 +2745,49 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                 )
                 continue
 
-            # Validate: Extra=1B must have more ECTs than Extra=1A
-            if e1a_ect is not None:
+            # Epistemic state validation
+            epistemic_errors = validate_scenario(scenario_e1b, e1b_spec)
+            if epistemic_errors:
+                raise ValueError(f"ID={row['Id']} Extra=1B epistemic mismatch: {epistemic_errors}")
+
+            scenarios.append(scenario_e1b)
+            scenario_idx += 1
+
+            # --- Generate 1A with exact filler to match 1B's SIT ---
+            if e1a_spec is not None and e1a_scenario_idx is not None:
+                e1b_sit = scenario_e1b.situation_event_count
+                base_sit = _count_visible_events(base_scenario)
+                filler_count = e1b_sit - base_sit  # Exact filler needed to match 1B
+
+                scenario_e1a = copy.deepcopy(base_scenario)
+                scenario_e1a.extra = '1A'
+                scenario_e1a.round_num = e1a_round_num
+
+                filler_seed = int(f"{seed or 0}{e1a_scenario_idx:03d}{int(row['Id']):04d}2")
+                filler_rng = random.Random(filler_seed)
+
+                # Use insert_n_filler_events with exact count to match 1B's SIT
+                insert_n_filler_events(scenario_e1a, filler_rng, max(0, filler_count))
+
+                _validate_invariants(scenario_e1a)
+                v = _validate_teammate_belief_integrity(scenario_e1a)
+                if v > 0:
+                    violation_stats['total'] += v
+                    violation_stats['by_id'][row['Id']] += v
+                    violation_stats['by_extra']['1A'] += v
+                scenario_e1a.situation_event_count = _count_visible_events(scenario_e1a)
+                scenario_e1a.epistemic_transitions = count_epistemic_category_transitions(scenario_e1a)
+
+                if not scenario_e1a.events:
+                    raise ValueError(f"Generated scenario {scenario_e1a.id} Extra={scenario_e1a.extra} has no events")
+
+                # Epistemic state validation
+                epistemic_errors = validate_scenario(scenario_e1a, e1a_spec)
+                if epistemic_errors:
+                    raise ValueError(f"ID={row['Id']} Extra=1A epistemic mismatch: {epistemic_errors}")
+
+                # Validate: Extra=1B must have more ECTs than Extra=1A
+                e1a_ect = scenario_e1a.epistemic_transitions['total']
                 e1b_ect = scenario_e1b.epistemic_transitions['total']
                 if e1b_ect <= e1a_ect:
                     raise ValueError(
@@ -2630,51 +2795,53 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                         f"Extra=1A ECT={e1a_ect}. Extra=1B must add epistemic complexity."
                     )
 
-            scenarios.append(scenario_e1b)
-            scenario_idx += 1
+                # Insert 1A at its reserved position (before 1B)
+                # Find where 1B was inserted and insert 1A before it
+                scenarios.insert(len(scenarios) - 1, scenario_e1a)
 
-            # --- Adaptive filler for 1A: Balance SIT with 1B ---
-            if ADAPTIVE_FILLER_ENABLED and e1a_sit is not None:
-                e1b_sit = scenario_e1b.situation_event_count
-                sit_deficit = e1b_sit - e1a_sit
+                # Track SIT gap violations (gap > MAX_SIT_GAP)
+                final_1a_sit = scenario_e1a.situation_event_count
+                final_1b_sit = scenario_e1b.situation_event_count
+                final_gap = abs(final_1b_sit - final_1a_sit)
+                if final_gap > MAX_SIT_GAP:  # Only track violations
+                    sit_gap_stats['total'] += 1
+                    sid = row['Id']
+                    if sid not in sit_gap_stats['by_id']:
+                        sit_gap_stats['by_id'][sid] = {'count': 0, 'max_gap': 0, 'sits_1a': [], 'sits_1b': []}
+                    sit_gap_stats['by_id'][sid]['count'] += 1
+                    sit_gap_stats['by_id'][sid]['sits_1a'].append(final_1a_sit)
+                    sit_gap_stats['by_id'][sid]['sits_1b'].append(final_1b_sit)
+                    if final_gap > sit_gap_stats['by_id'][sid]['max_gap']:
+                        sit_gap_stats['by_id'][sid]['max_gap'] = final_gap
 
-                if sit_deficit > 0:
-                    # Add adaptive filler to 1A to match 1B event count
-                    adaptive_seed = int(f"{seed or 0}{scenario_idx:03d}{int(row['Id']):04d}3")
-                    adaptive_rng = random.Random(adaptive_seed)
+        # --- Fallback: Generate 1A if there's no 1B spec (standalone 1A) ---
+        if e1a_spec is not None and e1b_spec is None and e1a_scenario_idx is not None:
+            scenario_e1a = copy.deepcopy(base_scenario)
+            scenario_e1a.extra = '1A'
+            scenario_e1a.round_num = e1a_round_num
 
-                    old_ect = scenario_e1a.epistemic_transitions['total']
-                    added = insert_adaptive_filler_events(scenario_e1a, adaptive_rng, sit_deficit)
+            filler_seed = int(f"{seed or 0}{e1a_scenario_idx:03d}{int(row['Id']):04d}2")
+            filler_rng = random.Random(filler_seed)
+            insert_filler_events(scenario_e1a, filler_rng)  # Use standard filler
 
-                    # Validate no container overflow after adaptive filler
-                    _validate_invariants(scenario_e1a)
+            _validate_invariants(scenario_e1a)
+            v = _validate_teammate_belief_integrity(scenario_e1a)
+            if v > 0:
+                violation_stats['total'] += v
+                violation_stats['by_id'][row['Id']] += v
+                violation_stats['by_extra']['1A'] += v
+            scenario_e1a.situation_event_count = _count_visible_events(scenario_e1a)
+            scenario_e1a.epistemic_transitions = count_epistemic_category_transitions(scenario_e1a)
 
-                    # Update SIT count
-                    scenario_e1a.situation_event_count = _count_visible_events(scenario_e1a)
+            if not scenario_e1a.events:
+                raise ValueError(f"Generated scenario {scenario_e1a.id} Extra={scenario_e1a.extra} has no events")
 
-                    # Validate ECT unchanged (critical invariant)
-                    new_ect = count_epistemic_category_transitions(scenario_e1a)['total']
-                    if new_ect != old_ect:
-                        raise ValueError(
-                            f"ID {row['Id']} Extra=1A: Adaptive filler changed ECT "
-                            f"from {old_ect} to {new_ect}. Bug in filler event generation."
-                        )
-                    scenario_e1a.epistemic_transitions = count_epistemic_category_transitions(scenario_e1a)
+            # Epistemic state validation
+            epistemic_errors = validate_scenario(scenario_e1a, e1a_spec)
+            if epistemic_errors:
+                raise ValueError(f"ID={row['Id']} Extra=1A epistemic mismatch: {epistemic_errors}")
 
-            # Track SIT gap violations AFTER adaptive filler
-            final_1a_sit = scenario_e1a.situation_event_count
-            final_1b_sit = scenario_e1b.situation_event_count
-            final_gap = abs(final_1b_sit - final_1a_sit)
-            if final_gap > MAX_SIT_GAP:
-                sit_gap_stats['total'] += 1
-                sid = row['Id']
-                if sid not in sit_gap_stats['by_id']:
-                    sit_gap_stats['by_id'][sid] = {'count': 0, 'max_gap': 0, 'sits_1a': [], 'sits_1b': []}
-                sit_gap_stats['by_id'][sid]['count'] += 1
-                sit_gap_stats['by_id'][sid]['sits_1a'].append(final_1a_sit)
-                sit_gap_stats['by_id'][sid]['sits_1b'].append(final_1b_sit)
-                if final_gap > sit_gap_stats['by_id'][sid]['max_gap']:
-                    sit_gap_stats['by_id'][sid]['max_gap'] = final_gap
+            scenarios.append(scenario_e1a)
 
     # Final safeguard: ensure we generated scenarios if specs were provided
     if specs and not scenarios:
@@ -2686,6 +2853,34 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
     save_scenarios(scenarios, outfile, chars, chartypes)
 
     return {'violations': violation_stats, 'sit_gaps': sit_gap_stats}
+
+
+def validate_scenario_file(filepath: str) -> dict:
+    """
+    Validate all scenarios in a JSON file for item consistency and other invariants.
+
+    Args:
+        filepath: Path to the JSON scenario file to validate.
+
+    Returns:
+        dict with keys:
+            - 'total_scenarios': Number of scenarios in file
+            - 'errors': List of error dicts with 'id', 'extra', 'error' keys
+            - 'valid': True if no errors found
+    """
+    scenarios, _, _ = load_scenarios(filepath)
+    errors = []
+    for s in scenarios:
+        try:
+            _validate_invariants(s)
+        except ValueError as e:
+            errors.append({'id': s.id, 'extra': s.extra, 'error': str(e)})
+
+    return {
+        'total_scenarios': len(scenarios),
+        'errors': errors,
+        'valid': len(errors) == 0
+    }
 
 
 if __name__ == "__main__":

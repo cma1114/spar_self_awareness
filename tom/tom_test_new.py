@@ -52,8 +52,10 @@ Players do not have to tell the truth either in their Tell actions or in respons
 A team's points can go negative.
 
 ANSWER PHASE
-In the answer phase, I will ask a target player (not necessarily the player whose turn it is) to name the contents of one container. When a player answers my question correctly, their team gets 1 point. The first team to {WINNING_SCORE} points wins.
+In the answer phase, I will ask a target player (not necessarily the player whose turn it is) to name the contents of one container. When a player answers my question correctly, their team gets 1 point. {lose_text}The first team to {{WINNING_SCORE}} points wins.
 """
+
+LOSE_WARNING = "When a player answers my question incorrectly, their team loses 1 point. "
 
 # Pause mode controls whether "Time goes by." is added after "You leave the room."
 # Options: "none" (default - no change), "extra1" (Extra=1 scenarios only), "all" (all scenarios)
@@ -122,6 +124,7 @@ class TurnRecord:
     rep: Optional[int] = None  # Track which rep this trial belongs to
     seed: Optional[int] = None  # Seed used for scenario generation (for reproducibility)
     free_response: Optional[bool] = None  # Whether free response mode was enabled
+    lose: Optional[bool] = None  # Whether lose warning was shown in rules
     # Lie detection:
     lied_to_opponent_answerer: Optional[str] = None  # TRUE/FALSE when opponent is answerer and A tells them
     # Epistemic metrics:
@@ -390,7 +393,7 @@ def save_game_results(turn_records: List[TurnRecord], filename: str, game_setup_
 
 if TORCH_AVAILABLE:
     class ToMTestLLM(BaseGameClass):
-        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none", reps=1, seed=None, free_response=False, scenario_file=None, start_rep=1):
+        def __init__(self, subject_id, subject_name, specs: List[SpecTuple], log_dir="tom_llm_logs", history_mode="none", reps=1, seed=None, free_response=False, lose=False, scenario_file=None, start_rep=1):
             super().__init__(subject_id, subject_name, is_human_player=False, log_dir=log_dir)
             self.specs = specs  # Base specs (not multiplied by reps)
             self.reps = reps    # Number of reps
@@ -399,6 +402,7 @@ if TORCH_AVAILABLE:
             self.all_turn_records = []
             self.history_mode = history_mode
             self.free_response = free_response  # Whether to allow free-form responses
+            self.lose = lose  # Whether to show lose warning in rules
             self.start_rep = start_rep  # Which rep to start from (1-indexed)
             # For history mode: track completed trials
             self.completed_trials = []  # List of dicts: {trial, scenario_desc, question_desc, action, reasoning}
@@ -429,6 +433,7 @@ if TORCH_AVAILABLE:
             self._log("--- Starting LLM ToM Test ---")
             self._log(f"History mode: {self.history_mode}")
             self._log(f"Free response: {self.free_response}")
+            self._log(f"Lose warning: {self.lose}")
             self._log(f"Reps: {self.reps}")
             if self.seed is not None:
                 self._log(f"Base seed: {self.seed}")
@@ -717,7 +722,7 @@ It is your turn.
             return "\n\n".join(prompt_parts)
 
 
-def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None, run_all_scenarios: bool = False, max_tokens_override: Optional[int] = None):
+def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None, run_all_scenarios: bool = False, max_tokens_override: Optional[int] = None, lose: bool = False):
     """Play the game in CLI mode, for humans or LLMs.
 
     Args:
@@ -725,28 +730,31 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
         llm_player: Optional LLM player instance
         run_all_scenarios: If True, ignore winning score and run all scenarios (useful for testing)
         max_tokens_override: Optional override for max tokens (for retrying token-limited failures)
+        lose: Whether to show lose warning in rules
     """
     game = GameState(scenario_file=scenario_file)
     log = llm_player._log if llm_player else print
     is_human = llm_player is None
 
-    # Get history_mode, current trial, and free_response from llm_player if available
+    # Get history_mode, current trial, free_response, and lose from llm_player if available
     history_mode = getattr(llm_player, 'history_mode', 'none') if llm_player else 'none'
     current_trial = getattr(llm_player, 'current_trial', 0) if llm_player else 0
     current_rep = getattr(llm_player, 'current_rep', None) if llm_player else None
     free_response = getattr(llm_player, 'free_response', False) if llm_player else False
+    lose = getattr(llm_player, 'lose', lose) if llm_player else lose
 
     if run_all_scenarios:
         game.WINNING_SCORE = float('inf')  # Disable early termination
 
     # Build game setup text from template
-    GAME_SETUP = GAME_SETUP_TEMPLATE
-    
+    lose_text = LOSE_WARNING if lose else ""
+    GAME_SETUP = GAME_SETUP_TEMPLATE.format(lose_text=lose_text)
+
     if 'N' in game.characters:
         GAME_SETUP += """The Neutral party does not get any turns, but will answer any question honestly."""
-    
+
     game_setup_text = "=" * 70 + "\n" + GAME_SETUP.format(WINNING_SCORE=game.WINNING_SCORE) + "\n" + "=" * 70
-    
+
     # Store the formatted game_setup_text on llm_player for use in prompt_history (only on first trial)
     if llm_player and hasattr(llm_player, 'game_setup_text') and llm_player.game_setup_text is None:
         llm_player.game_setup_text = GAME_SETUP.format(WINNING_SCORE=game.WINNING_SCORE)
@@ -993,6 +1001,7 @@ It is {turn_name} turn.
             ect_accuracy=scenario.epistemic_transitions.get('accuracy') if scenario.epistemic_transitions else None,
             ect_total=scenario.epistemic_transitions.get('total') if scenario.epistemic_transitions else None,
             free_response=free_response if llm_player else None,
+            lose=lose,
             lied_to_opponent_answerer=lied_to_opponent_answerer,
         )
         game.turn_records.append(turn_record)
@@ -1060,6 +1069,11 @@ if __name__ == "__main__":
         help="Allow free-form responses with explanatory text (changes prompt wording and increases max tokens)"
     )
     parser.add_argument(
+        "--lose",
+        action="store_true",
+        help="Add warning that incorrect answers lose points"
+    )
+    parser.add_argument(
         "--scenario_file",
         type=str,
         default="scenarios_standardized.json",
@@ -1103,6 +1117,7 @@ if __name__ == "__main__":
             reps=args.reps,
             seed=args.seed,
             free_response=args.free_response,
+            lose=args.lose,
             scenario_file=args.scenario_file,
             start_rep=args.start_rep
         )
@@ -1116,7 +1131,7 @@ if __name__ == "__main__":
             #random.shuffle(specs)
             outfile = 'scenarios_tmp.json'#
             generate_scenarios_from_tuples([specs[i]], outfile=outfile, seed=None, chartypes = [CharacterType.LIVE_PLAYER, CharacterType.HONEST_OPPONENT, CharacterType.DISHONEST_TEAMMATE, CharacterType.DISHONEST_OPPONENT])
-            play_game_cli(scenario_file=outfile)
+            play_game_cli(scenario_file=outfile, lose=args.lose)
 
             play_again = input("\n\nDo you want to play another game? ([y]/n): ").lower().strip()
             if play_again not in ('y', ''):

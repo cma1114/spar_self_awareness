@@ -14,9 +14,9 @@ from typing import Dict, List, Tuple, Optional
 # =============================================================================
 # CONFIGURATION
 # =============================================================================
-# Runs to compare: (model_name, free_response)
-RUN_A = ('mistral-large-2512', True)   # mistral-large with COT
-RUN_B = ('mistral-small-24b-instruct-2501', True)  # mistral-small with COT
+# Runs to compare: (model_name, free_response, lose)
+RUN_A = ('kimi-k2-0905', False, False)
+RUN_B = ('kimi-k2-0905_new', False, False)
 
 # =============================================================================
 # ToM Mastery Categories (for tagging divergences)
@@ -151,11 +151,42 @@ def filter_valid_records(records: List[dict]) -> Tuple[List[dict], int]:
     return filtered, len(records) - len(filtered)
 
 
+def is_success(record: dict, lies_okay: bool = False) -> bool:
+    """Check if a record counts as a success.
+
+    Args:
+        record: A turn record dict
+        lies_okay: If True, lying to opponent answerer also counts as success
+
+    Returns:
+        True if was_optimal, or (lies_okay and lied_to_opponent_answerer=="TRUE")
+    """
+    if record.get('was_optimal'):
+        return True
+    if lies_okay and record.get('lied_to_opponent_answerer') == "TRUE":
+        return True
+    return False
+
+
+def summarize_actions(records: List[dict]) -> str:
+    """Return action distribution string like 'Pass=7, Ask=3'."""
+    counts = defaultdict(int)
+    for r in records:
+        action = get_action_from_record(r)
+        counts[action] += 1
+    return ', '.join(f"{a}={c}" for a, c in sorted(counts.items(), key=lambda x: -x[1]))
+
+
+def count_lies(records: List[dict]) -> int:
+    """Count records where model lied to opponent answerer."""
+    return sum(1 for r in records if r.get('lied_to_opponent_answerer') == "TRUE")
+
+
 # =============================================================================
 # Core comparison logic
 # =============================================================================
-def load_run_data(model: str, free_response: bool, logs_dir: str) -> List[dict]:
-    """Load all player A records for a specific model + free_response combo."""
+def load_run_data(model: str, free_response: bool, lose: bool, logs_dir: str) -> List[dict]:
+    """Load all player A records for a specific model + free_response + lose combo."""
     pattern = os.path.join(logs_dir, '*_game_data.json')
     files = glob.glob(pattern)
 
@@ -168,9 +199,12 @@ def load_run_data(model: str, free_response: bool, logs_dir: str) -> List[dict]:
         if not records:
             continue
 
-        # Check free_response (run-level setting)
+        # Check free_response and lose (run-level settings)
         file_fr = records[0].get('free_response')
+        file_lose = bool(records[0].get('lose'))
         if file_fr != free_response:
+            continue
+        if file_lose != lose:
             continue
 
         # Filter to player A
@@ -195,12 +229,17 @@ def aggregate_by_scenario(records: List[dict]) -> Dict[Tuple[str, str], dict]:
     result = {}
     for key, recs in grouped.items():
         n_optimal = sum(1 for r in recs if r.get('was_optimal'))
+        n_lies = count_lies(recs)
+        n_success_with_lies = sum(1 for r in recs if is_success(r, lies_okay=True))
         result[key] = {
             'n': len(recs),
             'n_optimal': n_optimal,
+            'n_lies': n_lies,
+            'n_success_with_lies': n_success_with_lies,
             'rate': n_optimal / len(recs) if recs else 0,
+            'rate_with_lies': n_success_with_lies / len(recs) if recs else 0,
             'records': recs,
-            'example': recs[0],  # Keep one example for details
+            'actions': summarize_actions(recs),
         }
     return result
 
@@ -234,8 +273,6 @@ def compare_runs(agg_a: dict, agg_b: dict) -> dict:
             'a_n': a['n'],
             'b_n': b['n'],
             'delta': delta,
-            'a_example': a['example'],
-            'b_example': b['example'],
             'a_records': a['records'],
             'b_records': b['records'],
         })
@@ -272,8 +309,14 @@ def generate_report(run_a_records: List[dict], run_b_records: List[dict],
     b_total = len(run_b_records)
     a_correct = sum(1 for r in run_a_records if r.get('was_optimal'))
     b_correct = sum(1 for r in run_b_records if r.get('was_optimal'))
+    a_lies = count_lies(run_a_records)
+    b_lies = count_lies(run_b_records)
+    a_success_with_lies = sum(1 for r in run_a_records if is_success(r, lies_okay=True))
+    b_success_with_lies = sum(1 for r in run_b_records if is_success(r, lies_okay=True))
     a_rate = a_correct / a_total if a_total else 0
     b_rate = b_correct / b_total if b_total else 0
+    a_rate_with_lies = a_success_with_lies / a_total if a_total else 0
+    b_rate_with_lies = b_success_with_lies / b_total if b_total else 0
 
     lines.append("=" * 80)
     lines.append(f"RUN COMPARISON: {run_a_name} vs {run_b_name}")
@@ -281,6 +324,8 @@ def generate_report(run_a_records: List[dict], run_b_records: List[dict],
     lines.append("")
     lines.append(f"{'':30} {'Run A':>15} {'Run B':>15}")
     lines.append(f"{'Overall accuracy:':<30} {a_rate*100:>14.1f}% {b_rate*100:>14.1f}%")
+    lines.append(f"{'Accuracy (lies OK):':<30} {a_rate_with_lies*100:>14.1f}% {b_rate_with_lies*100:>14.1f}%")
+    lines.append(f"{'Strategic lies:':<30} {a_lies:>15} {b_lies:>15}")
     lines.append(f"{'Total records:':<30} {a_total:>15} {b_total:>15}")
     lines.append(f"{'Scenarios with data:':<30} {len(agg_a):>15} {len(agg_b):>15}")
     lines.append(f"{'Common scenarios:':<30} {len(comparison['common_keys']):>15}")
@@ -507,21 +552,21 @@ def generate_report(run_a_records: List[dict], run_b_records: List[dict],
             sid = r['scenario_id']
             extra = r['extra']
             cats = get_mastery_categories(int(sid))
-            ex_a = r['a_example']
-            ex_b = r['b_example']
+            ex_a = r['a_records'][0]  # Use first record for epistemic info
+            a_actions = summarize_actions(r['a_records'])
+            b_actions = summarize_actions(r['b_records'])
+            a_lies = count_lies(r['a_records'])
+            b_lies = count_lies(r['b_records'])
 
             lines.append(f"\n  {i}. Scenario {sid} (Extra={extra}) - Delta: {r['delta']*100:+.1f}%")
             lines.append(f"     Categories: {', '.join(cats)}")
-            lines.append(f"     A rate: {r['a_rate']*100:.0f}% ({r['a_n']} trials) | B rate: {r['b_rate']*100:.0f}% ({r['b_n']} trials)")
+            lines.append(f"     A: {r['a_rate']*100:.0f}% optimal ({r['a_n']} trials) | B: {r['b_rate']*100:.0f}% optimal ({r['b_n']} trials)")
             lines.append(f"     Epistemic: self={ex_a.get('ks_self')}, tm={ex_a.get('ks_teammate')}, opp={ex_a.get('ks_opponent')}")
             lines.append(f"     Optimal: {ex_a.get('optimal_action')}")
-            lines.append(f"     A action: {ex_a.get('action')} | B action: {ex_b.get('action')}")
-
-            # Check for "correct answer, wrong action"
-            b_answer_correct = ex_b.get('answer_correct')
-            b_was_optimal = ex_b.get('was_optimal')
-            if b_answer_correct and not b_was_optimal:
-                lines.append(f"     *** Model knew answer but chose wrong action! ***")
+            lines.append(f"     A actions: {a_actions}")
+            lines.append(f"     B actions: {b_actions}")
+            if a_lies or b_lies:
+                lines.append(f"     Lies: A={a_lies}, B={b_lies}")
     else:
         lines.append("\n  No scenarios where A outperformed B by >10%.")
     lines.append("")
@@ -547,14 +592,21 @@ def generate_report(run_a_records: List[dict], run_b_records: List[dict],
             sid = r['scenario_id']
             extra = r['extra']
             cats = get_mastery_categories(int(sid))
-            ex_a = r['a_example']
-            ex_b = r['b_example']
+            ex_a = r['a_records'][0]
+            a_actions = summarize_actions(r['a_records'])
+            b_actions = summarize_actions(r['b_records'])
+            a_lies = count_lies(r['a_records'])
+            b_lies = count_lies(r['b_records'])
 
             lines.append(f"\n  {i}. Scenario {sid} (Extra={extra}) - Delta: {r['delta']*100:+.1f}%")
             lines.append(f"     Categories: {', '.join(cats)}")
-            lines.append(f"     A rate: {r['a_rate']*100:.0f}% ({r['a_n']} trials) | B rate: {r['b_rate']*100:.0f}% ({r['b_n']} trials)")
+            lines.append(f"     A: {r['a_rate']*100:.0f}% optimal ({r['a_n']} trials) | B: {r['b_rate']*100:.0f}% optimal ({r['b_n']} trials)")
             lines.append(f"     Epistemic: self={ex_a.get('ks_self')}, tm={ex_a.get('ks_teammate')}, opp={ex_a.get('ks_opponent')}")
             lines.append(f"     Optimal: {ex_a.get('optimal_action')}")
+            lines.append(f"     A actions: {a_actions}")
+            lines.append(f"     B actions: {b_actions}")
+            if a_lies or b_lies:
+                lines.append(f"     Lies: A={a_lies}, B={b_lies}")
     else:
         lines.append("\n  No scenarios where B outperformed A by >10%.")
     lines.append("")
@@ -600,18 +652,18 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     logs_dir = os.path.join(script_dir, 'tom_llm_logs')
 
-    model_a, fr_a = RUN_A
-    model_b, fr_b = RUN_B
+    model_a, fr_a, lose_a = RUN_A
+    model_b, fr_b, lose_b = RUN_B
 
-    run_a_name = f"{model_a}" + (" (with COT)" if fr_a else "")
-    run_b_name = f"{model_b}" + (" (with COT)" if fr_b else "")
+    run_a_name = f"{model_a}" + (" (with COT)" if fr_a else "") + (" (lose)" if lose_a else "")
+    run_b_name = f"{model_b}" + (" (with COT)" if fr_b else "") + (" (lose)" if lose_b else "")
 
     print(f"Loading Run A: {run_a_name}...")
-    run_a_records = load_run_data(model_a, fr_a, logs_dir)
+    run_a_records = load_run_data(model_a, fr_a, lose_a, logs_dir)
     print(f"  Found {len(run_a_records)} records")
 
     print(f"Loading Run B: {run_b_name}...")
-    run_b_records = load_run_data(model_b, fr_b, logs_dir)
+    run_b_records = load_run_data(model_b, fr_b, lose_b, logs_dir)
     print(f"  Found {len(run_b_records)} records")
 
     if not run_a_records:
@@ -625,7 +677,9 @@ def main():
     report = generate_report(run_a_records, run_b_records, run_a_name, run_b_name)
 
     # Save full report to file
-    output_filename = f"comparison_{model_a.replace('-', '_')}_vs_{model_b.replace('-', '_')}_cot.txt"
+    fr_suffix = "cot" if (fr_a or fr_b) else "no_cot"
+    lose_suffix = "_lose" if (lose_a or lose_b) else ""
+    output_filename = f"comparison_{model_a.replace('-', '_')}_vs_{model_b.replace('-', '_')}_{fr_suffix}{lose_suffix}.txt"
     output_path = os.path.join(logs_dir, output_filename)
     with open(output_path, 'w') as f:
         f.write(report)

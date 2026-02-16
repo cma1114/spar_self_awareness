@@ -14,7 +14,7 @@ from tom_helpers import (
     EpistemicState, Scenario, load_scenarios, read_specs_from_csv,
     CharacterType
 )
-from generate_tom_scenarios_new import generate_scenarios_from_tuples
+# Note: generate_scenarios_from_tuples is imported lazily in main() to avoid circular import
 
 
 def compute_actual_epistemic_state(
@@ -22,7 +22,9 @@ def compute_actual_epistemic_state(
     character: str,
     is_self: bool = False
 ) -> str:
-    """Compute a character's actual epistemic state from scenario events.
+    """Compute a character's ACTUAL epistemic state from scenario events.
+
+    This computes the character's actual state, regardless of what A knows.
 
     Args:
         scenario: The scenario to analyze
@@ -53,12 +55,10 @@ def compute_actual_epistemic_state(
                     observed_target[c] = True
 
         elif event.event_type == 'move':
-            # Handle move from one container to another
             if event.from_container:
                 contents[event.from_container] = None
             if event.to_container:
                 contents[event.to_container] = event.item
-            # Mark observation if move involves target
             if event.from_container == target or event.to_container == target:
                 for c in present:
                     observed_target[c] = True
@@ -77,8 +77,6 @@ def compute_actual_epistemic_state(
 
         elif event.event_type == 'enter':
             present.add(event.character)
-            # CRITICAL: Entering does NOT give knowledge of container contents
-            # Must witness a put/move event after entering
 
     final_contents = contents[target]
 
@@ -92,19 +90,147 @@ def compute_actual_epistemic_state(
     else:
         # Character left the room
         if character not in beliefs_when_left:
-            # Left before seeing anything about target
             return 'UNKNOWN'
 
         belief = beliefs_when_left[character]
         if is_self:
-            # Self uses BELIEVES_X when they left (don't know if belief is true)
             return 'BELIEVES_X'
 
-        # For others, compare belief to reality
         if belief == final_contents:
             return 'BELIEVES_TRUTH'
         else:
             return 'BELIEVES_FALSE'
+
+
+def a_can_determine_state(scenario: Scenario, character: str) -> bool:
+    """Check if A can determine another character's epistemic state.
+
+    For A to determine a character's state:
+    1. A must know what the character believes (A saw them observe target OR A saw them leave with a belief)
+    2. A must know the current truth (to compare belief to reality)
+
+    Args:
+        scenario: The scenario to analyze
+        character: The character name (B, C, D) - not A
+
+    Returns:
+        True if A can determine the character's state, False if UNKNOWN from A's perspective
+    """
+    target = scenario.question_container
+    present = set(scenario.present_initially)
+    a_present = 'A' in present
+
+    # Track observations
+    observed_target: Dict[str, bool] = {c: False for c in ['A', 'B', 'C', 'D']}
+    a_saw_char_observe: Dict[str, bool] = {c: False for c in ['A', 'B', 'C', 'D']}
+    a_knows_char_belief: Dict[str, bool] = {c: False for c in ['A', 'B', 'C', 'D']}
+
+    contents: Dict[str, Optional[str]] = {'bag': None, 'box': None, 'basket': None}
+    a_last_known_contents: Optional[str] = None
+
+    for event in scenario.events:
+        if event.event_type == 'put':
+            contents[event.container] = event.item
+            if event.container == target:
+                for c in present:
+                    observed_target[c] = True
+                    if a_present:
+                        a_saw_char_observe[c] = True
+                if a_present:
+                    a_last_known_contents = event.item
+
+        elif event.event_type == 'move':
+            if event.from_container:
+                contents[event.from_container] = None
+            if event.to_container:
+                contents[event.to_container] = event.item
+            if event.from_container == target or event.to_container == target:
+                for c in present:
+                    observed_target[c] = True
+                    if a_present:
+                        a_saw_char_observe[c] = True
+                if a_present:
+                    a_last_known_contents = contents[target]
+
+        elif event.event_type == 'remove':
+            contents[event.container] = None
+            if event.container == target:
+                for c in present:
+                    observed_target[c] = True
+                    if a_present:
+                        a_saw_char_observe[c] = True
+                if a_present:
+                    a_last_known_contents = None
+
+        elif event.event_type == 'leave':
+            char = event.character
+            if observed_target.get(char, False) and a_present:
+                a_knows_char_belief[char] = True
+            if char == 'A':
+                a_present = False
+            present.discard(char)
+
+        elif event.event_type == 'enter':
+            if event.character == 'A':
+                a_present = True
+            present.add(event.character)
+
+    final_contents = contents[target]
+
+    # A knows the truth only if A is present at the end AND observed the target
+    # If A left the room, A only has a BELIEF, not knowledge (even if it matches reality)
+    a_knows_truth = a_present and observed_target.get('A', False)
+
+    if character in present:
+        # Character is present at end - A can determine if A knows they observed target
+        return a_saw_char_observe.get(character, False) and a_knows_truth
+    else:
+        # Character left - A can determine if A knows their belief AND A knows truth
+        return a_knows_char_belief.get(character, False) and a_knows_truth
+
+
+def validate_epistemic_state(
+    scenario: Scenario,
+    character: str,
+    expected: str,
+    is_self: bool = False,
+    verbose: bool = False
+) -> Optional[str]:
+    """Validate a character's epistemic state against expected value.
+
+    Uses hybrid approach:
+    - For KNOWS_TRUTH, BELIEVES_TRUTH, BELIEVES_FALSE: Check actual state
+    - For UNKNOWN: Check that A cannot determine the character's state
+
+    Args:
+        scenario: The scenario to validate
+        character: The character to check (A, B, C, D)
+        expected: Expected state string (KNOWS_TRUTH, BELIEVES_TRUTH, etc.)
+        is_self: Whether this is the Self character (A)
+        verbose: Print debug info
+
+    Returns:
+        Error message if validation fails, None if valid
+    """
+    actual = compute_actual_epistemic_state(scenario, character, is_self=is_self)
+
+    if expected == 'UNKNOWN':
+        # For UNKNOWN: A must NOT be able to determine the character's state
+        if character == 'A':
+            # Self is UNKNOWN if A left the room after seeing target
+            if actual != 'UNKNOWN':
+                return f"{character}: expected UNKNOWN (A left), but actual state is {actual}"
+        else:
+            # For others: A cannot determine their state
+            can_determine = a_can_determine_state(scenario, character)
+            if can_determine:
+                return f"{character}: expected UNKNOWN from A's perspective, but A can determine state ({actual})"
+    else:
+        # For definite states: compare actual to expected
+        if actual != expected:
+            return f"{character}: expected {expected}, got {actual}"
+
+    return None
 
 
 def validate_scenario(scenario: Scenario, spec: dict, verbose: bool = False) -> List[str]:
@@ -124,18 +250,16 @@ def validate_scenario(scenario: Scenario, spec: dict, verbose: bool = False) -> 
     self_char = 'A'
     teammate_char = 'B'
 
-    # Compute actual states
-    actual_self = compute_actual_epistemic_state(scenario, self_char, is_self=True)
-    actual_teammate = compute_actual_epistemic_state(scenario, teammate_char)
-    actual_c = compute_actual_epistemic_state(scenario, 'C')
-    actual_d = compute_actual_epistemic_state(scenario, 'D')
-
     # Convert expected states to comparable format
     expected_self = spec['KS_Self'].value.replace(' ', '_').upper()
     expected_teammate = spec['KS_Teammate'].value.replace(' ', '_').upper()
     expected_opponent = spec['KS_Opponent'].value.replace(' ', '_').upper()
 
     if verbose:
+        actual_self = compute_actual_epistemic_state(scenario, self_char, is_self=True)
+        actual_teammate = compute_actual_epistemic_state(scenario, teammate_char)
+        actual_c = compute_actual_epistemic_state(scenario, 'C')
+        actual_d = compute_actual_epistemic_state(scenario, 'D')
         print(f"  Target: {scenario.question_container}")
         print(f"  Events: {[(e.event_type, e.character) for e in scenario.events]}")
         print(f"  Present initially: {scenario.present_initially}")
@@ -143,29 +267,39 @@ def validate_scenario(scenario: Scenario, spec: dict, verbose: bool = False) -> 
         print(f"  Teammate: expected={expected_teammate}, actual={actual_teammate}")
         print(f"  C: {actual_c}, D: {actual_d}, expected opponent: {expected_opponent}")
 
-    if actual_self != expected_self:
-        errors.append(f"Self: expected {expected_self}, got {actual_self}")
-    if actual_teammate != expected_teammate:
-        errors.append(f"Teammate: expected {expected_teammate}, got {actual_teammate}")
+    # Validate Self (A)
+    err = validate_epistemic_state(scenario, self_char, expected_self, is_self=True, verbose=verbose)
+    if err:
+        errors.append(f"Self: {err}")
 
-    # For opponent validation:
+    # Validate Teammate (B)
+    err = validate_epistemic_state(scenario, teammate_char, expected_teammate, verbose=verbose)
+    if err:
+        errors.append(f"Teammate: {err}")
+
+    # Validate Opponent
     # - When Answerer=Opponent, check the specific answering opponent
     # - When Answerer=Self or Teammate, check if EITHER opponent matches
     if spec['Answerer'] == 'Opponent':
         opponent_char = scenario.who_answers
-        actual_opponent = actual_c if opponent_char == 'C' else actual_d
-        if actual_opponent != expected_opponent:
-            errors.append(f"Opponent ({opponent_char}): expected {expected_opponent}, got {actual_opponent}")
+        err = validate_epistemic_state(scenario, opponent_char, expected_opponent, verbose=verbose)
+        if err:
+            errors.append(f"Opponent ({opponent_char}): {err}")
     else:
         # Either opponent can have the expected state
-        if actual_c != expected_opponent and actual_d != expected_opponent:
-            errors.append(f"Opponent: expected {expected_opponent}, got C={actual_c}, D={actual_d}")
+        err_c = validate_epistemic_state(scenario, 'C', expected_opponent, verbose=verbose)
+        err_d = validate_epistemic_state(scenario, 'D', expected_opponent, verbose=verbose)
+        if err_c and err_d:
+            errors.append(f"Opponent: neither C nor D match expected {expected_opponent} (C: {err_c}, D: {err_d})")
 
     return errors
 
 
 def main():
     """Run validation on all scenarios."""
+    # Lazy import to avoid circular dependency with generate_tom_scenarios_new
+    from generate_tom_scenarios_new import generate_scenarios_from_tuples
+
     parser = argparse.ArgumentParser(description='Validate scenario generation')
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='Print detailed debug info for failures')

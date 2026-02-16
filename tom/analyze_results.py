@@ -56,9 +56,14 @@ def extract_model_name(filepath: str) -> str:
     return basename
 
 
-def format_model_name(model: str, free_response: bool) -> str:
-    """Format model name with COT suffix if free_response is True."""
-    return f"{model} (with COT)" if free_response else model
+def format_model_name(model: str, free_response: bool, lose: bool = False) -> str:
+    """Format model name with COT/lose suffix if enabled."""
+    name = model
+    if free_response:
+        name = f"{name} (with COT)"
+    if lose:
+        name = f"{name} (lose)"
+    return name
 
 
 def load_game_data(filepath: str) -> List[dict]:
@@ -552,18 +557,20 @@ def main():
     for records in model_records.values():
         all_records.extend(records)
 
-    # Build combined model records with "(with COT)" suffix for free_response=True
-    # This creates adjacent ordering: model, model (with COT), next_model, next_model (with COT)
+    # Build combined model records with suffixes for free_response and lose
+    # This creates adjacent ordering: model variants, then next model variants
     combined_model_records = {}
     combined_model_order = []  # Maintains adjacent ordering
 
     for base_model in sorted_models:
         for fr_mode in [False, True]:  # Non-COT first, then COT
-            filtered = [r for r in model_records[base_model] if r.get('free_response') == fr_mode]
-            if filtered:
-                display_name = format_model_name(base_model, fr_mode)
-                combined_model_records[display_name] = filtered
-                combined_model_order.append(display_name)
+            for lose_mode in [False, True]:  # Non-lose first, then lose
+                filtered = [r for r in model_records[base_model]
+                           if r.get('free_response') == fr_mode and bool(r.get('lose')) == lose_mode]
+                if filtered:
+                    display_name = format_model_name(base_model, fr_mode, lose_mode)
+                    combined_model_records[display_name] = filtered
+                    combined_model_order.append(display_name)
 
     # Build detailed output for file (single combined table)
     output_lines = []

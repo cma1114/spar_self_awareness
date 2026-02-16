@@ -1,41 +1,36 @@
 Model,Extra,Self: Knowledge vs Belief,Teammate: Knowledge vs Belief,Combined Uncertainty,True vs False Belief,Teammate vs Opponent,Strategic Lies
-anthropic-claude-opus-4.6,Overall,50.6,91.7,78.1,58.8,58.0,15.0
-anthropic-claude-opus-4.6,Minimal Events,50.0,98.3,87.5,60.0,52.0,3.3
-anthropic-claude-opus-4.6,Event Load,50.0,98.3,80.0,61.7,63.0,21.7
-anthropic-claude-opus-4.6,Minimal ECT,50.0,96.7,77.5,63.3,69.0,31.7
-anthropic-claude-opus-4.6,ECT Load,52.5,73.3,67.5,50.0,48.0,3.3
-anthropic-claude-opus-4.6 (with COT),Overall,60.6,99.6,62.5,92.1,83.2,60.4
-anthropic-claude-opus-4.6 (with COT),Minimal Events,57.5,100.0,72.5,76.7,81.0,53.3
-anthropic-claude-opus-4.6 (with COT),Event Load,50.0,100.0,70.0,98.3,80.0,60.0
-anthropic-claude-opus-4.6 (with COT),Minimal ECT,50.0,98.3,70.0,98.3,79.0,50.0
-anthropic-claude-opus-4.6 (with COT),ECT Load,85.0,100.0,37.5,95.0,93.0,78.3
-anthropic-claude-opus-4.6_lowthink,Overall,50.0,91.7,84.4,56.2,53.8,10.4
-anthropic-claude-opus-4.6_lowthink,Minimal Events,50.0,100.0,87.5,58.3,50.0,0.0
-anthropic-claude-opus-4.6_lowthink,Event Load,50.0,100.0,87.5,58.3,60.0,16.7
-anthropic-claude-opus-4.6_lowthink,Minimal ECT,50.0,100.0,87.5,58.3,65.0,25.0
-anthropic-claude-opus-4.6_lowthink,ECT Load,50.0,66.7,75.0,50.0,40.0,0.0
-anthropic-claude-opus-4.6_lowthink (with COT),Overall,62.5,100.0,68.8,91.7,85.0,62.5
-anthropic-claude-opus-4.6_lowthink (with COT),Minimal Events,62.5,100.0,75.0,75.0,85.0,58.3
-anthropic-claude-opus-4.6_lowthink (with COT),Event Load,50.0,100.0,75.0,100.0,80.0,66.7
-anthropic-claude-opus-4.6_lowthink (with COT),Minimal ECT,50.0,100.0,75.0,100.0,80.0,50.0
-anthropic-claude-opus-4.6_lowthink (with COT),ECT Load,87.5,100.0,50.0,91.7,95.0,75.0
-anthropic-claude-opus-4.6_think,Overall,85.0,100.0,62.5,98.3,94.0,52.5
-anthropic-claude-opus-4.6_think,Minimal Events,95.0,100.0,70.0,96.7,98.0,50.0
-anthropic-claude-opus-4.6_think,Event Load,75.0,100.0,70.0,100.0,90.0,53.3
-anthropic-claude-opus-4.6_think,Minimal ECT,75.0,100.0,65.0,100.0,90.0,50.0
-anthropic-claude-opus-4.6_think,ECT Load,95.0,100.0,45.0,96.7,98.0,56.7
-anthropic-claude-opus-4.6_think (with COT),Overall,92.5,100.0,55.0,98.3,97.0,52.5
-anthropic-claude-opus-4.6_think (with COT),Minimal Events,95.0,100.0,65.0,96.7,98.0,53.3
-anthropic-claude-opus-4.6_think (with COT),Event Load,90.0,100.0,65.0,100.0,96.0,50.0
-anthropic-claude-opus-4.6_think (with COT),Minimal ECT,90.0,100.0,55.0,100.0,96.0,53.3
-anthropic-claude-opus-4.6_think (with COT),ECT Load,95.0,100.0,35.0,96.7,98.0,53.3
-anthropic-claude-opus-4.6_think_defaulttemp,Overall,82.5,100.0,58.8,100.0,93.0,53.3
-anthropic-claude-opus-4.6_think_defaulttemp,Minimal Events,80.0,100.0,65.0,100.0,92.0,50.0
-anthropic-claude-opus-4.6_think_defaulttemp,Event Load,75.0,100.0,65.0,100.0,90.0,50.0
-anthropic-claude-opus-4.6_think_defaulttemp,Minimal ECT,85.0,100.0,60.0,100.0,94.0,53.3
-anthropic-claude-opus-4.6_think_defaulttemp,ECT Load,90.0,100.0,45.0,100.0,96.0,60.0
-ALL MODELS,Overall,67.6,97.3,66.5,84.3,79.7,43.4
-ALL MODELS,Minimal Events,67.9,99.6,75.0,79.5,77.9,37.2
-ALL MODELS,Event Load,61.5,99.6,72.4,87.6,79.2,44.9
-ALL MODELS,Minimal ECT,62.8,98.7,69.2,88.0,81.3,44.9
-ALL MODELS,ECT Load,78.2,91.5,49.4,82.1,80.5,46.6
+anthropic-claude-opus-4.6_think,Overall,85.0,100.0,48.8,99.6,94.0,54.6
+anthropic-claude-opus-4.6_think,Minimal Events,92.5,100.0,55.0,100.0,97.0,50.0
+anthropic-claude-opus-4.6_think,Event Load,75.0,100.0,55.0,100.0,90.0,51.7
+anthropic-claude-opus-4.6_think,Minimal ECT,77.5,100.0,50.0,100.0,91.0,55.0
+anthropic-claude-opus-4.6_think,ECT Load,95.0,100.0,35.0,98.3,98.0,61.7
+anthropic-claude-opus-4.6_think (lose),Overall,93.8,100.0,50.0,100.0,97.5,60.4
+anthropic-claude-opus-4.6_think (lose),Minimal Events,100.0,100.0,50.0,100.0,100.0,58.3
+anthropic-claude-opus-4.6_think (lose),Event Load,100.0,100.0,50.0,100.0,100.0,66.7
+anthropic-claude-opus-4.6_think (lose),Minimal ECT,75.0,100.0,50.0,100.0,90.0,58.3
+anthropic-claude-opus-4.6_think (lose),ECT Load,100.0,100.0,50.0,100.0,100.0,58.3
+kimi-k2-0905,Overall,54.4,45.4,23.8,37.5,36.5,0.8
+kimi-k2-0905,Minimal Events,59.2,65.0,42.5,50.0,44.0,3.3
+kimi-k2-0905,Event Load,52.5,50.0,30.0,35.0,34.0,0.0
+kimi-k2-0905,Minimal ECT,58.3,40.0,22.5,38.3,37.0,0.0
+kimi-k2-0905,ECT Load,47.5,26.7,0.0,26.7,31.0,0.0
+kimi-k2-0905 (lose),Overall,51.0,50.0,9.4,47.5,42.5,0.8
+kimi-k2-0905 (lose),Minimal Events,62.5,56.7,17.5,48.3,43.0,3.3
+kimi-k2-0905 (lose),Event Load,58.3,46.7,7.5,46.7,44.0,0.0
+kimi-k2-0905 (lose),Minimal ECT,56.7,51.7,12.5,50.0,46.0,0.0
+kimi-k2-0905 (lose),ECT Load,26.7,45.0,0.0,45.0,37.0,0.0
+kimi-k2-0905 (with COT),Overall,39.2,7.9,8.8,6.2,13.8,1.7
+kimi-k2-0905 (with COT),Minimal Events,55.8,8.3,20.0,1.7,14.0,3.3
+kimi-k2-0905 (with COT),Event Load,41.7,8.3,7.5,11.7,16.0,1.7
+kimi-k2-0905 (with COT),Minimal ECT,35.0,10.0,5.0,8.3,16.0,0.0
+kimi-k2-0905 (with COT),ECT Load,24.2,5.0,2.5,3.3,9.0,1.7
+kimi-k2-0905 (with COT) (lose),Overall,45.4,30.4,15.6,30.4,27.3,3.8
+kimi-k2-0905 (with COT) (lose),Minimal Events,44.2,30.0,15.0,20.0,20.0,0.0
+kimi-k2-0905 (with COT) (lose),Event Load,50.0,35.0,15.0,35.0,32.0,8.3
+kimi-k2-0905 (with COT) (lose),Minimal ECT,60.0,26.7,25.0,25.0,31.0,5.0
+kimi-k2-0905 (with COT) (lose),ECT Load,27.5,30.0,7.5,41.7,26.0,1.7
+ALL MODELS,Overall,56.5,48.8,22.4,46.4,44.9,14.2
+ALL MODELS,Minimal Events,64.3,53.8,30.8,46.2,45.8,13.8
+ALL MODELS,Event Load,57.2,50.0,24.0,47.8,45.4,14.4
+ALL MODELS,Minimal ECT,58.2,47.8,24.0,46.5,46.0,13.8
+ALL MODELS,ECT Load,46.3,43.6,10.6,45.2,42.5,14.7

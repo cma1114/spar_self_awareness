@@ -1,0 +1,290 @@
+================================================================================
+RUN COMPARISON: kimi-k2-0905 vs kimi-k2-0905_new
+================================================================================
+
+                                         Run A           Run B
+Overall accuracy:                        28.7%           22.8%
+Accuracy (lies OK):                      29.8%           25.4%
+Strategic lies:                             12              27
+Total records:                            1040            1040
+Scenarios with data:                       104             104
+Common scenarios:                          104
+
+DIVERGENCE SUMMARY:
+  A advantages (A better by >10%): 29
+  B advantages (B better by >10%): 16
+  Similar (within 10%):            59
+
+DIVERGENCE BY EXTRA CATEGORY:
+  Extra  |   A rate |   B rate |    Delta |   A wins |   B wins
+  ------------------------------------------------------------
+  0A     |    43.8% |    29.2% |   -14.6% |       11 |        4
+  0B     |    30.0% |    23.5% |    -6.5% |        8 |        4
+  1A     |    26.5% |    23.8% |    -2.7% |        6 |        5
+  1B     |    14.2% |    14.6% |    +0.4% |        4 |        3
+
+================================================================================
+ACTION DISTRIBUTION ANALYSIS
+================================================================================
+
+ACTIONS TAKEN (model behavior):
+  Action            Run A    Run A %        Run B    Run B %
+  --------------------------------------------------------
+  Pass                207      19.9%           86       8.3%
+  Ask                 445      42.8%          374      36.0%
+  Tell                388      37.3%          580      55.8%
+
+OPTIMAL ACTIONS (what should happen):
+  Action            Run A    Run A %        Run B    Run B %
+  --------------------------------------------------------
+  Pass                840      80.8%          840      80.8%
+  Ask                  80       7.7%           80       7.7%
+  Tell                120      11.5%          120      11.5%
+
+PER-OPTIMAL-ACTION SUCCESS RATES:
+  Optimal      Run A hits    Run A %   Run B hits    Run B %
+  --------------------------------------------------------
+  Pass            177/840       21.1%       72/840        8.6%
+  Ask              50/80        62.5%       66/80        82.5%
+  Tell             85/120       70.8%      115/120       95.8%
+
+MATH VERIFICATION (expected vs actual accuracy):
+  Formula: sum over each optimal action of (proportion × hit_rate)
+
+  Run A breakdown:
+    Pass: 80.8% of scenarios × 21.1% hit rate = 17.0%
+    Ask: 7.7% of scenarios × 62.5% hit rate = 4.8%
+    Tell: 11.5% of scenarios × 70.8% hit rate = 8.2%
+    Total expected: 30.0% | Actual: 28.7%
+
+  Run B breakdown:
+    Pass: 80.8% of scenarios × 8.6% hit rate = 6.9%
+    Ask: 7.7% of scenarios × 82.5% hit rate = 6.3%
+    Tell: 11.5% of scenarios × 95.8% hit rate = 11.1%
+    Total expected: 24.3% | Actual: 22.8%
+
+================================================================================
+ACTION CONFUSION MATRICES (detailed)
+================================================================================
+
+When optimal=Pass:
+  Action            Run A        Run B      Delta
+  ---------------------------------------------
+  Pass              21.1%         8.6%     -12.5% <--
+  Ask               42.9%        36.1%      -6.8%
+  Tell              36.1%        55.4%     +19.3% <--
+
+When optimal=Ask:
+  Action            Run A        Run B      Delta
+  ---------------------------------------------
+  Pass              37.5%        17.5%     -20.0% <--
+  Ask               62.5%        82.5%     +20.0% <--
+  Tell               0.0%         0.0%      +0.0%
+
+When optimal=Tell:
+  Action            Run A        Run B      Delta
+  ---------------------------------------------
+  Pass               0.0%         0.0%      +0.0%
+  Ask               29.2%         4.2%     -25.0% <--
+  Tell              70.8%        95.8%     +25.0% <--
+
+================================================================================
+RUN A ADVANTAGES (where Run A outperformed Run B)
+================================================================================
+
+By ToM Mastery Category:
+  Self: Knowledge vs Belief: 10 scenarios
+  Teammate vs Opponent: 7 scenarios
+  Combined Uncertainty: 7 scenarios
+  Teammate: Knowledge vs Belief: 4 scenarios
+  True vs False Belief: 2 scenarios
+  Other: 1 scenarios
+
+Top A advantages:
+
+  1. Scenario 39 (Extra=0A) - Delta: -70.0%
+     Categories: Teammate vs Opponent
+     A: 90% optimal (10 trials) | B: 20% optimal (10 trials)
+     Epistemic: self=Believes X, tm=Knows Truth, opp=Knows Truth
+     Optimal: Pass
+     A actions: Pass=9, Tell=1
+     B actions: Tell=6, Ask=2, Pass=2
+     Lies: A=0, B=1
+
+  2. Scenario 22 (Extra=0A) - Delta: -70.0%
+     Categories: Teammate: Knowledge vs Belief
+     A: 100% optimal (10 trials) | B: 30% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Knows Truth, opp=Knows Truth
+     Optimal: Pass
+     A actions: Pass=10
+     B actions: Tell=7, Pass=3
+
+  3. Scenario 24 (Extra=0A) - Delta: -60.0%
+     Categories: Combined Uncertainty
+     A: 60% optimal (10 trials) | B: 0% optimal (10 trials)
+     Epistemic: self=Believes X, tm=Unknown, opp=Knows Truth
+     Optimal: Pass
+     A actions: Pass=6, Tell=4
+     B actions: Tell=9, Ask=1
+
+  4. Scenario 22 (Extra=0B) - Delta: -50.0%
+     Categories: Teammate: Knowledge vs Belief
+     A: 50% optimal (10 trials) | B: 0% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Knows Truth, opp=Knows Truth
+     Optimal: Pass
+     A actions: Pass=5, Tell=3, Ask=2
+     B actions: Tell=8, Ask=2
+
+  5. Scenario 11 (Extra=0B) - Delta: -50.0%
+     Categories: Combined Uncertainty
+     A: 50% optimal (10 trials) | B: 0% optimal (10 trials)
+     Epistemic: self=Believes X, tm=Unknown, opp=Knows Truth
+     Optimal: Pass
+     A actions: Ask=5, Pass=5
+     B actions: Ask=10
+
+  6. Scenario 27 (Extra=0A) - Delta: -50.0%
+     Categories: Other
+     A: 50% optimal (10 trials) | B: 0% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Believes Truth, opp=Believes Truth
+     Optimal: Pass
+     A actions: Pass=5, Tell=4, Ask=1
+     B actions: Tell=9, Ask=1
+     Lies: A=0, B=1
+
+  7. Scenario 14 (Extra=0A) - Delta: -50.0%
+     Categories: True vs False Belief
+     A: 50% optimal (10 trials) | B: 0% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Believes Truth, opp=Believes Truth
+     Optimal: Pass
+     A actions: Pass=5, Tell=4, Ask=1
+     B actions: Tell=10
+
+  8. Scenario 9 (Extra=1A) - Delta: -40.0%
+     Categories: Self: Knowledge vs Belief
+     A: 100% optimal (10 trials) | B: 60% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Knows Truth, opp=Knows Truth
+     Optimal: Pass
+     A actions: Pass=10
+     B actions: Pass=6, Ask=4
+
+  9. Scenario 20 (Extra=0B) - Delta: -40.0%
+     Categories: Teammate: Knowledge vs Belief
+     A: 40% optimal (10 trials) | B: 0% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Knows Truth, opp=Believes Truth
+     Optimal: Pass
+     A actions: Pass=4, Tell=4, Ask=2
+     B actions: Ask=6, Tell=4
+
+  10. Scenario 8 (Extra=0A) - Delta: -40.0%
+     Categories: Self: Knowledge vs Belief
+     A: 50% optimal (10 trials) | B: 10% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Knows Truth, opp=Believes False
+     Optimal: Pass
+     A actions: Pass=5, Ask=3, Tell=2
+     B actions: Ask=6, Tell=3, Pass=1
+
+================================================================================
+RUN B ADVANTAGES (where Run B outperformed Run A)
+================================================================================
+
+By ToM Mastery Category:
+  Teammate vs Opponent: 16 scenarios
+  Teammate: Knowledge vs Belief: 10 scenarios
+  True vs False Belief: 10 scenarios
+  Self: Knowledge vs Belief: 6 scenarios
+
+Top B advantages:
+
+  1. Scenario 17 (Extra=1B) - Delta: +50.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A: 40% optimal (10 trials) | B: 90% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Believes Truth
+     Optimal: Tell(B, box, orange)
+     A actions: Ask=6, Tell=4
+     B actions: Tell=9, Ask=1
+
+  2. Scenario 13 (Extra=1A) - Delta: +40.0%
+     Categories: Self: Knowledge vs Belief, Teammate vs Opponent
+     A: 40% optimal (10 trials) | B: 80% optimal (10 trials)
+     Epistemic: self=Believes X, tm=Knows Truth, opp=Knows Truth
+     Optimal: Ask(B, box)
+     A actions: Pass=5, Ask=5
+     B actions: Ask=8, Pass=2
+
+  3. Scenario 19 (Extra=0B) - Delta: +40.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A: 50% optimal (10 trials) | B: 90% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Knows Truth
+     Optimal: Tell(B, bag, stapler)
+     A actions: Tell=5, Ask=5
+     B actions: Tell=9, Ask=1
+
+  4. Scenario 18 (Extra=1B) - Delta: +40.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A: 50% optimal (10 trials) | B: 90% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Believes False
+     Optimal: Tell(B, box, banana)
+     A actions: Tell=5, Ask=5
+     B actions: Tell=9, Ask=1
+
+  5. Scenario 17 (Extra=1A) - Delta: +40.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A: 60% optimal (10 trials) | B: 100% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Believes Truth
+     Optimal: Tell(B, bag, orange)
+     A actions: Tell=6, Ask=4
+     B actions: Tell=10
+
+  6. Scenario 19 (Extra=0A) - Delta: +40.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A: 50% optimal (10 trials) | B: 90% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Knows Truth
+     Optimal: Tell(B, bag, stapler)
+     A actions: Tell=7, Ask=3
+     B actions: Tell=10
+
+  7. Scenario 13 (Extra=0B) - Delta: +40.0%
+     Categories: Self: Knowledge vs Belief, Teammate vs Opponent
+     A: 10% optimal (10 trials) | B: 50% optimal (10 trials)
+     Epistemic: self=Believes X, tm=Knows Truth, opp=Knows Truth
+     Optimal: Ask(B, box)
+     A actions: Pass=7, Ask=3
+     B actions: Ask=6, Pass=4
+
+  8. Scenario 17 (Extra=0B) - Delta: +30.0%
+     Categories: Teammate: Knowledge vs Belief, True vs False Belief, Teammate vs Opponent
+     A: 70% optimal (10 trials) | B: 100% optimal (10 trials)
+     Epistemic: self=Knows X, tm=Believes False, opp=Believes Truth
+     Optimal: Tell(B, bag, orange)
+     A actions: Tell=7, Ask=3
+     B actions: Tell=10
+
+  9. Scenario 12 (Extra=0B) - Delta: +30.0%
+     Categories: Self: Knowledge vs Belief, Teammate vs Opponent
+     A: 60% optimal (10 trials) | B: 90% optimal (10 trials)
+     Epistemic: self=Believes X, tm=Knows Truth, opp=Unknown
+     Optimal: Ask(B, bag)
+     A actions: Ask=8, Pass=2
+     B actions: Ask=10
+
+  10. Scenario 13 (Extra=0A) - Delta: +30.0%
+     Categories: Self: Knowledge vs Belief, Teammate vs Opponent
+     A: 0% optimal (10 trials) | B: 30% optimal (10 trials)
+     Epistemic: self=Believes X, tm=Knows Truth, opp=Knows Truth
+     Optimal: Ask(B, box)
+     A actions: Pass=10
+     B actions: Pass=6, Ask=4
+
+================================================================================
+PATTERN SUMMARY
+================================================================================
+
+Action patterns where B failed (A outperformed):
+  Pass→Ask: 131 cases
+  Pass→Tell: 96 cases
+
+  'Correct answer, wrong action' (where A beat B): 175
+  (Model knew the answer but chose Tell/Ask instead of Pass)
+
+================================================================================
