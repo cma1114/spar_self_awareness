@@ -5490,8 +5490,16 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "leave",
           "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "D",
           "container": null,
           "item": "stapler",
           "from_container": "bag",
@@ -5507,7 +5515,7 @@
         },
         {
           "event_type": "leave",
-          "character": "B",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -5515,7 +5523,7 @@
         },
         {
           "event_type": "enter",
-          "character": "B",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -5536,11 +5544,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 8,
+      "situation_event_count": 9,
       "epistemic_transitions": {
-        "certainty": 3,
+        "certainty": 4,
         "accuracy": 0,
-        "total": 3
+        "total": 4
       },
       "rep": 1
     },
@@ -9578,6 +9586,22 @@
         },
         {
           "event_type": "leave",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
           "character": "A",
           "container": null,
           "item": null,
@@ -9615,7 +9639,7 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 13,
+      "situation_event_count": 15,
       "epistemic_transitions": {
         "certainty": 1,
         "accuracy": 0,
@@ -9678,6 +9702,14 @@
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
           "event_type": "enter",
           "character": "A",
           "container": null,
@@ -9703,7 +9735,7 @@
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -9711,7 +9743,7 @@
         },
         {
           "event_type": "enter",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -9740,6 +9772,22 @@
           "item": "brick",
           "from_container": null,
           "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
@@ -9756,11 +9804,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 12,
+      "situation_event_count": 15,
       "epistemic_transitions": {
-        "certainty": 4,
+        "certainty": 5,
         "accuracy": 0,
-        "total": 4
+        "total": 5
       },
       "rep": 2
     },
@@ -14046,8 +14094,16 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "leave",
           "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "C",
           "container": null,
           "item": "apple",
           "from_container": "box",
@@ -14063,7 +14119,7 @@
         },
         {
           "event_type": "leave",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -14071,7 +14127,7 @@
         },
         {
           "event_type": "enter",
-          "character": "D",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -14092,11 +14148,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 8,
+      "situation_event_count": 9,
       "epistemic_transitions": {
-        "certainty": 3,
+        "certainty": 4,
         "accuracy": 0,
-        "total": 3
+        "total": 4
       },
       "rep": 2
     },
@@ -18134,6 +18190,22 @@
         },
         {
           "event_type": "leave",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
           "character": "A",
           "container": null,
           "item": null,
@@ -18171,7 +18243,7 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 13,
+      "situation_event_count": 15,
       "epistemic_transitions": {
         "certainty": 1,
         "accuracy": 0,
@@ -18234,6 +18306,14 @@
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
           "event_type": "enter",
           "character": "A",
           "container": null,
@@ -18259,7 +18339,7 @@
         },
         {
           "event_type": "leave",
-          "character": "B",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -18267,7 +18347,7 @@
         },
         {
           "event_type": "enter",
-          "character": "B",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -18296,6 +18376,22 @@
           "item": "orange",
           "from_container": null,
           "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
@@ -18312,11 +18408,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 12,
+      "situation_event_count": 15,
       "epistemic_transitions": {
-        "certainty": 4,
+        "certainty": 5,
         "accuracy": 0,
-        "total": 4
+        "total": 5
       },
       "rep": 3
     },
@@ -22542,8 +22638,16 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "leave",
           "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "D",
           "container": null,
           "item": "brick",
           "from_container": "basket",
@@ -22559,7 +22663,7 @@
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "B",
           "container": null,
           "item": null,
           "from_container": null,
@@ -22567,7 +22671,7 @@
         },
         {
           "event_type": "enter",
-          "character": "C",
+          "character": "B",
           "container": null,
           "item": null,
           "from_container": null,
@@ -22588,11 +22692,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 8,
+      "situation_event_count": 9,
       "epistemic_transitions": {
-        "certainty": 3,
+        "certainty": 4,
         "accuracy": 0,
-        "total": 3
+        "total": 4
       },
       "rep": 3
     },
@@ -26566,6 +26670,22 @@
         },
         {
           "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
           "character": "A",
           "container": null,
           "item": null,
@@ -26603,7 +26723,7 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 13,
+      "situation_event_count": 15,
       "epistemic_transitions": {
         "certainty": 1,
         "accuracy": 0,
@@ -26666,6 +26786,14 @@
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
           "event_type": "enter",
           "character": "A",
           "container": null,
@@ -26691,7 +26819,7 @@
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -26699,7 +26827,7 @@
         },
         {
           "event_type": "enter",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -26728,6 +26856,22 @@
           "item": "apple",
           "from_container": null,
           "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
@@ -26744,11 +26888,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 12,
+      "situation_event_count": 15,
       "epistemic_transitions": {
-        "certainty": 4,
+        "certainty": 5,
         "accuracy": 0,
-        "total": 4
+        "total": 5
       },
       "rep": 4
     },
@@ -34794,6 +34938,22 @@
         },
         {
           "event_type": "leave",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
           "character": "A",
           "container": null,
           "item": null,
@@ -34831,7 +34991,7 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 13,
+      "situation_event_count": 15,
       "epistemic_transitions": {
         "certainty": 1,
         "accuracy": 0,
@@ -34894,6 +35054,14 @@
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
           "event_type": "enter",
           "character": "A",
           "container": null,
@@ -34919,7 +35087,7 @@
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -34927,7 +35095,7 @@
         },
         {
           "event_type": "enter",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -34956,6 +35124,22 @@
           "item": "apple",
           "from_container": null,
           "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
@@ -34972,11 +35156,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 12,
+      "situation_event_count": 15,
       "epistemic_transitions": {
-        "certainty": 4,
+        "certainty": 5,
         "accuracy": 0,
-        "total": 4
+        "total": 5
       },
       "rep": 5
     },
@@ -39118,8 +39302,16 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "leave",
           "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "D",
           "container": null,
           "item": "stapler",
           "from_container": "basket",
@@ -39135,7 +39327,7 @@
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "B",
           "container": null,
           "item": null,
           "from_container": null,
@@ -39143,7 +39335,7 @@
         },
         {
           "event_type": "enter",
-          "character": "C",
+          "character": "B",
           "container": null,
           "item": null,
           "from_container": null,
@@ -39164,11 +39356,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 8,
+      "situation_event_count": 9,
       "epistemic_transitions": {
-        "certainty": 3,
+        "certainty": 4,
         "accuracy": 0,
-        "total": 3
+        "total": 4
       },
       "rep": 5
     },
@@ -43166,6 +43358,22 @@
         },
         {
           "event_type": "leave",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
           "character": "A",
           "container": null,
           "item": null,
@@ -43203,7 +43411,7 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 11,
+      "situation_event_count": 13,
       "epistemic_transitions": {
         "certainty": 1,
         "accuracy": 0,
@@ -43266,6 +43474,14 @@
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
           "event_type": "enter",
           "character": "A",
           "container": null,
@@ -43312,6 +43528,22 @@
           "item": "brick",
           "from_container": null,
           "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
@@ -43328,11 +43560,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 10,
+      "situation_event_count": 13,
       "epistemic_transitions": {
-        "certainty": 3,
+        "certainty": 4,
         "accuracy": 0,
-        "total": 3
+        "total": 4
       },
       "rep": 6
     },
@@ -47554,8 +47786,16 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "leave",
           "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "C",
           "container": null,
           "item": "orange",
           "from_container": "bag",
@@ -47600,11 +47840,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 8,
+      "situation_event_count": 9,
       "epistemic_transitions": {
-        "certainty": 3,
+        "certainty": 4,
         "accuracy": 0,
-        "total": 3
+        "total": 4
       },
       "rep": 6
     },
@@ -55906,8 +56146,16 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "leave",
           "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "C",
           "container": null,
           "item": "banana",
           "from_container": "box",
@@ -55952,11 +56200,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 8,
+      "situation_event_count": 9,
       "epistemic_transitions": {
-        "certainty": 3,
+        "certainty": 4,
         "accuracy": 0,
-        "total": 3
+        "total": 4
       },
       "rep": 7
     },
@@ -59926,6 +60174,22 @@
         },
         {
           "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
           "character": "A",
           "container": null,
           "item": null,
@@ -59963,7 +60227,7 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 13,
+      "situation_event_count": 15,
       "epistemic_transitions": {
         "certainty": 1,
         "accuracy": 0,
@@ -60026,6 +60290,14 @@
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
           "event_type": "enter",
           "character": "A",
           "container": null,
@@ -60051,7 +60323,7 @@
         },
         {
           "event_type": "leave",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -60059,7 +60331,7 @@
         },
         {
           "event_type": "enter",
-          "character": "C",
+          "character": "D",
           "container": null,
           "item": null,
           "from_container": null,
@@ -60088,6 +60360,22 @@
           "item": "orange",
           "from_container": null,
           "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
@@ -60104,11 +60392,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 12,
+      "situation_event_count": 15,
       "epistemic_transitions": {
-        "certainty": 4,
+        "certainty": 5,
         "accuracy": 0,
-        "total": 4
+        "total": 5
       },
       "rep": 8
     },
@@ -64338,8 +64626,16 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "leave",
           "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "C",
           "container": null,
           "item": "apple",
           "from_container": "box",
@@ -64384,11 +64680,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 8,
+      "situation_event_count": 9,
       "epistemic_transitions": {
-        "certainty": 3,
+        "certainty": 4,
         "accuracy": 0,
-        "total": 3
+        "total": 4
       },
       "rep": 8
     },
@@ -72498,8 +72794,16 @@
           "to_container": null
         },
         {
-          "event_type": "move",
+          "event_type": "leave",
           "character": "C",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "D",
           "container": null,
           "item": "stapler",
           "from_container": "basket",
@@ -72515,7 +72819,7 @@
         },
         {
           "event_type": "leave",
-          "character": "D",
+          "character": "B",
           "container": null,
           "item": null,
           "from_container": null,
@@ -72523,7 +72827,7 @@
         },
         {
           "event_type": "enter",
-          "character": "D",
+          "character": "B",
           "container": null,
           "item": null,
           "from_container": null,
@@ -72544,11 +72848,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 8,
+      "situation_event_count": 9,
       "epistemic_transitions": {
-        "certainty": 3,
+        "certainty": 4,
         "accuracy": 0,
-        "total": 3
+        "total": 4
       },
       "rep": 9
     },
@@ -76638,6 +76942,22 @@
         },
         {
           "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
           "character": "A",
           "container": null,
           "item": null,
@@ -76675,7 +76995,7 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 13,
+      "situation_event_count": 15,
       "epistemic_transitions": {
         "certainty": 1,
         "accuracy": 0,
@@ -76738,6 +77058,14 @@
           "to_container": null
         },
         {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
           "event_type": "enter",
           "character": "A",
           "container": null,
@@ -76763,7 +77091,7 @@
         },
         {
           "event_type": "leave",
-          "character": "B",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -76771,7 +77099,7 @@
         },
         {
           "event_type": "enter",
-          "character": "B",
+          "character": "C",
           "container": null,
           "item": null,
           "from_container": null,
@@ -76800,6 +77128,22 @@
           "item": "stapler",
           "from_container": null,
           "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
         }
       ],
       "present_initially": [
@@ -76816,11 +77160,11 @@
       "ks_teammate": "Unknown",
       "ks_opponent": "Unknown",
       "correct_action": "Pass",
-      "situation_event_count": 12,
+      "situation_event_count": 15,
       "epistemic_transitions": {
-        "certainty": 4,
+        "certainty": 5,
         "accuracy": 0,
-        "total": 4
+        "total": 5
       },
       "rep": 10
     },

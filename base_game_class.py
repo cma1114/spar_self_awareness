@@ -335,7 +335,7 @@ class BaseGameClass:
                         formatted_messages=[{'role': 'user', 'content': prompt}]
                     #print(f"formatted_messages={formatted_messages}")
                     #exit()
-                    reasoning_effort = "high" if ("_think" in self.subject_name or "_reasoning" in self.subject_name) else "low" if "_lowthink" in self.subject_name else None
+                    reasoning_effort = "low" if "_lowthink" in self.subject_name else "high" if ("think" in self.subject_name or "_reasoning" in self.subject_name) else None
                     self._log(f"SENDING reasoning_effort={reasoning_effort}")
                     completion = self.client.chat.completions.create(
                         model=model_name,
@@ -374,7 +374,7 @@ class BaseGameClass:
                                     }
                                 }
                                 if (
-                                    "_think" in self.subject_name
+                                    "think" in self.subject_name
                                     or "_reasoning" in self.subject_name
                                     or "-r1" in model_name
                                 )
@@ -405,7 +405,7 @@ class BaseGameClass:
                             'provider': {
                                 'order': ['Chutes'] if 'v3.1' in self.subject_name else [],
                                 'allow_fallbacks': True,
-                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'gemini' in self.subject_name or 'hermes' in self.subject_name or 'mistral' in self.subject_name else True,
+                                'require_parameters': False if 'claude' in self.subject_name or 'gpt-5' in self.subject_name or 'gemini' in self.subject_name or 'hermes' in self.subject_name or 'mistral' in self.subject_name or 'kimi-k2-thinking' in self.subject_name or 'llama-3.1-70b-Instruct' in self.subject_name else True,
 #                                'quantizations': ['fp8'],
                             },
                         }} if self.provider == "OpenRouter" else {}

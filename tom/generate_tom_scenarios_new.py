@@ -172,6 +172,138 @@ def _get_teammates_to_exclude_for_target_moves(scenario: 'Scenario', up_to_idx: 
 
     return exclude
 
+
+def _get_unknown_characters_from_spec(spec: dict) -> Tuple[Set[str], bool]:
+    """
+    Identify characters who must remain UNKNOWN per the spec.
+
+    Returns:
+        Tuple of (must_be_unknown, opponent_needs_one_unknown):
+        - must_be_unknown: Set of character names (e.g., {'B'}) that MUST be UNKNOWN
+        - opponent_needs_one_unknown: True if at least ONE of C/D must be UNKNOWN
+
+    For Teammate=UNKNOWN: B must be UNKNOWN
+    For Opponent=UNKNOWN: At least ONE of C/D must be UNKNOWN (not both required)
+    """
+    from tom_helpers import EpistemicState
+
+    must_be_unknown = set()
+    opponent_needs_one_unknown = False
+
+    if spec.get('KS_Teammate') == EpistemicState.UNKNOWN:
+        must_be_unknown.add('B')
+    if spec.get('KS_Opponent') == EpistemicState.UNKNOWN:
+        opponent_needs_one_unknown = True  # Only need ONE of C/D to stay UNKNOWN
+
+    return must_be_unknown, opponent_needs_one_unknown
+
+
+def _ensure_unknown_chars_absent(
+    scenario: 'Scenario',
+    spec: dict,
+    insert_pos: int,
+    rng: random.Random,
+    exclude_chars: Set[str] = None
+) -> Tuple[int, List[str]]:
+    """
+    Insert leave events for chars who must remain UNKNOWN but are present.
+
+    This function ensures that characters who should remain UNKNOWN per the spec
+    are not present when extra events are inserted on the target container.
+
+    For Opponent=UNKNOWN: Only forces ONE opponent to leave if BOTH are present
+    and would witness the extra events. Uses minimum necessary removals.
+
+    Args:
+        scenario: The scenario being modified
+        spec: The scenario specification with KS_Teammate, KS_Opponent
+        insert_pos: Position where extra events will be inserted
+        rng: Random number generator for choosing which opponent to remove
+        exclude_chars: Characters to NOT force to leave (e.g., the answerer whose
+            leave is already handled by the calling function)
+
+    Returns:
+        Tuple of (new_insert_pos, list_of_chars_who_left)
+    """
+    if exclude_chars is None:
+        exclude_chars = set()
+    from tom_helpers import EpistemicState
+
+    must_be_unknown, opponent_needs_one_unknown = _get_unknown_characters_from_spec(spec)
+
+    # Track who is present at insert_pos and who has observed the target
+    present = set(scenario.present_initially)
+    observed_target = {c: False for c in ['A', 'B', 'C', 'D']}
+    target = scenario.question_container
+
+    for idx, event in enumerate(scenario.events):
+        if idx >= insert_pos:
+            break
+        if event.event_type == 'put' and event.container == target:
+            for c in present:
+                observed_target[c] = True
+        elif event.event_type == 'move':
+            if event.from_container == target or event.to_container == target:
+                for c in present:
+                    observed_target[c] = True
+        elif event.event_type == 'leave':
+            present.discard(event.character)
+        elif event.event_type == 'enter':
+            present.add(event.character)
+
+    # Determine which characters need to leave
+    chars_to_leave = []
+
+    # Check if any characters already have a leave event coming up (before any enter for them)
+    # If so, they're already leaving and we don't need to insert another leave
+    # We scan from insert_pos onward to find leave events for characters who are present
+    chars_already_leaving = set()
+    for idx in range(insert_pos, len(scenario.events)):
+        event = scenario.events[idx]
+        if event.event_type == 'leave' and event.character in present:
+            # This character is present and will leave - no need to insert another leave
+            chars_already_leaving.add(event.character)
+        elif event.event_type == 'enter' and event.character in chars_already_leaving:
+            # They re-enter after their leave - they're still "already leaving" but will be back
+            # Don't remove from chars_already_leaving since we found their leave event
+            pass
+
+    # For must_be_unknown (e.g., B for Teammate=UNKNOWN): must leave if present
+    # Skip characters in exclude_chars (their departure is handled elsewhere)
+    # Skip characters who are already leaving at this position
+    for char in must_be_unknown:
+        if char in present and char not in exclude_chars and char not in chars_already_leaving:
+            chars_to_leave.append(char)
+
+    # For opponent_needs_one_unknown: check if at least one is already UNKNOWN
+    if opponent_needs_one_unknown:
+        # A character is UNKNOWN if they're not present OR never observed target
+        # Also count as "would be unknown" if they're in exclude_chars (will leave separately)
+        # Also count as "would be unknown" if they're already leaving at this position
+        c_would_be_unknown = ('C' not in present or not observed_target.get('C', False) or
+                              'C' in exclude_chars or 'C' in chars_already_leaving)
+        d_would_be_unknown = ('D' not in present or not observed_target.get('D', False) or
+                              'D' in exclude_chars or 'D' in chars_already_leaving)
+
+        # Only need to force one to leave if BOTH would become non-UNKNOWN
+        if not c_would_be_unknown and not d_would_be_unknown:
+            # Both C and D are present, observed target, and not being excluded/already leaving
+            # Force ONE to leave (minimum necessary)
+            candidates = [c for c in ['C', 'D'] if c not in exclude_chars and c not in chars_already_leaving]
+            if candidates:
+                opponent_to_remove = rng.choice(candidates)
+                if opponent_to_remove not in chars_to_leave:
+                    chars_to_leave.append(opponent_to_remove)
+
+    # Insert leave events
+    events_inserted = 0
+    for char in sorted(chars_to_leave):
+        scenario.events.insert(insert_pos + events_inserted, Event('leave', char))
+        events_inserted += 1
+
+    return insert_pos + events_inserted, chars_to_leave
+
+
 @dataclass
 class Scenario_Builder:
     rng: random.Random
@@ -922,6 +1054,88 @@ def _get_answerer_state(spec: dict) -> EpistemicState:
         return spec['KS_Opponent']
 
 
+def _epistemic_matches(actual: str, expected: EpistemicState) -> bool:
+    """Check if actual epistemic state matches expected, handling X variants.
+
+    Args:
+        actual: Actual state string from compute_actual_epistemic_state()
+        expected: Expected state from spec
+
+    Returns:
+        True if states match (accounting for X variants)
+    """
+    actual_normalized = actual.upper().replace(' ', '_')
+    expected_normalized = expected.value.upper().replace(' ', '_')
+
+    # Handle KNOWS_X matching KNOWS_TRUTH
+    if expected_normalized == 'KNOWS_X':
+        return actual_normalized in ('KNOWS_TRUTH', 'KNOWS_X')
+    if expected_normalized == 'BELIEVES_X':
+        return actual_normalized in ('BELIEVES_TRUTH', 'BELIEVES_FALSE', 'BELIEVES_X')
+
+    return actual_normalized == expected_normalized
+
+
+def _validate_epistemic_states_preserved(scenario: 'Scenario', spec: dict) -> List[str]:
+    """
+    Verify ALL character epistemic states match spec after extra events.
+
+    This is a comprehensive validation that checks:
+    - UNKNOWN characters remain UNKNOWN
+    - KNOWS_TRUTH characters still know truth
+    - BELIEVES_TRUTH characters still believe truth
+    - BELIEVES_FALSE characters still believe false
+    - KNOWS_X/BELIEVES_X for Self characters
+
+    Args:
+        scenario: The generated scenario
+        spec: The scenario specification
+
+    Returns:
+        List of error messages (empty if valid)
+    """
+    from validate_scenarios import compute_actual_epistemic_state, a_can_determine_state
+
+    errors = []
+
+    # Validate Self (KS_Self)
+    expected_self = spec.get('KS_Self')
+    if expected_self:
+        actual = compute_actual_epistemic_state(scenario, 'A', is_self=True)
+        if not _epistemic_matches(actual, expected_self):
+            errors.append(f"Self (A): expected {expected_self.value}, got {actual}")
+
+    # Validate Teammate (KS_Teammate)
+    expected_teammate = spec.get('KS_Teammate')
+    if expected_teammate:
+        if expected_teammate == EpistemicState.UNKNOWN:
+            # For UNKNOWN, check A cannot determine B's state
+            if a_can_determine_state(scenario, 'B'):
+                errors.append(f"Teammate (B): should be UNKNOWN but A can determine state")
+        else:
+            actual = compute_actual_epistemic_state(scenario, 'B')
+            if not _epistemic_matches(actual, expected_teammate):
+                errors.append(f"Teammate (B): expected {expected_teammate.value}, got {actual}")
+
+    # Validate Opponent (KS_Opponent) - at least one must match
+    expected_opponent = spec.get('KS_Opponent')
+    if expected_opponent:
+        if expected_opponent == EpistemicState.UNKNOWN:
+            c_unknown = not a_can_determine_state(scenario, 'C')
+            d_unknown = not a_can_determine_state(scenario, 'D')
+            if not (c_unknown or d_unknown):
+                errors.append(f"Opponent: at least one of C/D should be UNKNOWN")
+        else:
+            actual_c = compute_actual_epistemic_state(scenario, 'C')
+            actual_d = compute_actual_epistemic_state(scenario, 'D')
+            c_matches = _epistemic_matches(actual_c, expected_opponent)
+            d_matches = _epistemic_matches(actual_d, expected_opponent)
+            if not (c_matches or d_matches):
+                errors.append(f"Opponent: expected {expected_opponent.value}, got C={actual_c}, D={actual_d}")
+
+    return errors
+
+
 def _find_extra_events_constraint(events: List[Event], answerer: str, player: str,
                                    answerer_state: EpistemicState, queried_container: str) -> int:
     """
@@ -1142,6 +1356,18 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     # Build the extra events
     leave_pos = initial_put_idx + 1
 
+    # Ensure characters who should remain UNKNOWN are not present
+    # Exclude the answerer - their leave/enter is handled separately in this function
+    if spec:
+        leave_pos, chars_who_left = _ensure_unknown_chars_absent(
+            scenario, spec, leave_pos, rng, exclude_chars={answerer}
+        )
+        for char in chars_who_left:
+            present_after_leave.discard(char)
+
+    if not present_after_leave:
+        return  # Everyone who could act had to leave to preserve UNKNOWN
+
     # Check which containers are used by events AFTER leave_pos
     non_targets = _non_target_containers(queried)
     third = non_targets[1] if other == non_targets[0] else non_targets[0]
@@ -1161,7 +1387,14 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     BLUE = {'A', 'B'}
     if answerer in BLUE:
         teammates_to_exclude = teammates_to_exclude | {_teammate_of(answerer)}
-    valid_movers = [c for c in sorted(present_after_leave) if c not in teammates_to_exclude]
+
+    # Also exclude characters who must remain UNKNOWN
+    unknown_chars = set()
+    if spec:
+        must_be_unknown, _ = _get_unknown_characters_from_spec(spec)
+        unknown_chars = must_be_unknown
+
+    valid_movers = [c for c in sorted(present_after_leave) if c not in teammates_to_exclude and c not in unknown_chars]
     if not valid_movers:
         # Fallback: For the revelation pattern, the moves are temporary (item returns to target
         # before any teammates leave). The base scenario's subsequent events will set the final
@@ -1284,7 +1517,8 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
         scenario.events.insert(leave_pos + i, evt)
 
 
-def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: random.Random,
+                                      spec: dict = None) -> None:
     """
     Insert extra events for BELIEVES_TRUE answerers using ACCURACY load.
 
@@ -1295,6 +1529,12 @@ def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: ra
     This creates accuracy ECTs:
     - #3 (true→false): When target contents change while answerer absent with true belief
     - #4 (false→true): When target contents revert while answerer still absent
+
+    Args:
+        scenario: The scenario to modify
+        answerer: The character who answers (has BELIEVES_TRUE state)
+        rng: Random number generator
+        spec: Optional spec dict with KS_Teammate, KS_Opponent to preserve UNKNOWN states
     """
     queried = scenario.question_container
     other = _other_container(queried)
@@ -1335,10 +1575,30 @@ def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: ra
     # Exclude teammates of characters who left with beliefs about the target
     # Check the FULL base scenario to find all teammates who will leave with beliefs
     insert_pos = answerer_leave_idx + 1
+
+    # Ensure characters who should remain UNKNOWN are not present
+    # Exclude the answerer - their presence/absence is determined by the base scenario
+    if spec:
+        insert_pos, chars_who_left = _ensure_unknown_chars_absent(
+            scenario, spec, insert_pos, rng, exclude_chars={answerer}
+        )
+        for char in chars_who_left:
+            present.discard(char)
+
+    if not present:
+        return  # Everyone who could act had to leave to preserve UNKNOWN
+
     teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
-    valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude]
+
+    # Also exclude characters who must remain UNKNOWN
+    unknown_chars = set()
+    if spec:
+        must_be_unknown, _ = _get_unknown_characters_from_spec(spec)
+        unknown_chars = must_be_unknown
+
+    valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude and c not in unknown_chars]
     if not valid_actors:
-        return  # Cannot insert extra events without violating teammate beliefs
+        return  # Cannot insert extra events without violating constraints
 
     # Check if containers are used by events AFTER insert_pos - if so, we can't safely add extra events
     containers_used_after = _get_containers_used_after(scenario, insert_pos)
@@ -1402,7 +1662,8 @@ def insert_extra_events_believes_true(scenario: Scenario, answerer: str, rng: ra
         scenario.events.insert(insert_pos + i, event)
 
 
-def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: random.Random,
+                                       spec: dict = None) -> None:
     """
     Insert extra events for BELIEVES_FALSE answerers using ACCURACY load.
 
@@ -1415,6 +1676,12 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
     - Answerer believes W is in target (what they last saw)
     - After subsequent base events, truth becomes X (different item) → false belief
     - We insert extra item cycling right after answerer leaves
+
+    Args:
+        scenario: The scenario to modify
+        answerer: The character who answers (has BELIEVES_FALSE state)
+        rng: Random number generator
+        spec: Optional spec dict with KS_Teammate, KS_Opponent to preserve UNKNOWN states
     """
     queried = scenario.question_container
     other = _other_container(queried)
@@ -1455,6 +1722,17 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
     # Insert events right after answerer leaves
     insert_pos = answerer_leave_idx + 1
 
+    # Ensure characters who should remain UNKNOWN are not present
+    if spec:
+        insert_pos, chars_who_left = _ensure_unknown_chars_absent(
+            scenario, spec, insert_pos, rng, exclude_chars={answerer}
+        )
+        for char in chars_who_left:
+            present.discard(char)
+
+    if not present:
+        return  # Everyone who could act had to leave to preserve UNKNOWN
+
     # Check which containers are used by events AFTER insert_pos
     # Note: For BELIEVES_FALSE, queried WILL be used after (to change belief to false)
     # Our round-trip puts W back, so later events can still change it
@@ -1466,9 +1744,16 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
     # Exclude teammates of characters who left with beliefs about the target
     # Check the FULL base scenario to find all teammates who will leave with beliefs
     teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
-    valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude]
+
+    # Also exclude characters who must remain UNKNOWN
+    unknown_chars = set()
+    if spec:
+        must_be_unknown, _ = _get_unknown_characters_from_spec(spec)
+        unknown_chars = must_be_unknown
+
+    valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude and c not in unknown_chars]
     if not valid_actors:
-        return  # Cannot insert extra events without violating teammate beliefs
+        return  # Cannot insert extra events without violating constraints
 
     # Build the extra events, alternating actors where possible
     extra_events = []
@@ -1525,15 +1810,20 @@ def insert_extra_events_believes_false(scenario: Scenario, answerer: str, rng: r
 
 
 def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: random.Random,
-                                   skip_optional_events: bool = False) -> None:
+                                   skip_optional_events: bool = False,
+                                   spec: dict = None) -> None:
     """
     Insert extra events for BELIEVES_X answerers (Self who believes something uncertain).
     Pattern: Answerer sees events, leaves, then more events happen after they leave.
     Result: Their belief is unchanged (they left), but scenario has more complexity.
 
     Args:
+        scenario: The scenario to modify
+        answerer: The character who answers (has BELIEVES_X state)
+        rng: Random number generator
         skip_optional_events: If True, skip the 50% chance leave/enter pair to reduce
             SIT count when 1A can't compensate with adaptive filler.
+        spec: Optional spec dict with KS_Teammate, KS_Opponent to preserve UNKNOWN states
     """
     queried = scenario.question_container
     other = _other_container(queried)
@@ -1566,6 +1856,17 @@ def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: rando
     # Insert events after answerer leaves
     insert_pos = answerer_leave_idx + 1
 
+    # Ensure characters who should remain UNKNOWN are not present
+    if spec:
+        insert_pos, chars_who_left = _ensure_unknown_chars_absent(
+            scenario, spec, insert_pos, rng, exclude_chars={answerer}
+        )
+        for char in chars_who_left:
+            present.discard(char)
+
+    if not present:
+        return  # Everyone who could act had to leave to preserve UNKNOWN
+
     # Check if containers are used by events AFTER insert_pos
     containers_used_after = _get_containers_used_after(scenario, insert_pos)
 
@@ -1575,9 +1876,16 @@ def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: rando
     # Exclude teammates of characters who left with beliefs about the target
     # Check the FULL base scenario to find all teammates who will leave with beliefs
     teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
-    valid_movers = [c for c in sorted(present) if c not in teammates_to_exclude]
+
+    # Also exclude characters who must remain UNKNOWN
+    unknown_chars = set()
+    if spec:
+        must_be_unknown, _ = _get_unknown_characters_from_spec(spec)
+        unknown_chars = must_be_unknown
+
+    valid_movers = [c for c in sorted(present) if c not in teammates_to_exclude and c not in unknown_chars]
     if not valid_movers:
-        return  # Cannot insert extra events without violating teammate beliefs
+        return  # Cannot insert extra events without violating constraints
 
     # Determine which container to use for round-trip
     if can_use_other:
@@ -1625,7 +1933,8 @@ def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: rando
         scenario.events.insert(insert_pos + i, evt)
 
 
-def insert_extra_events_unknown(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+def insert_extra_events_unknown(scenario: Scenario, answerer: str, rng: random.Random,
+                                spec: dict = None) -> None:
     """
     Insert extra events for UNKNOWN answerers.
     The answerer left without seeing relevant puts, so they have no knowledge.
@@ -1642,6 +1951,12 @@ def insert_extra_events_unknown(scenario: Scenario, answerer: str, rng: random.R
     - Characters present have observed the target container
     - Moves on target affect those who observed it (ECT #3 for absent believers)
     - Leave/enter triggers ECT #1 for the leaving character (who observed target)
+
+    Args:
+        scenario: The scenario to modify
+        answerer: The character who answers (has UNKNOWN state)
+        rng: Random number generator
+        spec: Optional spec dict with KS_Teammate, KS_Opponent to preserve UNKNOWN states
     """
     queried = scenario.question_container
     other = _other_container(queried)
@@ -1675,15 +1990,37 @@ def insert_extra_events_unknown(scenario: Scenario, answerer: str, rng: random.R
 
     # Insert at end of scenario
     insert_pos = len(scenario.events)
+
+    # Ensure characters who should remain UNKNOWN are not present
+    # This prevents them from witnessing the extra events on the target container
+    if spec:
+        insert_pos, chars_who_left = _ensure_unknown_chars_absent(
+            scenario, spec, insert_pos, rng, exclude_chars={answerer}
+        )
+        # Update present set after leave events were inserted
+        for char in chars_who_left:
+            present.discard(char)
+
+    if not present:
+        return  # Everyone who could act had to leave to preserve UNKNOWN
+
     item_in_queried = contents[queried]
     item_in_other = contents[other]
 
     # Exclude teammates of characters who left with beliefs about the target
     # Check the FULL base scenario to find all teammates who will leave with beliefs
     teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
-    valid_movers = [c for c in sorted(present) if c not in teammates_to_exclude]
+
+    # Also exclude characters who must remain UNKNOWN
+    unknown_chars = set()
+    if spec:
+        must_be_unknown, opponent_needs_one = _get_unknown_characters_from_spec(spec)
+        unknown_chars = must_be_unknown
+        # For opponent_needs_one, we already handled it in _ensure_unknown_chars_absent
+
+    valid_movers = [c for c in sorted(present) if c not in teammates_to_exclude and c not in unknown_chars]
     if not valid_movers:
-        return  # Cannot insert extra events without violating teammate beliefs
+        return  # Cannot insert extra events without violating constraints
 
     events_to_insert = []
     non_targets = _non_target_containers(queried)
@@ -1762,12 +2099,19 @@ def insert_teammate_reentry_unknown(scenario: Scenario, teammate: str, rng: rand
     scenario.events.append(Event('leave', teammate))
 
 
-def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> None:
+def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random,
+                      spec: dict = None) -> None:
     """
     Insert extra put/move events for scenarios where Answerer=Teammate,
     Self=Knows X, Teammate=Believes Truth, with Extra=1.
     Creates journey: Believes Truth -> Believes False -> Believes Truth
     Modifies scenario.events in place. Uses moves to third container instead of removes.
+
+    Args:
+        scenario: The scenario to modify
+        answerer: The character who answers (the Teammate)
+        rng: Random number generator
+        spec: Optional spec dict with KS_Teammate, KS_Opponent to preserve UNKNOWN states
     """
     queried = scenario.question_container
     other = _other_container(queried)
@@ -1807,10 +2151,29 @@ def insert_extra_puts(scenario: Scenario, answerer: str, rng: random.Random) -> 
     # Exclude teammates of blue team members who left with beliefs about the target
     # Check the FULL base scenario to find all teammates who will leave with beliefs
     insert_pos = answerer_leave_idx + 1
+
+    # Ensure characters who should remain UNKNOWN are not present
+    if spec:
+        insert_pos, chars_who_left = _ensure_unknown_chars_absent(
+            scenario, spec, insert_pos, rng, exclude_chars={answerer}
+        )
+        for char in chars_who_left:
+            present.discard(char)
+
+    if not present:
+        return  # Everyone who could act had to leave to preserve UNKNOWN
+
     teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
-    valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude]
+
+    # Also exclude characters who must remain UNKNOWN
+    unknown_chars = set()
+    if spec:
+        must_be_unknown, _ = _get_unknown_characters_from_spec(spec)
+        unknown_chars = must_be_unknown
+
+    valid_actors = [c for c in sorted(present) if c not in teammates_to_exclude and c not in unknown_chars]
     if not valid_actors:
-        return  # Cannot insert extra events without violating teammate beliefs
+        return  # Cannot insert extra events without violating constraints
 
     # Check which containers are used by events AFTER insert_pos
     containers_used_after = _get_containers_used_after(scenario, insert_pos)
@@ -2682,24 +3045,25 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                     if (e1b_spec['Answerer'] == 'Teammate' and
                         e1b_spec['KS_Self'] == EpistemicState.KNOWS_X and
                         e1b_spec['KS_Teammate'] == EpistemicState.BELIEVES_TRUTH):
-                        insert_extra_puts(scenario_e1b, answerer, retry_rng)
+                        insert_extra_puts(scenario_e1b, answerer, retry_rng, spec=e1b_spec)
                         _validate_invariants(scenario_e1b)
                     elif answerer_state == EpistemicState.KNOWS_TRUTH:
                         insert_extra_events_with_revelation(scenario_e1b, answerer, retry_rng, spec=e1b_spec,
                                                            skip_optional_events=skip_opt)
                         _validate_invariants(scenario_e1b)
                     elif answerer_state == EpistemicState.BELIEVES_TRUTH:
-                        insert_extra_events_believes_true(scenario_e1b, answerer, retry_rng)
+                        insert_extra_events_believes_true(scenario_e1b, answerer, retry_rng, spec=e1b_spec)
                         _validate_invariants(scenario_e1b)
                     elif answerer_state == EpistemicState.BELIEVES_FALSE:
-                        insert_extra_events_believes_false(scenario_e1b, answerer, retry_rng)
+                        insert_extra_events_believes_false(scenario_e1b, answerer, retry_rng, spec=e1b_spec)
                         _validate_invariants(scenario_e1b)
                     elif answerer_state == EpistemicState.BELIEVES_X:
                         # skip_opt computed above before try block
-                        insert_extra_events_believes_x(scenario_e1b, answerer, retry_rng, skip_optional_events=skip_opt)
+                        insert_extra_events_believes_x(scenario_e1b, answerer, retry_rng,
+                                                       skip_optional_events=skip_opt, spec=e1b_spec)
                         _validate_invariants(scenario_e1b)
                     elif answerer_state == EpistemicState.UNKNOWN:
-                        insert_extra_events_unknown(scenario_e1b, answerer, retry_rng)
+                        insert_extra_events_unknown(scenario_e1b, answerer, retry_rng, spec=e1b_spec)
                         _validate_invariants(scenario_e1b)
                     else:
                         insert_extra_events(scenario_e1b, answerer, actor, answerer_state, e1b_spec, retry_rng)
@@ -2728,6 +3092,13 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                     violation_stats['total'] += v
                     violation_stats['by_id'][row['Id']] += v
                     violation_stats['by_extra']['1B'] += v
+
+                # Validate epistemic states are preserved after extra events
+                epistemic_preservation_errors = _validate_epistemic_states_preserved(scenario_e1b, e1b_spec)
+                if epistemic_preservation_errors:
+                    # Retry if epistemic states were violated
+                    continue
+
                 scenario_e1b.situation_event_count = _count_visible_events(scenario_e1b)
                 scenario_e1b.epistemic_transitions = count_epistemic_category_transitions(scenario_e1b)
 
@@ -2745,7 +3116,7 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
                 )
                 continue
 
-            # Epistemic state validation
+            # Epistemic state validation (double-check with existing validation)
             epistemic_errors = validate_scenario(scenario_e1b, e1b_spec)
             if epistemic_errors:
                 raise ValueError(f"ID={row['Id']} Extra=1B epistemic mismatch: {epistemic_errors}")
