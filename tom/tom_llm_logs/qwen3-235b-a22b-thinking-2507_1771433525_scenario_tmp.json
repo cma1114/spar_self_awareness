@@ -1,0 +1,133 @@
+{
+  "chars": [
+    "A",
+    "C",
+    "B",
+    "D"
+  ],
+  "chartypes": [
+    "live_player",
+    "honest_opponent",
+    "dishonest_teammate",
+    "dishonest_opponent"
+  ],
+  "scenarios": [
+    {
+      "round_num": 1,
+      "whose_turn": "A",
+      "who_answers": "A",
+      "question_container": "bag",
+      "events": [
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "C",
+          "container": "bag",
+          "item": "banana",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "D",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "put",
+          "character": "A",
+          "container": "basket",
+          "item": "orange",
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "enter",
+          "character": "B",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "leave",
+          "character": "A",
+          "container": null,
+          "item": null,
+          "from_container": null,
+          "to_container": null
+        },
+        {
+          "event_type": "move",
+          "character": "C",
+          "container": null,
+          "item": "banana",
+          "from_container": "bag",
+          "to_container": "box"
+        },
+        {
+          "event_type": "put",
+          "character": "C",
+          "container": "bag",
+          "item": "brick",
+          "from_container": null,
+          "to_container": null
+        }
+      ],
+      "present_initially": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "id": "10",
+      "extra": "0B",
+      "epistemic_type": null,
+      "ask_constraint": null,
+      "ks_self": "Believes X",
+      "ks_teammate": "Unknown",
+      "ks_opponent": "Unknown",
+      "correct_action": "Pass",
+      "situation_event_count": 9,
+      "epistemic_transitions": {
+        "certainty": 1,
+        "accuracy": 0,
+        "total": 1
+      },
+      "rep": 2
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+Model,Extra,Self: Knowledge vs Belief,Teammate: Knowledge vs Belief,Combined Uncertainty,True vs False Belief,Teammate vs Opponent,Strategic Lies
+anthropic-claude-opus-4.5,Overall,50.0,95.0,78.1,67.1,75.0,44.6
+anthropic-claude-opus-4.5,Minimal Events,50.0,98.3,85.0,61.7,64.0,30.0
+anthropic-claude-opus-4.5,Event Load,50.0,100.0,82.5,78.3,80.0,50.0
+anthropic-claude-opus-4.5,Minimal ECT,50.0,98.3,82.5,78.3,80.0,50.0
+anthropic-claude-opus-4.5,ECT Load,50.0,83.3,62.5,50.0,76.0,48.3
+anthropic-claude-opus-4.6,Overall,50.4,91.7,77.5,59.7,59.5,17.1
+anthropic-claude-opus-4.6,Minimal Events,49.2,98.3,87.5,60.0,52.0,3.3
+anthropic-claude-opus-4.6,Event Load,50.0,98.3,82.5,61.7,63.0,21.7
+anthropic-claude-opus-4.6,Minimal ECT,50.0,96.7,80.0,66.1,74.0,40.0
+anthropic-claude-opus-4.6,ECT Load,52.5,73.3,60.0,50.8,49.0,3.3
+deepseek-chat-v3.1,Overall,50.0,61.7,45.6,51.2,44.0,2.5
+deepseek-chat-v3.1,Minimal Events,52.5,83.3,55.0,53.3,48.0,3.3
+deepseek-chat-v3.1,Event Load,57.5,60.0,35.0,51.7,52.0,3.3
+deepseek-chat-v3.1,Minimal ECT,52.5,50.0,42.5,50.0,42.0,0.0
+deepseek-chat-v3.1,ECT Load,37.5,53.3,50.0,50.0,34.0,3.3
+deepseek-chat-v3.1 (with COT),Overall,43.7,58.3,38.4,62.1,52.2,36.2
+deepseek-chat-v3.1 (with COT),Minimal Events,37.5,68.3,37.5,60.0,50.0,26.7
+deepseek-chat-v3.1 (with COT),Event Load,49.2,51.7,37.5,63.3,60.0,41.7
+deepseek-chat-v3.1 (with COT),Minimal ECT,55.8,56.7,42.5,56.7,48.0,26.7
+deepseek-chat-v3.1 (with COT),ECT Load,32.2,56.7,35.9,68.3,51.0,50.0
+openai-gpt-5.2-chat,Overall,50.0,99.2,68.1,99.2,76.0,61.7
+openai-gpt-5.2-chat,Minimal Events,50.0,100.0,67.5,100.0,77.0,60.0
+openai-gpt-5.2-chat,Event Load,50.0,98.3,70.0,98.3,78.0,61.7
+openai-gpt-5.2-chat,Minimal ECT,50.0,98.3,67.5,98.3,75.0,61.7
+openai-gpt-5.2-chat,ECT Load,50.0,100.0,67.5,100.0,74.0,63.3
+openai-gpt-5.2-chat (with COT),Overall,50.6,99.6,68.8,99.6,77.2,62.1
+openai-gpt-5.2-chat (with COT),Minimal Events,52.5,100.0,67.5,100.0,74.0,48.3
+openai-gpt-5.2-chat (with COT),Event Load,50.0,98.3,70.0,98.3,78.0,66.7
+openai-gpt-5.2-chat (with COT),Minimal ECT,50.0,100.0,67.5,100.0,78.8,66.7
+openai-gpt-5.2-chat (with COT),ECT Load,50.0,100.0,70.0,100.0,78.0,66.7
+openai-gpt-5.2_think,Overall,66.9,87.9,44.4,76.2,72.0,65.0
+openai-gpt-5.2_think,Minimal Events,67.5,91.7,50.0,83.3,72.0,46.7
+openai-gpt-5.2_think,Event Load,70.0,91.7,47.5,71.7,73.0,68.3
+openai-gpt-5.2_think,Minimal ECT,60.0,88.3,45.0,83.3,69.0,66.7
+openai-gpt-5.2_think,ECT Load,70.0,80.0,35.0,66.7,74.0,78.3
+openai-gpt-5.2_think (lose),Overall,68.3,91.2,42.5,75.3,81.7,70.4
+openai-gpt-5.2_think (lose),Minimal Events,75.0,91.7,40.0,86.7,84.0,65.0
+openai-gpt-5.2_think (lose),Event Load,62.5,93.3,52.5,71.7,79.0,70.0
+openai-gpt-5.2_think (lose),Minimal ECT,65.0,90.0,42.5,70.0,82.0,71.7
+openai-gpt-5.2_think (lose),ECT Load,70.8,89.8,35.0,72.9,81.8,75.0
+qwen3-235b-a22b-2507,Overall,54.6,56.7,45.0,55.8,39.8,0.0
+qwen3-235b-a22b-2507,Minimal Events,62.5,65.0,47.5,61.7,44.0,0.0
+qwen3-235b-a22b-2507,Event Load,52.5,61.7,47.5,56.7,39.0,0.0
+qwen3-235b-a22b-2507,Minimal ECT,60.0,50.0,42.5,53.3,42.0,0.0
+qwen3-235b-a22b-2507,ECT Load,43.3,50.0,42.5,51.7,34.0,0.0
+qwen3-235b-a22b-2507 (with COT),Overall,48.5,52.1,44.4,50.4,41.2,0.0
+qwen3-235b-a22b-2507 (with COT),Minimal Events,49.2,55.0,52.5,50.0,41.0,0.0
+qwen3-235b-a22b-2507 (with COT),Event Load,48.3,51.7,47.5,51.7,39.0,0.0
+qwen3-235b-a22b-2507 (with COT),Minimal ECT,52.5,51.7,42.5,50.0,48.0,0.0
+qwen3-235b-a22b-2507 (with COT),ECT Load,44.2,50.0,35.0,50.0,37.0,0.0
+qwen3-235b-a22b-2507_think,Overall,60.8,52.9,43.1,52.5,41.0,0.0
+qwen3-235b-a22b-2507_think,Minimal Events,62.5,60.0,47.5,56.7,46.0,0.0
+qwen3-235b-a22b-2507_think,Event Load,62.5,51.7,40.0,53.3,41.0,0.0
+qwen3-235b-a22b-2507_think,Minimal ECT,62.5,50.0,45.0,50.0,40.0,0.0
+qwen3-235b-a22b-2507_think,ECT Load,55.8,50.0,40.0,50.0,37.0,0.0
+ALL MODELS,Overall,54.0,76.9,54.2,68.1,60.0,32.7
+ALL MODELS,Minimal Events,55.3,82.9,58.0,70.3,59.3,25.8
+ALL MODELS,Event Load,54.8,77.9,55.7,68.8,62.0,34.8
+ALL MODELS,Minimal ECT,55.3,75.4,54.5,68.7,61.7,34.8
+ALL MODELS,ECT Load,50.6,71.5,48.5,64.6,56.9,35.3

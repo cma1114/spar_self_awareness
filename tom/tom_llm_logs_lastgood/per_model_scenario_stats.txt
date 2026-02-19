@@ -1,0 +1,1156 @@
+Model                                         | Scenario |        Extra |    N |   Accuracy
+------------------------------------------------------------------------------------------
+anthropic-claude-opus-4.5                     |        7 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        7 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        7 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        7 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        8 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        8 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        8 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        8 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        9 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        9 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        9 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |        9 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       10 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       10 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       10 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       10 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       11 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       11 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       11 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       11 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       12 |   Min Events |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       12 |   Event Load |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       12 |      Min ECT |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       12 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       13 |   Min Events |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       13 |   Event Load |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       13 |      Min ECT |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       13 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       14 |   Min Events |   10 |      20.0%
+anthropic-claude-opus-4.5                     |       14 |   Event Load |   10 |      50.0%
+anthropic-claude-opus-4.5                     |       14 |      Min ECT |   10 |      60.0%
+anthropic-claude-opus-4.5                     |       14 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       15 |   Min Events |   10 |      20.0%
+anthropic-claude-opus-4.5                     |       15 |   Event Load |   10 |      40.0%
+anthropic-claude-opus-4.5                     |       15 |      Min ECT |   10 |      30.0%
+anthropic-claude-opus-4.5                     |       15 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       16 |   Min Events |   10 |      30.0%
+anthropic-claude-opus-4.5                     |       16 |   Event Load |   10 |      80.0%
+anthropic-claude-opus-4.5                     |       16 |      Min ECT |   10 |      80.0%
+anthropic-claude-opus-4.5                     |       16 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       17 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       17 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       17 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       17 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       18 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       18 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       18 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       18 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       19 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       19 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       19 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       19 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       20 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       20 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       20 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       20 |     ECT Load |   10 |      60.0%
+anthropic-claude-opus-4.5                     |       21 |   Min Events |   10 |      90.0%
+anthropic-claude-opus-4.5                     |       21 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       21 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       21 |     ECT Load |   10 |      80.0%
+anthropic-claude-opus-4.5                     |       22 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       22 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       22 |      Min ECT |   10 |      90.0%
+anthropic-claude-opus-4.5                     |       22 |     ECT Load |   10 |      60.0%
+anthropic-claude-opus-4.5                     |       23 |   Min Events |   10 |      80.0%
+anthropic-claude-opus-4.5                     |       23 |   Event Load |   10 |      80.0%
+anthropic-claude-opus-4.5                     |       23 |      Min ECT |   10 |      80.0%
+anthropic-claude-opus-4.5                     |       23 |     ECT Load |   10 |      50.0%
+anthropic-claude-opus-4.5                     |       24 |   Min Events |   10 |      60.0%
+anthropic-claude-opus-4.5                     |       24 |   Event Load |   10 |      50.0%
+anthropic-claude-opus-4.5                     |       24 |      Min ECT |   10 |      50.0%
+anthropic-claude-opus-4.5                     |       24 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.5                     |       27 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       27 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       27 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       27 |     ECT Load |   10 |      80.0%
+anthropic-claude-opus-4.5                     |       28 |   Min Events |   10 |      30.0%
+anthropic-claude-opus-4.5                     |       28 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       28 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       28 |     ECT Load |   10 |      80.0%
+anthropic-claude-opus-4.5                     |       29 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       29 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       29 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       29 |     ECT Load |   10 |      90.0%
+anthropic-claude-opus-4.5                     |       30 |   Min Events |   10 |      50.0%
+anthropic-claude-opus-4.5                     |       30 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       30 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       30 |     ECT Load |   10 |      70.0%
+anthropic-claude-opus-4.5                     |       31 |   Min Events |   10 |      10.0%
+anthropic-claude-opus-4.5                     |       31 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       31 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       31 |     ECT Load |   10 |      90.0%
+anthropic-claude-opus-4.5                     |       32 |   Min Events |   10 |      80.0%
+anthropic-claude-opus-4.5                     |       32 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       32 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       32 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       37 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       37 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       37 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       37 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       39 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       39 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       39 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.5                     |       39 |     ECT Load |   10 |     100.0%
+
+anthropic-claude-opus-4.6                     |        7 |   Min Events |    9 |     100.0%
+anthropic-claude-opus-4.6                     |        7 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        7 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        7 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        8 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        8 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        8 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        8 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        9 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        9 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        9 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |        9 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       10 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       10 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       10 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       10 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       11 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       11 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       11 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       11 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       12 |   Min Events |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       12 |   Event Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       12 |      Min ECT |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       12 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       13 |   Min Events |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       13 |   Event Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       13 |      Min ECT |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       13 |     ECT Load |   10 |      10.0%
+anthropic-claude-opus-4.6                     |       14 |   Min Events |   10 |      30.0%
+anthropic-claude-opus-4.6                     |       14 |   Event Load |   10 |      40.0%
+anthropic-claude-opus-4.6                     |       14 |      Min ECT |    9 |      33.3%
+anthropic-claude-opus-4.6                     |       14 |     ECT Load |    9 |       0.0%
+anthropic-claude-opus-4.6                     |       15 |   Min Events |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       15 |   Event Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       15 |      Min ECT |   10 |      10.0%
+anthropic-claude-opus-4.6                     |       15 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       16 |   Min Events |   10 |      30.0%
+anthropic-claude-opus-4.6                     |       16 |   Event Load |   10 |      30.0%
+anthropic-claude-opus-4.6                     |       16 |      Min ECT |   10 |      50.0%
+anthropic-claude-opus-4.6                     |       16 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       17 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       17 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       17 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       17 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       18 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       18 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       18 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       18 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       19 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       19 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       19 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       19 |     ECT Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       20 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       20 |   Event Load |   10 |      90.0%
+anthropic-claude-opus-4.6                     |       20 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       20 |     ECT Load |   10 |      50.0%
+anthropic-claude-opus-4.6                     |       21 |   Min Events |   10 |      90.0%
+anthropic-claude-opus-4.6                     |       21 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       21 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       21 |     ECT Load |   10 |      80.0%
+anthropic-claude-opus-4.6                     |       22 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       22 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       22 |      Min ECT |   10 |      80.0%
+anthropic-claude-opus-4.6                     |       22 |     ECT Load |   10 |      10.0%
+anthropic-claude-opus-4.6                     |       23 |   Min Events |   10 |      80.0%
+anthropic-claude-opus-4.6                     |       23 |   Event Load |   10 |      80.0%
+anthropic-claude-opus-4.6                     |       23 |      Min ECT |   10 |      70.0%
+anthropic-claude-opus-4.6                     |       23 |     ECT Load |   10 |      40.0%
+anthropic-claude-opus-4.6                     |       24 |   Min Events |   10 |      70.0%
+anthropic-claude-opus-4.6                     |       24 |   Event Load |   10 |      50.0%
+anthropic-claude-opus-4.6                     |       24 |      Min ECT |   10 |      50.0%
+anthropic-claude-opus-4.6                     |       24 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       27 |   Min Events |   10 |      90.0%
+anthropic-claude-opus-4.6                     |       27 |   Event Load |   10 |      90.0%
+anthropic-claude-opus-4.6                     |       27 |      Min ECT |   10 |      90.0%
+anthropic-claude-opus-4.6                     |       27 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       28 |   Min Events |   10 |      10.0%
+anthropic-claude-opus-4.6                     |       28 |   Event Load |   10 |      80.0%
+anthropic-claude-opus-4.6                     |       28 |      Min ECT |   10 |      80.0%
+anthropic-claude-opus-4.6                     |       28 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       29 |   Min Events |   10 |      50.0%
+anthropic-claude-opus-4.6                     |       29 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       29 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       29 |     ECT Load |   10 |      10.0%
+anthropic-claude-opus-4.6                     |       30 |   Min Events |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       30 |   Event Load |   10 |      20.0%
+anthropic-claude-opus-4.6                     |       30 |      Min ECT |   10 |      50.0%
+anthropic-claude-opus-4.6                     |       30 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       31 |   Min Events |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       31 |   Event Load |   10 |      50.0%
+anthropic-claude-opus-4.6                     |       31 |      Min ECT |   10 |      90.0%
+anthropic-claude-opus-4.6                     |       31 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       32 |   Min Events |   10 |      20.0%
+anthropic-claude-opus-4.6                     |       32 |   Event Load |   10 |      60.0%
+anthropic-claude-opus-4.6                     |       32 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       32 |     ECT Load |   10 |       0.0%
+anthropic-claude-opus-4.6                     |       37 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       37 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       37 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       37 |     ECT Load |   10 |      90.0%
+anthropic-claude-opus-4.6                     |       39 |   Min Events |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       39 |   Event Load |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       39 |      Min ECT |   10 |     100.0%
+anthropic-claude-opus-4.6                     |       39 |     ECT Load |   10 |      90.0%
+
+deepseek-chat-v3.1                            |        7 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1                            |        7 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1                            |        7 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1                            |        7 |     ECT Load |   10 |     100.0%
+deepseek-chat-v3.1                            |        8 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1                            |        8 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1                            |        8 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1                            |        8 |     ECT Load |   10 |      10.0%
+deepseek-chat-v3.1                            |        9 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1                            |        9 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1                            |        9 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1                            |        9 |     ECT Load |   10 |     100.0%
+deepseek-chat-v3.1                            |       10 |   Min Events |   10 |      90.0%
+deepseek-chat-v3.1                            |       10 |   Event Load |   10 |      60.0%
+deepseek-chat-v3.1                            |       10 |      Min ECT |   10 |      80.0%
+deepseek-chat-v3.1                            |       10 |     ECT Load |   10 |      80.0%
+deepseek-chat-v3.1                            |       11 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1                            |       11 |   Event Load |   10 |      80.0%
+deepseek-chat-v3.1                            |       11 |      Min ECT |   10 |      90.0%
+deepseek-chat-v3.1                            |       11 |     ECT Load |   10 |     100.0%
+deepseek-chat-v3.1                            |       12 |   Min Events |   10 |      10.0%
+deepseek-chat-v3.1                            |       12 |   Event Load |   10 |      30.0%
+deepseek-chat-v3.1                            |       12 |      Min ECT |   10 |      10.0%
+deepseek-chat-v3.1                            |       12 |     ECT Load |   10 |      10.0%
+deepseek-chat-v3.1                            |       13 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1                            |       13 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       13 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       13 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       14 |   Min Events |   10 |      10.0%
+deepseek-chat-v3.1                            |       14 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       14 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       14 |     ECT Load |   10 |      10.0%
+deepseek-chat-v3.1                            |       15 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1                            |       15 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       15 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       15 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       16 |   Min Events |   10 |      50.0%
+deepseek-chat-v3.1                            |       16 |   Event Load |   10 |      10.0%
+deepseek-chat-v3.1                            |       16 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       16 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       17 |   Min Events |   10 |      80.0%
+deepseek-chat-v3.1                            |       17 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1                            |       17 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1                            |       17 |     ECT Load |   10 |     100.0%
+deepseek-chat-v3.1                            |       18 |   Min Events |   10 |      80.0%
+deepseek-chat-v3.1                            |       18 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1                            |       18 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1                            |       18 |     ECT Load |   10 |      90.0%
+deepseek-chat-v3.1                            |       19 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1                            |       19 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1                            |       19 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1                            |       19 |     ECT Load |   10 |     100.0%
+deepseek-chat-v3.1                            |       20 |   Min Events |   10 |      80.0%
+deepseek-chat-v3.1                            |       20 |   Event Load |   10 |      30.0%
+deepseek-chat-v3.1                            |       20 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       20 |     ECT Load |   10 |      10.0%
+deepseek-chat-v3.1                            |       21 |   Min Events |   10 |      70.0%
+deepseek-chat-v3.1                            |       21 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       21 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       21 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       22 |   Min Events |   10 |      90.0%
+deepseek-chat-v3.1                            |       22 |   Event Load |   10 |      30.0%
+deepseek-chat-v3.1                            |       22 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       22 |     ECT Load |   10 |      20.0%
+deepseek-chat-v3.1                            |       23 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1                            |       23 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       23 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       23 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       24 |   Min Events |   10 |      30.0%
+deepseek-chat-v3.1                            |       24 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       24 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       24 |     ECT Load |   10 |      20.0%
+deepseek-chat-v3.1                            |       27 |   Min Events |   10 |      20.0%
+deepseek-chat-v3.1                            |       27 |   Event Load |   10 |      20.0%
+deepseek-chat-v3.1                            |       27 |      Min ECT |   10 |      10.0%
+deepseek-chat-v3.1                            |       27 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       28 |   Min Events |   10 |      20.0%
+deepseek-chat-v3.1                            |       28 |   Event Load |   10 |      50.0%
+deepseek-chat-v3.1                            |       28 |      Min ECT |   10 |      30.0%
+deepseek-chat-v3.1                            |       28 |     ECT Load |   10 |      30.0%
+deepseek-chat-v3.1                            |       29 |   Min Events |   10 |      50.0%
+deepseek-chat-v3.1                            |       29 |   Event Load |   10 |      50.0%
+deepseek-chat-v3.1                            |       29 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       29 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       30 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1                            |       30 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       30 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       30 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       31 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1                            |       31 |   Event Load |   10 |      10.0%
+deepseek-chat-v3.1                            |       31 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       31 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       32 |   Min Events |   10 |      20.0%
+deepseek-chat-v3.1                            |       32 |   Event Load |   10 |      10.0%
+deepseek-chat-v3.1                            |       32 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1                            |       32 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1                            |       37 |   Min Events |   10 |      90.0%
+deepseek-chat-v3.1                            |       37 |   Event Load |   10 |      80.0%
+deepseek-chat-v3.1                            |       37 |      Min ECT |   10 |      80.0%
+deepseek-chat-v3.1                            |       37 |     ECT Load |   10 |      40.0%
+deepseek-chat-v3.1                            |       39 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1                            |       39 |   Event Load |   10 |      90.0%
+deepseek-chat-v3.1                            |       39 |      Min ECT |   10 |      30.0%
+deepseek-chat-v3.1                            |       39 |     ECT Load |   10 |       0.0%
+
+deepseek-chat-v3.1 (with COT)                 |        7 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |        7 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |        7 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |        7 |     ECT Load |   10 |      50.0%
+deepseek-chat-v3.1 (with COT)                 |        8 |   Min Events |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |        8 |   Event Load |   10 |      50.0%
+deepseek-chat-v3.1 (with COT)                 |        8 |      Min ECT |   10 |      60.0%
+deepseek-chat-v3.1 (with COT)                 |        8 |     ECT Load |    9 |      55.6%
+deepseek-chat-v3.1 (with COT)                 |        9 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |        9 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |        9 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |        9 |     ECT Load |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       10 |   Min Events |   10 |      70.0%
+deepseek-chat-v3.1 (with COT)                 |       10 |   Event Load |   10 |      80.0%
+deepseek-chat-v3.1 (with COT)                 |       10 |      Min ECT |   10 |      90.0%
+deepseek-chat-v3.1 (with COT)                 |       10 |     ECT Load |    9 |      77.8%
+deepseek-chat-v3.1 (with COT)                 |       11 |   Min Events |   10 |      80.0%
+deepseek-chat-v3.1 (with COT)                 |       11 |   Event Load |   10 |      60.0%
+deepseek-chat-v3.1 (with COT)                 |       11 |      Min ECT |   10 |      70.0%
+deepseek-chat-v3.1 (with COT)                 |       11 |     ECT Load |   10 |      70.0%
+deepseek-chat-v3.1 (with COT)                 |       12 |   Min Events |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       12 |   Event Load |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       12 |      Min ECT |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       12 |     ECT Load |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       13 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       13 |   Event Load |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       13 |      Min ECT |   10 |      40.0%
+deepseek-chat-v3.1 (with COT)                 |       13 |     ECT Load |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       14 |   Min Events |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       14 |   Event Load |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       14 |      Min ECT |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       14 |     ECT Load |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       15 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       15 |   Event Load |   10 |      70.0%
+deepseek-chat-v3.1 (with COT)                 |       15 |      Min ECT |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       15 |     ECT Load |   10 |      70.0%
+deepseek-chat-v3.1 (with COT)                 |       16 |   Min Events |   10 |      40.0%
+deepseek-chat-v3.1 (with COT)                 |       16 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       16 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       16 |     ECT Load |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       17 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       17 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       17 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       17 |     ECT Load |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       18 |   Min Events |   10 |      90.0%
+deepseek-chat-v3.1 (with COT)                 |       18 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       18 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       18 |     ECT Load |   10 |      90.0%
+deepseek-chat-v3.1 (with COT)                 |       19 |   Min Events |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       19 |   Event Load |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       19 |      Min ECT |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       19 |     ECT Load |   10 |     100.0%
+deepseek-chat-v3.1 (with COT)                 |       20 |   Min Events |   10 |      50.0%
+deepseek-chat-v3.1 (with COT)                 |       20 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       20 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       20 |     ECT Load |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       21 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       21 |   Event Load |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       21 |      Min ECT |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       21 |     ECT Load |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       22 |   Min Events |   10 |      70.0%
+deepseek-chat-v3.1 (with COT)                 |       22 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       22 |      Min ECT |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       22 |     ECT Load |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       23 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       23 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       23 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       23 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       24 |   Min Events |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       24 |   Event Load |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       24 |      Min ECT |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       24 |     ECT Load |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       27 |   Min Events |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       27 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       27 |      Min ECT |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       27 |     ECT Load |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       28 |   Min Events |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       28 |   Event Load |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       28 |      Min ECT |   10 |      50.0%
+deepseek-chat-v3.1 (with COT)                 |       28 |     ECT Load |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       29 |   Min Events |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       29 |   Event Load |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       29 |      Min ECT |   10 |       0.0%
+deepseek-chat-v3.1 (with COT)                 |       29 |     ECT Load |   10 |      10.0%
+deepseek-chat-v3.1 (with COT)                 |       30 |   Min Events |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       30 |   Event Load |   10 |      70.0%
+deepseek-chat-v3.1 (with COT)                 |       30 |      Min ECT |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       30 |     ECT Load |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       31 |   Min Events |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       31 |   Event Load |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       31 |      Min ECT |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       31 |     ECT Load |   10 |      60.0%
+deepseek-chat-v3.1 (with COT)                 |       32 |   Min Events |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       32 |   Event Load |   10 |      70.0%
+deepseek-chat-v3.1 (with COT)                 |       32 |      Min ECT |   10 |      30.0%
+deepseek-chat-v3.1 (with COT)                 |       32 |     ECT Load |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       37 |   Min Events |   10 |      80.0%
+deepseek-chat-v3.1 (with COT)                 |       37 |   Event Load |   10 |      50.0%
+deepseek-chat-v3.1 (with COT)                 |       37 |      Min ECT |   10 |      40.0%
+deepseek-chat-v3.1 (with COT)                 |       37 |     ECT Load |   10 |      70.0%
+deepseek-chat-v3.1 (with COT)                 |       39 |   Min Events |   10 |      40.0%
+deepseek-chat-v3.1 (with COT)                 |       39 |   Event Load |   10 |      50.0%
+deepseek-chat-v3.1 (with COT)                 |       39 |      Min ECT |   10 |      20.0%
+deepseek-chat-v3.1 (with COT)                 |       39 |     ECT Load |   10 |       0.0%
+
+openai-gpt-5.2-chat                           |        7 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |        7 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |        7 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |        7 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |        8 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |        8 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |        8 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |        8 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |        9 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |        9 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |        9 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |        9 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       10 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       10 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       10 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       10 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       11 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       11 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       11 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       11 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       12 |   Min Events |   10 |       0.0%
+openai-gpt-5.2-chat                           |       12 |   Event Load |   10 |       0.0%
+openai-gpt-5.2-chat                           |       12 |      Min ECT |   10 |       0.0%
+openai-gpt-5.2-chat                           |       12 |     ECT Load |   10 |       0.0%
+openai-gpt-5.2-chat                           |       13 |   Min Events |   10 |       0.0%
+openai-gpt-5.2-chat                           |       13 |   Event Load |   10 |       0.0%
+openai-gpt-5.2-chat                           |       13 |      Min ECT |   10 |       0.0%
+openai-gpt-5.2-chat                           |       13 |     ECT Load |   10 |       0.0%
+openai-gpt-5.2-chat                           |       14 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       14 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       14 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       14 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       15 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       15 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       15 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       15 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       16 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       16 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       16 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       16 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       17 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       17 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       17 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2-chat                           |       17 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       18 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       18 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       18 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       18 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       19 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       19 |   Event Load |   10 |      90.0%
+openai-gpt-5.2-chat                           |       19 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       19 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       20 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       20 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       20 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       20 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       21 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       21 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       21 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       21 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       22 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       22 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       22 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       22 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       23 |   Min Events |   10 |       0.0%
+openai-gpt-5.2-chat                           |       23 |   Event Load |   10 |      10.0%
+openai-gpt-5.2-chat                           |       23 |      Min ECT |   10 |       0.0%
+openai-gpt-5.2-chat                           |       23 |     ECT Load |   10 |       0.0%
+openai-gpt-5.2-chat                           |       24 |   Min Events |   10 |      70.0%
+openai-gpt-5.2-chat                           |       24 |   Event Load |   10 |      70.0%
+openai-gpt-5.2-chat                           |       24 |      Min ECT |   10 |      70.0%
+openai-gpt-5.2-chat                           |       24 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2-chat                           |       27 |   Min Events |   10 |      70.0%
+openai-gpt-5.2-chat                           |       27 |   Event Load |   10 |      90.0%
+openai-gpt-5.2-chat                           |       27 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2-chat                           |       27 |     ECT Load |   10 |      80.0%
+openai-gpt-5.2-chat                           |       28 |   Min Events |   10 |      90.0%
+openai-gpt-5.2-chat                           |       28 |   Event Load |   10 |      40.0%
+openai-gpt-5.2-chat                           |       28 |      Min ECT |   10 |      30.0%
+openai-gpt-5.2-chat                           |       28 |     ECT Load |   10 |      60.0%
+openai-gpt-5.2-chat                           |       29 |   Min Events |   10 |      70.0%
+openai-gpt-5.2-chat                           |       29 |   Event Load |   10 |      80.0%
+openai-gpt-5.2-chat                           |       29 |      Min ECT |   10 |      70.0%
+openai-gpt-5.2-chat                           |       29 |     ECT Load |   10 |      50.0%
+openai-gpt-5.2-chat                           |       30 |   Min Events |   10 |      90.0%
+openai-gpt-5.2-chat                           |       30 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       30 |      Min ECT |   10 |      70.0%
+openai-gpt-5.2-chat                           |       30 |     ECT Load |   10 |      80.0%
+openai-gpt-5.2-chat                           |       31 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       31 |   Event Load |   10 |      90.0%
+openai-gpt-5.2-chat                           |       31 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2-chat                           |       31 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       32 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       32 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       32 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       32 |     ECT Load |   10 |      90.0%
+openai-gpt-5.2-chat                           |       37 |   Min Events |   10 |      80.0%
+openai-gpt-5.2-chat                           |       37 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       37 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       37 |     ECT Load |   10 |      80.0%
+openai-gpt-5.2-chat                           |       39 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat                           |       39 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat                           |       39 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat                           |       39 |     ECT Load |   10 |      90.0%
+
+openai-gpt-5.2-chat (with COT)                |        7 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        7 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        7 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        7 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        8 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        8 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        8 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        8 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        9 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        9 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        9 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |        9 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       10 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       10 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       10 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       10 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       11 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       11 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       11 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       11 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       12 |   Min Events |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       12 |   Event Load |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       12 |      Min ECT |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       12 |     ECT Load |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       13 |   Min Events |   10 |      10.0%
+openai-gpt-5.2-chat (with COT)                |       13 |   Event Load |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       13 |      Min ECT |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       13 |     ECT Load |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       14 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       14 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       14 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       14 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       15 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       15 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       15 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       15 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       16 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       16 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       16 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       16 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       17 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       17 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       17 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       17 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       18 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       18 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       18 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       18 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       19 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       19 |   Event Load |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       19 |      Min ECT |    9 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       19 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       20 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       20 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       20 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       20 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       21 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       21 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       21 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       21 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       22 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       22 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       22 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       22 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       23 |   Min Events |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       23 |   Event Load |   10 |      10.0%
+openai-gpt-5.2-chat (with COT)                |       23 |      Min ECT |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       23 |     ECT Load |   10 |       0.0%
+openai-gpt-5.2-chat (with COT)                |       24 |   Min Events |   10 |      70.0%
+openai-gpt-5.2-chat (with COT)                |       24 |   Event Load |   10 |      70.0%
+openai-gpt-5.2-chat (with COT)                |       24 |      Min ECT |   10 |      70.0%
+openai-gpt-5.2-chat (with COT)                |       24 |     ECT Load |   10 |      80.0%
+openai-gpt-5.2-chat (with COT)                |       27 |   Min Events |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       27 |   Event Load |   10 |      80.0%
+openai-gpt-5.2-chat (with COT)                |       27 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       27 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2-chat (with COT)                |       28 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       28 |   Event Load |   10 |      50.0%
+openai-gpt-5.2-chat (with COT)                |       28 |      Min ECT |   10 |      50.0%
+openai-gpt-5.2-chat (with COT)                |       28 |     ECT Load |   10 |      50.0%
+openai-gpt-5.2-chat (with COT)                |       29 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       29 |   Event Load |   10 |      70.0%
+openai-gpt-5.2-chat (with COT)                |       29 |      Min ECT |   10 |      60.0%
+openai-gpt-5.2-chat (with COT)                |       29 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2-chat (with COT)                |       30 |   Min Events |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       30 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       30 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       30 |     ECT Load |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       31 |   Min Events |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       31 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       31 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       31 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       32 |   Min Events |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       32 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       32 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       32 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       37 |   Min Events |   10 |      60.0%
+openai-gpt-5.2-chat (with COT)                |       37 |   Event Load |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       37 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2-chat (with COT)                |       37 |     ECT Load |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       39 |   Min Events |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       39 |   Event Load |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       39 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2-chat (with COT)                |       39 |     ECT Load |   10 |     100.0%
+
+openai-gpt-5.2_think                          |        7 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think                          |        7 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think                          |        7 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think                          |        7 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2_think                          |        8 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think                          |        8 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think                          |        8 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think                          |        8 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2_think                          |        9 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think                          |        9 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think                          |        9 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think                          |        9 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2_think                          |       10 |   Min Events |   10 |      80.0%
+openai-gpt-5.2_think                          |       10 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think                          |       10 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2_think                          |       10 |     ECT Load |   10 |      30.0%
+openai-gpt-5.2_think                          |       11 |   Min Events |   10 |      80.0%
+openai-gpt-5.2_think                          |       11 |   Event Load |   10 |      50.0%
+openai-gpt-5.2_think                          |       11 |      Min ECT |   10 |      60.0%
+openai-gpt-5.2_think                          |       11 |     ECT Load |   10 |      50.0%
+openai-gpt-5.2_think                          |       12 |   Min Events |   10 |      40.0%
+openai-gpt-5.2_think                          |       12 |   Event Load |   10 |      20.0%
+openai-gpt-5.2_think                          |       12 |      Min ECT |   10 |      10.0%
+openai-gpt-5.2_think                          |       12 |     ECT Load |   10 |      40.0%
+openai-gpt-5.2_think                          |       13 |   Min Events |   10 |      30.0%
+openai-gpt-5.2_think                          |       13 |   Event Load |   10 |      60.0%
+openai-gpt-5.2_think                          |       13 |      Min ECT |   10 |      30.0%
+openai-gpt-5.2_think                          |       13 |     ECT Load |   10 |      40.0%
+openai-gpt-5.2_think                          |       14 |   Min Events |   10 |      60.0%
+openai-gpt-5.2_think                          |       14 |   Event Load |   10 |      50.0%
+openai-gpt-5.2_think                          |       14 |      Min ECT |   10 |      50.0%
+openai-gpt-5.2_think                          |       14 |     ECT Load |   10 |      20.0%
+openai-gpt-5.2_think                          |       15 |   Min Events |   10 |      60.0%
+openai-gpt-5.2_think                          |       15 |   Event Load |   10 |      20.0%
+openai-gpt-5.2_think                          |       15 |      Min ECT |   10 |      60.0%
+openai-gpt-5.2_think                          |       15 |     ECT Load |   10 |      40.0%
+openai-gpt-5.2_think                          |       16 |   Min Events |   10 |      80.0%
+openai-gpt-5.2_think                          |       16 |   Event Load |   10 |      60.0%
+openai-gpt-5.2_think                          |       16 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2_think                          |       16 |     ECT Load |   10 |      40.0%
+openai-gpt-5.2_think                          |       17 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think                          |       17 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think                          |       17 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think                          |       17 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2_think                          |       18 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think                          |       18 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think                          |       18 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think                          |       18 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2_think                          |       19 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think                          |       19 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think                          |       19 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think                          |       19 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2_think                          |       20 |   Min Events |   10 |      90.0%
+openai-gpt-5.2_think                          |       20 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think                          |       20 |      Min ECT |   10 |      70.0%
+openai-gpt-5.2_think                          |       20 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2_think                          |       21 |   Min Events |   10 |      60.0%
+openai-gpt-5.2_think                          |       21 |   Event Load |   10 |      90.0%
+openai-gpt-5.2_think                          |       21 |      Min ECT |   10 |      80.0%
+openai-gpt-5.2_think                          |       21 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2_think                          |       22 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think                          |       22 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think                          |       22 |      Min ECT |   10 |      80.0%
+openai-gpt-5.2_think                          |       22 |     ECT Load |   10 |      40.0%
+openai-gpt-5.2_think                          |       23 |   Min Events |   10 |       0.0%
+openai-gpt-5.2_think                          |       23 |   Event Load |   10 |       0.0%
+openai-gpt-5.2_think                          |       23 |      Min ECT |   10 |       0.0%
+openai-gpt-5.2_think                          |       23 |     ECT Load |   10 |       0.0%
+openai-gpt-5.2_think                          |       24 |   Min Events |   10 |      40.0%
+openai-gpt-5.2_think                          |       24 |   Event Load |   10 |      60.0%
+openai-gpt-5.2_think                          |       24 |      Min ECT |   10 |      30.0%
+openai-gpt-5.2_think                          |       24 |     ECT Load |   10 |      60.0%
+openai-gpt-5.2_think                          |       27 |   Min Events |   10 |      70.0%
+openai-gpt-5.2_think                          |       27 |   Event Load |   10 |      20.0%
+openai-gpt-5.2_think                          |       27 |      Min ECT |   10 |      20.0%
+openai-gpt-5.2_think                          |       27 |     ECT Load |   10 |      10.0%
+openai-gpt-5.2_think                          |       28 |   Min Events |   10 |      40.0%
+openai-gpt-5.2_think                          |       28 |   Event Load |   10 |      20.0%
+openai-gpt-5.2_think                          |       28 |      Min ECT |   10 |      20.0%
+openai-gpt-5.2_think                          |       28 |     ECT Load |   10 |      10.0%
+openai-gpt-5.2_think                          |       29 |   Min Events |   10 |      20.0%
+openai-gpt-5.2_think                          |       29 |   Event Load |   10 |      30.0%
+openai-gpt-5.2_think                          |       29 |      Min ECT |   10 |      40.0%
+openai-gpt-5.2_think                          |       29 |     ECT Load |   10 |      10.0%
+openai-gpt-5.2_think                          |       30 |   Min Events |   10 |      70.0%
+openai-gpt-5.2_think                          |       30 |   Event Load |   10 |      60.0%
+openai-gpt-5.2_think                          |       30 |      Min ECT |   10 |      40.0%
+openai-gpt-5.2_think                          |       30 |     ECT Load |   10 |      80.0%
+openai-gpt-5.2_think                          |       31 |   Min Events |   10 |      60.0%
+openai-gpt-5.2_think                          |       31 |   Event Load |   10 |      60.0%
+openai-gpt-5.2_think                          |       31 |      Min ECT |   10 |      80.0%
+openai-gpt-5.2_think                          |       31 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2_think                          |       32 |   Min Events |   10 |      40.0%
+openai-gpt-5.2_think                          |       32 |   Event Load |   10 |      70.0%
+openai-gpt-5.2_think                          |       32 |      Min ECT |   10 |      80.0%
+openai-gpt-5.2_think                          |       32 |     ECT Load |   10 |      60.0%
+openai-gpt-5.2_think                          |       37 |   Min Events |   10 |      80.0%
+openai-gpt-5.2_think                          |       37 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think                          |       37 |      Min ECT |   10 |      80.0%
+openai-gpt-5.2_think                          |       37 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2_think                          |       39 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think                          |       39 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think                          |       39 |      Min ECT |   10 |      70.0%
+openai-gpt-5.2_think                          |       39 |     ECT Load |   10 |      80.0%
+
+openai-gpt-5.2_think (lose)                   |        7 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        7 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        7 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        7 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2_think (lose)                   |        8 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        8 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        8 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        8 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        9 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        9 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        9 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |        9 |     ECT Load |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       10 |   Min Events |   10 |      70.0%
+openai-gpt-5.2_think (lose)                   |       10 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       10 |      Min ECT |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       10 |     ECT Load |   10 |      40.0%
+openai-gpt-5.2_think (lose)                   |       11 |   Min Events |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       11 |   Event Load |   10 |      60.0%
+openai-gpt-5.2_think (lose)                   |       11 |      Min ECT |   10 |      60.0%
+openai-gpt-5.2_think (lose)                   |       11 |     ECT Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       12 |   Min Events |   10 |      60.0%
+openai-gpt-5.2_think (lose)                   |       12 |   Event Load |   10 |       0.0%
+openai-gpt-5.2_think (lose)                   |       12 |      Min ECT |   10 |      30.0%
+openai-gpt-5.2_think (lose)                   |       12 |     ECT Load |   10 |      60.0%
+openai-gpt-5.2_think (lose)                   |       13 |   Min Events |   10 |      40.0%
+openai-gpt-5.2_think (lose)                   |       13 |   Event Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       13 |      Min ECT |   10 |      30.0%
+openai-gpt-5.2_think (lose)                   |       13 |     ECT Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       14 |   Min Events |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       14 |   Event Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       14 |      Min ECT |   10 |      40.0%
+openai-gpt-5.2_think (lose)                   |       14 |     ECT Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       15 |   Min Events |   10 |      60.0%
+openai-gpt-5.2_think (lose)                   |       15 |   Event Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       15 |      Min ECT |   10 |      40.0%
+openai-gpt-5.2_think (lose)                   |       15 |     ECT Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       16 |   Min Events |   10 |      70.0%
+openai-gpt-5.2_think (lose)                   |       16 |   Event Load |   10 |      30.0%
+openai-gpt-5.2_think (lose)                   |       16 |      Min ECT |   10 |      40.0%
+openai-gpt-5.2_think (lose)                   |       16 |     ECT Load |   10 |      40.0%
+openai-gpt-5.2_think (lose)                   |       17 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       17 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       17 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       17 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       18 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       18 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       18 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       18 |     ECT Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       19 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       19 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       19 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       19 |     ECT Load |    9 |     100.0%
+openai-gpt-5.2_think (lose)                   |       20 |   Min Events |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       20 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       20 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       20 |     ECT Load |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       21 |   Min Events |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       21 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       21 |      Min ECT |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       21 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2_think (lose)                   |       22 |   Min Events |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       22 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       22 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       22 |     ECT Load |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       23 |   Min Events |   10 |       0.0%
+openai-gpt-5.2_think (lose)                   |       23 |   Event Load |   10 |       0.0%
+openai-gpt-5.2_think (lose)                   |       23 |      Min ECT |   10 |       0.0%
+openai-gpt-5.2_think (lose)                   |       23 |     ECT Load |   10 |       0.0%
+openai-gpt-5.2_think (lose)                   |       24 |   Min Events |   10 |      40.0%
+openai-gpt-5.2_think (lose)                   |       24 |   Event Load |   10 |      70.0%
+openai-gpt-5.2_think (lose)                   |       24 |      Min ECT |   10 |      60.0%
+openai-gpt-5.2_think (lose)                   |       24 |     ECT Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       27 |   Min Events |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       27 |   Event Load |   10 |      10.0%
+openai-gpt-5.2_think (lose)                   |       27 |      Min ECT |   10 |      30.0%
+openai-gpt-5.2_think (lose)                   |       27 |     ECT Load |   10 |      10.0%
+openai-gpt-5.2_think (lose)                   |       28 |   Min Events |   10 |      60.0%
+openai-gpt-5.2_think (lose)                   |       28 |   Event Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       28 |      Min ECT |   10 |      30.0%
+openai-gpt-5.2_think (lose)                   |       28 |     ECT Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       29 |   Min Events |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       29 |   Event Load |   10 |      50.0%
+openai-gpt-5.2_think (lose)                   |       29 |      Min ECT |   10 |      40.0%
+openai-gpt-5.2_think (lose)                   |       29 |     ECT Load |   10 |       0.0%
+openai-gpt-5.2_think (lose)                   |       30 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       30 |   Event Load |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       30 |      Min ECT |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       30 |     ECT Load |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       31 |   Min Events |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       31 |   Event Load |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       31 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       31 |     ECT Load |   10 |      70.0%
+openai-gpt-5.2_think (lose)                   |       32 |   Min Events |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       32 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       32 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       32 |     ECT Load |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       37 |   Min Events |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       37 |   Event Load |   10 |      80.0%
+openai-gpt-5.2_think (lose)                   |       37 |      Min ECT |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       37 |     ECT Load |   10 |      90.0%
+openai-gpt-5.2_think (lose)                   |       39 |   Min Events |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       39 |   Event Load |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       39 |      Min ECT |   10 |     100.0%
+openai-gpt-5.2_think (lose)                   |       39 |     ECT Load |   10 |      80.0%
+
+qwen3-235b-a22b-2507                          |        7 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507                          |        7 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |        7 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507                          |        7 |     ECT Load |   10 |      90.0%
+qwen3-235b-a22b-2507                          |        8 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507                          |        8 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |        8 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507                          |        8 |     ECT Load |   10 |      50.0%
+qwen3-235b-a22b-2507                          |        9 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507                          |        9 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |        9 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507                          |        9 |     ECT Load |   10 |      90.0%
+qwen3-235b-a22b-2507                          |       10 |   Min Events |   10 |      90.0%
+qwen3-235b-a22b-2507                          |       10 |   Event Load |   10 |      90.0%
+qwen3-235b-a22b-2507                          |       10 |      Min ECT |   10 |      70.0%
+qwen3-235b-a22b-2507                          |       10 |     ECT Load |   10 |      70.0%
+qwen3-235b-a22b-2507                          |       11 |   Min Events |   10 |      90.0%
+qwen3-235b-a22b-2507                          |       11 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       11 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       11 |     ECT Load |   10 |      90.0%
+qwen3-235b-a22b-2507                          |       12 |   Min Events |   10 |      50.0%
+qwen3-235b-a22b-2507                          |       12 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       12 |      Min ECT |   10 |      30.0%
+qwen3-235b-a22b-2507                          |       12 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       13 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       13 |   Event Load |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       13 |      Min ECT |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       13 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       14 |   Min Events |   10 |      30.0%
+qwen3-235b-a22b-2507                          |       14 |   Event Load |   10 |      20.0%
+qwen3-235b-a22b-2507                          |       14 |      Min ECT |   10 |      20.0%
+qwen3-235b-a22b-2507                          |       14 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       15 |   Min Events |   10 |      20.0%
+qwen3-235b-a22b-2507                          |       15 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       15 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       15 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       16 |   Min Events |   10 |      20.0%
+qwen3-235b-a22b-2507                          |       16 |   Event Load |   10 |      20.0%
+qwen3-235b-a22b-2507                          |       16 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       16 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       17 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       17 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       17 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       17 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       18 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       18 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       18 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       18 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       19 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       19 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       19 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       19 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507                          |       20 |   Min Events |   10 |      30.0%
+qwen3-235b-a22b-2507                          |       20 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507                          |       20 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       20 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       21 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       21 |   Event Load |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       21 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       21 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       22 |   Min Events |   10 |      60.0%
+qwen3-235b-a22b-2507                          |       22 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507                          |       22 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       22 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       23 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       23 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       23 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       23 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       24 |   Min Events |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       24 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       24 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       24 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       27 |   Min Events |   10 |      40.0%
+qwen3-235b-a22b-2507                          |       27 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507                          |       27 |      Min ECT |   10 |      40.0%
+qwen3-235b-a22b-2507                          |       27 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       28 |   Min Events |   10 |      60.0%
+qwen3-235b-a22b-2507                          |       28 |   Event Load |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       28 |      Min ECT |   10 |      10.0%
+qwen3-235b-a22b-2507                          |       28 |     ECT Load |   10 |      50.0%
+qwen3-235b-a22b-2507                          |       29 |   Min Events |   10 |      30.0%
+qwen3-235b-a22b-2507                          |       29 |   Event Load |   10 |      40.0%
+qwen3-235b-a22b-2507                          |       29 |      Min ECT |   10 |      40.0%
+qwen3-235b-a22b-2507                          |       29 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       30 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       30 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       30 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       30 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       31 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       31 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       31 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       31 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       32 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       32 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       32 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       32 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507                          |       37 |   Min Events |   10 |      50.0%
+qwen3-235b-a22b-2507                          |       37 |   Event Load |   10 |      50.0%
+qwen3-235b-a22b-2507                          |       37 |      Min ECT |   10 |      50.0%
+qwen3-235b-a22b-2507                          |       37 |     ECT Load |   10 |      20.0%
+qwen3-235b-a22b-2507                          |       39 |   Min Events |   10 |      40.0%
+qwen3-235b-a22b-2507                          |       39 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507                          |       39 |      Min ECT |   10 |      30.0%
+qwen3-235b-a22b-2507                          |       39 |     ECT Load |   10 |       0.0%
+
+qwen3-235b-a22b-2507 (with COT)               |        7 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |        7 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |        7 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |        7 |     ECT Load |   10 |      70.0%
+qwen3-235b-a22b-2507 (with COT)               |        8 |   Min Events |   10 |      80.0%
+qwen3-235b-a22b-2507 (with COT)               |        8 |   Event Load |   10 |      90.0%
+qwen3-235b-a22b-2507 (with COT)               |        8 |      Min ECT |   10 |      90.0%
+qwen3-235b-a22b-2507 (with COT)               |        8 |     ECT Load |   10 |      30.0%
+qwen3-235b-a22b-2507 (with COT)               |        9 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |        9 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |        9 |      Min ECT |   10 |      80.0%
+qwen3-235b-a22b-2507 (with COT)               |        9 |     ECT Load |   10 |      90.0%
+qwen3-235b-a22b-2507 (with COT)               |       10 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       10 |   Event Load |   10 |      90.0%
+qwen3-235b-a22b-2507 (with COT)               |       10 |      Min ECT |   10 |      70.0%
+qwen3-235b-a22b-2507 (with COT)               |       10 |     ECT Load |   10 |      40.0%
+qwen3-235b-a22b-2507 (with COT)               |       11 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       11 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       11 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       11 |     ECT Load |   10 |      90.0%
+qwen3-235b-a22b-2507 (with COT)               |       12 |   Min Events |   10 |      10.0%
+qwen3-235b-a22b-2507 (with COT)               |       12 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       12 |      Min ECT |   10 |      30.0%
+qwen3-235b-a22b-2507 (with COT)               |       12 |     ECT Load |   10 |      40.0%
+qwen3-235b-a22b-2507 (with COT)               |       13 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       13 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       13 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       13 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507 (with COT)               |       14 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       14 |   Event Load |   10 |      10.0%
+qwen3-235b-a22b-2507 (with COT)               |       14 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       14 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       15 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       15 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       15 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       15 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       16 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       16 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       16 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       16 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       17 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       17 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       17 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       17 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       18 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       18 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       18 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       18 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       19 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       19 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       19 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       19 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507 (with COT)               |       20 |   Min Events |   10 |      10.0%
+qwen3-235b-a22b-2507 (with COT)               |       20 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       20 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       20 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       21 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       21 |   Event Load |   10 |      10.0%
+qwen3-235b-a22b-2507 (with COT)               |       21 |      Min ECT |   10 |      10.0%
+qwen3-235b-a22b-2507 (with COT)               |       21 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       22 |   Min Events |   10 |      20.0%
+qwen3-235b-a22b-2507 (with COT)               |       22 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       22 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       22 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       23 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       23 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       23 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       23 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       24 |   Min Events |   10 |      10.0%
+qwen3-235b-a22b-2507 (with COT)               |       24 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       24 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       24 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507 (with COT)               |       27 |   Min Events |   10 |      30.0%
+qwen3-235b-a22b-2507 (with COT)               |       27 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507 (with COT)               |       27 |      Min ECT |   10 |      20.0%
+qwen3-235b-a22b-2507 (with COT)               |       27 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507 (with COT)               |       28 |   Min Events |   10 |      60.0%
+qwen3-235b-a22b-2507 (with COT)               |       28 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       28 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       28 |     ECT Load |   10 |      20.0%
+qwen3-235b-a22b-2507 (with COT)               |       29 |   Min Events |   10 |      50.0%
+qwen3-235b-a22b-2507 (with COT)               |       29 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507 (with COT)               |       29 |      Min ECT |   10 |      30.0%
+qwen3-235b-a22b-2507 (with COT)               |       29 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       30 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       30 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       30 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       30 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       31 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       31 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       31 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       31 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       32 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       32 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       32 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       32 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507 (with COT)               |       37 |   Min Events |   10 |      60.0%
+qwen3-235b-a22b-2507 (with COT)               |       37 |   Event Load |   10 |      50.0%
+qwen3-235b-a22b-2507 (with COT)               |       37 |      Min ECT |   10 |      80.0%
+qwen3-235b-a22b-2507 (with COT)               |       37 |     ECT Load |   10 |      20.0%
+qwen3-235b-a22b-2507 (with COT)               |       39 |   Min Events |   10 |      40.0%
+qwen3-235b-a22b-2507 (with COT)               |       39 |   Event Load |   10 |      40.0%
+qwen3-235b-a22b-2507 (with COT)               |       39 |      Min ECT |   10 |      70.0%
+qwen3-235b-a22b-2507 (with COT)               |       39 |     ECT Load |   10 |       0.0%
+
+qwen3-235b-a22b-2507_think                    |        7 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |        7 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |        7 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |        7 |     ECT Load |   10 |      80.0%
+qwen3-235b-a22b-2507_think                    |        8 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |        8 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |        8 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |        8 |     ECT Load |   10 |      50.0%
+qwen3-235b-a22b-2507_think                    |        9 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |        9 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |        9 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |        9 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       10 |   Min Events |   10 |      90.0%
+qwen3-235b-a22b-2507_think                    |       10 |   Event Load |   10 |      70.0%
+qwen3-235b-a22b-2507_think                    |       10 |      Min ECT |   10 |      70.0%
+qwen3-235b-a22b-2507_think                    |       10 |     ECT Load |   10 |      80.0%
+qwen3-235b-a22b-2507_think                    |       11 |   Min Events |   10 |      90.0%
+qwen3-235b-a22b-2507_think                    |       11 |   Event Load |   10 |      90.0%
+qwen3-235b-a22b-2507_think                    |       11 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       11 |     ECT Load |   10 |      70.0%
+qwen3-235b-a22b-2507_think                    |       12 |   Min Events |   10 |      50.0%
+qwen3-235b-a22b-2507_think                    |       12 |   Event Load |   10 |      40.0%
+qwen3-235b-a22b-2507_think                    |       12 |      Min ECT |   10 |      40.0%
+qwen3-235b-a22b-2507_think                    |       12 |     ECT Load |   10 |      30.0%
+qwen3-235b-a22b-2507_think                    |       13 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       13 |   Event Load |   10 |      10.0%
+qwen3-235b-a22b-2507_think                    |       13 |      Min ECT |   10 |      10.0%
+qwen3-235b-a22b-2507_think                    |       13 |     ECT Load |   10 |      40.0%
+qwen3-235b-a22b-2507_think                    |       14 |   Min Events |   10 |      20.0%
+qwen3-235b-a22b-2507_think                    |       14 |   Event Load |   10 |      10.0%
+qwen3-235b-a22b-2507_think                    |       14 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       14 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       15 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       15 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       15 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       15 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       16 |   Min Events |   10 |      20.0%
+qwen3-235b-a22b-2507_think                    |       16 |   Event Load |   10 |      10.0%
+qwen3-235b-a22b-2507_think                    |       16 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       16 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       17 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       17 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       17 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       17 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       18 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       18 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       18 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       18 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       19 |   Min Events |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       19 |   Event Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       19 |      Min ECT |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       19 |     ECT Load |   10 |     100.0%
+qwen3-235b-a22b-2507_think                    |       20 |   Min Events |   10 |      40.0%
+qwen3-235b-a22b-2507_think                    |       20 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       20 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       20 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       21 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       21 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       21 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       21 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       22 |   Min Events |   10 |      20.0%
+qwen3-235b-a22b-2507_think                    |       22 |   Event Load |   10 |      10.0%
+qwen3-235b-a22b-2507_think                    |       22 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       22 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       23 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       23 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       23 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       23 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       24 |   Min Events |   10 |      10.0%
+qwen3-235b-a22b-2507_think                    |       24 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       24 |      Min ECT |   10 |      10.0%
+qwen3-235b-a22b-2507_think                    |       24 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507_think                    |       27 |   Min Events |   10 |      30.0%
+qwen3-235b-a22b-2507_think                    |       27 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507_think                    |       27 |      Min ECT |   10 |      30.0%
+qwen3-235b-a22b-2507_think                    |       27 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       28 |   Min Events |   10 |      20.0%
+qwen3-235b-a22b-2507_think                    |       28 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       28 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       28 |     ECT Load |   10 |      10.0%
+qwen3-235b-a22b-2507_think                    |       29 |   Min Events |   10 |      50.0%
+qwen3-235b-a22b-2507_think                    |       29 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507_think                    |       29 |      Min ECT |   10 |      30.0%
+qwen3-235b-a22b-2507_think                    |       29 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       30 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       30 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       30 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       30 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       31 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       31 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       31 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       31 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       32 |   Min Events |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       32 |   Event Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       32 |      Min ECT |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       32 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       37 |   Min Events |   10 |      60.0%
+qwen3-235b-a22b-2507_think                    |       37 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507_think                    |       37 |      Min ECT |   10 |      30.0%
+qwen3-235b-a22b-2507_think                    |       37 |     ECT Load |   10 |       0.0%
+qwen3-235b-a22b-2507_think                    |       39 |   Min Events |   10 |      50.0%
+qwen3-235b-a22b-2507_think                    |       39 |   Event Load |   10 |      30.0%
+qwen3-235b-a22b-2507_think                    |       39 |      Min ECT |   10 |      20.0%
+qwen3-235b-a22b-2507_think                    |       39 |     ECT Load |   10 |       0.0%

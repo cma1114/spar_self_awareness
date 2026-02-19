@@ -182,8 +182,9 @@ def a_can_determine_state(scenario: Scenario, character: str) -> bool:
     a_knows_truth = a_present and observed_target.get('A', False)
 
     if character in present:
-        # Character is present at end - A can determine if A knows they observed target
-        return a_saw_char_observe.get(character, False) and a_knows_truth
+        # Character is present at end - they KNOW_TRUTH if they observed.
+        # A can determine this just by having witnessed them observe - no need to know contents.
+        return a_saw_char_observe.get(character, False)
     else:
         # Character left - A can determine if A knows their belief AND A knows truth
         return a_knows_char_belief.get(character, False) and a_knows_truth

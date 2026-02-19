@@ -27,6 +27,103 @@ EXTRA_CATEGORIES = {
     '1B': {'name': 'ECT Load', 'short': 'ECT Load', 'color': '#e74c3c'},
 }
 
+# Model name shortening for charts - maps base model names to display names
+# Applied before any suffixes like (CoT) or (lose)
+MODEL_SHORT_NAMES = {
+    'anthropic-claude-3.5-sonnet': 'Sonnet 3.5',
+    'anthropic-claude-3.7-sonnet': 'Sonnet 3.7',
+    'anthropic-claude-3.7-sonnet:thinking': 'Sonnet 3.7 Think',
+    'anthropic-claude-sonnet-4': 'Sonnet 4',
+    'anthropic-claude-sonnet-4.5': 'Sonnet 4.5',
+    'anthropic-claude-sonnet-4_think': 'Sonnet 4 Think',
+    'anthropic-claude-sonnet-4.5_think': 'Sonnet 4.5 Think',
+    'anthropic-claude-opus-4.5': 'Opus 4.5',
+    'anthropic-claude-opus-4.5_think': 'Opus 4.5 Think',
+    'openai-gpt-5-chat': 'GPT-5',
+    'openai-gpt-5.2-chat': 'GPT-5.2',
+    'openai-gpt-5.2_think': 'GPT-5.2 Think',
+    'openai-gpt-5.2_lowthink': 'GPT-5.2 LowThink',
+    'openai-gpt-5.2_nothink': 'GPT-5.2 NoThink',
+    'deepseek-chat-v3.1': 'DeepSeek v3.1',
+    'kimi-k2-0905': 'Kimi K2',
+    'kimi-k2.5_think': 'Kimi K2.5 Think',
+    'qwen3-235b-a22b': 'Qwen3 235B',
+    'qwen3-235b-a22b-thinking-2507': 'Qwen3 235B Think',
+    'google-gemini-3-pro-preview': 'Gemini 3 Pro',
+    'google-gemini-3-pro-preview_think': 'Gemini 3 Pro Think',
+}
+
+
+def shorten_model_name(name: str) -> str:
+    """Shorten a model name for chart display.
+
+    Handles both base model names and names with suffixes like (CoT), (lose).
+    """
+    # Check for exact match first
+    if name in MODEL_SHORT_NAMES:
+        return MODEL_SHORT_NAMES[name]
+
+    # Check if it's a base model with suffixes
+    for base_name, short_name in MODEL_SHORT_NAMES.items():
+        if name.startswith(base_name):
+            suffix = name[len(base_name):]
+            return short_name + suffix
+
+    # Fallback: apply basic cleanup rules
+    result = name
+    result = result.replace('anthropic-', '').replace('openai-', '')
+    result = result.replace('-chat', '').replace('-instruct', '')
+    return result
+
+
+def get_model_sort_key(model_name: str) -> tuple:
+    """Generate a sort key that groups model families together.
+
+    Returns a tuple (provider_order, family, variant_order, suffix_order) where:
+    - provider_order: 0=Anthropic, 1=OpenAI, 2=others
+    - family: base model name without _think/_lowthink/-chat suffixes
+    - variant_order: 0=base, 1=lowthink, 2=think, 3=:thinking
+    - suffix_order: 0=plain, 1=CoT, 2=lose, 3=CoT+lose
+    """
+    # Strip suffixes like (CoT), (lose) first
+    base = model_name
+    suffix_order = 0
+    if ' (CoT) (lose)' in base:
+        base = base.replace(' (CoT) (lose)', '')
+        suffix_order = 3
+    elif ' (lose)' in base:
+        base = base.replace(' (lose)', '')
+        suffix_order = 2
+    elif ' (CoT)' in base:
+        base = base.replace(' (CoT)', '')
+        suffix_order = 1
+
+    # Determine variant order and extract family
+    variant_order = 0
+    family = base
+    if '_lowthink' in base:
+        family = base.replace('_lowthink', '')
+        variant_order = 1
+    elif '_think' in base:
+        family = base.replace('_think', '')
+        variant_order = 2
+    elif ':thinking' in base:
+        family = base.replace(':thinking', '')
+        variant_order = 3
+
+    # Normalize family name: remove -chat suffix for grouping
+    # e.g., "openai-gpt-5.2-chat" and "openai-gpt-5.2_think" should group together
+    family = family.replace('-chat', '')
+
+    # Provider ordering: Anthropic first, then OpenAI, then others
+    provider_order = 2  # default for others
+    if family.startswith('anthropic-'):
+        provider_order = 0
+    elif family.startswith('openai-'):
+        provider_order = 1
+
+    return (provider_order, family, variant_order, suffix_order)
+
 # Scenarios used for mastery analysis - see TOM_MASTERY_CATEGORIES below
 # Excludes: 1-6, 25, 26, 33-36, 38 (not part of any mastery category)
 MASTERY_SCENARIO_IDS = {7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -57,10 +154,10 @@ def extract_model_name(filepath: str) -> str:
 
 
 def format_model_name(model: str, free_response: bool, lose: bool = False) -> str:
-    """Format model name with COT/lose suffix if enabled."""
+    """Format model name with CoT/lose suffix if enabled."""
     name = model
     if free_response:
-        name = f"{name} (with COT)"
+        name = f"{name} (CoT)"
     if lose:
         name = f"{name} (lose)"
     return name
@@ -572,6 +669,9 @@ def main():
                     combined_model_records[display_name] = filtered
                     combined_model_order.append(display_name)
 
+    # Sort models: group by family, then base→think variants, then CoT/lose suffixes
+    combined_model_order.sort(key=get_model_sort_key)
+
     # Build detailed output for file (single combined table)
     output_lines = []
     output_lines.append(f"\n{'Model':<40} | {'N':>5} | {'Overall':>12} | {'Min Events':>12} | {'Event Load':>12} | {'Min ECT':>12} | {'ECT Load':>12}")
@@ -686,17 +786,17 @@ def main():
 
         extra_table_data[extra_key] = {'title': title, 'lines': table_lines}
 
-    # Save mastery tables to files
-    mastery_overall_path = os.path.join(logs_dir, 'mastery_overall.txt')
+    # Save mastery tables to files (named to match figures)
+    mastery_overall_path = os.path.join(logs_dir, 'mastery_overall_chart.txt')
     with open(mastery_overall_path, 'w') as f:
         f.write("\n".join(mastery_table_lines))
 
-    # Save each extra category table
+    # Save each extra category table (named to match figures)
     extra_file_names = {
-        '0A': 'mastery_minimal_events.txt',
-        '0B': 'mastery_event_load.txt',
-        '1A': 'mastery_minimal_ect.txt',
-        '1B': 'mastery_ect_load.txt',
+        '0A': 'mastery_overall_chart_0A.txt',
+        '0B': 'mastery_overall_chart_0B.txt',
+        '1A': 'mastery_overall_chart_1A.txt',
+        '1B': 'mastery_overall_chart_1B.txt',
     }
     for extra_key, filename in extra_file_names.items():
         filepath = os.path.join(logs_dir, filename)
@@ -749,8 +849,8 @@ def main():
     with open(mastery_detail_path, 'w') as f:
         f.write("\n".join(detail_lines))
 
-    # Save main summary table to file
-    summary_path = os.path.join(logs_dir, 'summary_table.txt')
+    # Save main summary table to file (named to match figure)
+    summary_path = os.path.join(logs_dir, 'accuracy_by_load_condition.txt')
     with open(summary_path, 'w') as f:
         f.write("\n".join(output_lines))
 
@@ -785,21 +885,19 @@ def main():
             f.write("\n".join(detail_lines))
         saved_files.append(filepath)
 
-    # Generate per-category mastery files (load conditions as columns)
-    # Format: one file per mastery category showing models × load conditions
+    # Generate consolidated mastery load effects file (table for mastery_load_effects.png)
+    # All 6 categories in one file, each showing models × load conditions
+    load_effects_lines = ["ToM Mastery Load Effects by Category", "=" * 140, ""]
+
     for cat_key, cat_info in TOM_MASTERY_CATEGORIES.items():
         cat_name = cat_info['name']
-        cat_filename = f"mastery_cat_{cat_key}.txt"
 
         # Build header with load conditions as columns
         cat_header = f"{'Model':<45} | {'N':>6} | {'0A':>14} | {'0B':>14} | {'1A':>14} | {'1B':>14} | {'Overall':>14}"
-        cat_lines = [
-            f"ToM MASTERY: {cat_name}",
-            cat_info['description'],
-            "=" * 140,
-            cat_header,
-            "-" * 140
-        ]
+        load_effects_lines.append(f"=== {cat_name} ===")
+        load_effects_lines.append(cat_info['description'])
+        load_effects_lines.append(cat_header)
+        load_effects_lines.append("-" * 140)
 
         for display_name in combined_model_order:
             mastery = combined_model_mastery[display_name]
@@ -823,9 +921,9 @@ def main():
             row += f" | {s_1a:>5.1f}% ({n_1a:>3})"
             row += f" | {s_1b:>5.1f}% ({n_1b:>3})"
             row += f" | {s_ov:>5.1f}% ({n_ov:>3})"
-            cat_lines.append(row)
+            load_effects_lines.append(row)
 
-        cat_lines.append("-" * 140)
+        load_effects_lines.append("-" * 140)
 
         # All models row
         n_all = len(all_records)
@@ -846,13 +944,13 @@ def main():
         row += f" | {s_1a:>5.1f}% ({n_1a:>3})"
         row += f" | {s_1b:>5.1f}% ({n_1b:>3})"
         row += f" | {s_ov:>5.1f}% ({n_ov:>3})"
-        cat_lines.append(row)
-        cat_lines.append("=" * 140)
+        load_effects_lines.append(row)
+        load_effects_lines.append("")  # Blank line between categories
 
-        cat_filepath = os.path.join(logs_dir, cat_filename)
-        with open(cat_filepath, 'w') as f:
-            f.write("\n".join(cat_lines))
-        saved_files.append(cat_filepath)
+    load_effects_path = os.path.join(logs_dir, 'mastery_load_effects.txt')
+    with open(load_effects_path, 'w') as f:
+        f.write("\n".join(load_effects_lines))
+    saved_files.append(load_effects_path)
 
     # Generate mastery category comparison chart
     # Select representative models: top performers, mid-tier, and aggregate
@@ -863,22 +961,9 @@ def main():
         model_overall_acc.append((display_name, stats['overall']['rate']))
     model_overall_acc.sort(key=lambda x: -x[1])  # Sort by accuracy descending
 
-    # Select models for chart: top 3, middle 2, bottom 1, plus ALL MODELS
-    n_models = len(model_overall_acc)
-    selected_models = []
-    if n_models >= 6:
-        selected_models = [
-            model_overall_acc[0][0],  # Top 1
-            model_overall_acc[1][0],  # Top 2
-            model_overall_acc[2][0],  # Top 3
-            model_overall_acc[n_models // 2][0],  # Middle
-            model_overall_acc[-2][0],  # Near bottom
-        ]
-    else:
-        selected_models = [m[0] for m in model_overall_acc[:min(5, n_models)]]
-
-    # Create multi-panel figure (2 rows × 4 cols, last panel for legend/summary)
-    fig_mastery, axes = plt.subplots(2, 4, figsize=(22, 10))
+    # Create multi-panel figure showing load effects per category (all models)
+    # 6 rows × 1 col: one category per row for readability
+    fig_mastery, axes = plt.subplots(6, 1, figsize=(28, 36))
     axes = axes.flatten()
 
     cat_names_short = {
@@ -900,71 +985,83 @@ def main():
     for i, (cat_key, cat_info) in enumerate(TOM_MASTERY_CATEGORIES.items()):
         ax = axes[i]
 
-        # Data for this category
+        # Data for this category - all models
         model_labels = []
         scores_0a, scores_0b, scores_1a, scores_1b = [], [], [], []
+        errs_0a, errs_0b, errs_1a, errs_1b = [], [], [], []
 
-        for model in selected_models:
+        for model in combined_model_order:
             mastery = combined_model_mastery[model]
-            # Shorten model name for display
-            short_name = model.replace('-instruct', '').replace('anthropic-', '').replace('-24b', '')
-            short_name = short_name[:25] + '...' if len(short_name) > 28 else short_name
-            model_labels.append(short_name)
-            scores_0a.append(mastery['extra0a'][cat_key]['score'] * 100)
-            scores_0b.append(mastery['extra0b'][cat_key]['score'] * 100)
-            scores_1a.append(mastery['extra1a'][cat_key]['score'] * 100)
-            scores_1b.append(mastery['extra1b'][cat_key]['score'] * 100)
+            model_labels.append(shorten_model_name(model))
+
+            for extra_key, scores_list, errs_list in [
+                ('extra0a', scores_0a, errs_0a),
+                ('extra0b', scores_0b, errs_0b),
+                ('extra1a', scores_1a, errs_1a),
+                ('extra1b', scores_1b, errs_1b),
+            ]:
+                cat_data = mastery[extra_key][cat_key]
+                score = cat_data['score'] * 100
+                k, n = int(cat_data['k']), int(cat_data['n'])
+                ci_low, ci_high = wilson_ci(k, n) if n > 0 else (0, 1)
+                scores_list.append(score)
+                errs_list.append((score - ci_low * 100 + ci_high * 100 - score) / 2)  # Symmetric error
 
         # Add ALL MODELS aggregate
         model_labels.append('ALL MODELS')
-        scores_0a.append(all_mastery['extra0a'][cat_key]['score'] * 100)
-        scores_0b.append(all_mastery['extra0b'][cat_key]['score'] * 100)
-        scores_1a.append(all_mastery['extra1a'][cat_key]['score'] * 100)
-        scores_1b.append(all_mastery['extra1b'][cat_key]['score'] * 100)
+        for extra_key, scores_list, errs_list in [
+            ('extra0a', scores_0a, errs_0a),
+            ('extra0b', scores_0b, errs_0b),
+            ('extra1a', scores_1a, errs_1a),
+            ('extra1b', scores_1b, errs_1b),
+        ]:
+            cat_data = all_mastery[extra_key][cat_key]
+            score = cat_data['score'] * 100
+            k, n = int(cat_data['k']), int(cat_data['n'])
+            ci_low, ci_high = wilson_ci(k, n) if n > 0 else (0, 1)
+            scores_list.append(score)
+            errs_list.append((score - ci_low * 100 + ci_high * 100 - score) / 2)
 
         x = np.arange(len(model_labels))
         width = 0.2
 
-        ax.bar(x - 1.5*width, scores_0a, width, label='0A: Min Events', color=load_colors['0A'])
-        ax.bar(x - 0.5*width, scores_0b, width, label='0B: Event Load', color=load_colors['0B'])
-        ax.bar(x + 0.5*width, scores_1a, width, label='1A: Min ECT', color=load_colors['1A'])
-        ax.bar(x + 1.5*width, scores_1b, width, label='1B: ECT Load', color=load_colors['1B'])
+        ax.bar(x - 1.5*width, scores_0a, width, label='0A: Min Events', color=load_colors['0A'],
+               yerr=errs_0a, capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8})
+        ax.bar(x - 0.5*width, scores_0b, width, label='0B: Event Load', color=load_colors['0B'],
+               yerr=errs_0b, capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8})
+        ax.bar(x + 0.5*width, scores_1a, width, label='1A: Min ECT', color=load_colors['1A'],
+               yerr=errs_1a, capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8})
+        ax.bar(x + 1.5*width, scores_1b, width, label='1B: ECT Load', color=load_colors['1B'],
+               yerr=errs_1b, capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8})
 
-        ax.set_ylabel('Mastery Score (%)', fontsize=10)
-        ax.set_title(cat_names_short.get(cat_key, cat_info['name']), fontsize=11, fontweight='bold')
+        ax.set_ylabel('Mastery Score (%)', fontsize=11)
+        ax.set_title(cat_names_short.get(cat_key, cat_info['name']), fontsize=13, fontweight='bold')
         ax.set_xticks(x)
-        ax.set_xticklabels(model_labels, rotation=45, ha='right', fontsize=8)
+        ax.set_xticklabels(model_labels, rotation=45, ha='right', fontsize=9)
         ax.set_ylim(0, 105)
-        ax.axhline(y=50, color='gray', linestyle='--', alpha=0.5, linewidth=0.8)
+        ax.axhline(y=50, color='red', linestyle='--', alpha=0.7, linewidth=1.5)
         ax.grid(axis='y', alpha=0.3)
 
-    # Use last panels for legend and hide empty panels
-    for idx in range(len(TOM_MASTERY_CATEGORIES), len(axes)):
-        axes[idx].axis('off')
+    # Add legend to the first panel
     handles = [
         Patch(facecolor=load_colors['0A'], label='0A: Minimal Events'),
         Patch(facecolor=load_colors['0B'], label='0B: Event Load'),
         Patch(facecolor=load_colors['1A'], label='1A: Minimal ECT'),
         Patch(facecolor=load_colors['1B'], label='1B: ECT Load'),
     ]
-    # Put legend in panel after all categories
-    legend_idx = len(TOM_MASTERY_CATEGORIES)
-    axes[legend_idx].legend(handles=handles, loc='center', fontsize=12, title='Load Conditions', title_fontsize=13)
+    axes[0].legend(handles=handles, loc='upper right', fontsize=10, title='Load Conditions', title_fontsize=11)
 
-    # Add note about model selection
-    axes[legend_idx].text(0.5, 0.3, f'Showing {len(selected_models)} representative models\n(top, middle, bottom performers)\nplus ALL MODELS aggregate',
-                 ha='center', va='center', fontsize=10, style='italic', transform=axes[legend_idx].transAxes)
-
-    fig_mastery.suptitle('ToM Mastery by Category and Load Condition', fontsize=14, fontweight='bold', y=1.02)
-    plt.tight_layout()
-    mastery_chart_path = os.path.join(logs_dir, 'mastery_by_category.png')
-    plt.savefig(mastery_chart_path, dpi=150, bbox_inches='tight')
+    fig_mastery.suptitle('Mastery Load Effects by Category', fontsize=18, fontweight='bold', y=0.995)
+    plt.tight_layout(rect=[0, 0, 1, 0.99])
+    mastery_chart_path = os.path.join(logs_dir, 'mastery_load_effects.png')
+    plt.savefig(mastery_chart_path, dpi=200, bbox_inches='tight')
     saved_files.append(mastery_chart_path)
     plt.close(fig_mastery)
 
     # Generate mastery overall bar chart (all models, all categories)
     # This is a direct visualization of mastery_overall.txt
-    # Now includes 7 panels: 6 categories + teammate_opponent with lies_okay
+    # 7 panels: 6 categories + teammate_opponent with lies_okay
+    # Layout: 3x3 grid with Combined Uncertainty as panel 7
     cat_colors = {
         'self_knowledge_belief': '#1f77b4',       # blue
         'teammate_knowledge_belief': '#ff7f0e',   # orange
@@ -973,17 +1070,32 @@ def main():
         'teammate_opponent': '#9467bd',           # purple
         'strategic_lies': '#17becf',              # cyan
         'teammate_opponent_lies': '#8c564b',      # brown (lies okay version)
+        'overall_combined': '#2ecc71',            # bright green for overall
     }
 
-    # Build list of panels to show: 6 categories + lies_okay version of teammate_opponent
-    chart_panels = list(TOM_MASTERY_CATEGORIES.keys()) + ['teammate_opponent_lies']
-    chart_names = {**cat_names_short, 'teammate_opponent_lies': 'TM vs Opp (lies ok)', 'strategic_lies': 'Strategic Lies'}
+    # Panel order: Row 1: Self, Teammate, True/False
+    #              Row 2: TM vs Opp, TM vs Opp (lies), Strategic Lies
+    #              Row 3: Combined Uncertainty, Overall
+    chart_panels = [
+        'self_knowledge_belief',
+        'teammate_knowledge_belief',
+        'true_false_belief',
+        'teammate_opponent',
+        'teammate_opponent_lies',
+        'strategic_lies',
+        'combined_uncertainty',
+        'overall_combined',
+    ]
+    chart_names = {
+        **cat_names_short,
+        'teammate_opponent_lies': 'TM vs Opp (lies ok)',
+        'strategic_lies': 'Strategic Lies',
+        'overall_combined': 'Overall (All Categories)',
+    }
 
-    # Build data: all models + ALL MODELS row
-    all_model_names = list(combined_model_order) + ['ALL MODELS']
-
-    # Create figure with 7 subplots (one per category) - 2x4 grid (one empty)
-    fig_overall, axes_overall = plt.subplots(2, 4, figsize=(20, 14))
+    # Create figure with 3x3 grid (7 panels + 2 empty)
+    # Use moderate size with high DPI for crisp text
+    fig_overall, axes_overall = plt.subplots(3, 3, figsize=(20, 18))
     axes_overall = axes_overall.flatten()
 
     for i, cat_key in enumerate(chart_panels):
@@ -996,45 +1108,67 @@ def main():
         labels = []
         err_lower = []
         err_upper = []
+
+        # The 6 main categories for computing overall average
+        main_categories = ['self_knowledge_belief', 'teammate_knowledge_belief', 'combined_uncertainty',
+                          'true_false_belief', 'teammate_opponent', 'strategic_lies']
+
         for model in combined_model_order:
             if cat_key == 'teammate_opponent_lies':
                 # Use lies_okay version for this special panel
                 mastery = combined_model_mastery_lies[model]
                 cat_data = mastery['overall']['teammate_opponent']
+                score = cat_data['score'] * 100
+                k = int(cat_data['k'])
+                n = int(cat_data['n'])
+            elif cat_key == 'overall_combined':
+                # Average of all 6 main categories
+                mastery = combined_model_mastery[model]
+                cat_scores = [mastery['overall'][c]['score'] for c in main_categories]
+                score = sum(cat_scores) / len(cat_scores) * 100
+                # For error bars, use total k and n across all categories
+                k = sum(int(mastery['overall'][c]['k']) for c in main_categories)
+                n = sum(int(mastery['overall'][c]['n']) for c in main_categories)
             else:
                 mastery = combined_model_mastery[model]
                 cat_data = mastery['overall'][cat_key]
-            score = cat_data['score'] * 100
-            k = int(cat_data['k'])
-            n = int(cat_data['n'])
+                score = cat_data['score'] * 100
+                k = int(cat_data['k'])
+                n = int(cat_data['n'])
             # Compute Wilson CI (clamp to non-negative for edge cases)
             ci_low, ci_high = wilson_ci(k, n)
             err_lower.append(max(0, score - ci_low * 100))
             err_upper.append(max(0, ci_high * 100 - score))
             scores.append(score)
             # Shorten model name for display
-            short_name = model.replace('-instruct', '').replace('anthropic-', '').replace('-24b-', '-')
-            short_name = short_name.replace('mistral-small', 'mist-sm').replace('mistral-large', 'mist-lg')
-            short_name = short_name.replace('qwen3-next-80b-a3b', 'qwen3-80b')
-            labels.append(short_name)
+            labels.append(shorten_model_name(model))
 
         # Add ALL MODELS
         if cat_key == 'teammate_opponent_lies':
             cat_data = all_mastery_lies['overall']['teammate_opponent']
+            score = cat_data['score'] * 100
+            k = int(cat_data['k'])
+            n = int(cat_data['n'])
+        elif cat_key == 'overall_combined':
+            cat_scores = [all_mastery['overall'][c]['score'] for c in main_categories]
+            score = sum(cat_scores) / len(cat_scores) * 100
+            k = sum(int(all_mastery['overall'][c]['k']) for c in main_categories)
+            n = sum(int(all_mastery['overall'][c]['n']) for c in main_categories)
         else:
             cat_data = all_mastery['overall'][cat_key]
-        scores.append(cat_data['score'] * 100)
-        k = int(cat_data['k'])
-        n = int(cat_data['n'])
+            score = cat_data['score'] * 100
+            k = int(cat_data['k'])
+            n = int(cat_data['n'])
+        scores.append(score)
         ci_low, ci_high = wilson_ci(k, n)
         err_lower.append(max(0, scores[-1] - ci_low * 100))
         err_upper.append(max(0, ci_high * 100 - scores[-1]))
         labels.append('ALL MODELS')
 
-        # Create horizontal bar chart with error bars
+        # Create horizontal bar chart with error bars (more visible)
         y_pos = np.arange(len(labels))
         bars = ax.barh(y_pos, scores, xerr=[err_lower, err_upper], color=color, alpha=0.8, height=0.7,
-                       capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8, 'alpha': 0.6})
+                       capsize=3, error_kw={'elinewidth': 1.2, 'capthick': 1.2, 'alpha': 0.7, 'color': 'black'})
 
         # Highlight ALL MODELS bar
         bars[-1].set_alpha(1.0)
@@ -1043,28 +1177,125 @@ def main():
 
         # Add value labels on bars
         for j, (score, bar) in enumerate(zip(scores, bars)):
-            ax.text(score + 1, bar.get_y() + bar.get_height()/2,
-                   f'{score:.0f}%', va='center', fontsize=7)
+            ax.text(score + 1.5, bar.get_y() + bar.get_height()/2,
+                   f'{score:.0f}%', va='center', fontsize=11)
 
         ax.set_yticks(y_pos)
-        ax.set_yticklabels(labels, fontsize=8)
-        ax.set_xlabel('Mastery Score (%)', fontsize=9)
+        ax.set_yticklabels(labels, fontsize=12)
+        ax.set_xlabel('Mastery Score (%)', fontsize=12)
         ax.set_xlim(0, 110)
-        ax.axvline(x=50, color='gray', linestyle='--', alpha=0.5, linewidth=1)
-        ax.set_title(cat_name, fontsize=11, fontweight='bold', color=color)
+        ax.axvline(x=50, color='red', linestyle='--', alpha=0.7, linewidth=2, label='Chance (50%)')
+        ax.set_title(cat_name, fontsize=14, fontweight='bold', color=color)
         ax.grid(axis='x', alpha=0.3)
         ax.invert_yaxis()  # Top model at top
 
-    # Hide empty subplot(s) in the 2x4 grid
+    # Hide empty subplot(s) in the 3x3 grid
     for idx in range(len(chart_panels), len(axes_overall)):
         axes_overall[idx].axis('off')
 
-    fig_overall.suptitle('ToM Mastery Scores by Category (Overall)', fontsize=14, fontweight='bold')
-    plt.tight_layout()
+    fig_overall.suptitle('ToM Mastery Scores by Category (Overall)', fontsize=18, fontweight='bold', y=0.995)
+    plt.tight_layout(rect=[0, 0, 1, 0.97])  # Leave room at top for suptitle
     mastery_overall_chart_path = os.path.join(logs_dir, 'mastery_overall_chart.png')
-    plt.savefig(mastery_overall_chart_path, dpi=150, bbox_inches='tight')
+    plt.savefig(mastery_overall_chart_path, dpi=300, bbox_inches='tight')
     saved_files.append(mastery_overall_chart_path)
     plt.close(fig_overall)
+
+    # Generate mastery charts for each Extra condition (0A, 0B, 1A, 1B)
+    for extra_code, extra_info in EXTRA_CATEGORIES.items():
+        extra_key = f'extra{extra_code.lower()}'  # e.g., 'extra0a'
+        extra_name = extra_info['name']
+
+        fig_extra, axes_extra = plt.subplots(3, 3, figsize=(20, 18))
+        axes_extra = axes_extra.flatten()
+
+        for i, cat_key in enumerate(chart_panels):
+            ax = axes_extra[i]
+            cat_name = chart_names.get(cat_key, cat_key)
+            color = cat_colors[cat_key]
+
+            scores = []
+            labels = []
+            err_lower = []
+            err_upper = []
+
+            for model in combined_model_order:
+                if cat_key == 'teammate_opponent_lies':
+                    mastery = combined_model_mastery_lies[model]
+                    cat_data = mastery[extra_key]['teammate_opponent']
+                    score = cat_data['score'] * 100
+                    k = int(cat_data['k'])
+                    n = int(cat_data['n'])
+                elif cat_key == 'overall_combined':
+                    mastery = combined_model_mastery[model]
+                    cat_scores = [mastery[extra_key][c]['score'] for c in main_categories]
+                    score = sum(cat_scores) / len(cat_scores) * 100
+                    k = sum(int(mastery[extra_key][c]['k']) for c in main_categories)
+                    n = sum(int(mastery[extra_key][c]['n']) for c in main_categories)
+                else:
+                    mastery = combined_model_mastery[model]
+                    cat_data = mastery[extra_key][cat_key]
+                    score = cat_data['score'] * 100
+                    k = int(cat_data['k'])
+                    n = int(cat_data['n'])
+
+                ci_low, ci_high = wilson_ci(k, n) if n > 0 else (0, 1)
+                err_lower.append(max(0, score - ci_low * 100))
+                err_upper.append(max(0, ci_high * 100 - score))
+                scores.append(score)
+                labels.append(shorten_model_name(model))
+
+            # Add ALL MODELS
+            if cat_key == 'teammate_opponent_lies':
+                cat_data = all_mastery_lies[extra_key]['teammate_opponent']
+                score = cat_data['score'] * 100
+                k = int(cat_data['k'])
+                n = int(cat_data['n'])
+            elif cat_key == 'overall_combined':
+                cat_scores = [all_mastery[extra_key][c]['score'] for c in main_categories]
+                score = sum(cat_scores) / len(cat_scores) * 100
+                k = sum(int(all_mastery[extra_key][c]['k']) for c in main_categories)
+                n = sum(int(all_mastery[extra_key][c]['n']) for c in main_categories)
+            else:
+                cat_data = all_mastery[extra_key][cat_key]
+                score = cat_data['score'] * 100
+                k = int(cat_data['k'])
+                n = int(cat_data['n'])
+            scores.append(score)
+            ci_low, ci_high = wilson_ci(k, n) if n > 0 else (0, 1)
+            err_lower.append(max(0, scores[-1] - ci_low * 100))
+            err_upper.append(max(0, ci_high * 100 - scores[-1]))
+            labels.append('ALL MODELS')
+
+            y_pos = np.arange(len(labels))
+            bars = ax.barh(y_pos, scores, xerr=[err_lower, err_upper], color=color, alpha=0.8, height=0.7,
+                           capsize=3, error_kw={'elinewidth': 1.2, 'capthick': 1.2, 'alpha': 0.7, 'color': 'black'})
+
+            bars[-1].set_alpha(1.0)
+            bars[-1].set_edgecolor('black')
+            bars[-1].set_linewidth(2)
+
+            for _, (score_val, bar) in enumerate(zip(scores, bars)):
+                ax.text(score_val + 1.5, bar.get_y() + bar.get_height()/2,
+                       f'{score_val:.0f}%', va='center', fontsize=11)
+
+            ax.set_yticks(y_pos)
+            ax.set_yticklabels(labels, fontsize=12)
+            ax.set_xlabel('Mastery Score (%)', fontsize=12)
+            ax.set_xlim(0, 110)
+            ax.axvline(x=50, color='red', linestyle='--', alpha=0.7, linewidth=2, label='Chance (50%)')
+            ax.set_title(cat_name, fontsize=14, fontweight='bold', color=color)
+            ax.grid(axis='x', alpha=0.3)
+            ax.invert_yaxis()
+
+        for idx in range(len(chart_panels), len(axes_extra)):
+            axes_extra[idx].axis('off')
+
+        fig_extra.suptitle(f'ToM Mastery Scores by Category ({extra_name} - {extra_code})', fontsize=18, fontweight='bold', y=0.995)
+        plt.tight_layout(rect=[0, 0, 1, 0.97])
+        extra_chart_path = os.path.join(logs_dir, f'mastery_overall_chart_{extra_code}.png')
+        plt.savefig(extra_chart_path, dpi=300, bbox_inches='tight')
+        saved_files.append(extra_chart_path)
+        plt.close(fig_extra)
 
     # Generate single combined charts (models with COT suffix shown together)
 
@@ -1083,19 +1314,7 @@ def main():
         key=lambda x: x[1]['correct'] / x[1]['total'] if x[1]['total'] > 0 else 0
     )
 
-    # Save per-scenario stats to file
-    scenario_lines = [f"{'Scenario':<10} | {'Extra':>12} | {'N':>6} | {'Accuracy':>10}", "-" * 50]
-    for (scenario_id, extra), stats in sorted_scenarios:
-        acc = stats['correct'] / stats['total'] if stats['total'] > 0 else 0
-        extra_name = EXTRA_CATEGORIES.get(extra, {}).get('short', extra)
-        scenario_lines.append(f"{scenario_id:<10} | {extra_name:>12} | {stats['total']:>6} | {acc*100:>9.1f}%")
-    scenario_lines.append("-" * 50)
-    scenario_stats_path = os.path.join(logs_dir, 'per_scenario_stats.txt')
-    with open(scenario_stats_path, 'w') as f:
-        f.write("\n".join(scenario_lines))
-    saved_files.append(scenario_stats_path)
-
-    # Generate per-model per-scenario stats
+    # Generate per-model per-scenario stats (includes overall scenario aggregates)
     model_scenario_stats = defaultdict(lambda: defaultdict(lambda: {'correct': 0, 'total': 0}))
     for model_name in combined_model_order:
         for r in combined_model_records[model_name]:
@@ -1107,9 +1326,24 @@ def main():
 
     # Build per-model per-scenario output lines
     model_scenario_lines = [
-        f"{'Model':<45} | {'Scenario':>8} | {'Extra':>12} | {'N':>4} | {'Accuracy':>10}",
-        "-" * 90
+        "Per-Model and Overall Scenario Statistics",
+        "=" * 90,
+        "",
+        "=== OVERALL SCENARIO STATS (All Models) ===",
+        f"{'Scenario':<10} | {'Extra':>12} | {'N':>6} | {'Accuracy':>10}",
+        "-" * 50
     ]
+
+    # Add overall scenario aggregates (sorted by accuracy, hardest first)
+    for (scenario_id, extra), stats in sorted_scenarios:
+        acc = stats['correct'] / stats['total'] if stats['total'] > 0 else 0
+        extra_name = EXTRA_CATEGORIES.get(extra, {}).get('short', extra)
+        model_scenario_lines.append(f"{scenario_id:<10} | {extra_name:>12} | {stats['total']:>6} | {acc*100:>9.1f}%")
+    model_scenario_lines.append("-" * 50)
+    model_scenario_lines.append("")
+    model_scenario_lines.append("=== PER-MODEL BREAKDOWN ===")
+    model_scenario_lines.append(f"{'Model':<45} | {'Scenario':>8} | {'Extra':>12} | {'N':>4} | {'Accuracy':>10}")
+    model_scenario_lines.append("-" * 90)
 
     # Sort models, then within each model sort by (scenario_id, extra)
     for model_name in combined_model_order:
@@ -1130,50 +1364,24 @@ def main():
         f.write("\n".join(model_scenario_lines))
     saved_files.append(model_scenario_stats_path)
 
-    # Generate scenario difficulty chart
-    scenario_labels = []
-    scenario_accs = []
-    scenario_colors = []
-    for (scenario_id, extra), stats in sorted_scenarios:
-        acc = stats['correct'] / stats['total'] if stats['total'] > 0 else 0
-        scenario_labels.append(f"{scenario_id}-{extra}")
-        scenario_accs.append(acc * 100)
-        scenario_colors.append(EXTRA_CATEGORIES.get(extra, {}).get('color', '#999999'))
-
-    if scenario_accs:
-        fig2, ax2 = plt.subplots(figsize=(16, 8))
-        x2 = np.arange(len(scenario_labels))
-        ax2.bar(x2, scenario_accs, color=scenario_colors, edgecolor='white', linewidth=0.5)
-        ax2.axhline(y=50, color='gray', linestyle='--', alpha=0.7)
-        ax2.axhline(y=np.mean(scenario_accs), color='green', linestyle='-', alpha=0.7)
-        ax2.set_xlabel('Scenario ID - Extra Category', fontsize=12)
-        ax2.set_ylabel('Accuracy (%)', fontsize=12)
-        ax2.set_title('Per-Scenario Accuracy', fontsize=14, fontweight='bold')
-        ax2.set_xticks(x2)
-        ax2.set_xticklabels(scenario_labels, rotation=90, fontsize=8)
-        ax2.set_ylim(0, 105)
-        ax2.grid(axis='y', alpha=0.3)
-        ax2.legend(handles=[
-            Patch(facecolor=EXTRA_CATEGORIES['0A']['color'], label=f"0A: {EXTRA_CATEGORIES['0A']['name']}"),
-            Patch(facecolor=EXTRA_CATEGORIES['0B']['color'], label=f"0B: {EXTRA_CATEGORIES['0B']['name']}"),
-            Patch(facecolor=EXTRA_CATEGORIES['1A']['color'], label=f"1A: {EXTRA_CATEGORIES['1A']['name']}"),
-            Patch(facecolor=EXTRA_CATEGORIES['1B']['color'], label=f"1B: {EXTRA_CATEGORIES['1B']['name']}"),
-        ], loc='lower right')
-        plt.tight_layout()
-        scenario_chart_path = os.path.join(logs_dir, 'scenario_difficulty.png')
-        plt.savefig(scenario_chart_path, dpi=150, bbox_inches='tight')
-        saved_files.append(scenario_chart_path)
-        plt.close(fig2)
-
-    # Generate Extra category comparison chart
+    # Generate Extra category comparison chart (scenario accuracy by load condition)
     scenario_ids = sorted(set(k[0] for k in scenario_stats.keys()), key=lambda x: int(x))
     if scenario_ids:
         extra_accs = {cat: [] for cat in EXTRA_CATEGORIES.keys()}
+        extra_errs = {cat: [] for cat in EXTRA_CATEGORIES.keys()}
         for sid in scenario_ids:
             for cat in EXTRA_CATEGORIES.keys():
                 stats = scenario_stats.get((sid, cat), {'correct': 0, 'total': 0})
-                acc = stats['correct'] / stats['total'] * 100 if stats['total'] > 0 else 0
+                k, n = stats['correct'], stats['total']
+                acc = k / n * 100 if n > 0 else 0
                 extra_accs[cat].append(acc)
+                # Compute error bar using Wilson CI
+                if n > 0:
+                    ci_low, ci_high = wilson_ci(k, n)
+                    err = (acc - ci_low * 100 + ci_high * 100 - acc) / 2  # Symmetric error
+                else:
+                    err = 0
+                extra_errs[cat].append(err)
 
         fig3, ax3 = plt.subplots(figsize=(18, 8))
         x3 = np.arange(len(scenario_ids))
@@ -1183,22 +1391,46 @@ def main():
         for cat, offset in offsets.items():
             ax3.bar(x3 + offset * width, extra_accs[cat], width,
                     label=f"{cat}: {EXTRA_CATEGORIES[cat]['name']}",
-                    color=EXTRA_CATEGORIES[cat]['color'])
+                    color=EXTRA_CATEGORIES[cat]['color'],
+                    yerr=extra_errs[cat], capsize=2,
+                    error_kw={'elinewidth': 0.8, 'capthick': 0.8})
 
-        ax3.axhline(y=50, color='gray', linestyle='--', alpha=0.7)
+        ax3.axhline(y=50, color='red', linestyle='--', alpha=0.7, linewidth=2)
         ax3.set_xlabel('Scenario ID', fontsize=12)
         ax3.set_ylabel('Accuracy (%)', fontsize=12)
-        ax3.set_title('Accuracy by Scenario and Extra Category', fontsize=14, fontweight='bold')
+        ax3.set_title('Scenario Accuracy by Load Condition', fontsize=14, fontweight='bold')
         ax3.set_xticks(x3)
-        ax3.set_xticklabels(scenario_ids, fontsize=8)
+        ax3.set_xticklabels(scenario_ids, fontsize=9)
         ax3.set_ylim(0, 105)
         ax3.legend(loc='lower right')
         ax3.grid(axis='y', alpha=0.3)
         plt.tight_layout()
-        paired_chart_path = os.path.join(logs_dir, 'extra_comparison.png')
+        paired_chart_path = os.path.join(logs_dir, 'scenario_accuracy_by_load.png')
         plt.savefig(paired_chart_path, dpi=150, bbox_inches='tight')
         saved_files.append(paired_chart_path)
         plt.close(fig3)
+
+        # Generate table version of scenario_accuracy_by_load (to match figure)
+        scenario_load_lines = [
+            "Scenario Accuracy by Load Condition",
+            "=" * 100,
+            f"{'Scenario':<10} | {'0A (N)':>16} | {'0B (N)':>16} | {'1A (N)':>16} | {'1B (N)':>16}",
+            "-" * 100
+        ]
+        for i, sid in enumerate(scenario_ids):
+            row = f"{sid:<10}"
+            for cat in ['0A', '0B', '1A', '1B']:
+                stats = scenario_stats.get((sid, cat), {'correct': 0, 'total': 0})
+                k, n = stats['correct'], stats['total']
+                acc = k / n * 100 if n > 0 else 0
+                row += f" | {acc:>6.1f}% ({n:>4})"
+            scenario_load_lines.append(row)
+        scenario_load_lines.append("=" * 100)
+
+        scenario_load_path = os.path.join(logs_dir, 'scenario_accuracy_by_load.txt')
+        with open(scenario_load_path, 'w') as f:
+            f.write("\n".join(scenario_load_lines))
+        saved_files.append(scenario_load_path)
 
     # Generate model performance bar chart (with COT suffix in model names)
     # Compute stats for each combined model entry
@@ -1207,39 +1439,40 @@ def main():
         combined_model_stats[display_name] = compute_stats(combined_model_records[display_name], lies_okay=False)
 
     if combined_model_order:
-        fig, ax = plt.subplots(figsize=(18, 8))
+        fig, ax = plt.subplots(figsize=(16, 8))
         x = np.arange(len(combined_model_order))
-        width = 0.15
+        width = 0.2  # Wider bars now that we have 4 instead of 5
 
-        overall_rates = [combined_model_stats[m]['overall']['rate'] * 100 for m in combined_model_order]
+        # Compute rates and errors for each Extra condition (drop Overall)
         extra0a_rates = [combined_model_stats[m]['extra0a']['rate'] * 100 for m in combined_model_order]
         extra0b_rates = [combined_model_stats[m]['extra0b']['rate'] * 100 for m in combined_model_order]
         extra1a_rates = [combined_model_stats[m]['extra1a']['rate'] * 100 for m in combined_model_order]
         extra1b_rates = [combined_model_stats[m]['extra1b']['rate'] * 100 for m in combined_model_order]
 
-        overall_errs = [(combined_model_stats[m]['overall']['ci'][1] - combined_model_stats[m]['overall']['ci'][0]) / 2 * 100 for m in combined_model_order]
         extra0a_errs = [(combined_model_stats[m]['extra0a']['ci'][1] - combined_model_stats[m]['extra0a']['ci'][0]) / 2 * 100 for m in combined_model_order]
         extra0b_errs = [(combined_model_stats[m]['extra0b']['ci'][1] - combined_model_stats[m]['extra0b']['ci'][0]) / 2 * 100 for m in combined_model_order]
         extra1a_errs = [(combined_model_stats[m]['extra1a']['ci'][1] - combined_model_stats[m]['extra1a']['ci'][0]) / 2 * 100 for m in combined_model_order]
         extra1b_errs = [(combined_model_stats[m]['extra1b']['ci'][1] - combined_model_stats[m]['extra1b']['ci'][0]) / 2 * 100 for m in combined_model_order]
 
-        ax.bar(x - 2*width, overall_rates, width, label='Overall', yerr=overall_errs, capsize=2, color='#2ecc71')
-        ax.bar(x - width, extra0a_rates, width, label=f"0A: {EXTRA_CATEGORIES['0A']['name']}", yerr=extra0a_errs, capsize=2, color=EXTRA_CATEGORIES['0A']['color'])
-        ax.bar(x, extra0b_rates, width, label=f"0B: {EXTRA_CATEGORIES['0B']['name']}", yerr=extra0b_errs, capsize=2, color=EXTRA_CATEGORIES['0B']['color'])
-        ax.bar(x + width, extra1a_rates, width, label=f"1A: {EXTRA_CATEGORIES['1A']['name']}", yerr=extra1a_errs, capsize=2, color=EXTRA_CATEGORIES['1A']['color'])
-        ax.bar(x + 2*width, extra1b_rates, width, label=f"1B: {EXTRA_CATEGORIES['1B']['name']}", yerr=extra1b_errs, capsize=2, color=EXTRA_CATEGORIES['1B']['color'])
+        # 4 bars per model: 0A, 0B, 1A, 1B
+        ax.bar(x - 1.5*width, extra0a_rates, width, label=f"0A: {EXTRA_CATEGORIES['0A']['name']}", yerr=extra0a_errs, capsize=2, color=EXTRA_CATEGORIES['0A']['color'])
+        ax.bar(x - 0.5*width, extra0b_rates, width, label=f"0B: {EXTRA_CATEGORIES['0B']['name']}", yerr=extra0b_errs, capsize=2, color=EXTRA_CATEGORIES['0B']['color'])
+        ax.bar(x + 0.5*width, extra1a_rates, width, label=f"1A: {EXTRA_CATEGORIES['1A']['name']}", yerr=extra1a_errs, capsize=2, color=EXTRA_CATEGORIES['1A']['color'])
+        ax.bar(x + 1.5*width, extra1b_rates, width, label=f"1B: {EXTRA_CATEGORIES['1B']['name']}", yerr=extra1b_errs, capsize=2, color=EXTRA_CATEGORIES['1B']['color'])
 
         ax.set_ylabel('Optimal Action Rate (%)', fontsize=12)
-        ax.set_title('ToM Test Performance by Model', fontsize=14, fontweight='bold')
+        ax.set_title('Accuracy by Model and Load Condition', fontsize=14, fontweight='bold')
         ax.set_xticks(x)
-        ax.set_xticklabels(combined_model_order, rotation=45, ha='right', fontsize=9)
-        ax.legend(loc='lower right', fontsize=8)
+        # Use shortened model names
+        short_labels = [shorten_model_name(m) for m in combined_model_order]
+        ax.set_xticklabels(short_labels, rotation=45, ha='right', fontsize=10)
+        ax.legend(loc='lower right', fontsize=9)
         ax.set_ylim(0, 105)
-        ax.axhline(y=50, color='gray', linestyle='--', alpha=0.5)
+        ax.axhline(y=50, color='red', linestyle='--', alpha=0.7, linewidth=2)
         ax.grid(axis='y', alpha=0.3)
 
         plt.tight_layout()
-        chart_path = os.path.join(logs_dir, 'performance_comparison.png')
+        chart_path = os.path.join(logs_dir, 'accuracy_by_load_condition.png')
         plt.savefig(chart_path, dpi=150, bbox_inches='tight')
         saved_files.append(chart_path)
         plt.close(fig)
@@ -1262,9 +1495,9 @@ def main():
 
     # Show files saved
     print(f"\nSaved {len(saved_files)} files to {logs_dir}/")
-    print("  Tables: summary_table.txt, per_scenario_stats.txt, per_model_scenario_stats.txt")
-    print("  Mastery: mastery_*.txt, mastery_scores.csv")
-    print("  Charts: performance_comparison.png, scenario_difficulty.png, extra_comparison.png")
+    print("  Tables: accuracy_by_load_condition.txt, per_model_scenario_stats.txt, scenario_accuracy_by_load.txt")
+    print("  Mastery: mastery_overall_chart.txt, mastery_detail*.txt, mastery_load_effects.txt, mastery_scores.csv")
+    print("  Charts: accuracy_by_load_condition.png, mastery_*.png, scenario_accuracy_by_load.png")
 
     plt.show()
 

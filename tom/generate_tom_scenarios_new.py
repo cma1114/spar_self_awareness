@@ -1356,6 +1356,61 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
     # Build the extra events
     leave_pos = initial_put_idx + 1
 
+    # For UNKNOWN characters: Find optimal insert position FIRST (before modifying scenario)
+    # We need to insert AFTER their last target actions so they can leave properly
+    # This handles BOTH Teammate=UNKNOWN (B) AND Opponent=UNKNOWN (C/D)
+    if spec:
+        must_be_unknown, opponent_needs_one_unknown = _get_unknown_characters_from_spec(spec)
+
+        # Collect ALL characters that must remain UNKNOWN
+        unknown_chars_to_check = set(must_be_unknown)  # e.g., {'B'} for Teammate=UNKNOWN
+        if opponent_needs_one_unknown:
+            unknown_chars_to_check.update(['C', 'D'])  # Add opponents for Opponent=UNKNOWN
+
+        if unknown_chars_to_check:
+            # Find the LAST target action by any UNKNOWN character after current leave_pos
+            last_unknown_target_action_idx = None
+            for idx in range(leave_pos, len(scenario.events)):
+                event = scenario.events[idx]
+                if event.character in unknown_chars_to_check:
+                    is_target_action = False
+                    if event.event_type == 'put' and event.container == queried:
+                        is_target_action = True
+                    elif event.event_type == 'move':
+                        if event.from_container == queried or event.to_container == queried:
+                            is_target_action = True
+                    if is_target_action:
+                        last_unknown_target_action_idx = idx
+
+            # If UNKNOWN chars act on target later, move leave_pos to after their last action
+            if last_unknown_target_action_idx is not None:
+                leave_pos = last_unknown_target_action_idx + 1
+                # Re-calculate 'present_after_leave' at the new leave_pos
+                present_after_leave = set(scenario.present_initially)
+                for idx, event in enumerate(scenario.events):
+                    if idx >= leave_pos:
+                        break
+                    if event.event_type == 'leave':
+                        present_after_leave.discard(event.character)
+                    elif event.event_type == 'enter':
+                        present_after_leave.add(event.character)
+                # The answerer is handled separately - make sure they're not in present_after_leave
+                present_after_leave.discard(answerer)
+
+                # Update initial_item to whatever is in queried at new leave_pos
+                contents_at_new_pos = {c: None for c in CONTAINERS_GEN}
+                for idx, event in enumerate(scenario.events):
+                    if idx >= leave_pos:
+                        break
+                    if event.event_type == 'put':
+                        contents_at_new_pos[event.container] = event.item
+                    elif event.event_type == 'move':
+                        contents_at_new_pos[event.to_container] = event.item
+                        contents_at_new_pos[event.from_container] = None
+                initial_item = contents_at_new_pos[queried]
+                if initial_item is None:
+                    return  # Nothing to move at new insert position
+
     # Ensure characters who should remain UNKNOWN are not present
     # Exclude the answerer - their leave/enter is handled separately in this function
     if spec:
@@ -1364,6 +1419,7 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
         )
         for char in chars_who_left:
             present_after_leave.discard(char)
+
 
     if not present_after_leave:
         return  # Everyone who could act had to leave to preserve UNKNOWN
@@ -1394,16 +1450,40 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
         must_be_unknown, _ = _get_unknown_characters_from_spec(spec)
         unknown_chars = must_be_unknown
 
+
     valid_movers = [c for c in sorted(present_after_leave) if c not in teammates_to_exclude and c not in unknown_chars]
+
+    # If no valid movers among present characters, check if we can re-enter someone
+    # A character can be re-entered if they:
+    # 1. Are not currently present
+    # 2. Are not the answerer (handled separately)
+    # 3. Are not in teammates_to_exclude
+    # 4. Are not in unknown_chars
+    # 5. Don't have required actions later in the base scenario
+    reenter_events = []
     if not valid_movers:
-        # Fallback: For the revelation pattern, the moves are temporary (item returns to target
-        # before any teammates leave). The base scenario's subsequent events will set the final
-        # state. So we can use any present character as a mover - the validation will catch
-        # any actual violations later.
-        if present_after_leave:
-            valid_movers = sorted(present_after_leave)
-        else:
-            return  # No one present to do the moves
+        all_chars = {'A', 'B', 'C', 'D'}
+        excluded_from_reentry = present_after_leave | {answerer} | teammates_to_exclude | unknown_chars
+
+        # Check who acts later in base scenario (can't make them re-enter now)
+        chars_acting_later = set()
+        for evt in scenario.events[leave_pos:]:
+            chars_acting_later.add(evt.character)
+
+        potential_reenters = [c for c in sorted(all_chars)
+                             if c not in excluded_from_reentry
+                             and c not in chars_acting_later]
+
+
+        if potential_reenters:
+            # Re-enter one of them
+            reenterer = rng.choice(potential_reenters)
+            reenter_events.append(Event('enter', reenterer))
+            valid_movers = [reenterer]
+            present_after_leave.add(reenterer)
+
+    if not valid_movers:
+        return  # No valid movers after exclusions - can't insert extra events
 
     # 2. Someone moves item to other container while answerer is away
     # Track container contents up to leave_pos (where we insert events)
@@ -1467,7 +1547,8 @@ def insert_extra_events_with_revelation(scenario: Scenario, answerer: str, rng: 
         revelation_event = Event('move', mover2, from_container=temp_container, to_container=queried, item=initial_item)
 
     # Build list of events to insert
-    events_to_insert = [leave_event]
+    # Start with any re-enter events needed to bring in valid movers
+    events_to_insert = reenter_events + [leave_event]
 
     # 50% chance: have another character leave while answerer is away
     # (must keep at least one person present for the moves)
@@ -1856,7 +1937,62 @@ def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: rando
     # Insert events after answerer leaves
     insert_pos = answerer_leave_idx + 1
 
-    # Ensure characters who should remain UNKNOWN are not present
+    # For UNKNOWN characters: Need to find optimal insert position FIRST
+    # (before modifying scenario) so we insert after their last target actions
+    # This handles BOTH Teammate=UNKNOWN (B) AND Opponent=UNKNOWN (C/D)
+    if spec:
+        must_be_unknown, opponent_needs_one_unknown = _get_unknown_characters_from_spec(spec)
+
+        # Collect ALL characters that must remain UNKNOWN
+        unknown_chars_to_check = set(must_be_unknown)  # e.g., {'B'} for Teammate=UNKNOWN
+        if opponent_needs_one_unknown:
+            unknown_chars_to_check.update(['C', 'D'])  # Add opponents for Opponent=UNKNOWN
+
+        if unknown_chars_to_check:
+            # Find the LAST target action by any UNKNOWN character after current insert_pos
+            # We need to insert AFTER their last target action so they can leave
+            last_unknown_target_action_idx = None
+            for idx in range(insert_pos, len(scenario.events)):
+                event = scenario.events[idx]
+                if event.character in unknown_chars_to_check:
+                    is_target_action = False
+                    if event.event_type == 'put' and event.container == queried:
+                        is_target_action = True
+                    elif event.event_type == 'move':
+                        if event.from_container == queried or event.to_container == queried:
+                            is_target_action = True
+                    if is_target_action:
+                        last_unknown_target_action_idx = idx
+
+            # If UNKNOWN chars act on target later, move insert_pos to after their last action
+            if last_unknown_target_action_idx is not None:
+                insert_pos = last_unknown_target_action_idx + 1
+                # Re-calculate 'present' at the new insert_pos
+                present = set(scenario.present_initially)
+                for idx, event in enumerate(scenario.events):
+                    if idx >= insert_pos:
+                        break
+                    if event.event_type == 'leave':
+                        present.discard(event.character)
+                    elif event.event_type == 'enter':
+                        present.add(event.character)
+                # Update container contents at new insert_pos
+                contents = {c: None for c in ['bag', 'box', 'basket']}
+                for idx, event in enumerate(scenario.events):
+                    if idx >= insert_pos:
+                        break
+                    if event.event_type == 'put':
+                        contents[event.container] = event.item
+                    elif event.event_type == 'move':
+                        contents[event.from_container] = None
+                        contents[event.to_container] = event.item
+                item_in_queried = contents[queried]
+                item_in_other = contents[other]
+                item_in_third = contents[third]
+                if item_in_queried is None:
+                    return  # Nothing to move at new insert position
+
+    # Now call _ensure_unknown_chars_absent with the (possibly adjusted) insert_pos
     if spec:
         insert_pos, chars_who_left = _ensure_unknown_chars_absent(
             scenario, spec, insert_pos, rng, exclude_chars={answerer}
@@ -1873,17 +2009,10 @@ def insert_extra_events_believes_x(scenario: Scenario, answerer: str, rng: rando
     can_use_other = other not in containers_used_after and item_in_other is None
     can_use_third = third not in containers_used_after and item_in_third is None
 
-    # Exclude teammates of characters who left with beliefs about the target
-    # Check the FULL base scenario to find all teammates who will leave with beliefs
-    teammates_to_exclude = _get_teammates_to_exclude_for_target_moves(scenario, len(scenario.events))
-
-    # Also exclude characters who must remain UNKNOWN
-    unknown_chars = set()
-    if spec:
-        must_be_unknown, _ = _get_unknown_characters_from_spec(spec)
-        unknown_chars = must_be_unknown
-
-    valid_movers = [c for c in sorted(present) if c not in teammates_to_exclude and c not in unknown_chars]
+    # For extra events where A re-enters and observes, don't exclude teammates
+    # The exclusion is meant for base scenarios where A doesn't see teammate moves
+    # Here A will see the moves, so B (KNOWS_TRUTH) can do them
+    valid_movers = [c for c in sorted(present)]
     if not valid_movers:
         return  # Cannot insert extra events without violating constraints
 
@@ -3108,13 +3237,12 @@ def generate_scenarios_from_tuples(specs: List[SpecTuple], outfile: str, seed: O
             # Check if we successfully added events (scenario has more events than base)
             base_event_count_final = len(base_scenario.events)
             if len(scenario_e1b.events) <= base_event_count_final:
-                # All retries failed to add events - skip this 1B scenario
-                import warnings
-                warnings.warn(
-                    f"ID {row['Id']} Extra=1B: Could not add extra events after {MAX_RETRIES} retries "
-                    f"(containers used by later events). Skipping 1B variant."
+                # All retries failed to add events - this is a hard error
+                # ECT(1B) > ECT(1A) is a hard constraint that must be satisfied
+                raise ValueError(
+                    f"ID {row['Id']} Extra=1B: Could not add extra events after {MAX_RETRIES} retries. "
+                    f"Unable to satisfy ECT(1B) > ECT(1A) constraint."
                 )
-                continue
 
             # Epistemic state validation (double-check with existing validation)
             epistemic_errors = validate_scenario(scenario_e1b, e1b_spec)

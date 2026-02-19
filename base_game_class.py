@@ -335,7 +335,7 @@ class BaseGameClass:
                         formatted_messages=[{'role': 'user', 'content': prompt}]
                     #print(f"formatted_messages={formatted_messages}")
                     #exit()
-                    reasoning_effort = "low" if "_lowthink" in self.subject_name else "high" if ("think" in self.subject_name or "_reasoning" in self.subject_name) else None
+                    reasoning_effort = "low" if "_lowthink" in self.subject_name else "high" if ("_think" in self.subject_name or "_reasoning" in self.subject_name) else None
                     self._log(f"SENDING reasoning_effort={reasoning_effort}")
                     completion = self.client.chat.completions.create(
                         model=model_name,
@@ -361,7 +361,7 @@ class BaseGameClass:
                                         or self.subject_name.startswith("o3")
                                     )
                                     and (
-                                        "think" in self.subject_name
+                                        ("think" in self.subject_name and "nothing" not in self.subject_name)
                                         or "_reasoning" in self.subject_name
                                     )
                                 )
@@ -374,7 +374,7 @@ class BaseGameClass:
                                     }
                                 }
                                 if (
-                                    "think" in self.subject_name
+                                    ("think" in self.subject_name and "nothink" not in self.subject_name)
                                     or "_reasoning" in self.subject_name
                                     or "-r1" in model_name
                                 )
@@ -396,7 +396,7 @@ class BaseGameClass:
                                         )
                                     )
                                     and "_reasoning" not in self.subject_name
-                                    and "think" not in self.subject_name
+                                    and ("think" not in self.subject_name or "nothink" in self.subject_name)
                                 )
                                 # 4) otherwise, no extra reasoning field
                                 else {}
@@ -589,8 +589,8 @@ class BaseGameClass:
                         message_history.append(user_msg)
                     #print(f"system_msg={system_msg}")                     
                     #print(f"formatted_messages={formatted_messages}")  
-                    if "think" in self.subject_name: think=True
-                    elif "_nothink" in self.subject_name: think=False
+                    if "_nothink" in self.subject_name: think=False
+                    elif "think" in self.subject_name: think=True
                     else: think=None
                     message = self.client.models.generate_content(
                         model=self.subject_name.replace("_think","").replace("_lowthink","").replace("_nothink",""),
