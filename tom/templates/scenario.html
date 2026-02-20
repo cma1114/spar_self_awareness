@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scenario {{ scenario_num }}/{{ total_scenarios }}</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        .divider {
+            border-top: 2px solid #666;
+            margin: 10px 0 20px 0;
+        }
+        h2 {
+            margin-bottom: 5px;
+        }
+        .scenario-box {
+            background: #2a2a2a;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        .scenario-desc {
+            white-space: pre-wrap;
+            margin-bottom: 15px;
+        }
+        .question {
+            color: #ffcc00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .action-phase {
+            background: #2a2a3a;
+            padding: 15px 20px;
+            border: 1px solid #4a4a6a;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .action-phase h3 {
+            color: #8ab4f8;
+            margin-top: 0;
+        }
+        .action-help {
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        .action-input {
+            width: 100%;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            border: 1px solid #666;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .action-input:focus {
+            outline: none;
+            border-color: #4a9eff;
+        }
+        .submit-btn {
+            margin-top: 10px;
+            padding: 10px 30px;
+            background: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background: #3a8eef;
+        }
+        .progress {
+            color: #888;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="divider"></div>
+    <h2>SCENARIO {{ scenario_num }}/{{ total_scenarios }}</h2>
+
+    <div class="scenario-box">
+        <p>Here's what you see:</p>
+        <hr>
+        <div class="scenario-desc">{{ scenario_desc }}</div>
+        <hr>
+        <div class="question">{{ question_desc }}</div>
+    </div>
+
+    <div class="action-phase">
+        <h3>ACTION PHASE</h3>
+        <p>It is your turn.</p>
+        <div class="action-help">
+            Your action: <strong>Ask(Player, Container)</strong>,
+            <strong>Tell(Player, Container, Contents)</strong>,
+            or <strong>Pass</strong>
+        </div>
+
+        <form action="{{ url_for('scenario', n=scenario_num) }}" method="post">
+            <input type="text" name="action" class="action-input"
+                   placeholder="e.g. Pass, Ask(B, bag), Tell(B, box, apple)"
+                   required autofocus>
+            <br>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <div class="progress">
+        Progress: {{ scenario_num }} of {{ total_scenarios }}
+    </div>
+</body>
+</html>
