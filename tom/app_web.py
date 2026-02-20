@@ -32,8 +32,9 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dev-secret-change-in-production')
 
 # --- Configuration ---
-SCENARIO_FILE = os.environ.get('SCENARIO_FILE', 'scenarios_generated4.json')
-BASE_DATA_DIR = 'tom_human_logs'
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SCENARIO_FILE = os.path.join(_SCRIPT_DIR, 'scenarios_generated4.json')
+BASE_DATA_DIR = os.path.join(_SCRIPT_DIR, 'tom_human_logs')
 DEFAULT_STUDY_ID = 'default'
 TOTAL_REPS = 10
 DROPOUT_TIMEOUT_SECONDS = 2 * 60 * 60  # 2 hours
