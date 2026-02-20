@@ -461,47 +461,16 @@ if TORCH_AVAILABLE:
             self._log("\n" + "=" * 70)
             self._log("LLM ToM Test Finished")
 
-            total_optimal = sum(1 for r in self.all_turn_records if r.character == 'A' and r.was_optimal)
-            total_turns = sum(1 for r in self.all_turn_records if r.character == 'A')
-
-            if total_turns > 0:
-                self._log(f"LLM was optimal in {total_optimal}/{total_turns} turns ({(total_optimal/total_turns)*100:.2f}%).")
-
-                # Breakdown by Extra (0A, 0B, 1A, 1B)
-                # See EXTRA_MAPPING.md: 0=1A (legacy), 1=1B (legacy)
-                def normalize_extra(val):
-                    if val is None or val == 0: return '1A'
-                    if val == 1: return '1B'
-                    return str(val) if val else '1A'
-
-                extra0a_records = [r for r in self.all_turn_records if r.character == 'A' and normalize_extra(r.extra) == '0A']
-                extra0b_records = [r for r in self.all_turn_records if r.character == 'A' and normalize_extra(r.extra) == '0B']
-                extra1a_records = [r for r in self.all_turn_records if r.character == 'A' and normalize_extra(r.extra) == '1A']
-                extra1b_records = [r for r in self.all_turn_records if r.character == 'A' and normalize_extra(r.extra) == '1B']
-
-                if extra0a_records:
-                    extra0a_optimal = sum(1 for r in extra0a_records if r.was_optimal)
-                    self._log(f"  Extra=0A: {extra0a_optimal}/{len(extra0a_records)} optimal ({(extra0a_optimal/len(extra0a_records))*100:.2f}%)")
-                if extra0b_records:
-                    extra0b_optimal = sum(1 for r in extra0b_records if r.was_optimal)
-                    self._log(f"  Extra=0B: {extra0b_optimal}/{len(extra0b_records)} optimal ({(extra0b_optimal/len(extra0b_records))*100:.2f}%)")
-                if extra1a_records:
-                    extra1a_optimal = sum(1 for r in extra1a_records if r.was_optimal)
-                    self._log(f"  Extra=1A: {extra1a_optimal}/{len(extra1a_records)} optimal ({(extra1a_optimal/len(extra1a_records))*100:.2f}%)")
-                if extra1b_records:
-                    extra1b_optimal = sum(1 for r in extra1b_records if r.was_optimal)
-                    self._log(f"  Extra=1B: {extra1b_optimal}/{len(extra1b_records)} optimal ({(extra1b_optimal/len(extra1b_records))*100:.2f}%)")
+            print_session_summary(self.all_turn_records, self._log)
                 
-                # Breakdown by rep if multiple reps with history
-                if self.history_mode != "none" and self.reps > 1:
-                    self._log("\n  Breakdown by rep:")
-                    for rep_num in range(1, self.reps + 1):
-                        rep_records = [r for r in self.all_turn_records if r.character == 'A' and r.rep == rep_num]
-                        if rep_records:
-                            rep_optimal = sum(1 for r in rep_records if r.was_optimal)
-                            self._log(f"    Rep {rep_num}: {rep_optimal}/{len(rep_records)} optimal ({(rep_optimal/len(rep_records))*100:.2f}%)")
-            else:
-                self._log("No turns were played by the LLM.")
+            # Breakdown by rep if multiple reps with history (LLM-specific)
+            if self.history_mode != "none" and self.reps > 1:
+                self._log("\n  Breakdown by rep:")
+                for rep_num in range(1, self.reps + 1):
+                    rep_records = [r for r in self.all_turn_records if r.character == 'A' and r.rep == rep_num]
+                    if rep_records:
+                        rep_optimal = sum(1 for r in rep_records if r.was_optimal)
+                        self._log(f"    Rep {rep_num}: {rep_optimal}/{len(rep_records)} optimal ({(rep_optimal/len(rep_records))*100:.2f}%)")
 
             save_game_results(self.all_turn_records, self.game_data_filename, self.game_setup_text)
             self._log(f"\nGame results saved to {self.game_data_filename}")
@@ -722,7 +691,40 @@ It is your turn.
             return "\n\n".join(prompt_parts)
 
 
-def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None, run_all_scenarios: bool = False, max_tokens_override: Optional[int] = None, lose: bool = False):
+def print_session_summary(turn_records: List[TurnRecord], log_fn=print):
+    """Print session summary with Extra condition breakdown.
+
+    Used by both LLM and human mode to avoid duplicating summary logic.
+
+    Args:
+        turn_records: List of TurnRecord objects from the session
+        log_fn: Logging function (print for human mode, self._log for LLM mode)
+    """
+    a_records = [r for r in turn_records if r.character == 'A']
+    total_optimal = sum(1 for r in a_records if r.was_optimal)
+    total_turns = len(a_records)
+
+    if total_turns == 0:
+        log_fn("No turns were played.")
+        return
+
+    log_fn(f"Optimal in {total_optimal}/{total_turns} turns ({(total_optimal/total_turns)*100:.2f}%)")
+
+    # Breakdown by Extra condition
+    # normalize_extra handles legacy format (0/1/None → 1A/1B) and new format (0A/0B/1A/1B)
+    def normalize_extra(val):
+        if val is None or val == 0: return '1A'
+        if val == 1: return '1B'
+        return str(val) if val else '1A'
+
+    for extra_val in ['0A', '0B', '1A', '1B']:
+        extra_records = [r for r in a_records if normalize_extra(r.extra) == extra_val]
+        if extra_records:
+            extra_optimal = sum(1 for r in extra_records if r.was_optimal)
+            log_fn(f"  Extra={extra_val}: {extra_optimal}/{len(extra_records)} optimal ({(extra_optimal/len(extra_records))*100:.2f}%)")
+
+
+def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None, run_all_scenarios: bool = False, max_tokens_override: Optional[int] = None, lose: bool = False, scenario_number: Optional[int] = None, total_scenarios: Optional[int] = None):
     """Play the game in CLI mode, for humans or LLMs.
 
     Args:
@@ -731,6 +733,7 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
         run_all_scenarios: If True, ignore winning score and run all scenarios (useful for testing)
         max_tokens_override: Optional override for max tokens (for retrying token-limited failures)
         lose: Whether to show lose warning in rules
+        scenario_number: Optional scenario number to display in header (e.g. "SCENARIO 5")
     """
     game = GameState(scenario_file=scenario_file)
     log = llm_player._log if llm_player else print
@@ -759,9 +762,6 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
     if llm_player and hasattr(llm_player, 'game_setup_text') and llm_player.game_setup_text is None:
         llm_player.game_setup_text = GAME_SETUP.format(WINNING_SCORE=game.WINNING_SCORE)
     
-    if is_human:
-        log(game_setup_text)
-    
     turn_count = 0
 
     while not game.game_over and game.get_current_scenario():
@@ -771,8 +771,8 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
         if not turn_char:
             break
         
-        # In LLM mode, we only process player A's turn
-        if llm_player and turn_char != 'A':
+        # Only process player A's turn (NPC turns are not needed)
+        if turn_char != 'A':
             game.advance_turn()
             continue
         
@@ -782,14 +782,23 @@ def play_game_cli(scenario_file: str, llm_player: Optional[BaseGameClass] = None
         question_desc = f"I am going to ask {answerer} what is in the {scenario.question_container}."
         
         preamble=f"\n***********************************\nSCORE\nBlue={game.scores[Team.BLUE]}, Red={game.scores[Team.RED]}\n"
-        log(preamble)
+        if not is_human:
+            log(preamble)
 
         # Build prompt text based on history_mode
         if history_mode != "none" and llm_player:
-            # Use "SCENARIO [N]" format
+            # Use "SCENARIO [N]" format for LLM history mode
             scenario_header = f"SCENARIO {current_trial}"
+        elif scenario_number is not None:
+            if total_scenarios is not None:
+                scenario_header = f"SCENARIO {scenario_number}/{total_scenarios}"
+            else:
+                scenario_header = f"SCENARIO {scenario_number}"
         else:
             scenario_header = "SCENARIO"
+
+        if is_human:
+            log(f"\n{'='*70}")
 
         prompt_text = f"""{scenario_header}
 Here's what you see:
@@ -859,11 +868,12 @@ It is {turn_name} turn.
         
         answer_given, is_correct, answer_score = game.resolve_answer_phase(scenario, true_contents)
         
-        log(f"{scenario.who_answers} answers: {answer_given}")
-        if is_correct:
-            log(f"Correct! The {scenario.question_container} contains {answer_given}.")
-        else:
-            log(f"Incorrect. The {scenario.question_container} actually contains {true_contents[scenario.question_container]}.")
+        if not is_human:
+            log(f"{scenario.who_answers} answers: {answer_given}")
+            if is_correct:
+                log(f"Correct! The {scenario.question_container} contains {answer_given}.")
+            else:
+                log(f"Incorrect. The {scenario.question_container} actually contains {true_contents[scenario.question_container]}.")
         
         blue_delta = 0.0
         red_delta = 0.0
@@ -885,7 +895,8 @@ It is {turn_name} turn.
         def fmt_delta(x: float) -> str:
             sign = '+' if x >= 0 else '-'
             return f"{sign}{abs(x)}"
-        log(f"\nOutcome: Blue {fmt_delta(blue_delta)}, Red {fmt_delta(red_delta)}")
+        if not is_human:
+            log(f"\nOutcome: Blue {fmt_delta(blue_delta)}, Red {fmt_delta(red_delta)}")
 
         was_optimal = False
         expected_action_str = ""
@@ -1016,31 +1027,19 @@ It is {turn_name} turn.
                 'reasoning': reasoning_trace
             })
         
-        if is_human:
-            input("\n[Press Enter to continue]")
-        
         game.advance_turn()
         game.check_game_over()
         turn_count += 1
 
-    log("\n" + "=" * 70)
-    log("GAME OVER")
-    log(f"Final Score: Blue {game.scores[Team.BLUE]} - Red {game.scores[Team.RED]}")
-    if game.winner:
-        log(f"Winner: {game.winner.value} team")
-    elif game.winner is None:
-        log("It's a tie!")
-    log("=" * 70)
-    
-    if is_human:
-        for record in game.turn_records:
-            if record.character == 'A':
-                log(f"\nRound {record.round_num} - {record.character}'s turn")
-                log(f"KS_Self: {record.ks_self}, KS_Teammate: {record.ks_teammate}, KS_Opponent: {record.ks_opponent}")
-                log(f"Action: {record.action}, Expected: {record.optimal_action}")
-        
-        save_game_results(game.turn_records, 'game_results.json')
-        log("\nGame results saved to game_results.json")
+    if not is_human:
+        log("\n" + "=" * 70)
+        log("GAME OVER")
+        log(f"Final Score: Blue {game.scores[Team.BLUE]} - Red {game.scores[Team.RED]}")
+        if game.winner:
+            log(f"Winner: {game.winner.value} team")
+        elif game.winner is None:
+            log("It's a tie!")
+        log("=" * 70)
     
     return game
 
@@ -1086,6 +1085,12 @@ if __name__ == "__main__":
         help="Which rep to start from (1-indexed). Use with --scenario_file to resume from a specific rep. "
              "E.g., --reps 9 --start_rep 2 runs reps 2-10."
     )
+    parser.add_argument(
+        "--participant",
+        type=str,
+        default=None,
+        help="Participant ID for human mode (used in output filename). If not specified, a timestamp-based ID is generated."
+    )
     args = parser.parse_args()
 
     specs = read_specs_from_csv('ToM - scenarios.csv')
@@ -1123,20 +1128,75 @@ if __name__ == "__main__":
         )
         test_runner.run_test()
     else:
-        # For human mode, multiply specs by reps (original behavior)
-        specs = specs * args.reps
-        for i, spec in enumerate(specs):
-         #i=0
-#        while True:
-            #random.shuffle(specs)
-            outfile = 'scenarios_tmp.json'#
-            generate_scenarios_from_tuples([specs[i]], outfile=outfile, seed=None, chartypes = [CharacterType.LIVE_PLAYER, CharacterType.HONEST_OPPONENT, CharacterType.DISHONEST_TEAMMATE, CharacterType.DISHONEST_OPPONENT])
-            play_game_cli(scenario_file=outfile, lose=args.lose)
+        # Human mode: load pre-generated scenarios, accumulate results, save with participant ID
+        import time
 
-            play_again = input("\n\nDo you want to play another game? ([y]/n): ").lower().strip()
-            if play_again not in ('y', ''):
-                print("Thanks for playing!")
-                break
-            print("\n" + "="*70)
-            print("--- Starting a New Game! ---")
-            print("="*70 + "\n")
+        participant_id = args.participant or f"human_{int(time.time())}"
+        timestamp = int(time.time())
+
+        # Load pre-generated scenarios
+        scenarios, chars, chartypes = load_scenarios(args.scenario_file)
+
+        # Slice to a single rep using --start_rep (same logic as LLM mode)
+        scenarios_per_rep = len(specs)
+        start_idx = (args.start_rep - 1) * scenarios_per_rep
+        scenarios = scenarios[start_idx : start_idx + scenarios_per_rep]
+        total_scenarios = len(scenarios)
+
+        if total_scenarios == 0:
+            print(f"Error: No scenarios found for rep {args.start_rep} in {args.scenario_file}")
+            print(f"  (file has {len(load_scenarios(args.scenario_file)[0])} scenarios, {scenarios_per_rep} per rep)")
+            sys.exit(1)
+
+        # Set up output directory and filename (mirrors LLM mode naming convention)
+        output_dir = 'tom_human_logs'
+        os.makedirs(output_dir, exist_ok=True)
+        output_file = os.path.join(output_dir, f"{participant_id}_{timestamp}_game_data.json")
+
+        print(f"\nParticipant: {participant_id}")
+        print(f"Rep: {args.start_rep}")
+        print(f"Scenarios in this rep: {total_scenarios}")
+
+        # Build and display game rules once before the loop
+        lose_text = LOSE_WARNING if args.lose else ""
+        rules_text = GAME_SETUP_TEMPLATE.format(lose_text=lose_text)
+        study_context = ("\n\nFor the purpose of this study, we're going to repeatedly ask you to "
+                         "make the first move in different runs of this game. Each run is separate "
+                         "and in each run we want you to make the best move in that situation.")
+        rules_display = "=" * 70 + "\n" + rules_text.format(WINNING_SCORE=4) + study_context + "\n" + "=" * 70
+        print(rules_display)
+
+        # Randomize scenario order for each participant
+        random.shuffle(scenarios)
+
+        all_turn_records = []
+        game_setup_text = rules_text.format(WINNING_SCORE=4) + study_context
+        outfile_tmp = os.path.join(output_dir, f'{participant_id}_scenario_tmp.json')
+
+        for i, scenario in enumerate(scenarios):
+            # Save single scenario to temp file for play_game_cli
+            save_scenarios([scenario], outfile_tmp, chars, chartypes)
+
+            game_state = play_game_cli(
+                scenario_file=outfile_tmp,
+                lose=args.lose,
+                scenario_number=i + 1,
+                total_scenarios=total_scenarios,
+            )
+            if game_state:
+                all_turn_records.extend(game_state.turn_records)
+
+        # Save results using same format as LLM mode
+        save_game_results(all_turn_records, output_file, game_setup_text)
+
+        # Print summary
+        print(f"\n{'='*70}")
+        print(f"SESSION COMPLETE")
+        print(f"Participant: {participant_id}")
+        print_session_summary(all_turn_records)
+        print(f"Results saved to: {output_file}")
+        print(f"{'='*70}")
+
+        # Clean up temp file
+        if os.path.exists(outfile_tmp):
+            os.remove(outfile_tmp)
