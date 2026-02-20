@@ -22,9 +22,9 @@ from dataclasses import asdict
 from flask import Flask, render_template, request, redirect, url_for, session, abort
 
 # Import game logic
-from tom_helpers import load_scenarios, save_scenarios, CharacterType
+from tom_helpers import load_scenarios, save_scenarios, CharacterType, Team
 from tom_test_new import (
-    ToMGame, TurnRecord, Action, ActionType, Team,
+    GameState, TurnRecord, Action, ActionType,
     save_game_results, GAME_SETUP_TEMPLATE, LOSE_WARNING,
 )
 
@@ -224,13 +224,13 @@ def process_scenario_for_display(scenario, chars, chartypes, study_id):
 
     Returns dict with scenario_desc, question_desc, and serialized game state.
     """
-    # Create a temporary scenario file (ToMGame requires a file path)
+    # Create a temporary scenario file (GameState requires a file path)
     data_dir = study_data_dir(study_id)
     tmp_file = os.path.join(data_dir, f'_tmp_{os.getpid()}.json')
     save_scenarios([scenario], tmp_file, chars, chartypes)
 
     try:
-        game = ToMGame(tmp_file)
+        game = GameState(tmp_file)
         scenario_obj = game.get_current_scenario()
         true_contents = game.process_scenario_events(scenario_obj)
 
@@ -261,7 +261,7 @@ def process_action(scenario, chars, chartypes, action_str, study_id):
     save_scenarios([scenario], tmp_file, chars, chartypes)
 
     try:
-        game = ToMGame(tmp_file)
+        game = GameState(tmp_file)
         scenario_obj = game.get_current_scenario()
         true_contents = game.process_scenario_events(scenario_obj)
 
