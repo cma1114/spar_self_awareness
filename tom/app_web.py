@@ -524,7 +524,8 @@ def scenario(n):
                                total_scenarios=total,
                                scenario_desc=display['scenario_desc'],
                                question_desc=display['question_desc'],
-                               rules_text=RULES_TEXT)
+                               rules_text=RULES_TEXT,
+                               study_context=STUDY_CONTEXT)
 
     else:  # POST
         action_str = request.form.get('action', 'Pass').strip()
