@@ -19,6 +19,28 @@
         h2 {
             margin-bottom: 5px;
         }
+        .rules-toggle {
+            margin-bottom: 20px;
+        }
+        .rules-toggle summary {
+            cursor: pointer;
+            color: #8ab4f8;
+            font-size: 14px;
+            padding: 5px 0;
+        }
+        .rules-toggle summary:hover {
+            color: #aaccff;
+        }
+        .rules-content {
+            white-space: pre-wrap;
+            background: #2a2a2a;
+            padding: 15px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #ccc;
+        }
         .scenario-box {
             background: #2a2a2a;
             padding: 20px;
@@ -90,6 +112,11 @@
 <body>
     <div class="divider"></div>
     <h2>SCENARIO {{ scenario_num }}/{{ total_scenarios }}</h2>
+
+    <details class="rules-toggle">
+        <summary>Show/Hide Game Rules</summary>
+        <div class="rules-content">{{ rules_text }}</div>
+    </details>
 
     <div class="scenario-box">
         <p>Here's what you see:</p>

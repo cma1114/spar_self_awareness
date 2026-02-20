@@ -33,19 +33,18 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dev-secret-change-in-produc
 
 # --- Configuration ---
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-SCENARIO_FILE = os.path.join(_SCRIPT_DIR, 'scenarios_generated4.json')
+SCENARIO_FILE = os.path.join(_SCRIPT_DIR, 'scenarios_standardized.json')
 BASE_DATA_DIR = os.path.join(_SCRIPT_DIR, 'tom_human_logs')
 DEFAULT_STUDY_ID = 'default'
-TOTAL_REPS = 10
 DROPOUT_TIMEOUT_SECONDS = 2 * 60 * 60  # 2 hours
 PROLIFIC_COMPLETION_URL = os.environ.get(
     'PROLIFIC_COMPLETION_URL',
     'https://app.prolific.com/submissions/complete?cc=XXXXXXX'  # Replace with actual code
 )
 
-# Precompute scenarios_per_rep at startup
+# Precompute rep info at startup
 _scenarios, _chars, _chartypes = load_scenarios(SCENARIO_FILE)
-SCENARIOS_PER_REP = len(_scenarios) // TOTAL_REPS
+TOTAL_REPS = len(set(s.rep for s in _scenarios))
 
 
 def study_data_dir(study_id):
@@ -211,8 +210,7 @@ def mark_complete(participant_id, study_id):
 def load_participant_scenarios(rep):
     """Load and shuffle scenarios for a given rep."""
     scenarios, chars, chartypes = load_scenarios(SCENARIO_FILE)
-    start_idx = (rep - 1) * SCENARIOS_PER_REP
-    rep_scenarios = scenarios[start_idx:start_idx + SCENARIOS_PER_REP]
+    rep_scenarios = [s for s in scenarios if s.rep == rep]
     random.shuffle(rep_scenarios)
     return rep_scenarios, chars, chartypes
 
@@ -235,7 +233,7 @@ def process_scenario_for_display(scenario, chars, chartypes, study_id):
         true_contents = game.process_scenario_events(scenario_obj)
 
         scenario_desc = scenario_obj.get_description_for(
-            'A', game.characters, pause_mode="none", ellipsis_mode=False
+            'A', game.characters, pause_mode="none", ellipsis_mode=True
         )
         answerer = "you" if scenario_obj.who_answers == 'A' else scenario_obj.who_answers
         question_desc = f"I am going to ask {answerer} what is in the {scenario_obj.question_container}."
@@ -266,7 +264,7 @@ def process_action(scenario, chars, chartypes, action_str, study_id):
         true_contents = game.process_scenario_events(scenario_obj)
 
         scenario_desc = scenario_obj.get_description_for(
-            'A', game.characters, pause_mode="none", ellipsis_mode=False
+            'A', game.characters, pause_mode="none", ellipsis_mode=True
         )
         answerer_name = "you" if scenario_obj.who_answers == 'A' else scenario_obj.who_answers
         question_desc = f"I am going to ask {answerer_name} what is in the {scenario_obj.question_container}."
@@ -525,7 +523,8 @@ def scenario(n):
                                scenario_num=n,
                                total_scenarios=total,
                                scenario_desc=display['scenario_desc'],
-                               question_desc=display['question_desc'])
+                               question_desc=display['question_desc'],
+                               rules_text=RULES_TEXT)
 
     else:  # POST
         action_str = request.form.get('action', 'Pass').strip()
