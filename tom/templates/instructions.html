@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Theory of Mind Game</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        .rules {
+            white-space: pre-wrap;
+            background: #2a2a2a;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .study-context {
+            background: #2a3a2a;
+            padding: 15px 20px;
+            border: 1px solid #4a6a4a;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+        .start-btn {
+            display: inline-block;
+            padding: 12px 40px;
+            background: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+        }
+        .start-btn:hover {
+            background: #3a8eef;
+        }
+        .info {
+            color: #888;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Theory of Mind Game</h1>
+
+    <div class="rules">{{ rules_text }}</div>
+
+    <div class="study-context">{{ study_context }}</div>
+
+    <form action="{{ url_for('start') }}" method="post">
+        <button type="submit" class="start-btn">Start ({{ total_scenarios }} scenarios)</button>
+    </form>
+
+    <div class="info">Participant: {{ participant_id }}</div>
+</body>
+</html>
