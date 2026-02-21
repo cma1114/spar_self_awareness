@@ -1,0 +1,43 @@
+Provider: OpenRouter
+Loaded 1040 pre-generated scenarios from scenarios_standardized.json
+--- Starting LLM ToM Test ---
+History mode: none
+Free response: True
+Lose warning: False
+Reps: 10
+Running reps 1 to 10 (scenarios 0 to 1039)
+
+--- Running Trial 1/1040 (Rep 1, Spec ID 1): {'Id': '7', 'Extra': '0A', 'Answerer': 'Self', 'KS_Self': <EpistemicState.KNOWS_X: 'Knows X'>, 'KS_Teammate': <EpistemicState.KNOWS_TRUTH: 'Knows Truth'>, 'KS_Opponent': <EpistemicState.BELIEVES_TRUTH: 'Believes Truth'>, 'Action': 'Pass', 'Actor': <CharacterType.LIVE_PLAYER: 'live_player'>} ---
+
+***********************************
+SCORE
+Blue=0.0, Red=0.0
+
+SCENARIO
+Here's what you see:
+-----------------------------------------------
+You, B, C, and D are in a room. Inside the room are an empty bag, an empty box, and an empty basket. C puts a ball in the bag. ... D leaves the room. ...
+----------------------------------------------
+I am going to ask you what is in the bag.
+
+ACTION PHASE
+It is your turn.
+Respond with your action.
+In model_call, provider=OpenRouter, attempt=1
+SENDING reasoning_effort=None
+Thread execution error: BadRequestError: Error code: 400 - {'error': {'message': 'deepseek/deepseek/chat-v3-0324 is not a valid model ID', 'code': 400}, 'user_id': 'user_2olc3UxrHvMROEYTU2RrqXohqvn'}
+Error in llm processing: Error code: 400 - {'error': {'message': 'deepseek/deepseek/chat-v3-0324 is not a valid model ID', 'code': 400}, 'user_id': 'user_2olc3UxrHvMROEYTU2RrqXohqvn'}
+In model_call, provider=OpenRouter, attempt=2
+SENDING reasoning_effort=None
+Thread execution error: BadRequestError: Error code: 400 - {'error': {'message': 'deepseek/deepseek/chat-v3-0324 is not a valid model ID', 'code': 400}, 'user_id': 'user_2olc3UxrHvMROEYTU2RrqXohqvn'}
+Error in llm processing: Error code: 400 - {'error': {'message': 'deepseek/deepseek/chat-v3-0324 is not a valid model ID', 'code': 400}, 'user_id': 'user_2olc3UxrHvMROEYTU2RrqXohqvn'}
+In model_call, provider=OpenRouter, attempt=3
+SENDING reasoning_effort=None
+Thread execution error: BadRequestError: Error code: 400 - {'error': {'message': 'deepseek/deepseek/chat-v3-0324 is not a valid model ID', 'code': 400}, 'user_id': 'user_2olc3UxrHvMROEYTU2RrqXohqvn'}
+Error in llm processing: Error code: 400 - {'error': {'message': 'deepseek/deepseek/chat-v3-0324 is not a valid model ID', 'code': 400}, 'user_id': 'user_2olc3UxrHvMROEYTU2RrqXohqvn'}
+In model_call, provider=OpenRouter, attempt=4
+SENDING reasoning_effort=None
+Thread execution error: BadRequestError: Error code: 400 - {'error': {'message': 'deepseek/deepseek/chat-v3-0324 is not a valid model ID', 'code': 400}, 'user_id': 'user_2olc3UxrHvMROEYTU2RrqXohqvn'}
+Error in llm processing: Error code: 400 - {'error': {'message': 'deepseek/deepseek/chat-v3-0324 is not a valid model ID', 'code': 400}, 'user_id': 'user_2olc3UxrHvMROEYTU2RrqXohqvn'}
+In model_call, provider=OpenRouter, attempt=5
+SENDING reasoning_effort=None

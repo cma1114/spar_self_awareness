@@ -30,6 +30,7 @@ EXTRA_CATEGORIES = {
 # Model name shortening for charts - maps base model names to display names
 # Applied before any suffixes like (CoT) or (lose)
 MODEL_SHORT_NAMES = {
+    # Anthropic
     'anthropic-claude-3.5-sonnet': 'Sonnet 3.5',
     'anthropic-claude-3.7-sonnet': 'Sonnet 3.7',
     'anthropic-claude-3.7-sonnet:thinking': 'Sonnet 3.7 Think',
@@ -37,20 +38,43 @@ MODEL_SHORT_NAMES = {
     'anthropic-claude-sonnet-4.5': 'Sonnet 4.5',
     'anthropic-claude-sonnet-4_think': 'Sonnet 4 Think',
     'anthropic-claude-sonnet-4.5_think': 'Sonnet 4.5 Think',
+    'anthropic-claude-sonnet-4.6_think': 'Sonnet 4.6 Think',
+    'anthropic-claude-opus-4_think': 'Opus 4 Think',
     'anthropic-claude-opus-4.5': 'Opus 4.5',
     'anthropic-claude-opus-4.5_think': 'Opus 4.5 Think',
+    'anthropic-claude-opus-4.6': 'Opus 4.6',
+    'anthropic-claude-opus-4.6_think': 'Opus 4.6 Think',
+    # OpenAI
+    'openai-gpt-4-turbo': 'GPT-4 Turbo',
+    'openai-gpt-4.1': 'GPT-4.1',
+    'openai-gpt-4.1-mini': 'GPT-4.1 Mini',
+    'openai-gpt-4o': 'GPT-4o',
+    'openai-gpt-4o-mini': 'GPT-4o Mini',
     'openai-gpt-5-chat': 'GPT-5',
     'openai-gpt-5.2-chat': 'GPT-5.2',
     'openai-gpt-5.2_think': 'GPT-5.2 Think',
     'openai-gpt-5.2_lowthink': 'GPT-5.2 LowThink',
     'openai-gpt-5.2_nothink': 'GPT-5.2 NoThink',
+    # DeepSeek
+    'deepseek-chat-v3-0324': 'DeepSeek v3',
     'deepseek-chat-v3.1': 'DeepSeek v3.1',
+    'deepseek-v3.2': 'DeepSeek v3.2',
+    # Kimi
     'kimi-k2-0905': 'Kimi K2',
     'kimi-k2.5_think': 'Kimi K2.5 Think',
+    # Qwen
     'qwen3-235b-a22b': 'Qwen3 235B',
     'qwen3-235b-a22b-thinking-2507': 'Qwen3 235B Think',
+    'qwen3-next-80b-a3b-instruct': 'Qwen3 80B',
+    # Google
+    'google-gemini-2.5-pro_think': 'Gemini 2.5 Pro Think',
     'google-gemini-3-pro-preview': 'Gemini 3 Pro',
     'google-gemini-3-pro-preview_think': 'Gemini 3 Pro Think',
+    'google-gemini-3.1-pro-preview_think': 'Gemini 3.1 Pro Think',
+    'google-gemini-3-flash-preview_nothink': 'Gemini 3 Flash',
+    # xAI
+    'x-ai-grok-3': 'Grok 3',
+    'x-ai-grok-4-fast': 'Grok 4 Fast',
 }
 
 
@@ -115,14 +139,31 @@ def get_model_sort_key(model_name: str) -> tuple:
     # e.g., "openai-gpt-5.2-chat" and "openai-gpt-5.2_think" should group together
     family = family.replace('-chat', '')
 
-    # Provider ordering: Anthropic first, then OpenAI, then others
-    provider_order = 2  # default for others
-    if family.startswith('anthropic-'):
+    # Provider ordering: Anthropic, OpenAI, Google, xAI, then others alphabetically
+    provider_order = 99  # default for others
+    model_tier = 0  # for sub-ordering within provider (e.g., Sonnet before Opus)
+
+    if family.startswith('anthropic-') or family.startswith('claude-'):
         provider_order = 0
+        # Sonnet before Opus
+        if 'opus' in family.lower():
+            model_tier = 1
+        else:
+            model_tier = 0
     elif family.startswith('openai-'):
         provider_order = 1
+    elif family.startswith('google-') or family.startswith('gemini'):
+        provider_order = 2
+    elif family.startswith('x-ai-') or family.startswith('grok'):
+        provider_order = 3
+    elif family.startswith('deepseek'):
+        provider_order = 4
+    elif family.startswith('kimi'):
+        provider_order = 5
+    elif family.startswith('qwen'):
+        provider_order = 6
 
-    return (provider_order, family, variant_order, suffix_order)
+    return (provider_order, model_tier, family, variant_order, suffix_order)
 
 # Scenarios used for mastery analysis - see TOM_MASTERY_CATEGORIES below
 # Excludes: 1-6, 25, 26, 33-36, 38 (not part of any mastery category)
@@ -1058,6 +1099,109 @@ def main():
     saved_files.append(mastery_chart_path)
     plt.close(fig_mastery)
 
+    # Generate thinking vs non-thinking split versions of mastery_load_effects
+    def is_thinking_model(name):
+        """Check if model name indicates a thinking/CoT model."""
+        name_lower = name.lower()
+        return ('_think' in name_lower or ':thinking' in name_lower or
+                '(cot)' in name_lower or 'think' in name_lower.split('_')[-1])
+
+    thinking_models = [m for m in combined_model_order if is_thinking_model(m)]
+    non_thinking_models = [m for m in combined_model_order if not is_thinking_model(m)]
+
+    for model_subset, subset_name, filename_suffix in [
+        (thinking_models, 'Thinking Models', '_thinking'),
+        (non_thinking_models, 'Non-Thinking Models', '_nothinking'),
+    ]:
+        if not model_subset:
+            continue
+
+        n_subset = len(model_subset) + 1  # +1 for ALL MODELS
+        fig_width = max(20, n_subset * 0.7)
+        fig_sub, axes_sub = plt.subplots(6, 1, figsize=(fig_width, 36))
+        axes_sub = axes_sub.flatten()
+
+        # Compute subset aggregate mastery
+        subset_records = []
+        for m in model_subset:
+            subset_records.extend(combined_model_records[m])
+        subset_mastery = compute_mastery_with_extra_breakout(subset_records, lies_okay=False)
+
+        for i, (cat_key, cat_info) in enumerate(TOM_MASTERY_CATEGORIES.items()):
+            ax = axes_sub[i]
+
+            model_labels = []
+            scores_0a, scores_0b, scores_1a, scores_1b = [], [], [], []
+            errs_0a, errs_0b, errs_1a, errs_1b = [], [], [], []
+
+            for model in model_subset:
+                mastery = combined_model_mastery[model]
+                model_labels.append(shorten_model_name(model))
+
+                for extra_key, scores_list, errs_list in [
+                    ('extra0a', scores_0a, errs_0a),
+                    ('extra0b', scores_0b, errs_0b),
+                    ('extra1a', scores_1a, errs_1a),
+                    ('extra1b', scores_1b, errs_1b),
+                ]:
+                    cat_data = mastery[extra_key][cat_key]
+                    score = cat_data['score'] * 100
+                    k, n = int(cat_data['k']), int(cat_data['n'])
+                    ci_low, ci_high = wilson_ci(k, n) if n > 0 else (0, 1)
+                    scores_list.append(score)
+                    errs_list.append((score - ci_low * 100 + ci_high * 100 - score) / 2)
+
+            # Add ALL MODELS (subset aggregate)
+            model_labels.append('ALL MODELS')
+            for extra_key, scores_list, errs_list in [
+                ('extra0a', scores_0a, errs_0a),
+                ('extra0b', scores_0b, errs_0b),
+                ('extra1a', scores_1a, errs_1a),
+                ('extra1b', scores_1b, errs_1b),
+            ]:
+                cat_data = subset_mastery[extra_key][cat_key]
+                score = cat_data['score'] * 100
+                k, n = int(cat_data['k']), int(cat_data['n'])
+                ci_low, ci_high = wilson_ci(k, n) if n > 0 else (0, 1)
+                scores_list.append(score)
+                errs_list.append((score - ci_low * 100 + ci_high * 100 - score) / 2)
+
+            x = np.arange(len(model_labels))
+            width = 0.2
+
+            ax.bar(x - 1.5*width, scores_0a, width, label='0A: Min Events', color=load_colors['0A'],
+                   yerr=errs_0a, capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8})
+            ax.bar(x - 0.5*width, scores_0b, width, label='0B: Event Load', color=load_colors['0B'],
+                   yerr=errs_0b, capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8})
+            ax.bar(x + 0.5*width, scores_1a, width, label='1A: Min ECT', color=load_colors['1A'],
+                   yerr=errs_1a, capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8})
+            ax.bar(x + 1.5*width, scores_1b, width, label='1B: ECT Load', color=load_colors['1B'],
+                   yerr=errs_1b, capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8})
+
+            ax.set_ylabel('Correct %', fontsize=11)
+            ax.set_title(cat_names_short.get(cat_key, cat_info['name']), fontsize=13, fontweight='bold')
+            ax.set_xticks(x)
+            ax.set_xticklabels(model_labels, rotation=45, ha='right', fontsize=9)
+            ax.set_ylim(0, 105)
+            ax.axhline(y=50, color='red', linestyle='--', alpha=0.7, linewidth=1.5)
+            ax.grid(axis='y', alpha=0.3)
+
+        # Add legend to the first panel
+        handles = [
+            Patch(facecolor=load_colors['0A'], label='0A: Minimal Events'),
+            Patch(facecolor=load_colors['0B'], label='0B: Event Load'),
+            Patch(facecolor=load_colors['1A'], label='1A: Minimal ECT'),
+            Patch(facecolor=load_colors['1B'], label='1B: ECT Load'),
+        ]
+        axes_sub[0].legend(handles=handles, loc='upper right', fontsize=9, title='Load Conditions', title_fontsize=10)
+
+        fig_sub.suptitle(f'Mastery Load Effects by Category ({subset_name})', fontsize=18, fontweight='bold', y=0.995)
+        plt.tight_layout(rect=[0, 0, 1, 0.99])
+        subset_chart_path = os.path.join(logs_dir, f'mastery_load_effects{filename_suffix}.png')
+        plt.savefig(subset_chart_path, dpi=200, bbox_inches='tight')
+        saved_files.append(subset_chart_path)
+        plt.close(fig_sub)
+
     # Generate mastery overall bar chart (all models, all categories)
     # This is a direct visualization of mastery_overall.txt
     # 7 panels: 6 categories + teammate_opponent with lies_okay
@@ -1093,9 +1237,12 @@ def main():
         'overall_combined': 'Overall (All Categories)',
     }
 
-    # Create figure with 3x3 grid (7 panels + 2 empty)
-    # Use moderate size with high DPI for crisp text
-    fig_overall, axes_overall = plt.subplots(3, 3, figsize=(20, 18))
+    # Create figure with 3x3 grid (8 panels + 1 empty)
+    # Scale height based on number of models for readability
+    n_models = len(combined_model_order) + 1  # +1 for ALL MODELS
+    panel_height = n_models * 0.28 + 1.5  # Height per panel row (tighter bars)
+    fig_height = panel_height * 3  # 3 rows
+    fig_overall, axes_overall = plt.subplots(3, 3, figsize=(24, fig_height))
     axes_overall = axes_overall.flatten()
 
     for i, cat_key in enumerate(chart_panels):
@@ -1167,8 +1314,13 @@ def main():
 
         # Create horizontal bar chart with error bars (more visible)
         y_pos = np.arange(len(labels))
-        bars = ax.barh(y_pos, scores, xerr=[err_lower, err_upper], color=color, alpha=0.8, height=0.7,
-                       capsize=3, error_kw={'elinewidth': 1.2, 'capthick': 1.2, 'alpha': 0.7, 'color': 'black'})
+        # Scale bar height and fonts based on number of models
+        bar_height = 0.85  # Tight bars with minimal gap
+        label_fontsize = min(10, max(7, 220 / n_models))
+        value_fontsize = min(9, max(6, 180 / n_models))
+
+        bars = ax.barh(y_pos, scores, xerr=[err_lower, err_upper], color=color, alpha=0.8, height=bar_height,
+                       capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8, 'alpha': 0.7, 'color': 'black'})
 
         # Highlight ALL MODELS bar
         bars[-1].set_alpha(1.0)
@@ -1176,36 +1328,160 @@ def main():
         bars[-1].set_linewidth(2)
 
         # Add value labels on bars
-        for j, (score, bar) in enumerate(zip(scores, bars)):
-            ax.text(score + 1.5, bar.get_y() + bar.get_height()/2,
-                   f'{score:.0f}%', va='center', fontsize=11)
+        for _, (score_val, bar) in enumerate(zip(scores, bars)):
+            ax.text(score_val + 1.5, bar.get_y() + bar.get_height()/2,
+                   f'{score_val:.0f}%', va='center', fontsize=value_fontsize)
 
         ax.set_yticks(y_pos)
-        ax.set_yticklabels(labels, fontsize=12)
-        ax.set_xlabel('Mastery Score (%)', fontsize=12)
-        ax.set_xlim(0, 110)
-        ax.axvline(x=50, color='red', linestyle='--', alpha=0.7, linewidth=2, label='Chance (50%)')
-        ax.set_title(cat_name, fontsize=14, fontweight='bold', color=color)
+        ax.set_yticklabels(labels, fontsize=label_fontsize)
+        ax.set_xlabel('Correct %', fontsize=10)
+        ax.set_xlim(0, 115)
+        ax.set_ylim(len(labels) - 0.5, -0.5)  # Tight y-axis, no extra whitespace
+        ax.axvline(x=50, color='red', linestyle='--', alpha=0.7, linewidth=1.5, label='Chance (50%)')
+        ax.set_title(cat_name, fontsize=12, fontweight='bold', color=color)
         ax.grid(axis='x', alpha=0.3)
-        ax.invert_yaxis()  # Top model at top
 
     # Hide empty subplot(s) in the 3x3 grid
     for idx in range(len(chart_panels), len(axes_overall)):
         axes_overall[idx].axis('off')
 
     fig_overall.suptitle('ToM Mastery Scores by Category (Overall)', fontsize=18, fontweight='bold', y=0.995)
-    plt.tight_layout(rect=[0, 0, 1, 0.97])  # Leave room at top for suptitle
+    plt.subplots_adjust(hspace=0.3, wspace=0.35)
+    plt.tight_layout(rect=[0, 0, 1, 0.99])
     mastery_overall_chart_path = os.path.join(logs_dir, 'mastery_overall_chart.png')
     plt.savefig(mastery_overall_chart_path, dpi=300, bbox_inches='tight')
     saved_files.append(mastery_overall_chart_path)
     plt.close(fig_overall)
+
+    # Generate thinking vs non-thinking split charts
+    def is_thinking_model(name):
+        """Check if model name indicates a thinking/CoT model."""
+        name_lower = name.lower()
+        return ('_think' in name_lower or ':thinking' in name_lower or
+                '(cot)' in name_lower or 'think' in name_lower.split('_')[-1])
+
+    thinking_models = [m for m in combined_model_order if is_thinking_model(m)]
+    non_thinking_models = [m for m in combined_model_order if not is_thinking_model(m)]
+
+    for model_subset, subset_name, filename_suffix in [
+        (thinking_models, 'Thinking Models', '_thinking'),
+        (non_thinking_models, 'Non-Thinking Models', '_nothinking'),
+    ]:
+        if not model_subset:
+            continue
+
+        n_subset = len(model_subset) + 1  # +1 for ALL MODELS
+        panel_height_subset = n_subset * 0.28 + 1.5
+        fig_height_subset = panel_height_subset * 3
+
+        fig_subset, axes_subset = plt.subplots(3, 3, figsize=(24, fig_height_subset))
+        axes_subset = axes_subset.flatten()
+
+        for i, cat_key in enumerate(chart_panels):
+            ax = axes_subset[i]
+            cat_name = chart_names.get(cat_key, cat_key)
+            color = cat_colors[cat_key]
+
+            scores = []
+            labels = []
+            err_lower = []
+            err_upper = []
+
+            for model in model_subset:
+                if cat_key == 'teammate_opponent_lies':
+                    mastery = combined_model_mastery_lies[model]
+                    cat_data = mastery['overall']['teammate_opponent']
+                    score = cat_data['score'] * 100
+                    k = int(cat_data['k'])
+                    n = int(cat_data['n'])
+                elif cat_key == 'overall_combined':
+                    mastery = combined_model_mastery[model]
+                    cat_scores = [mastery['overall'][c]['score'] for c in main_categories]
+                    score = sum(cat_scores) / len(cat_scores) * 100
+                    k = sum(int(mastery['overall'][c]['k']) for c in main_categories)
+                    n = sum(int(mastery['overall'][c]['n']) for c in main_categories)
+                else:
+                    mastery = combined_model_mastery[model]
+                    cat_data = mastery['overall'][cat_key]
+                    score = cat_data['score'] * 100
+                    k = int(cat_data['k'])
+                    n = int(cat_data['n'])
+                ci_low, ci_high = wilson_ci(k, n)
+                err_lower.append(max(0, score - ci_low * 100))
+                err_upper.append(max(0, ci_high * 100 - score))
+                scores.append(score)
+                labels.append(shorten_model_name(model))
+
+            # Add ALL MODELS (subset aggregate)
+            subset_records = []
+            for m in model_subset:
+                subset_records.extend(combined_model_records[m])
+            subset_mastery = compute_mastery_with_extra_breakout(subset_records, lies_okay=False)
+            subset_mastery_lies = compute_mastery_with_extra_breakout(subset_records, lies_okay=True)
+
+            if cat_key == 'teammate_opponent_lies':
+                cat_data = subset_mastery_lies['overall']['teammate_opponent']
+                score = cat_data['score'] * 100
+                k = int(cat_data['k'])
+                n = int(cat_data['n'])
+            elif cat_key == 'overall_combined':
+                cat_scores = [subset_mastery['overall'][c]['score'] for c in main_categories]
+                score = sum(cat_scores) / len(cat_scores) * 100
+                k = sum(int(subset_mastery['overall'][c]['k']) for c in main_categories)
+                n = sum(int(subset_mastery['overall'][c]['n']) for c in main_categories)
+            else:
+                cat_data = subset_mastery['overall'][cat_key]
+                score = cat_data['score'] * 100
+                k = int(cat_data['k'])
+                n = int(cat_data['n'])
+            scores.append(score)
+            ci_low, ci_high = wilson_ci(k, n)
+            err_lower.append(max(0, scores[-1] - ci_low * 100))
+            err_upper.append(max(0, ci_high * 100 - scores[-1]))
+            labels.append('ALL MODELS')
+
+            y_pos = np.arange(len(labels))
+            bar_height = 0.85
+            label_fontsize = min(10, max(7, 220 / n_subset))
+            value_fontsize = min(9, max(6, 180 / n_subset))
+
+            bars = ax.barh(y_pos, scores, xerr=[err_lower, err_upper], color=color, alpha=0.8, height=bar_height,
+                           capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8, 'alpha': 0.7, 'color': 'black'})
+
+            bars[-1].set_alpha(1.0)
+            bars[-1].set_edgecolor('black')
+            bars[-1].set_linewidth(2)
+
+            for _, (score_val, bar) in enumerate(zip(scores, bars)):
+                ax.text(score_val + 1.5, bar.get_y() + bar.get_height()/2,
+                       f'{score_val:.0f}%', va='center', fontsize=value_fontsize)
+
+            ax.set_yticks(y_pos)
+            ax.set_yticklabels(labels, fontsize=label_fontsize)
+            ax.set_xlabel('Correct %', fontsize=10)
+            ax.set_xlim(0, 115)
+            ax.set_ylim(len(labels) - 0.5, -0.5)
+            ax.axvline(x=50, color='red', linestyle='--', alpha=0.7, linewidth=1.5)
+            ax.set_title(cat_name, fontsize=12, fontweight='bold', color=color)
+            ax.grid(axis='x', alpha=0.3)
+
+        for idx in range(len(chart_panels), len(axes_subset)):
+            axes_subset[idx].axis('off')
+
+        fig_subset.suptitle(f'ToM Mastery Scores by Category ({subset_name})', fontsize=18, fontweight='bold', y=0.995)
+        plt.subplots_adjust(hspace=0.3, wspace=0.35)
+        plt.tight_layout(rect=[0, 0, 1, 0.99])
+        subset_chart_path = os.path.join(logs_dir, f'mastery_overall_chart{filename_suffix}.png')
+        plt.savefig(subset_chart_path, dpi=300, bbox_inches='tight')
+        saved_files.append(subset_chart_path)
+        plt.close(fig_subset)
 
     # Generate mastery charts for each Extra condition (0A, 0B, 1A, 1B)
     for extra_code, extra_info in EXTRA_CATEGORIES.items():
         extra_key = f'extra{extra_code.lower()}'  # e.g., 'extra0a'
         extra_name = extra_info['name']
 
-        fig_extra, axes_extra = plt.subplots(3, 3, figsize=(20, 18))
+        fig_extra, axes_extra = plt.subplots(3, 3, figsize=(24, fig_height))
         axes_extra = axes_extra.flatten()
 
         for i, cat_key in enumerate(chart_panels):
@@ -1267,8 +1543,8 @@ def main():
             labels.append('ALL MODELS')
 
             y_pos = np.arange(len(labels))
-            bars = ax.barh(y_pos, scores, xerr=[err_lower, err_upper], color=color, alpha=0.8, height=0.7,
-                           capsize=3, error_kw={'elinewidth': 1.2, 'capthick': 1.2, 'alpha': 0.7, 'color': 'black'})
+            bars = ax.barh(y_pos, scores, xerr=[err_lower, err_upper], color=color, alpha=0.8, height=bar_height,
+                           capsize=2, error_kw={'elinewidth': 0.8, 'capthick': 0.8, 'alpha': 0.7, 'color': 'black'})
 
             bars[-1].set_alpha(1.0)
             bars[-1].set_edgecolor('black')
@@ -1276,22 +1552,23 @@ def main():
 
             for _, (score_val, bar) in enumerate(zip(scores, bars)):
                 ax.text(score_val + 1.5, bar.get_y() + bar.get_height()/2,
-                       f'{score_val:.0f}%', va='center', fontsize=11)
+                       f'{score_val:.0f}%', va='center', fontsize=value_fontsize)
 
             ax.set_yticks(y_pos)
-            ax.set_yticklabels(labels, fontsize=12)
-            ax.set_xlabel('Mastery Score (%)', fontsize=12)
-            ax.set_xlim(0, 110)
-            ax.axvline(x=50, color='red', linestyle='--', alpha=0.7, linewidth=2, label='Chance (50%)')
-            ax.set_title(cat_name, fontsize=14, fontweight='bold', color=color)
+            ax.set_yticklabels(labels, fontsize=label_fontsize)
+            ax.set_xlabel('Correct %', fontsize=10)
+            ax.set_xlim(0, 115)
+            ax.set_ylim(len(labels) - 0.5, -0.5)  # Tight y-axis, no extra whitespace
+            ax.axvline(x=50, color='red', linestyle='--', alpha=0.7, linewidth=1.5, label='Chance (50%)')
+            ax.set_title(cat_name, fontsize=12, fontweight='bold', color=color)
             ax.grid(axis='x', alpha=0.3)
-            ax.invert_yaxis()
 
         for idx in range(len(chart_panels), len(axes_extra)):
             axes_extra[idx].axis('off')
 
         fig_extra.suptitle(f'ToM Mastery Scores by Category ({extra_name} - {extra_code})', fontsize=18, fontweight='bold', y=0.995)
-        plt.tight_layout(rect=[0, 0, 1, 0.97])
+        plt.subplots_adjust(hspace=0.3, wspace=0.35)
+        plt.tight_layout(rect=[0, 0, 1, 0.99])
         extra_chart_path = os.path.join(logs_dir, f'mastery_overall_chart_{extra_code}.png')
         plt.savefig(extra_chart_path, dpi=300, bbox_inches='tight')
         saved_files.append(extra_chart_path)

@@ -2,16 +2,19 @@
 """Recover turn record data from a crashed LLM test run log file.
 
 Usage:
-    python recover_log_data.py <log_file>
+    python recover_log_data.py <log_file> [--allow-incomplete]
 
 Example:
-    python recover_log_data.py tom_llm_logs/llama-3.1-70b-instruct_1769892337.log
+    python recover_log_data.py tom_llm_logs/anthropic-claude-opus-4.6_1771535483.log
+    python recover_log_data.py tom_llm_logs/example.log --allow-incomplete
 """
 
+import argparse
 import re
 import json
 import sys
-from typing import Dict, List, Optional
+from collections import defaultdict
+from typing import Dict, List, Optional, Tuple
 
 
 def parse_epistemic_state(state_str: str) -> str:
@@ -93,16 +96,18 @@ def parse_trial_block(block: str, trial_num: int, header_info: Dict) -> Optional
 
     # Extract spec info from trial header
     # Format: --- Running Trial N/M (Spec ID X): {...} ---
+    # Or:     --- Running Trial N/M (Rep R, Spec ID X): {...} ---
     header_match = re.search(
-        r"Running Trial (\d+)/\d+ \(Spec ID (\d+)\): \{([^}]+)\}",
+        r"Running Trial (\d+)/\d+ \((?:Rep (\d+), )?Spec ID (\d+)\): \{([^}]+)\}",
         block
     )
     if not header_match:
         return None
 
     trial_in_block = int(header_match.group(1))
-    spec_id = header_match.group(2)
-    spec_dict_str = header_match.group(3)
+    rep_from_header = header_match.group(2)  # May be None for old format
+    spec_id = header_match.group(3)
+    spec_dict_str = header_match.group(4)
 
     # Parse spec fields
     # Extract actual scenario Id (not Spec ID which is just row number)
@@ -236,8 +241,12 @@ def parse_trial_block(block: str, trial_num: int, header_info: Dict) -> Optional
     # Check if correct
     answer_correct = 'Correct!' in block and 'Incorrect' not in block
 
-    # Calculate rep (0-indexed)
-    rep = (trial_in_block - 1) // 156
+    # Calculate rep (1-indexed from header, or compute from trial number)
+    scenarios_per_rep = header_info.get('scenarios_per_rep', 104)
+    if rep_from_header:
+        rep = int(rep_from_header)
+    else:
+        rep = ((trial_in_block - 1) // scenarios_per_rep) + 1
 
     # Determine was_optimal
     was_optimal = is_action_optimal(parsed_action, optimal_action)
@@ -290,8 +299,12 @@ def parse_trial_block(block: str, trial_num: int, header_info: Dict) -> Optional
     return record
 
 
-def recover_log_data(log_file: str) -> List[Dict]:
-    """Parse a log file and recover turn records."""
+def recover_log_data(log_file: str) -> Tuple[List[Dict], Dict]:
+    """Parse a log file and recover turn records.
+
+    Returns:
+        Tuple of (records, header_info)
+    """
 
     with open(log_file, 'r') as f:
         content = f.read()
@@ -305,6 +318,20 @@ def recover_log_data(log_file: str) -> List[Dict]:
     free_resp_match = re.search(r'Free response:\s*(\w+)', content)
     if free_resp_match:
         header_info['free_response'] = free_resp_match.group(1).lower() == 'true'
+
+    # Parse reps and scenarios to calculate scenarios_per_rep
+    # Format: "Reps: 10" and "Running reps 1 to 10 (scenarios 0 to 1039)"
+    reps_match = re.search(r'Reps:\s*(\d+)', content)
+    scenarios_match = re.search(r'scenarios \d+ to (\d+)', content)
+    if reps_match and scenarios_match:
+        total_reps = int(reps_match.group(1))
+        max_scenario = int(scenarios_match.group(1))
+        total_scenarios = max_scenario + 1  # 0-indexed
+        header_info['scenarios_per_rep'] = total_scenarios // total_reps
+        header_info['total_reps'] = total_reps
+    else:
+        header_info['scenarios_per_rep'] = 104  # Default
+        header_info['total_reps'] = None
 
     # Split into trial blocks
     blocks = re.split(r'(?=--- Running Trial \d+/\d+)', content)
@@ -323,19 +350,72 @@ def recover_log_data(log_file: str) -> List[Dict]:
         if record:
             records.append(record)
 
-    return records
+    return records, header_info
+
+
+def filter_complete_reps(records: List[Dict], scenarios_per_rep: int) -> Tuple[List[Dict], Dict[int, int]]:
+    """Filter to only include records from complete reps.
+
+    Returns:
+        Tuple of (filtered_records, rep_counts) where rep_counts maps rep -> count
+    """
+    # Group records by rep
+    by_rep = defaultdict(list)
+    for r in records:
+        by_rep[r['rep']].append(r)
+
+    rep_counts = {rep: len(recs) for rep, recs in by_rep.items()}
+
+    # Filter to complete reps only
+    filtered = []
+    for rep, recs in sorted(by_rep.items()):
+        if len(recs) == scenarios_per_rep:
+            filtered.extend(recs)
+
+    return filtered, rep_counts
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python recover_log_data.py <log_file>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description='Recover turn record data from a crashed LLM test run log file.'
+    )
+    parser.add_argument('log_file', help='Path to the log file')
+    parser.add_argument(
+        '--allow-incomplete',
+        action='store_true',
+        default=False,
+        help='Include data from incomplete reps (default: only complete reps)'
+    )
+    args = parser.parse_args()
 
-    log_file = sys.argv[1]
+    log_file = args.log_file
     print(f"Recovering data from: {log_file}")
 
-    records = recover_log_data(log_file)
+    records, header_info = recover_log_data(log_file)
     print(f"Recovered {len(records)} turn records")
+
+    scenarios_per_rep = header_info.get('scenarios_per_rep', 104)
+    print(f"Scenarios per rep: {scenarios_per_rep}")
+
+    # Filter by complete reps unless --allow-incomplete
+    if not args.allow_incomplete:
+        filtered_records, rep_counts = filter_complete_reps(records, scenarios_per_rep)
+
+        # Report rep status
+        complete_reps = [r for r, c in rep_counts.items() if c == scenarios_per_rep]
+        incomplete_reps = [(r, c) for r, c in rep_counts.items() if c != scenarios_per_rep]
+
+        if complete_reps:
+            print(f"Complete reps: {sorted(complete_reps)}")
+        if incomplete_reps:
+            print(f"Incomplete reps (excluded): {[(r, f'{c}/{scenarios_per_rep}') for r, c in sorted(incomplete_reps)]}")
+
+        records = filtered_records
+        print(f"Using {len(records)} records from {len(complete_reps)} complete rep(s)")
+
+    if not records:
+        print("No complete reps found. Use --allow-incomplete to include partial data.")
+        sys.exit(1)
 
     # Generate output filename
     output_file = log_file.replace('.log', '_game_data.json')
